@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>笙闆知識庫 | Knowledge.REYWAY</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary: #2563eb;
+            --sky: #0ea5e9;
+            --bg: #f8f7f4;
+            --text: #1e293b;
+            --muted: #64748b;
+            --r: 18px;
+        }
+
+        body {
+            font-family: 'Noto Sans TC', 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(248, 247, 244, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            z-index: 100;
+            border-bottom: 1px solid rgba(37, 99, 235, 0.1);
+        }
+
+        nav h1 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .wrap {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-top: 60px;
+        }
+
+        .hero-content {
+            text-align: center;
+            max-width: 800px;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 900;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--sky));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: var(--muted);
+            margin-bottom: 3rem;
+            line-height: 1.7;
+        }
+
+        .cards-section {
+            padding: 3rem 0;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+
+        .section-desc {
+            color: var(--muted);
+            margin-bottom: 3rem;
+            font-size: 1rem;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: var(--r);
+            padding: 2.5rem;
+            box-shadow: 0 2px 12px rgba(37, 99, 235, 0.08);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(37, 99, 235, 0.15);
+        }
+
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--sky));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .card-desc {
+            color: var(--muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .card-status {
+            display: inline-block;
+            padding: 0.4rem 0.8rem;
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--primary);
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+            width: fit-content;
+        }
+
+        footer {
+            padding: 2rem;
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(37, 99, 235, 0.1);
+            margin-top: 3rem;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="wrap">
+            <h1>笙闆知識庫</h1>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>笙闆的 AI 知識庫</h1>
+            <p>收錄 AI 工作流、品牌策略、行銷方法論，以及實戰經驗分享。</p>
+        </div>
+    </section>
+
+    <section class="cards-section">
+        <div class="wrap">
+            <h2 class="section-title">知識庫</h2>
+            <p class="section-desc">深度文檔、工作流說明、策略框架</p>
+
+            <div class="cards-grid">
+                <a href="claudeworkflow.html" class="card">
+                    <div class="card-icon">⚡</div>
+                    <h3 class="card-title">Claude 三刀流</h3>
+                    <p class="card-desc">Cowork × Code × Claude.ai 的交叉使用工作流。三個工具各司其職，省時間、省 token、省錢。</p>
+                    <span class="card-status">✓ 已上線</span>
+                </a>
+                <a href="cleanclean-2026.html" class="card">
+                    <div class="card-icon">🧼</div>
+                    <h3 class="card-title">淨淨 2026 年度計畫</h3>
+                    <p class="card-desc">品牌定位、產品線、行銷漏斗、年度戰略全圖。</p>
+                    <span class="card-status">✓ 已上線</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>knowledge.reyway.com · 笙闆的知識庫 · 2026</p>
+    </footer>
+</body>
+</html>

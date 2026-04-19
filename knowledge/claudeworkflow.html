@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 工作流 × 笙闆 | Cowork × Code × Claude.ai</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --blue: #2563eb;
+            --sky: #0ea5e9;
+            --dark: #0f172a;
+            --text: #1e293b;
+            --muted: #64748b;
+            --border: rgba(37,99,235,0.12);
+            --glass: rgba(255,255,255,0.72);
+            --r: 18px;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Noto Sans TC', 'Inter', sans-serif;
+            background: #f8faff;
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        /* ── 雲霧背景 ── */
+        .sky-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+        .sky-bg span {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.35;
+        }
+        .sky-bg span:nth-child(1) {
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, #bae6fd, transparent);
+            top: -200px; right: 0;
+            animation: drift 14s ease-in-out infinite alternate;
+        }
+        .sky-bg span:nth-child(2) {
+            width: 400px; height: 400px;
+            background: radial-gradient(circle, #dbeafe, transparent);
+            bottom: 10%; left: -100px;
+            animation: drift 18s ease-in-out infinite alternate-reverse;
+        }
+        .sky-bg span:nth-child(3) {
+            width: 300px; height: 300px;
+            background: radial-gradient(circle, #e0f2fe, transparent);
+            top: 40%; right: 20%;
+            animation: drift 22s ease-in-out infinite alternate;
+        }
+        @keyframes drift {
+            from { transform: translateY(0) scale(1); }
+            to   { transform: translateY(-30px) scale(1.05); }
+        }
+
+        /* ── Nav ── */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            background: rgba(248,250,255,0.7);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 2rem;
+            height: 60px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .nav-logo {
+            font-weight: 700; font-size: 1rem;
+            color: var(--blue); letter-spacing: -0.3px;
+            font-family: 'Inter', sans-serif;
+        }
+        .nav-note {
+            font-size: 0.8rem; color: var(--muted);
+        }
+
+        /* ── 主容器 ── */
+        .wrap { max-width: 960px; margin: 0 auto; padding: 0 2rem; position: relative; z-index: 10; }
+
+        /* ── Hero ── */
+        .hero {
+            min-height: 100vh;
+            display: flex; flex-direction: column; justify-content: center;
+            padding-top: 80px;
+        }
+        .hero-label {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            background: rgba(37,99,235,0.08);
+            border: 1px solid rgba(37,99,235,0.15);
+            color: var(--blue);
+            padding: 0.4rem 1rem; border-radius: 50px;
+            font-size: 0.82rem; font-weight: 600;
+            margin-bottom: 1.5rem;
+            width: fit-content;
+        }
+        .claude-logo-section {
+            animation: fadeInDown 0.8s ease-out;
+        }
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .hero h1 {
+            font-size: clamp(2.2rem, 6vw, 3.8rem);
+            font-weight: 900; line-height: 1.15;
+            letter-spacing: -1.5px; margin-bottom: 1.2rem;
+            color: var(--dark);
+        }
+        .hero h1 em {
+            font-style: normal;
+            background: linear-gradient(90deg, var(--blue), var(--sky));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero-sub {
+            font-size: 1.05rem; color: var(--muted);
+            max-width: 560px; line-height: 1.7;
+        }
+        .hero-divider {
+            width: 40px; height: 3px;
+            background: linear-gradient(90deg, var(--blue), var(--sky));
+            border-radius: 4px;
+            margin: 2rem 0;
+        }
+
+        /* ── 三工具說明 ── */
+        .tools-row {
+            display: flex; gap: 1rem;
+            margin: 3rem 0;
+        }
+        .tool-pill {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.6rem 1.2rem;
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            font-size: 0.9rem; font-weight: 600;
+            color: var(--text);
+            cursor: default;
+            transition: all 0.25s ease;
+            box-shadow: 0 2px 8px rgba(37,99,235,0.06);
+        }
+        .tool-pill:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(37,99,235,0.12);
+            border-color: rgba(37,99,235,0.25);
+        }
+        .tool-pill .dot {
+            width: 8px; height: 8px; border-radius: 50%;
+        }
+        .dot-cowork { background: #2563eb; }
+        .dot-code   { background: #0ea5e9; }
+        .dot-tract  { background: #7c3aed; }
+
+        /* ── 流程圖 ── */
+        .flow-section {
+            padding: 5rem 0;
+        }
+        .section-label {
+            font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em;
+            color: var(--blue); text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+        .section-title {
+            font-size: clamp(1.6rem, 4vw, 2.2rem);
+            font-weight: 700; letter-spacing: -0.8px;
+            margin-bottom: 0.6rem; color: var(--dark);
+        }
+        .section-desc {
+            color: var(--muted); font-size: 1rem;
+            max-width: 560px; line-height: 1.6;
+            margin-bottom: 3rem;
+        }
+
+        /* 流程卡片 */
+        .flow-cards { display: flex; flex-direction: column; gap: 1px; }
+
+        .flow-card {
+            background: var(--glass);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border);
+            border-radius: var(--r);
+            padding: 2rem 2.5rem;
+            display: grid;
+            grid-template-columns: 220px 1fr;
+            gap: 2rem;
+            align-items: start;
+            transition: all 0.3s ease;
+            margin-bottom: 0;
+            position: relative;
+            cursor: default;
+        }
+        .flow-card:hover {
+            background: rgba(255,255,255,0.9);
+            box-shadow: 0 8px 32px rgba(37,99,235,0.1);
+            transform: translateX(4px);
+        }
+
+        /* 連接線 */
+        .flow-connector {
+            display: flex; align-items: center; justify-content: center;
+            padding: 0.5rem 2.5rem;
+            position: relative;
+        }
+        .connector-line {
+            width: 2px; height: 28px;
+            background: linear-gradient(180deg, rgba(37,99,235,0.3), rgba(14,165,233,0.3));
+        }
+        .connector-arrow {
+            width: 0; height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 7px solid rgba(37,99,235,0.4);
+            margin-top: -1px;
+        }
+
+        .flow-left {
+            display: flex; flex-direction: column; gap: 0.5rem;
+        }
+        .flow-tool-tag {
+            display: inline-flex; align-items: center; gap: 0.4rem;
+            font-size: 0.78rem; font-weight: 700; letter-spacing: 0.06em;
+            text-transform: uppercase;
+            padding: 0.3rem 0.8rem;
+            border-radius: 6px;
+            width: fit-content;
+        }
+        .tag-cowork { background: rgba(37,99,235,0.1); color: #2563eb; }
+        .tag-code   { background: rgba(14,165,233,0.1); color: #0284c7; }
+        .tag-tract  { background: rgba(124,58,237,0.1); color: #7c3aed; }
+
+        .flow-step-name {
+            font-size: 1.2rem; font-weight: 700; color: var(--dark);
+            line-height: 1.3;
+        }
+
+        .flow-right {
+            border-left: 1px solid var(--border);
+            padding-left: 2rem;
+        }
+        .flow-desc {
+            font-size: 0.95rem; color: var(--text);
+            line-height: 1.7; margin-bottom: 1rem;
+        }
+        .flow-examples {
+            display: flex; flex-wrap: wrap; gap: 0.4rem;
+        }
+        .flow-ex {
+            background: rgba(37,99,235,0.06);
+            border: 1px solid rgba(37,99,235,0.1);
+            color: var(--muted);
+            font-size: 0.8rem; padding: 0.25rem 0.7rem;
+            border-radius: 50px;
+        }
+
+        /* ── 核心洞見 ── */
+        .insight-section {
+            padding: 5rem 0;
+        }
+        .insight-block {
+            background: linear-gradient(135deg, var(--blue), var(--sky));
+            border-radius: 24px;
+            padding: 3.5rem;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        .insight-block::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 80% 20%, rgba(255,255,255,0.12) 0%, transparent 60%),
+                radial-gradient(ellipse at 20% 80%, rgba(255,255,255,0.06) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        .insight-block blockquote {
+            font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+            font-weight: 500; line-height: 1.7;
+            max-width: 700px; margin-bottom: 2rem;
+            position: relative; z-index: 10;
+        }
+        .insight-block blockquote::before {
+            content: '"';
+            font-size: 4rem; opacity: 0.25;
+            line-height: 0; vertical-align: -0.5em;
+            margin-right: 0.25rem;
+        }
+        .insight-author {
+            font-size: 0.9rem; opacity: 0.75;
+            position: relative; z-index: 10;
+        }
+
+        /* ── Skill 說明 ── */
+        .skill-section {
+            padding: 5rem 0;
+        }
+        .skill-note {
+            background: rgba(124,58,237,0.05);
+            border: 1px solid rgba(124,58,237,0.15);
+            border-radius: var(--r);
+            padding: 2rem 2.5rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        .skill-note-left h3 {
+            font-size: 1.15rem; font-weight: 700;
+            color: var(--dark); margin-bottom: 0.75rem;
+        }
+        .skill-note-left p {
+            font-size: 0.95rem; color: var(--muted); line-height: 1.6;
+        }
+        .skill-note-right {
+            border-left: 1px solid rgba(124,58,237,0.15);
+            padding-left: 2rem;
+            display: flex; flex-direction: column; gap: 0.6rem;
+        }
+        .skill-item {
+            display: flex; align-items: flex-start; gap: 0.6rem;
+            font-size: 0.9rem; color: var(--text); line-height: 1.5;
+        }
+        .skill-item::before {
+            content: '→';
+            color: #7c3aed; font-weight: 700; flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        /* ── Footer ── */
+        footer {
+            padding: 3rem 0;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: var(--muted); font-size: 0.85rem;
+        }
+
+
+        /* ── 對比表 ── */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 2rem;
+            background: var(--glass);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border);
+            border-radius: var(--r);
+            overflow: hidden;
+        }
+        .comparison-table thead {
+            background: rgba(37,99,235,0.06);
+            border-bottom: 1px solid var(--border);
+        }
+        .comparison-table th {
+            padding: 1.2rem;
+            text-align: left;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--text);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .comparison-table td {
+            padding: 1.5rem 1.2rem;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: var(--muted);
+        }
+        .comparison-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+        .comparison-table tbody tr:hover {
+            background: rgba(37,99,235,0.03);
+        }
+
+        /* ── 模型提示 ── */
+        .model-note {
+            background: linear-gradient(135deg, rgba(124,58,237,0.08), rgba(124,58,237,0.04));
+            border: 1px solid rgba(124,58,237,0.15);
+            border-radius: var(--r);
+            padding: 2rem 2.5rem;
+            margin-bottom: 3rem;
+        }
+        .model-note h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 1rem;
+        }
+        .model-note p {
+            font-size: 0.95rem;
+            color: var(--muted);
+            line-height: 1.8;
+        }
+        .model-note strong {
+            color: #7c3aed;
+            font-weight: 600;
+        }
+
+        /* ── 響應式 ── */
+        @media (max-width: 768px) {
+            .tools-row { flex-wrap: wrap; }
+            .flow-card { grid-template-columns: 1fr; gap: 1rem; }
+            .flow-right { border-left: none; border-top: 1px solid var(--border); padding-left: 0; padding-top: 1rem; }
+            .skill-note { grid-template-columns: 1fr; }
+            .skill-note-right { border-left: none; border-top: 1px solid rgba(124,58,237,0.15); padding-left: 0; padding-top: 1.5rem; }
+            .insight-block { padding: 2rem; }
+        }
+
+        /* ── 入場動畫 ── */
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .reveal.in { opacity: 1; transform: none; }
+        .reveal:nth-child(2) { transition-delay: 0.08s; }
+        .reveal:nth-child(3) { transition-delay: 0.16s; }
+        .reveal:nth-child(4) { transition-delay: 0.24s; }
+    </style>
+</head>
+<body>
+    <div class="sky-bg">
+        <span></span><span></span><span></span>
+    </div>
+
+    <nav>
+        <div class="nav-logo">workflow.reyway.com</div>
+        <div class="nav-note">笙闆的 AI 工作流實踐</div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="wrap">
+            <div class="claude-logo-section">
+                <svg width="120" height="120" viewBox="0 0 120 120" fill="none" style="margin-bottom: 1.5rem;">
+                    <defs>
+                        <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#2563eb;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#0ea5e9;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <circle cx="60" cy="60" r="55" fill="url(#grad)" opacity="0.15" stroke="url(#grad)" stroke-width="2"/>
+                    <circle cx="60" cy="60" r="40" fill="none" stroke="url(#grad)" stroke-width="3"/>
+                    <text x="60" y="75" text-anchor="middle" font-size="48" font-weight="700" fill="url(#grad)" font-family="'Inter', sans-serif">C</text>
+                </svg>
+            </div>
+            <div class="hero-label">⚡ 來自笙闆的實戰分享</div>
+            <h1>Claude <em>三刀流</em></h1>
+            <div class="hero-divider"></div>
+            <p class="hero-sub">
+                Cowork 做事、Code 建網站、Claude.ai 思考——三刀各司其職，根據任務性質互相交棒。省時間、省 token、省錢。
+            </p>
+            <div class="tools-row">
+                <div class="tool-pill"><span class="dot dot-cowork"></span> Cowork</div>
+                <div class="tool-pill"><span class="dot dot-code"></span> Claude Code</div>
+                <div class="tool-pill"><span class="dot dot-tract"></span> Claude.ai</div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- 工作流程 -->
+    <section class="flow-section">
+        <div class="wrap">
+            <p class="section-label">流程</p>
+            <h2 class="section-title">怎麼交棒</h2>
+            <p class="section-desc">看任務性質決定誰來做，然後把結果交給下一個。</p>
+
+            <div class="flow-cards">
+                <!-- Step 1 -->
+                <div class="flow-card reveal">
+                    <div class="flow-left">
+                        <div class="flow-tool-tag tag-cowork">① Cowork</div>
+                        <div class="flow-step-name">整合一切，<br>執行複雜操作</div>
+                    </div>
+                    <div class="flow-right">
+                        <p class="flow-desc">
+                            開始的地方。在桌面直接討論專案、拆解需求。不只停在文字——Cowork 能整合電腦、瀏覽器、所有工具，立刻動手執行：整理檔案、呼叫 API、設定環境變數、自動部署。
+                        </p>
+                        <div class="flow-examples">
+                            <span class="flow-ex">確認需求規格</span>
+                            <span class="flow-ex">設定 Cloudflare 環境變數</span>
+                            <span class="flow-ex">觸發部署 / 驗證結果</span>
+                            <span class="flow-ex">整理桌面檔案</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flow-connector">
+                    <div>
+                        <div class="connector-line" style="height: 20px;"></div>
+                        <div class="connector-arrow"></div>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="flow-card reveal">
+                    <div class="flow-left">
+                        <div class="flow-tool-tag tag-code">② Claude Code</div>
+                        <div class="flow-step-name">建網站、做事、<br>實現想法</div>
+                    </div>
+                    <div class="flow-right">
+                        <p class="flow-desc">
+                            Cowork 講清楚要做什麼之後，丟給 Code 去實作。Code 在終端直接生成代碼、建網站、修 bug、跑測試——不用人在旁邊盯，極速完成。
+                        </p>
+                        <div class="flow-examples">
+                            <span class="flow-ex">建立 HTML / JS 頁面</span>
+                            <span class="flow-ex">寫 Cloudflare Pages Functions</span>
+                            <span class="flow-ex">修 bug / 重構</span>
+                            <span class="flow-ex">Push 到 GitHub 自動部署</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flow-connector">
+                    <div>
+                        <div class="connector-line" style="height: 20px;"></div>
+                        <div class="connector-arrow"></div>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="flow-card reveal">
+                    <div class="flow-left">
+                        <div class="flow-tool-tag tag-tract">③ Claude.ai</div>
+                        <div class="flow-step-name">思考、記憶、<br>深度對話</div>
+                    </div>
+                    <div class="flow-right">
+                        <p class="flow-desc">
+                            長期記憶最好的地方。Cowork 建立的 Skill（品牌知識庫、合規規範、行銷方法論）都能讀取。需要深度思考、策略推演、文案發想的時候，切來這邊——帶著完整背景知識對話，效率最高。
+                        </p>
+                        <div class="flow-examples">
+                            <span class="flow-ex">調用品牌 Skill 寫文案</span>
+                            <span class="flow-ex">策略長篇討論</span>
+                            <span class="flow-ex">合規審查</span>
+                            <span class="flow-ex">大量問答 / 推演</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flow-connector">
+                    <div>
+                        <div class="connector-line" style="height: 20px;"></div>
+                        <div class="connector-arrow"></div>
+                    </div>
+                </div>
+
+                <!-- Step 4 (loop) -->
+                <div class="flow-card reveal">
+                    <div class="flow-left">
+                        <div class="flow-tool-tag tag-cowork" style="background:rgba(37,99,235,0.06);">↩ 回 Cowork</div>
+                        <div class="flow-step-name">遇到複雜執行任務，<br>再交回 Cowork</div>
+                    </div>
+                    <div class="flow-right">
+                        <p class="flow-desc">
+                            討論完新方向、或需要操作電腦執行任務，再切回 Cowork。這是個循環，不是線性流程——每個工具只做它最擅長的事，剩下交出去。
+                        </p>
+                        <div class="flow-examples">
+                            <span class="flow-ex">執行新一輪部署</span>
+                            <span class="flow-ex">自動化任務</span>
+                            <span class="flow-ex">操作桌面應用</span>
+                            <span class="flow-ex">下一個專案討論</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 核心洞見 -->
+    <section class="insight-section">
+        <div class="wrap">
+            <div class="insight-block reveal">
+                <blockquote>
+                    最複雜的事先用 Cowork 談清楚、然後丟給 Code 去蓋——蓋好的結果再用 Claude.ai 加上品牌 Skill 往深了推。三個工具各守自己的邊界，才不會浪費 token 做重工。
+                </blockquote>
+                <div class="insight-author">—— 笙闆（陳睿笙） · 淨淨 CleanClean 創辦人</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 優缺點對比 -->
+    <section class="flow-section">
+        <div class="wrap">
+            <p class="section-label">對比</p>
+            <h2 class="section-title">只用其中一個，會很吃虧</h2>
+
+            <div style="background:rgba(237,99,99,0.06); border:1px solid rgba(220,38,38,0.2); border-radius:var(--r); padding:2rem 2.5rem; margin-bottom:3rem;">
+                <p style="font-size:0.95rem; color:var(--text); line-height:1.7;">
+                    <strong style="color:#dc2626;">Cowork 單獨用</strong> — 幾個複雜專案就會爆流量。<br>
+                    <strong style="color:#dc2626;">Code 單獨用</strong> — 不容易累積Skill、只能建站也很多瑣碎流程。<br>
+                    <strong style="color:#dc2626;">Claude.ai 單獨用</strong> — 只能出張嘴，無法幫你做。
+                </p>
+            </div>
+
+            <p class="section-label">對比</p>
+            <h2 class="section-title">三個工具，各有各的長短</h2>
+            <p class="section-desc">不是讓你選哪個，而是告訴你什麼時候用哪個。</p>
+
+            <div style="overflow-x: auto;">
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>工具</th>
+                            <th>優點</th>
+                            <th>缺點</th>
+                            <th>定位</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong style="color:#2563eb;">Cowork</strong></td>
+                            <td>
+                                • 能驅動電腦和瀏覽器<br>
+                                • 整合一切系統工具<br>
+                                • 自動執行複雜操作<br>
+                                • 最適合實際做事
+                            </td>
+                            <td>
+                                • Session 流量有限<br>
+                                • 跑太多容易掛掉<br>
+                                • 做網站比 Code 慢
+                            </td>
+                            <td>整合系統，實際執行的樞紐</td>
+                        </tr>
+                        <tr>
+                            <td><strong style="color:#0ea5e9;">Claude Code</strong></td>
+                            <td>
+                                • 寫網站程式非常快<br>
+                                • 成本低<br>
+                                • 專注工程工作<br>
+                                • 適合大量迭代
+                            </td>
+                            <td>
+                                • 只能做程式工作<br>
+                                • 無法驅動其他東西<br>
+                                • 無法使用 GUI 應用
+                            </td>
+                            <td>專用工程師，只負責寫代碼</td>
+                        </tr>
+                        <tr>
+                            <td><strong style="color:#7c3aed;">Claude.ai</strong></td>
+                            <td>
+                                • 長期記憶強<br>
+                                • 適合深度思考<br>
+                                • 可調用 Skill<br>
+                                • 無流量限制
+                            </td>
+                            <td>
+                                • 無法直接做事<br>
+                                • 無法驅動電腦<br>
+                                • 需要手動執行結果
+                            </td>
+                            <td>智囊團，戰略顧問</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- 模型選擇建議 -->
+    <section class="flow-section">
+        <div class="wrap">
+            <div class="model-note reveal">
+                <h3>💡 Cowork 模型選擇小貼士</h3>
+                <p>
+                    使用 Cowork 時要記得<strong>切換模型</strong>。非必要的話<strong>不要開啟 Sonnet 以上</strong>，大部分的對話其實用基本款（Haiku）就可以了。<br><br>
+                    <strong>簡單任務</strong>（整理檔案、設定環境變數）→ Haiku<br>
+                    <strong>中等複雜</strong>（寫簡單代碼、自動化）→ Sonnet<br>
+                    <strong>超級複雜</strong>（深度推理、策略規劃）→ Opus<br><br>
+                    這樣既能省錢，又不會浪費 token。
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skill 說明 -->
+    <section class="skill-section">
+        <div class="wrap">
+            <p class="section-label">最終好處</p>
+            <h2 class="section-title">為什麼交叉使用更有效率</h2>
+            <p class="section-desc" style="margin-bottom: 2rem;">
+                在 Cowork 裡把品牌知識、行銷方法論、產品規格、合規規範都建成 Skill——之後在 Claude.ai 和 Code 任何對話都能隨時直接調用，不用每次重新解釋背景。
+            </p>
+
+            <div class="skill-note reveal">
+                <div class="skill-note-left">
+                    <h3>三個好處</h3>
+                    <p>
+                        交叉使用的意義不只是工作流順暢，而是用最少的成本和精力，完成最複雜的事。
+                    </p>
+                </div>
+                <div class="skill-note-right">
+                    <div class="skill-item"><strong style="color:#2563eb;">1. 長期記憶</strong> — Claude.ai 記著所有 Skill 和背景知識，不用重複解釋</div>
+                    <div class="skill-item"><strong style="color:#0ea5e9;">2. 複雜任務委派</strong> — Cowork 自動執行，Cowork 用基本款就夠，省 token 又省事</div>
+                    <div class="skill-item"><strong style="color:#7c3aed;">3. 網站快又便宜</strong> — Code 建網站極快，成本遠低於其他方案</div>
+                </div>
+            </div>
+
+            <div style="background:rgba(37,99,235,0.04); border:1px solid var(--border); border-radius:var(--r); padding:2rem 2.5rem; margin-top:2rem; text-align:center;">
+                <p style="font-size:1rem; color:var(--text); line-height:1.7;">
+                    <strong>結論：既能省錢，又能省事。</strong>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>workflow.reyway.com · Claude 三刀流 · 笙闆的 AI 工作流實踐 · 2026</p>
+    </footer>
+
+    <script>
+        const io = new IntersectionObserver(entries => {
+            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+        }, { threshold: 0.12 });
+        document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+    </script>
+</body>
+</html>
