@@ -17,17 +17,17 @@
   --border:rgba(0,0,0,0.07);
   --border-hover:rgba(0,0,0,0.14);
   --gold:#b8963e;
-  --gold-dim:rgba(184,150,62,0.08);
+  --gold-dim:rgba(184,150,62,0.09);
   --primary:#3a7cc6;
   --primary-dim:rgba(58,124,198,0.08);
-  --emerald:#3a7cc6;
-  --emerald-dim:rgba(58,124,198,0.08);
+  --emerald:#0fa882;
+  --emerald-dim:rgba(15,168,130,0.09);
   --violet:#6b5cad;
-  --violet-dim:rgba(107,92,173,0.08);
+  --violet-dim:rgba(107,92,173,0.09);
   --orange:#c47a3a;
-  --orange-dim:rgba(196,122,58,0.08);
+  --orange-dim:rgba(196,122,58,0.09);
   --blue:#3a7cc6;
-  --blue-dim:rgba(58,124,198,0.08);
+  --blue-dim:rgba(58,124,198,0.09);
   --text:#1a2030;
   --text-muted:rgba(26,32,48,0.45);
   --text-dim:rgba(26,32,48,0.25);
@@ -156,45 +156,51 @@ body{
   padding:28px 20px;
   background:var(--card);
   border:1px solid var(--border);
+  border-left:3px solid transparent;
   border-radius:var(--radius);
   text-decoration:none;color:var(--text);
-  transition:all 0.35s var(--ease);
+  transition:all 0.3s var(--ease);
   cursor:pointer;position:relative;overflow:hidden;
   box-shadow:0 1px 4px rgba(0,0,0,0.03);
 }
 .tool-card::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:2px;
-  background:linear-gradient(90deg,transparent,var(--emerald),transparent);
-  opacity:0;transition:opacity 0.35s;
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  opacity:0;transition:opacity 0.3s;
 }
 .tool-card:hover{
   background:var(--card-hover);
   border-color:var(--border-hover);
-  transform:translateY(-3px);
-  box-shadow:0 8px 32px rgba(58,124,198,0.08), 0 2px 8px rgba(0,0,0,0.04);
+  transform:translateY(-4px);
+  box-shadow:0 12px 40px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04);
 }
 .tool-card:hover::before{opacity:1}
 
-/* Brand-specific top line colors */
-.brand-cleanclean .tool-card::before{background:linear-gradient(90deg,transparent,var(--emerald),transparent)}
-.brand-ego .tool-card::before{background:linear-gradient(90deg,transparent,var(--violet),transparent)}
-.brand-ruoshui .tool-card::before{background:linear-gradient(90deg,transparent,var(--blue),transparent)}
-.brand-tools .tool-card::before{background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+/* Brand-specific accent colors on hover */
+.brand-cleanclean .tool-card::before{background:linear-gradient(90deg,var(--emerald),rgba(15,168,130,0.3),transparent)}
+.brand-cleanclean .tool-card:hover{border-left-color:var(--emerald);box-shadow:0 12px 40px rgba(15,168,130,0.1), 0 2px 8px rgba(0,0,0,0.04)}
+
+.brand-ego .tool-card::before{background:linear-gradient(90deg,var(--violet),rgba(107,92,173,0.3),transparent)}
+.brand-ego .tool-card:hover{border-left-color:var(--violet);box-shadow:0 12px 40px rgba(107,92,173,0.1), 0 2px 8px rgba(0,0,0,0.04)}
+
+.brand-tools .tool-card::before{background:linear-gradient(90deg,var(--gold),rgba(184,150,62,0.3),transparent)}
+.brand-tools .tool-card:hover{border-left-color:var(--gold);box-shadow:0 12px 40px rgba(184,150,62,0.1), 0 2px 8px rgba(0,0,0,0.04)}
 
 .tool-icon{
-  width:48px;height:48px;border-radius:12px;
+  width:52px;height:52px;border-radius:14px;
   display:flex;align-items:center;justify-content:center;
-  font-size:1.1rem;font-weight:700;margin-bottom:14px;
-  background:rgba(26,32,48,0.02);
+  font-size:1.15rem;font-weight:700;margin-bottom:14px;
+  background:rgba(26,32,48,0.03);
   border:1px solid var(--border);
   font-family:'Noto Sans TC',sans-serif;
   color:var(--text-muted);letter-spacing:-1px;
+  transition:transform 0.3s var(--ease);
 }
-.tool-icon.icon-emerald{background:var(--emerald-dim);border-color:rgba(58,124,198,0.15);color:var(--emerald)}
-.tool-icon.icon-violet{background:var(--violet-dim);border-color:rgba(107,92,173,0.15);color:var(--violet)}
-.tool-icon.icon-gold{background:var(--gold-dim);border-color:rgba(200,168,124,0.15);color:var(--gold)}
-.tool-icon.icon-blue{background:var(--blue-dim);border-color:rgba(107,163,212,0.15);color:var(--blue)}
-.tool-icon.icon-orange{background:var(--orange-dim);border-color:rgba(212,134,74,0.15);color:var(--orange)}
+.tool-card:hover .tool-icon{transform:scale(1.07)}
+.tool-icon.icon-emerald{background:var(--emerald-dim);border-color:rgba(15,168,130,0.2);color:var(--emerald)}
+.tool-icon.icon-violet{background:var(--violet-dim);border-color:rgba(107,92,173,0.2);color:var(--violet)}
+.tool-icon.icon-gold{background:var(--gold-dim);border-color:rgba(184,150,62,0.2);color:var(--gold)}
+.tool-icon.icon-blue{background:var(--blue-dim);border-color:rgba(58,124,198,0.2);color:var(--blue)}
+.tool-icon.icon-orange{background:var(--orange-dim);border-color:rgba(196,122,58,0.2);color:var(--orange)}
 .tool-card h3{
   font-size:0.9rem;font-weight:600;
   text-align:center;margin-bottom:6px;
@@ -215,9 +221,14 @@ body{
 
 /* ===== Section Labels ===== */
 .section-label{
-  font-size:0.7rem;letter-spacing:3px;
-  text-transform:uppercase;color:var(--text-dim);
-  margin:32px 0 16px;padding-left:4px;
+  font-size:0.68rem;letter-spacing:2.5px;
+  text-transform:uppercase;color:var(--text-muted);
+  margin:32px 0 14px;padding-left:2px;
+  display:flex;align-items:center;gap:10px;font-weight:500;
+}
+.section-label::after{
+  content:'';flex:1;height:1px;
+  background:linear-gradient(90deg,var(--border),transparent);
 }
 
 /* ===== Empty State / Coming Soon ===== */
@@ -382,25 +393,25 @@ footer p{font-size:0.75rem;color:var(--text-dim);letter-spacing:1px}
 
   <!-- ===== PAGE: 總覽 ===== -->
   <div class="brand-page active" id="page-overview">
-    <div class="section-label">All Brands</div>
+    <div class="section-label">所有品牌</div>
     <div class="tool-grid">
-      <div class="tool-card" onclick="showPage('cleanclean')">
-        <img class="brand-icon" src="icon-cleanclean.png" alt="淨淨" style="width:48px;height:48px;border-radius:12px;margin-bottom:14px" onerror="this.outerHTML='<div class=\'tool-icon icon-emerald\'>淨</div>'">
+      <div class="tool-card" onclick="showPage('cleanclean')" style="border-left-color:var(--emerald)">
+        <img class="brand-icon" src="icon-cleanclean.png" alt="淨淨" style="width:52px;height:52px;border-radius:14px;margin-bottom:14px;border:1px solid rgba(15,168,130,0.2);background:var(--emerald-dim);padding:6px;object-fit:contain" onerror="this.outerHTML='<div class=\'tool-icon icon-emerald\' style=\'margin-bottom:14px\'>淨</div>'">
         <h3>淨淨</h3>
-        <p>行銷智能夥伴・營運儀表板・美學工作室</p>
-        <span class="tool-tag tag-live">● 已上線</span>
+        <p>行銷智能夥伴・數據分析<br>美學工作室</p>
+        <span class="tool-tag" style="background:var(--emerald-dim);color:var(--emerald)">● 4 個工具</span>
       </div>
-      <div class="tool-card" onclick="showPage('partners')">
+      <div class="tool-card" onclick="showPage('partners')" style="border-left-color:var(--violet)">
         <div class="tool-icon icon-violet">合</div>
         <h3>合作品牌</h3>
-        <p>伊果國際集團・若水共創</p>
-        <span class="tool-tag tag-live">● 已上線</span>
+        <p>皮爾卡登・大大力鍍膜<br>森築居家・伊果集團</p>
+        <span class="tool-tag" style="background:var(--violet-dim);color:var(--violet)">● 5 個品牌</span>
       </div>
-      <a class="tool-card" href="https://tools.reyway.com" target="_blank">
-        <div class="tool-icon icon-gold">T</div>
+      <a class="tool-card" href="https://tools.reyway.com" target="_blank" style="border-left-color:var(--gold)">
+        <div class="tool-icon icon-gold">智</div>
         <h3>智能工具站</h3>
-        <p>文案小幫手・跨品牌通用工具</p>
-        <span class="tool-tag tag-live">● 已上線</span>
+        <p>文案小幫手・跨品牌通用<br>AI 工具持續增加中</p>
+        <span class="tool-tag" style="background:var(--gold-dim);color:var(--gold)">● 直接前往</span>
       </a>
     </div>
   </div>
@@ -415,17 +426,12 @@ footer p{font-size:0.75rem;color:var(--text-dim);letter-spacing:1px}
       </div>
     </div>
 
+    <div class="section-label">行銷工具</div>
     <div class="tool-grid">
       <div class="tool-card" onclick="gatedLink(event,'https://cleanclean.reyway.com','行銷智能夥伴')">
-        <div class="tool-icon icon-emerald">AI</div>
+        <div class="tool-icon icon-emerald">行</div>
         <h3>行銷智能夥伴</h3>
         <p>行銷策略 AI 助手<br>文案・定位・漏斗規劃</p>
-        <span class="tool-tag tag-live">● 已上線</span>
-      </div>
-      <div class="tool-card" onclick="gatedLink(event,'https://cleandata.reyway.com','營運儀表板')">
-        <div class="tool-icon icon-gold">$</div>
-        <h3>營運儀表板</h3>
-        <p>月營收趨勢・通路分析<br>KPI 與電商數據追蹤</p>
         <span class="tool-tag tag-live">● 已上線</span>
       </div>
       <div class="tool-card" onclick="gatedLink(event,'https://design.reyway.com','美學工作室')">
@@ -434,8 +440,17 @@ footer p{font-size:0.75rem;color:var(--text-dim);letter-spacing:1px}
         <p>素材合版・產品場景圖<br>AI 圖命名・品牌規範</p>
         <span class="tool-tag tag-live">● 已上線</span>
       </div>
+    </div>
+    <div class="section-label">數據分析</div>
+    <div class="tool-grid">
+      <div class="tool-card" onclick="gatedLink(event,'https://cleandata.reyway.com','營運儀表板')">
+        <div class="tool-icon icon-gold">運</div>
+        <h3>營運儀表板</h3>
+        <p>月營收趨勢・通路分析<br>KPI 與電商數據追蹤</p>
+        <span class="tool-tag tag-live">● 已上線</span>
+      </div>
       <div class="tool-card" onclick="gatedLink(event,'https://data.cleanclean.reyway.com/','電商數據站')">
-        <div class="tool-icon icon-emerald">📊</div>
+        <div class="tool-icon icon-emerald">數</div>
         <h3>電商數據站</h3>
         <p>蝦皮・momo・官網數據<br>廣告 ROAS・投放分析</p>
         <span class="tool-tag tag-live">● 已上線</span>
@@ -491,7 +506,7 @@ footer p{font-size:0.75rem;color:var(--text-dim);letter-spacing:1px}
   <!-- ===== PAGE: 智能工具站 ===== -->
   <div class="brand-page brand-tools" id="page-tools">
     <div class="brand-header">
-      <div class="tool-icon icon-gold" style="width:48px;height:48px">T</div>
+      <div class="tool-icon icon-gold" style="width:48px;height:48px">智</div>
       <div>
         <h2 style="color:var(--gold)">智能工具站</h2>
         <div class="brand-desc">跨品牌通用 — 不分品牌都能用的 AI 工具與效率加速器</div>
@@ -500,7 +515,7 @@ footer p{font-size:0.75rem;color:var(--text-dim);letter-spacing:1px}
 
     <div class="tool-grid" style="grid-template-columns:1fr;max-width:560px;margin:0 auto;">
       <a class="tool-card" href="https://tools.reyway.com" target="_blank" style="text-align:center;padding:32px 24px;">
-        <div class="tool-icon icon-gold" style="margin:0 auto 12px;">T</div>
+        <div class="tool-icon icon-gold" style="margin:0 auto 12px;">智</div>
         <h3>前往工具站</h3>
         <p>文案小幫手、海外購物助手、去背情境、植物醫生……<br>跨品牌通用 AI 工具，持續增加中</p>
         <span class="tool-tag tag-live" style="margin-top:12px;">● 已上線 · 點擊前往</span>
