@@ -242,9 +242,114 @@ footer p{font-size:0.75rem;color:var(--text-dim);letter-spacing:1px}
   .nav-tabs{gap:6px}
   .nav-tab{padding:8px 16px;font-size:0.8rem}
 }
+/* ===== Site Gate ===== */
+#site-gate{
+  position:fixed;inset:0;z-index:9999;
+  background:rgba(250,251,253,0.96);
+  backdrop-filter:blur(16px);
+  display:flex;align-items:center;justify-content:center;
+}
+#site-gate.hidden{display:none}
+.gate-box{
+  background:#fff;border:1px solid rgba(0,0,0,0.08);
+  border-radius:24px;padding:40px 40px 32px;
+  width:340px;text-align:center;
+  box-shadow:0 20px 60px rgba(58,124,198,0.1);
+}
+.gate-logo{
+  width:56px;height:56px;border-radius:16px;
+  background:linear-gradient(135deg,#3a7cc6,#b8963e);
+  color:#fff;font-size:1.5rem;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 16px;font-family:'Noto Serif TC',serif;
+}
+.gate-box h2{font-size:1.1rem;font-weight:700;margin-bottom:6px;color:#1a2030}
+.gate-box p{font-size:0.8rem;color:rgba(26,32,48,0.45);margin-bottom:24px}
+.gate-input{
+  width:100%;padding:12px 16px;border-radius:12px;
+  border:1.5px solid rgba(0,0,0,0.1);
+  font-size:1.1rem;text-align:center;letter-spacing:6px;
+  font-family:'Inter',sans-serif;outline:none;
+  transition:border-color 0.2s;color:#1a2030;
+}
+.gate-input:focus{border-color:rgba(58,124,198,0.5)}
+.gate-input.shake{animation:shake 0.3s ease}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.gate-btn{
+  width:100%;margin-top:12px;padding:12px;
+  background:linear-gradient(135deg,#3a7cc6,#2a6ab5);
+  color:#fff;border:none;border-radius:12px;
+  font-size:0.9rem;font-weight:600;cursor:pointer;
+  transition:opacity 0.2s;letter-spacing:0.5px;
+}
+.gate-btn:hover{opacity:0.88}
+.gate-error{font-size:0.78rem;color:#c0392b;margin-top:10px;min-height:18px}
+
+/* ===== Link Gate Modal ===== */
+#link-modal{
+  position:fixed;inset:0;z-index:9998;
+  background:rgba(0,0,0,0.35);backdrop-filter:blur(4px);
+  display:flex;align-items:center;justify-content:center;
+}
+#link-modal.hidden{display:none}
+.link-modal-box{
+  background:#fff;border-radius:20px;padding:32px 32px 24px;
+  width:300px;text-align:center;
+  box-shadow:0 16px 48px rgba(0,0,0,0.15);
+}
+.link-modal-icon{font-size:2rem;margin-bottom:10px}
+.link-modal-box h3{font-size:1rem;font-weight:700;margin-bottom:4px;color:#1a2030}
+.link-modal-box p{font-size:0.78rem;color:rgba(26,32,48,0.45);margin-bottom:18px}
+.link-modal-input{
+  width:100%;padding:10px 14px;border-radius:10px;
+  border:1.5px solid rgba(0,0,0,0.1);
+  font-size:1.1rem;text-align:center;letter-spacing:6px;
+  font-family:'Inter',sans-serif;outline:none;
+  transition:border-color 0.2s;
+}
+.link-modal-input:focus{border-color:rgba(58,124,198,0.5)}
+.link-modal-btns{display:flex;gap:8px;margin-top:12px}
+.link-modal-cancel{
+  flex:1;padding:10px;border-radius:10px;
+  border:1px solid rgba(0,0,0,0.1);background:transparent;
+  font-size:0.85rem;cursor:pointer;color:rgba(26,32,48,0.5);
+}
+.link-modal-go{
+  flex:2;padding:10px;border-radius:10px;
+  background:linear-gradient(135deg,#3a7cc6,#2a6ab5);
+  color:#fff;border:none;font-size:0.85rem;font-weight:600;cursor:pointer;
+}
+.link-modal-error{font-size:0.75rem;color:#c0392b;margin-top:8px;min-height:16px}
 </style>
 </head>
 <body>
+
+<!-- ===== Site Gate (730902) ===== -->
+<div id="site-gate">
+  <div class="gate-box">
+    <div class="gate-logo">笙</div>
+    <h2>笙闆 AI Studio</h2>
+    <p>請輸入存取密碼</p>
+    <input id="gate-input" class="gate-input" type="password" placeholder="••••••" maxlength="10" onkeydown="if(event.key==='Enter')checkSiteGate()">
+    <button class="gate-btn" onclick="checkSiteGate()">進入</button>
+    <div id="gate-error" class="gate-error"></div>
+  </div>
+</div>
+
+<!-- ===== Link Gate Modal (0000) ===== -->
+<div id="link-modal" class="hidden">
+  <div class="link-modal-box">
+    <div class="link-modal-icon">🔒</div>
+    <h3 id="link-modal-title">確認身份</h3>
+    <p>請輸入密碼以開啟此工具</p>
+    <input id="link-modal-input" class="link-modal-input" type="password" placeholder="••••" maxlength="8" onkeydown="if(event.key==='Enter')checkLinkGate()">
+    <div class="link-modal-btns">
+      <button class="link-modal-cancel" onclick="closeLinkModal()">取消</button>
+      <button class="link-modal-go" onclick="checkLinkGate()">前往</button>
+    </div>
+    <div id="link-modal-error" class="link-modal-error"></div>
+  </div>
+</div>
 
 <div class="ambient">
   <div class="orb orb-1"></div>
@@ -261,8 +366,8 @@ footer p{font-size:0.75rem;color:var(--text-dim);letter-spacing:1px}
       </div>
       <div>
         <h1>笙闆 AI Studio</h1>
-        <div class="subtitle">REYWAY — AI-POWERED TOOLS HUB</div>
-        <p class="header-intro">以 AI 驅動品牌營運，將策略、行銷與管理工具整合為一站式智能平台。<br>讓每一位團隊成員都能用最高效的方式完成工作。</p>
+        <div class="subtitle">Sheng Boss 智能工作室</div>
+        <p class="header-intro">苗栗小阿笙，用 AI 改變人生的故事</p>
       </div>
     </div>
   </header>
@@ -271,9 +376,8 @@ footer p{font-size:0.75rem;color:var(--text-dim);letter-spacing:1px}
   <nav class="nav-tabs">
     <button class="nav-tab active" data-brand="overview" onclick="showPage('overview')">總覽</button>
     <button class="nav-tab" data-brand="cleanclean" onclick="showPage('cleanclean')">淨淨 CleanClean</button>
-    <button class="nav-tab" data-brand="ego" onclick="showPage('ego')">伊果國際集團</button>
-    <button class="nav-tab" data-brand="ruoshui" onclick="showPage('ruoshui')">若水共創</button>
-    <button class="nav-tab" data-brand="tools" onclick="showPage('tools')">綜合工具</button>
+    <button class="nav-tab" data-brand="partners" onclick="showPage('partners')">合作品牌</button>
+    <button class="nav-tab" data-brand="tools" onclick="showPage('tools')">智能工具站</button>
   </nav>
 
   <!-- ===== PAGE: 總覽 ===== -->
@@ -283,31 +387,19 @@ footer p{font-size:0.75rem;color:var(--text-dim);letter-spacing:1px}
       <div class="tool-card" onclick="showPage('cleanclean')">
         <img class="brand-icon" src="icon-cleanclean.png" alt="淨淨" style="width:48px;height:48px;border-radius:12px;margin-bottom:14px" onerror="this.outerHTML='<div class=\'tool-icon icon-emerald\'>淨</div>'">
         <h3>淨淨 CleanClean</h3>
-        <p>行銷助手・營收分析・人資管理・廣告數據</p>
+        <p>行銷智能夥伴・營運儀表板・美學工作室</p>
         <span class="tool-tag tag-live">● 已上線</span>
       </div>
-      <div class="tool-card" onclick="showPage('ego')">
-        <img class="brand-icon" src="icon-eagle-group.png" alt="伊果" style="width:48px;height:48px;border-radius:12px;margin-bottom:14px" onerror="this.outerHTML='<div class=\'tool-icon icon-violet\'>伊</div>'">
-        <h3>伊果國際集團</h3>
-        <p>酸小七・蹦闆精品・帝豪中國城酒店</p>
+      <div class="tool-card" onclick="showPage('partners')">
+        <div class="tool-icon icon-violet">合</div>
+        <h3>合作品牌</h3>
+        <p>伊果國際集團・若水共創</p>
         <span class="tool-tag tag-live">● 已上線</span>
-      </div>
-      <div class="tool-card" onclick="showPage('ruoshui')">
-        <div class="tool-icon icon-blue">若</div>
-        <h3>若水共創</h3>
-        <p>品牌共創夥伴・招商平台</p>
-        <span class="tool-tag tag-dev">建置中</span>
       </div>
       <a class="tool-card" href="https://tools.reyway.com" target="_blank">
         <div class="tool-icon icon-gold">T</div>
-        <h3>綜合工具區</h3>
+        <h3>智能工具站</h3>
         <p>文案小幫手・跨品牌通用工具</p>
-        <span class="tool-tag tag-live">● 已上線</span>
-      </a>
-      <a class="tool-card" href="knowledge/" target="_blank">
-        <div class="tool-icon icon-gold">📚</div>
-        <h3>笙闆知識庫</h3>
-        <p>年度計畫・AI 工作流・品牌知識</p>
         <span class="tool-tag tag-live">● 已上線</span>
       </a>
     </div>
@@ -319,199 +411,100 @@ footer p{font-size:0.75rem;color:var(--text-dim);letter-spacing:1px}
       <img class="brand-icon" src="logo-cleanclean.png" alt="淨淨" style="width:48px;height:48px;border-radius:14px;object-fit:contain;background:var(--emerald-dim);padding:6px" onerror="this.outerHTML='<div class=\'tool-icon icon-emerald\' style=\'width:48px;height:48px\'>淨</div>'">
       <div>
         <h2 style="color:var(--emerald)">淨淨 CleanClean</h2>
-        <div class="brand-desc">台灣第一植萃淨化品牌 — AI 工具生態系</div>
+        <div class="brand-desc">以家人標準出發，讓你簡單就乾淨</div>
       </div>
     </div>
 
-    <div class="section-label">行銷工具</div>
     <div class="tool-grid">
-      <a class="tool-card" href="https://cleanclean.reyway.com" target="_blank">
+      <div class="tool-card" onclick="gatedLink(event,'https://cleanclean.reyway.com','行銷智能夥伴')">
         <div class="tool-icon icon-emerald">AI</div>
-        <h3>請教神隊友</h3>
+        <h3>行銷智能夥伴</h3>
         <p>行銷策略 AI 助手<br>文案・定位・漏斗規劃</p>
         <span class="tool-tag tag-live">● 已上線</span>
-      </a>
-      <div class="tool-card">
-        <div class="tool-icon icon-emerald">Ad</div>
-        <h3>廣告數據分析</h3>
-        <p>Meta 廣告 ROAS/CPA<br>週報自動產出</p>
-        <span class="tool-tag tag-soon">規劃中</span>
       </div>
-      <div class="tool-card">
-        <div class="tool-icon icon-emerald">文</div>
-        <h3>文案產生器</h3>
-        <p>銷售文案・社群貼文<br>廣告素材文案</p>
-        <span class="tool-tag tag-soon">規劃中</span>
-      </div>
-    </div>
-
-    <div class="section-label">營運管理</div>
-    <div class="tool-grid">
-      <div class="tool-card">
+      <div class="tool-card" onclick="gatedLink(event,'https://cleandata.reyway.com','營運儀表板')">
         <div class="tool-icon icon-gold">$</div>
-        <h3>營收儀表板</h3>
-        <p>月營收趨勢・通路分析<br>KPI 追蹤</p>
-        <span class="tool-tag tag-soon">規劃中</span>
+        <h3>營運儀表板</h3>
+        <p>月營收趨勢・通路分析<br>KPI 與電商數據追蹤</p>
+        <span class="tool-tag tag-live">● 已上線</span>
       </div>
-      <div class="tool-card">
-        <div class="tool-icon icon-gold">HR</div>
-        <h3>人資分析</h3>
-        <p>團隊組織架構・績效追蹤<br>職等制度查詢</p>
-        <span class="tool-tag tag-soon">規劃中</span>
+      <div class="tool-card" onclick="gatedLink(event,'https://design.reyway.com','美學工作室')">
+        <div class="tool-icon icon-orange">美</div>
+        <h3>美學工作室</h3>
+        <p>素材合版・產品場景圖<br>AI 圖命名・品牌規範</p>
+        <span class="tool-tag tag-live">● 已上線</span>
       </div>
-      <div class="tool-card">
-        <div class="tool-icon icon-emerald">品</div>
-        <h3>產品百科</h3>
-        <p>14+ 品項完整資料<br>規格・成分・賣點</p>
-        <span class="tool-tag tag-soon">規劃中</span>
-      </div>
-    </div>
-
-    <div class="section-label">設計工具</div>
-    <div class="tool-grid">
-      <div class="tool-card">
-        <div class="tool-icon icon-orange">彩</div>
-        <h3>美編設計助手</h3>
-        <p>Banner・社群圖・DM<br>品牌視覺規範</p>
-        <span class="tool-tag tag-soon">規劃中</span>
-      </div>
-      <div class="tool-card">
-        <div class="tool-icon icon-orange">px</div>
-        <h3>尺寸速查表</h3>
-        <p>全平台圖片尺寸<br>蝦皮・LINE・IG・FB</p>
-        <span class="tool-tag tag-soon">規劃中</span>
+      <div class="tool-card" onclick="gatedLink(event,'https://data.cleanclean.reyway.com/','電商數據站')">
+        <div class="tool-icon icon-emerald">📊</div>
+        <h3>電商數據站</h3>
+        <p>蝦皮・momo・官網數據<br>廣告 ROAS・投放分析</p>
+        <span class="tool-tag tag-live">● 已上線</span>
       </div>
     </div>
   </div>
 
-  <!-- ===== PAGE: 伊果 ===== -->
-  <div class="brand-page brand-ego" id="page-ego">
+  <!-- ===== PAGE: 合作品牌 ===== -->
+  <div class="brand-page brand-ego" id="page-partners">
     <div class="brand-header">
-      <img class="brand-icon" src="logo-eagle.png" alt="伊果" style="width:48px;height:48px;border-radius:14px;object-fit:contain;background:var(--violet-dim);padding:6px" onerror="this.outerHTML='<div class=\'tool-icon icon-violet\' style=\'width:48px;height:48px\'>伊</div>'">
+      <div class="tool-icon icon-violet" style="width:48px;height:48px">合</div>
       <div>
-        <h2 style="color:var(--violet)">伊果國際集團</h2>
-        <div class="brand-desc">五大事業體 — 服飾・餐飲・飲料・小吃・鐘錶</div>
+        <h2 style="color:var(--violet)">合作品牌</h2>
+        <div class="brand-desc">品牌共創夥伴 — 各自獨立，深度合作</div>
       </div>
     </div>
 
-    <div class="section-label">品牌工具網站</div>
+    <div class="section-label">品牌夥伴</div>
     <div class="tool-grid">
-      <a class="tool-card" href="https://suan7.reyway.com" target="_blank">
-        <img src="icon-sour7.png" alt="酸小七" style="width:48px;height:48px;border-radius:12px;margin-bottom:14px;object-fit:contain;background:var(--orange-dim);padding:4px" onerror="this.outerHTML='<div class=\'tool-icon icon-orange\'>酸</div>'">
-        <h3>酸小七</h3>
-        <p>社群小編工具箱<br>圖文產生・貼文排程</p>
+      <a class="tool-card" href="https://bombboss.reyway.com" target="_blank">
+        <img class="brand-icon" src="icon-eagle-group.png" alt="伊果" style="width:48px;height:48px;border-radius:12px;margin-bottom:14px" onerror="this.outerHTML='<div class=\'tool-icon icon-violet\'>伊</div>'">
+        <h3>伊果國際集團</h3>
+        <p>五大事業體 — 服飾・餐飲<br>飲料・小吃・鐘錶</p>
         <span class="tool-tag tag-live">● 已上線</span>
       </a>
-      <a class="tool-card" href="https://eagle.reyway.com" target="_blank">
-        <img src="icon-eagle-shopping.png" alt="蹦闆精品" style="width:48px;height:48px;border-radius:12px;margin-bottom:14px;object-fit:contain;background:var(--violet-dim);padding:4px" onerror="this.outerHTML='<div class=\'tool-icon icon-violet\'>蹦</div>'">
-        <h3>蹦闆精品</h3>
-        <p>精品圖文產生器<br>商品上架素材</p>
+      <div class="tool-card" onclick="gatedLink(event,'https://pc.reyway.com/','皮爾卡登寢具')">
+        <div class="tool-icon icon-gold">皮</div>
+        <h3>皮爾卡登寢具</h3>
+        <p>PIERRE CARDIN<br>品牌工具站</p>
         <span class="tool-tag tag-live">● 已上線</span>
-      </a>
-      <a class="tool-card" href="https://club.reyway.com" target="_blank">
-        <img src="icon-chinahotel.png" alt="中國城酒店" style="width:48px;height:48px;border-radius:12px;margin-bottom:14px;object-fit:contain;background:var(--gold-dim);padding:4px" onerror="this.outerHTML='<div class=\'tool-icon icon-gold\'>帝</div>'">
-        <h3>帝豪中國城酒店</h3>
-        <p>酒店行銷工具<br>圖文產生器</p>
-        <span class="tool-tag tag-live">● 已上線</span>
-      </a>
-    </div>
-
-    <div class="section-label">數據分析</div>
-    <div class="tool-grid">
-      <div class="tool-card">
-        <div class="tool-icon icon-violet">PL</div>
-        <h3>集團損益儀表板</h3>
-        <p>五大事業體營收<br>成本・毛利・淨利</p>
-        <span class="tool-tag tag-soon">規劃中</span>
       </div>
       <div class="tool-card">
-        <div class="tool-icon icon-violet">庫</div>
-        <h3>庫存管理</h3>
-        <p>服飾庫存追蹤<br>進出貨分析</p>
-        <span class="tool-tag tag-soon">規劃中</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- ===== PAGE: 若水共創 ===== -->
-  <div class="brand-page brand-ruoshui" id="page-ruoshui">
-    <div class="brand-header">
-      <div class="tool-icon icon-blue" style="width:48px;height:48px">若</div>
-      <div>
-        <h2 style="color:var(--blue)">若水共創</h2>
-        <div class="brand-desc">品牌共創夥伴 — 你負責影響力，我負責產品與系統</div>
-      </div>
-    </div>
-
-    <div class="section-label">招商</div>
-    <div class="tool-grid">
-      <a class="tool-card" href="若水共創.html" target="_blank">
-        <div class="tool-icon icon-blue">水</div>
-        <h3>若水共創官網</h3>
-        <p>招商頁面<br>服務介紹・合作流程</p>
+        <div class="tool-icon icon-blue">力</div>
+        <h3>大大力鍍膜</h3>
+        <p>汽車鍍膜・防護服務<br>品牌工具站</p>
         <span class="tool-tag tag-dev">建置中</span>
-      </a>
+      </div>
       <div class="tool-card">
-        <div class="tool-icon icon-blue">Co</div>
-        <h3>合作夥伴管理</h3>
-        <p>客戶 CRM・合作進度<br>產品開發追蹤</p>
-        <span class="tool-tag tag-soon">規劃中</span>
+        <div class="tool-icon icon-orange">森</div>
+        <h3>森築居家</h3>
+        <p>居家鍍膜・空間防護<br>品牌工具站</p>
+        <span class="tool-tag tag-dev">建置中</span>
+      </div>
+      <div class="tool-card">
+        <div class="tool-icon icon-blue">水</div>
+        <h3>若水共創</h3>
+        <p>品牌共創夥伴<br>招商・CRM 平台</p>
+        <span class="tool-tag tag-dev">建置中</span>
       </div>
     </div>
   </div>
 
-  <!-- ===== PAGE: 綜合工具 ===== -->
+  <!-- ===== PAGE: 智能工具站 ===== -->
   <div class="brand-page brand-tools" id="page-tools">
     <div class="brand-header">
       <div class="tool-icon icon-gold" style="width:48px;height:48px">T</div>
       <div>
-        <h2 style="color:var(--gold)">綜合工具區</h2>
+        <h2 style="color:var(--gold)">智能工具站</h2>
         <div class="brand-desc">跨品牌通用 — 不分品牌都能用的 AI 工具與效率加速器</div>
       </div>
     </div>
 
-    <div class="section-label">AI 助手</div>
-    <div class="tool-grid">
-      <a class="tool-card" href="https://tools.reyway.com" target="_blank">
-        <div class="tool-icon icon-gold">文</div>
-        <h3>文案小幫手</h3>
-        <p>去AI味・語氣改寫<br>文案精簡・文案生成</p>
-        <span class="tool-tag tag-live">● 已上線</span>
+    <div class="tool-grid" style="grid-template-columns:1fr;max-width:560px;margin:0 auto;">
+      <a class="tool-card" href="https://tools.reyway.com" target="_blank" style="text-align:center;padding:32px 24px;">
+        <div class="tool-icon icon-gold" style="margin:0 auto 12px;">T</div>
+        <h3>前往工具站</h3>
+        <p>文案小幫手、海外購物助手、去背情境、植物醫生……<br>跨品牌通用 AI 工具，持續增加中</p>
+        <span class="tool-tag tag-live" style="margin-top:12px;">● 已上線 · 點擊前往</span>
       </a>
-      <div class="tool-card">
-        <div class="tool-icon icon-gold">翻</div>
-        <h3>多語翻譯助手</h3>
-        <p>中英日韓即時翻譯<br>品牌用語一致性</p>
-        <span class="tool-tag tag-soon">規劃中</span>
-      </div>
-      <div class="tool-card">
-        <div class="tool-icon icon-gold">摘</div>
-        <h3>會議摘要</h3>
-        <p>會議紀錄自動整理<br>行動項目追蹤</p>
-        <span class="tool-tag tag-soon">規劃中</span>
-      </div>
-    </div>
-
-    <div class="section-label">效率工具</div>
-    <div class="tool-grid">
-      <div class="tool-card">
-        <div class="tool-icon icon-gold">表</div>
-        <h3>報表產生器</h3>
-        <p>Excel / PDF 自動產出<br>數據視覺化</p>
-        <span class="tool-tag tag-soon">規劃中</span>
-      </div>
-      <div class="tool-card">
-        <div class="tool-icon icon-gold">排</div>
-        <h3>社群排程</h3>
-        <p>跨平台貼文排程<br>IG・FB・LINE</p>
-        <span class="tool-tag tag-soon">規劃中</span>
-      </div>
-      <div class="tool-card">
-        <div class="tool-icon icon-gold">簡</div>
-        <h3>簡報助手</h3>
-        <p>PPT 自動生成<br>品牌風格模板</p>
-        <span class="tool-tag tag-soon">規劃中</span>
-      </div>
     </div>
   </div>
 
@@ -522,28 +515,75 @@ footer p{font-size:0.75rem;color:var(--text-dim);letter-spacing:1px}
 </div>
 
 <script>
-function showPage(brand) {
-  // Hide all pages
-  document.querySelectorAll('.brand-page').forEach(p => p.classList.remove('active'));
-  // Deactivate all tabs
-  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+// ─── Site Gate (730902) ───
+const SITE_PWD = '730902';
+const SITE_KEY = 'reyway_auth';
+(function(){
+  if(localStorage.getItem(SITE_KEY) === SITE_PWD){
+    document.getElementById('site-gate').classList.add('hidden');
+  } else {
+    setTimeout(()=>document.getElementById('gate-input').focus(),200);
+  }
+})();
+function checkSiteGate(){
+  const v = document.getElementById('gate-input').value;
+  if(v === SITE_PWD){
+    localStorage.setItem(SITE_KEY, SITE_PWD);
+    document.getElementById('site-gate').classList.add('hidden');
+  } else {
+    const inp = document.getElementById('gate-input');
+    inp.classList.remove('shake');
+    void inp.offsetWidth;
+    inp.classList.add('shake');
+    document.getElementById('gate-error').textContent = '密碼錯誤，請重試';
+    inp.value = '';
+    setTimeout(()=>inp.focus(),50);
+  }
+}
 
-  // Show target page
+// ─── Link Gate (0000) ───
+const LINK_PWD = '0000';
+let _pendingUrl = '';
+function gatedLink(e, url, title){
+  e.preventDefault();
+  _pendingUrl = url;
+  document.getElementById('link-modal-title').textContent = title || '確認身份';
+  document.getElementById('link-modal-input').value = '';
+  document.getElementById('link-modal-error').textContent = '';
+  document.getElementById('link-modal').classList.remove('hidden');
+  setTimeout(()=>document.getElementById('link-modal-input').focus(),100);
+}
+function closeLinkModal(){
+  document.getElementById('link-modal').classList.add('hidden');
+  _pendingUrl = '';
+}
+function checkLinkGate(){
+  const v = document.getElementById('link-modal-input').value;
+  if(v === LINK_PWD){
+    closeLinkModal();
+    window.open(_pendingUrl,'_blank');
+  } else {
+    const inp = document.getElementById('link-modal-input');
+    document.getElementById('link-modal-error').textContent = '密碼錯誤';
+    inp.value = '';
+    setTimeout(()=>inp.focus(),50);
+  }
+}
+document.getElementById('link-modal').addEventListener('click', function(e){
+  if(e.target === this) closeLinkModal();
+});
+
+// ─── Tab Navigation ───
+function showPage(brand) {
+  document.querySelectorAll('.brand-page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
   const page = document.getElementById('page-' + brand);
   if (page) page.classList.add('active');
-
-  // Activate target tab
   const tab = document.querySelector(`.nav-tab[data-brand="${brand}"]`);
   if (tab) tab.classList.add('active');
-
-  // Scroll to top smoothly
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 </script>
 
 </body>
 </html>
-
-                <a class="tool-card" href="https://knowledge.reyway.com" target="_blank">
-                    <img src="icon-knowledge.png" alt="知識庫" style="width:48px;height:48px;border-radius:12px;margin-bottom:14px;object-fit:contain;background:var(--gold-dim);padding:4px" onerror="this.outerHTML='<div class=\'tool-icon icon-gold\'> 📚</div>'">
-                </a>
