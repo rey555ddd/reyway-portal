@@ -1,209 +1,155 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>笙闆知識庫 | Knowledge.REYWAY</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>網頁知識庫 · REYWAY</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#F5F4F0;--surface:#FFF;--text:#1C1C1E;--text-2:#6E6E73;--text-3:#AEAEB2;--border:rgba(0,0,0,0.06);--shadow:0 2px 16px rgba(0,0,0,0.06),0 1px 4px rgba(0,0,0,0.04);--shadow-hover:0 8px 32px rgba(0,0,0,0.1),0 2px 8px rgba(0,0,0,0.06);--radius:18px;--radius-sm:12px}
+body{font-family:"Inter","Noto Sans TC",sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;min-height:100vh}
+.wrap{max-width:800px;margin:0 auto;padding:0 20px}
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+.topbar{position:sticky;top:0;z-index:10;background:rgba(245,244,240,0.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:14px 0}
+.topbar-inner{display:flex;align-items:center;gap:12px}
+.back-btn{display:flex;align-items:center;gap:6px;font-size:0.82rem;color:var(--text-2);text-decoration:none;padding:6px 14px;border-radius:100px;background:var(--surface);box-shadow:var(--shadow);white-space:nowrap}
+.back-btn:hover{box-shadow:var(--shadow-hover)}
+.topbar h1{font-size:1rem;font-weight:700;flex:1}
 
-        :root {
-            --primary: #2563eb;
-            --sky: #0ea5e9;
-            --bg: #f8f7f4;
-            --text: #1e293b;
-            --muted: #64748b;
-            --r: 18px;
-        }
+.hero{padding:36px 0 28px;text-align:center}
+.hero h2{font-size:1.5rem;font-weight:700;margin-bottom:8px}
+.hero p{font-size:0.88rem;color:var(--text-2);line-height:1.6}
 
-        body {
-            font-family: 'Noto Sans TC', 'Inter', sans-serif;
-            background: var(--bg);
-            color: var(--text);
-        }
+.section-label{font-size:0.72rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-3);margin-bottom:14px}
 
-        nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: rgba(248, 247, 244, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 1rem 2rem;
-            z-index: 100;
-            border-bottom: 1px solid rgba(37, 99, 235, 0.1);
-        }
+/* 分類大卡 */
+.cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-bottom:40px}
+.cat-card{background:var(--surface);border-radius:var(--radius);padding:24px 20px;box-shadow:var(--shadow);text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:10px;transition:box-shadow .2s,transform .2s}
+.cat-card:hover{box-shadow:var(--shadow-hover);transform:translateY(-2px)}
+.cat-icon{font-size:1.8rem}
+.cat-name{font-size:1rem;font-weight:700}
+.cat-desc{font-size:0.78rem;color:var(--text-2);line-height:1.5}
+.cat-count{font-size:0.75rem;color:var(--text-3);margin-top:4px}
 
-        nav h1 {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--primary);
-        }
+/* 近期更新列表 */
+.recent-list{display:flex;flex-direction:column;gap:10px;padding-bottom:60px}
+.kb-card{background:var(--surface);border-radius:var(--radius-sm);padding:16px 18px;box-shadow:var(--shadow);display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;transition:box-shadow .2s,transform .2s}
+.kb-card:hover{box-shadow:var(--shadow-hover);transform:translateY(-1px)}
+.kb-icon{font-size:1.2rem;width:32px;text-align:center;flex-shrink:0}
+.kb-body{flex:1;min-width:0}
+.kb-title{font-size:0.88rem;font-weight:600;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kb-meta{display:flex;gap:8px}
+.kb-tag{font-size:0.68rem;font-weight:500;padding:2px 7px;border-radius:100px;background:rgba(0,0,0,0.05);color:var(--text-2)}
+.kb-date{font-size:0.72rem;color:var(--text-3)}
+.kb-arrow{font-size:0.9rem;color:var(--text-3);flex-shrink:0}
 
-        .wrap {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding-top: 60px;
-        }
-
-        .hero-content {
-            text-align: center;
-            max-width: 800px;
-        }
-
-        .hero h1 {
-            font-size: clamp(2.5rem, 6vw, 4rem);
-            font-weight: 900;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, var(--primary), var(--sky));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .hero p {
-            font-size: 1.1rem;
-            color: var(--muted);
-            margin-bottom: 3rem;
-            line-height: 1.7;
-        }
-
-        .cards-section {
-            padding: 3rem 0;
-        }
-
-        .section-title {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            color: var(--text);
-        }
-
-        .section-desc {
-            color: var(--muted);
-            margin-bottom: 3rem;
-            font-size: 1rem;
-        }
-
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
-
-        .card {
-            background: white;
-            border-radius: var(--r);
-            padding: 2.5rem;
-            box-shadow: 0 2px 12px rgba(37, 99, 235, 0.08);
-            transition: all 0.3s ease;
-            text-decoration: none;
-            color: inherit;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            cursor: pointer;
-        }
-
-        .card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 24px rgba(37, 99, 235, 0.15);
-        }
-
-        .card-icon {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, var(--primary), var(--sky));
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-        }
-
-        .card-title {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: var(--text);
-        }
-
-        .card-desc {
-            color: var(--muted);
-            font-size: 0.95rem;
-            line-height: 1.6;
-        }
-
-        .card-status {
-            display: inline-block;
-            padding: 0.4rem 0.8rem;
-            background: rgba(37, 99, 235, 0.1);
-            color: var(--primary);
-            border-radius: 50px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            margin-top: 0.5rem;
-            width: fit-content;
-        }
-
-        footer {
-            padding: 2rem;
-            text-align: center;
-            color: var(--muted);
-            font-size: 0.9rem;
-            border-top: 1px solid rgba(37, 99, 235, 0.1);
-            margin-top: 3rem;
-        }
-    </style>
+#auth-gate{position:fixed;inset:0;z-index:999;background:var(--bg);display:flex;align-items:center;justify-content:center}
+#auth-gate.hidden{display:none}
+</style>
 </head>
 <body>
-    <nav>
-        <div class="wrap">
-            <h1>笙闆知識庫</h1>
-        </div>
-    </nav>
 
-    <section class="hero">
-        <div class="hero-content">
-            <h1>笙闆的 AI 知識庫</h1>
-            <p>收錄 AI 工作流、品牌策略、行銷方法論，以及實戰經驗分享。</p>
-        </div>
-    </section>
+<div id="auth-gate"><div style="color:#AEAEB2;font-size:.9rem">驗證中…</div></div>
 
-    <section class="cards-section">
-        <div class="wrap">
-            <h2 class="section-title">知識庫</h2>
-            <p class="section-desc">深度文檔、工作流說明、策略框架</p>
+<div class="topbar"><div class="wrap topbar-inner">
+  <a class="back-btn" href="/">← 返回總站</a>
+  <h1>📚 網頁知識庫</h1>
+</div></div>
 
-            <div class="cards-grid">
-                <a href="claudeworkflow.html" class="card">
-                    <div class="card-icon">⚡</div>
-                    <h3 class="card-title">Claude 三刀流</h3>
-                    <p class="card-desc">Cowork × Code × Claude.ai 的交叉使用工作流。三個工具各司其職，省時間、省 token、省錢。</p>
-                    <span class="card-status">✓ 已上線</span>
-                </a>
-                <a href="cleanclean-2026.html" class="card">
-                    <div class="card-icon">🧼</div>
-                    <h3 class="card-title">淨淨 2026 年度計畫</h3>
-                    <p class="card-desc">品牌定位、產品線、行銷漏斗、年度戰略全圖。</p>
-                    <span class="card-status">✓ 已上線</span>
-                </a>
-            </div>
-        </div>
-    </section>
+<div class="wrap">
+  <div class="hero">
+    <h2>網頁知識庫</h2>
+    <p>教學頁面・工具文件・品牌報告<br>所有重要 HTML 都在這裡</p>
+  </div>
 
-    <footer>
-        <p>knowledge.reyway.com · 笙闆的知識庫 · 2026</p>
-    </footer>
+  <div class="section-label">分類瀏覽</div>
+  <div class="cat-grid">
+    <a class="cat-card" href="/knowledge/教學/">
+      <div class="cat-icon">📖</div>
+      <div class="cat-name">教學</div>
+      <div class="cat-desc">AI 使用教學、主管培訓<br>工具操作指南</div>
+      <div class="cat-count">4 個頁面</div>
+    </a>
+    <a class="cat-card" href="/knowledge/工具/">
+      <div class="cat-icon">🛠</div>
+      <div class="cat-name">工具</div>
+      <div class="cat-desc">臨時工具頁面<br>生成器・轉換器</div>
+      <div class="cat-count">6 個頁面</div>
+    </a>
+    <a class="cat-card" href="/knowledge/報告/">
+      <div class="cat-icon">📊</div>
+      <div class="cat-name">報告</div>
+      <div class="cat-desc">年度報告・數據分析<br>品牌洞察</div>
+      <div class="cat-count">1 個頁面</div>
+    </a>
+  </div>
+
+  <div class="section-label">近期更新</div>
+  <div class="recent-list">
+
+    <a class="kb-card" href="/knowledge/教學/staff-training.html" target="_blank">
+      <div class="kb-icon">👥</div>
+      <div class="kb-body">
+        <div class="kb-title">全體員工 AI 工具使用教學</div>
+        <div class="kb-meta"><span class="kb-tag">教學</span><span class="kb-date">2026-04-24</span></div>
+      </div>
+      <div class="kb-arrow">→</div>
+    </a>
+
+    <a class="kb-card" href="/knowledge/教學/manager-training.html" target="_blank">
+      <div class="kb-icon">👔</div>
+      <div class="kb-body">
+        <div class="kb-title">主管版 Claude AI Agent 教育訓練</div>
+        <div class="kb-meta"><span class="kb-tag">教學</span><span class="kb-date">2026-04-24</span></div>
+      </div>
+      <div class="kb-arrow">→</div>
+    </a>
+
+    <a class="kb-card" href="/knowledge/教學/ai-team-training.html" target="_blank">
+      <div class="kb-icon">🤖</div>
+      <div class="kb-body">
+        <div class="kb-title">AI 軍團完整教學</div>
+        <div class="kb-meta"><span class="kb-tag">教學</span><span class="kb-date">2026-04-26</span></div>
+      </div>
+      <div class="kb-arrow">→</div>
+    </a>
+
+    <a class="kb-card" href="/knowledge/教學/ai-stages.html" target="_blank">
+      <div class="kb-icon">🧠</div>
+      <div class="kb-body">
+        <div class="kb-title">AI 的五個發展階段</div>
+        <div class="kb-meta"><span class="kb-tag">教學</span><span class="kb-date">2026-04-24</span></div>
+      </div>
+      <div class="kb-arrow">→</div>
+    </a>
+
+    <a class="kb-card" href="/knowledge/報告/eagle-group-dashboard.html" target="_blank">
+      <div class="kb-icon">📊</div>
+      <div class="kb-body">
+        <div class="kb-title">伊果集團損益分析儀表板</div>
+        <div class="kb-meta"><span class="kb-tag">報告</span><span class="kb-date">2026-04-21</span></div>
+      </div>
+      <div class="kb-arrow">→</div>
+    </a>
+
+    <a class="kb-card" href="/knowledge/工具/color-system.html" target="_blank">
+      <div class="kb-icon">🎨</div>
+      <div class="kb-body">
+        <div class="kb-title">REYWAY 色彩系統</div>
+        <div class="kb-meta"><span class="kb-tag">工具</span><span class="kb-date">2026-04-24</span></div>
+      </div>
+      <div class="kb-arrow">→</div>
+    </a>
+
+  </div>
+</div>
+
+<script>
+(function(){
+  try{const s=JSON.parse(localStorage.getItem("reyway_gauth")||"null");if(s&&s.expiry>Date.now()){document.getElementById("auth-gate").classList.add("hidden");return;}}catch(e){}
+  window.location.href="/";
+})();
+</script>
 </body>
 </html>
