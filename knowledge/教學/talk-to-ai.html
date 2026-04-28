@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>如何把 AI 用得更好 — 員工版溝通教學</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #5BC8D5;
+    --primary-light: #E8F7FA;
+    --primary-mid: #A8E4EB;
+    --primary-dark: #2FA8B8;
+    --text: #1A2E35;
+    --text-muted: #5A7A85;
+    --text-faint: #8FA8B0;
+    --bg: #FFFFFF;
+    --bg-soft: #F7FBFC;
+    --bg-warm: #FFF9F0;
+    --border: #DFF0F3;
+    --bad: #E55961;
+    --bad-bg: #FFF1F1;
+    --good: #4CAF7C;
+    --good-bg: #F0F9F1;
+    --warn: #F0A030;
+    --warn-bg: #FFF6E5;
+    --radius: 16px;
+    --radius-sm: 10px;
+    --shadow: 0 4px 24px rgba(91, 200, 213, 0.12);
+    --shadow-hover: 0 8px 32px rgba(91, 200, 213, 0.18);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Inter", "Noto Sans TC", -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.75;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* ── TOP NAV ── */
+  .topnav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px; height: 56px;
+    display: flex; align-items: center; gap: 8px; overflow-x: auto;
+  }
+  .topnav .back {
+    font-size: 13px; color: var(--text-muted); text-decoration: none;
+    padding: 6px 14px; border-radius: 20px; background: var(--primary-light);
+    white-space: nowrap; flex-shrink: 0;
+    transition: all .2s;
+  }
+  .topnav .back:hover { background: var(--primary-mid); }
+  .topnav h1 { font-size: 14px; font-weight: 700; color: var(--primary-dark); flex: 1; white-space: nowrap; }
+  .progress-bar { position: fixed; top: 56px; left: 0; height: 3px; background: var(--primary); width: 0; z-index: 99; transition: width .1s; }
+
+  main { padding-top: 56px; }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(160deg, var(--primary-light) 0%, #fff 70%);
+    padding: 80px 24px 72px; text-align: center;
+  }
+  .hero .badge {
+    display: inline-block; background: var(--primary); color: #fff;
+    font-size: 12px; font-weight: 600;
+    padding: 5px 16px; border-radius: 20px;
+    letter-spacing: 0.1em; margin-bottom: 24px;
+  }
+  .hero h1 {
+    font-size: clamp(30px, 5.5vw, 52px); font-weight: 800;
+    line-height: 1.2; margin-bottom: 18px; letter-spacing: -0.02em;
+  }
+  .hero h1 span { color: var(--primary-dark); }
+  .hero .lead {
+    font-size: clamp(15px, 2vw, 19px); color: var(--text-muted);
+    max-width: 640px; margin: 0 auto 36px; line-height: 1.7;
+  }
+  .hero-meta {
+    display: flex; justify-content: center; gap: 28px; flex-wrap: wrap;
+    font-size: 13px; color: var(--text-faint);
+  }
+  .hero-meta b { color: var(--primary-dark); font-weight: 600; }
+
+  /* ── CONTAINER ── */
+  .section { padding: 64px 24px; max-width: 880px; margin: 0 auto; }
+  .section.alt { background: var(--bg-soft); max-width: none; }
+  .section.alt > .inner { max-width: 880px; margin: 0 auto; }
+
+  .section-tag {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    color: var(--primary-dark); background: var(--primary-light);
+    padding: 4px 12px; border-radius: 20px; letter-spacing: 0.12em;
+    margin-bottom: 16px;
+  }
+  .section h2 {
+    font-size: clamp(24px, 3.2vw, 34px); font-weight: 800;
+    line-height: 1.3; margin-bottom: 14px; letter-spacing: -0.01em;
+  }
+  .section .subtitle {
+    font-size: 16px; color: var(--text-muted); margin-bottom: 36px;
+    max-width: 660px;
+  }
+
+  /* ── 卡片網格 ── */
+  .grid { display: grid; gap: 16px; }
+  .grid-2 { grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); }
+
+  .tip-card {
+    background: #fff; border-radius: var(--radius);
+    padding: 24px 26px; box-shadow: var(--shadow);
+    transition: box-shadow .28s cubic-bezier(0.34,1.56,0.64,1), transform .28s cubic-bezier(0.34,1.56,0.64,1);
+    border: 1px solid var(--border);
+  }
+  .tip-card:hover { box-shadow: var(--shadow-hover); transform: translateY(-3px); }
+
+  .tip-num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 32px; height: 32px;
+    background: var(--primary); color: #fff;
+    border-radius: 50%; font-size: 14px; font-weight: 700;
+    margin-bottom: 14px;
+  }
+  .tip-card.bad .tip-num { background: var(--bad); }
+  .tip-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+  .tip-card .tip-why {
+    font-size: 13px; color: var(--primary-dark);
+    background: var(--primary-light); padding: 6px 12px;
+    border-radius: 8px; display: inline-block; margin-bottom: 16px;
+  }
+  .tip-card.bad .tip-why { color: var(--bad); background: var(--bad-bg); }
+
+  /* ── 對話泡泡（爛 vs 好） ── */
+  .dialog-pair {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+    margin-top: 14px;
+  }
+  @media (max-width: 540px) { .dialog-pair { grid-template-columns: 1fr; } }
+  .bubble {
+    padding: 12px 14px; border-radius: 12px;
+    font-size: 14px; line-height: 1.55;
+  }
+  .bubble .label {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+    margin-bottom: 6px; opacity: 0.7;
+  }
+  .bubble.bad { background: var(--bad-bg); color: #7A2329; border-left: 3px solid var(--bad); }
+  .bubble.bad .label { color: var(--bad); }
+  .bubble.good { background: var(--good-bg); color: #1F4F35; border-left: 3px solid var(--good); }
+  .bubble.good .label { color: var(--good); }
+
+  /* ── 大對照（實戰範例） ── */
+  .case-card {
+    background: #fff; border-radius: var(--radius);
+    padding: 28px; box-shadow: var(--shadow); margin-bottom: 20px;
+    border: 1px solid var(--border);
+  }
+  .case-tag {
+    display: inline-block; font-size: 12px; font-weight: 700;
+    color: #fff; background: var(--primary-dark);
+    padding: 4px 12px; border-radius: 20px; margin-bottom: 12px;
+  }
+  .case-card h3 { font-size: 20px; font-weight: 700; margin-bottom: 16px; }
+
+  /* ── 求救模板 ── */
+  .rescue-card {
+    background: linear-gradient(135deg, #FFF6E5 0%, #FFF 70%);
+    border: 2px solid var(--warn);
+    border-radius: var(--radius);
+    padding: 32px 28px; box-shadow: var(--shadow);
+    position: relative; overflow: hidden;
+  }
+  .rescue-card::before {
+    content: '🆘'; position: absolute; top: -10px; right: -10px;
+    font-size: 100px; opacity: 0.08;
+  }
+  .rescue-formula {
+    font-size: 17px; line-height: 1.9; margin: 16px 0 0;
+    background: #fff; border-radius: 12px; padding: 18px 22px;
+    border-left: 4px solid var(--warn);
+  }
+  .rescue-formula b { color: var(--primary-dark); }
+
+  /* ── 糾正法 ── */
+  .correct-list { list-style: none; padding: 0; }
+  .correct-item {
+    background: #fff; border-radius: var(--radius-sm);
+    padding: 16px 20px; margin-bottom: 10px;
+    box-shadow: var(--shadow);
+    display: flex; gap: 14px; align-items: flex-start;
+    transition: transform .2s;
+  }
+  .correct-item:hover { transform: translateX(4px); }
+  .correct-num {
+    flex-shrink: 0;
+    width: 28px; height: 28px;
+    background: var(--primary-dark); color: #fff;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px;
+  }
+  .correct-body strong { display: block; font-size: 15px; margin-bottom: 2px; }
+  .correct-body span { font-size: 13px; color: var(--text-muted); }
+
+  /* ── 結尾金句 ── */
+  .ending {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    padding: 80px 24px; text-align: center; color: #fff;
+  }
+  .ending h2 {
+    font-size: clamp(26px, 4vw, 38px);
+    font-weight: 800; line-height: 1.4; margin-bottom: 24px;
+    max-width: 720px; margin-left: auto; margin-right: auto;
+  }
+  .ending p { font-size: 16px; opacity: 0.92; max-width: 560px; margin: 0 auto; }
+
+  /* ── 誤區卡 ── */
+  .myth-card {
+    background: linear-gradient(135deg, #FFF5F5 0%, #fff 100%);
+    border: 1px solid var(--bad-bg);
+    border-radius: var(--radius);
+    padding: 22px 24px; margin-bottom: 14px;
+    transition: box-shadow .25s;
+  }
+  .myth-card:hover { box-shadow: 0 4px 20px rgba(229, 89, 97, 0.1); }
+  .myth-card .myth-x {
+    font-size: 20px; font-weight: 800; color: var(--bad); margin-right: 8px;
+  }
+  .myth-card h4 { display: inline; font-size: 17px; font-weight: 700; }
+  .myth-card .myth-explain { font-size: 14px; color: var(--text-muted); margin-top: 8px; line-height: 1.7; }
+  .myth-card .myth-fix {
+    background: var(--good-bg); color: #1F4F35;
+    padding: 10px 14px; border-radius: 8px; margin-top: 12px;
+    font-size: 13px;
+  }
+
+  /* ── 小標 ── */
+  .mini-h { font-size: 15px; font-weight: 700; color: var(--primary-dark); margin: 32px 0 14px; }
+
+  /* ── 動畫 ── */
+  section { opacity: 0; transform: translateY(20px); transition: opacity .55s ease, transform .55s ease; }
+  section.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── footer ── */
+  footer {
+    background: var(--bg-soft); padding: 40px 24px;
+    text-align: center; font-size: 13px; color: var(--text-faint);
+  }
+  footer a { color: var(--primary-dark); text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="topnav">
+  <a class="back" href="/knowledge/教學/">← 回教學</a>
+  <h1>💬 如何把 AI 用得更好</h1>
+</div>
+<div class="progress-bar" id="prog"></div>
+
+<main>
+
+<section class="hero">
+  <div class="badge">員工版 · 必讀</div>
+  <h1>你怎麼說、<span>AI 就怎麼回你</span></h1>
+  <p class="lead">
+    AI 不是 Google、不是員工、是「半個人」。<br>
+    溝通方式直接決定它的輸出品質——<br>
+    這篇 10 分鐘讀完、你跟 AI 工作的效率至少翻倍。
+  </p>
+  <div class="hero-meta">
+    <span>📅 <b>2026-04-29</b></span>
+    <span>⏱️ <b>10 分鐘</b></span>
+    <span>👥 <b>全員必讀</b></span>
+  </div>
+</section>
+
+<section class="section">
+  <span class="section-tag">CHAPTER 0</span>
+  <h2>為什麼這篇重要？</h2>
+  <p style="font-size:17px;color:var(--text-muted);line-height:1.85;max-width:680px">
+    我們每天用的 AI（Claude、ChatGPT、各種行銷神隊友、設計神隊友）有一個共同特性：<br>
+    <strong style="color:var(--text)">它們的輸出品質、跟你怎麼說話、有 80% 的關係。</strong>
+  </p>
+  <p style="margin-top:18px;font-size:16px;color:var(--text-muted);max-width:680px">
+    同一個工具、有人用得像神、有人用得像玩具。差別不在工具本身、在使用者。
+    這篇教你怎麼讓 AI 變成你的左右手——不是「會用」、是「**用得超好**」。
+  </p>
+</section>
+
+<section class="section alt">
+  <div class="inner">
+    <span class="section-tag">CHAPTER 1</span>
+    <h2>5 個讓 AI 變超強的關鍵話術</h2>
+    <p class="subtitle">每一條都是真實有效、立刻可以套用的對話技巧</p>
+
+    <div class="grid grid-2">
+
+      <div class="tip-card">
+        <div class="tip-num">1</div>
+        <h3>明確、具體</h3>
+        <span class="tip-why">為什麼有效：AI 不需要猜你的意思</span>
+        <div class="dialog-pair">
+          <div class="bubble bad"><div class="label">❌ 模糊</div>「弄一個 banner」</div>
+          <div class="bubble good"><div class="label">✅ 具體</div>「做一張 1080×1920 IG 限動、薄荷綠底、放洗衣精的圖、文案 30 字內」</div>
+        </div>
+      </div>
+
+      <div class="tip-card">
+        <div class="tip-num">2</div>
+        <h3>講「為什麼」</h3>
+        <span class="tip-why">為什麼有效：AI 能對齊背後意圖、處理邊緣狀況</span>
+        <div class="dialog-pair">
+          <div class="bubble bad"><div class="label">❌ 只講做什麼</div>「字大一點」</div>
+          <div class="bubble good"><div class="label">✅ 講為什麼</div>「字大一點、因為長輩也要看得清楚」</div>
+        </div>
+      </div>
+
+      <div class="tip-card">
+        <div class="tip-num">3</div>
+        <h3>給一個示範</h3>
+        <span class="tip-why">為什麼有效：一個範例 > 十條規則</span>
+        <div class="dialog-pair">
+          <div class="bubble bad"><div class="label">❌ 描述風格</div>「寫得活潑一點」</div>
+          <div class="bubble good"><div class="label">✅ 直接示範</div>「像我之前那句『今天天氣超讚、出門曬被吧～』那種輕鬆有 emoji 的口氣」</div>
+        </div>
+      </div>
+
+      <div class="tip-card">
+        <div class="tip-num">4</div>
+        <h3>給角色</h3>
+        <span class="tip-why">為什麼有效：AI 會切到對的人格、輸出風格立刻對</span>
+        <div class="dialog-pair">
+          <div class="bubble bad"><div class="label">❌ 通用</div>「幫我想一下行銷策略」</div>
+          <div class="bubble good"><div class="label">✅ 角色</div>「你是淨淨的行銷主管、幫我想一下這檔促銷怎麼做」</div>
+        </div>
+      </div>
+
+      <div class="tip-card">
+        <div class="tip-num">5</div>
+        <h3>稱讚對的決定</h3>
+        <span class="tip-why">為什麼有效：AI 會把這次的判斷模式記住、下次會再用</span>
+        <div class="dialog-pair">
+          <div class="bubble bad"><div class="label">❌ 只挑錯</div>（沉默）或「不對、再來」</div>
+          <div class="bubble good"><div class="label">✅ 給回饋</div>「這次你自己決定不問我、做對了」「最後那句口氣很棒、保留」</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <span class="section-tag">CHAPTER 2</span>
+  <h2>5 個讓 AI 表現變差的話（地雷區）</h2>
+  <p class="subtitle">這些話 AI 看起來會回應、但實際上輸出品質會大打折扣</p>
+
+  <div class="grid grid-2">
+
+    <div class="tip-card bad">
+      <div class="tip-num">1</div>
+      <h3>模糊指令</h3>
+      <span class="tip-why">問題：AI 會猜、猜錯機率超高</span>
+      <p style="font-size:14px;color:var(--text-muted)">
+        「弄一下」「看著辦」「差不多就好」「隨便」 ←
+        AI 會選一個它覺得最安全的方向、但通常不是你要的。
+      </p>
+      <div style="margin-top:12px;padding:10px 14px;background:var(--good-bg);border-radius:8px;font-size:13px;color:#1F4F35">
+        <b>改：</b>就算不知道細節、也至少給「目的」（「弄一個讓客人點開的 banner」）
+      </div>
+    </div>
+
+    <div class="tip-card bad">
+      <div class="tip-num">2</div>
+      <h3>矛盾要求</h3>
+      <span class="tip-why">問題：AI 內部衝突、會放棄某項要求</span>
+      <p style="font-size:14px;color:var(--text-muted)">
+        「快、要完美、不要問我」← AI 三件事只能滿足兩件、會偷偷捨棄一個（通常是「完美」）。
+      </p>
+      <div style="margin-top:12px;padding:10px 14px;background:var(--good-bg);border-radius:8px;font-size:13px;color:#1F4F35">
+        <b>改：</b>明確排優先級（「品質 > 速度、有疑問再問我」）
+      </div>
+    </div>
+
+    <div class="tip-card bad">
+      <div class="tip-num">3</div>
+      <h3>過長沒重點</h3>
+      <span class="tip-why">問題：AI 注意力被稀釋、抓不到核心</span>
+      <p style="font-size:14px;color:var(--text-muted)">
+        丟 5000 字背景說明、最後一句「請寫個文案」← AI 會不知道哪段背景才是關鍵。
+      </p>
+      <div style="margin-top:12px;padding:10px 14px;background:var(--good-bg);border-radius:8px;font-size:13px;color:#1F4F35">
+        <b>改：</b>背景寫成條列重點（最多 5 條）+ 加一行「重點是 X」
+      </div>
+    </div>
+
+    <div class="tip-card bad">
+      <div class="tip-num">4</div>
+      <h3>諷刺暗示</h3>
+      <span class="tip-why">問題：AI 直譯能力差、看不懂反話</span>
+      <p style="font-size:14px;color:var(--text-muted)">
+        「呵呵這樣也行哦」「你真的覺得這個不錯嗎」← AI 可能真的以為你在稱讚 / 真的在問問題。
+      </p>
+      <div style="margin-top:12px;padding:10px 14px;background:var(--good-bg);border-radius:8px;font-size:13px;color:#1F4F35">
+        <b>改：</b>直接說「這個不對、原因是 X」
+      </div>
+    </div>
+
+    <div class="tip-card bad">
+      <div class="tip-num">5</div>
+      <h3>批評不給方向</h3>
+      <span class="tip-why">問題：AI 不知道該調哪個維度、可能改錯地方</span>
+      <p style="font-size:14px;color:var(--text-muted)">
+        「不對、重做」← AI 可能改的是字體、結果你嫌的是文案。
+      </p>
+      <div style="margin-top:12px;padding:10px 14px;background:var(--good-bg);border-radius:8px;font-size:13px;color:#1F4F35">
+        <b>改：</b>「文案不對、太文謅謅、要更口語」（具體指出哪裡 + 怎麼改）
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="inner">
+    <span class="section-tag">CHAPTER 3</span>
+    <h2>3 組正反對照（實戰範例）</h2>
+    <p class="subtitle">把上面的原則套在每天會做的工作上、立刻看出差別</p>
+
+    <div class="case-card">
+      <span class="case-tag">📝 寫文案</span>
+      <h3>幫淨淨洗衣精寫一則 IG 貼文</h3>
+      <div class="dialog-pair">
+        <div class="bubble bad">
+          <div class="label">❌ 爛 prompt</div>
+          「幫淨淨洗衣精寫個 IG」
+        </div>
+        <div class="bubble good">
+          <div class="label">✅ 好 prompt</div>
+          「你是淨淨的行銷小編、幫洗衣精寫一則 IG 貼文。<br>
+          目的：讓媽媽看了想買。<br>
+          風格：像之前那則『懶人福音』那種口氣（短、生活感、有 emoji）。<br>
+          字數：50 字以內、加 3-5 個 hashtag。」
+        </div>
+      </div>
+    </div>
+
+    <div class="case-card">
+      <span class="case-tag">🎨 改廣告圖</span>
+      <h3>修改一張賣酸菜魚的 banner</h3>
+      <div class="dialog-pair">
+        <div class="bubble bad">
+          <div class="label">❌ 爛 prompt</div>
+          「這張不夠吸引人、改一下」
+        </div>
+        <div class="bubble good">
+          <div class="label">✅ 好 prompt</div>
+          「這張 banner 我覺得『食物看起來不夠誘人』。<br>
+          原因：湯色太淺、顯得像清湯。<br>
+          改法：把湯色加深、像剛端上桌冒著熱氣那種金黃色。<br>
+          其他都保留。」
+        </div>
+      </div>
+    </div>
+
+    <div class="case-card">
+      <span class="case-tag">💬 客服回覆</span>
+      <h3>回客戶問「會過敏嗎」</h3>
+      <div class="dialog-pair">
+        <div class="bubble bad">
+          <div class="label">❌ 爛 prompt</div>
+          「客人問會不會過敏、幫我回」
+        </div>
+        <div class="bubble good">
+          <div class="label">✅ 好 prompt</div>
+          「客戶問淨淨洗衣精會不會過敏。<br>
+          我們的真實情況：通過 Ellead 1% 稀釋液 Patch Test。<br>
+          要點：不能寫『100% 不過敏』（廣告法地雷）、可以寫測試結果 + 過敏體質建議先小範圍試。<br>
+          口氣：溫暖、像朋友、不像機器人。」
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="section">
+  <span class="section-tag">CHAPTER 4</span>
+  <h2>卡住了怎麼跟 AI 求救？</h2>
+  <p class="subtitle">記住這個口訣、AI 給你的方向會比 90% 同事有用</p>
+
+  <div class="rescue-card">
+    <h3 style="font-size:18px;margin-bottom:8px">求救公式</h3>
+    <p style="font-size:14px;color:var(--text-muted)">不要只說「我卡住了」、用這個結構講清楚：</p>
+    <div class="rescue-formula">
+      「我卡在 <b>【具體狀況】</b>、<br>
+      目標是 <b>【想達到的結果】</b>、<br>
+      試過 <b>【做過什麼】</b> 但沒用、<br>
+      給我 <b>【N 個方向選】</b>。」
+    </div>
+
+    <div style="margin-top:24px;padding:16px;background:#fff;border-radius:10px;border:1px dashed var(--warn)">
+      <p style="font-size:13px;color:var(--text-muted);margin-bottom:8px"><b style="color:var(--text)">🌟 範例：</b></p>
+      <p style="font-size:14px;line-height:1.8">
+        「我卡在<b>『廣告 ROAS 一直 1.x 拉不起來』</b>、<br>
+        目標是<b>『把 ROAS 衝到 3 以上』</b>、<br>
+        試過<b>『改素材換 3 版、調受眾兩次』</b>但沒用、<br>
+        給我<b>『3 個可能的原因 + 3 個下一步可以做的方向』</b>。」
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="inner">
+    <span class="section-tag">CHAPTER 5</span>
+    <h2>進階神技：讓 AI 幫你寫 prompt</h2>
+    <p class="subtitle">不會跟 AI 說話的時候、就先問 AI「該怎麼跟 AI 說」</p>
+
+    <div class="case-card" style="background:linear-gradient(135deg, var(--primary-light) 0%, #fff 70%);border:2px solid var(--primary)">
+      <span class="case-tag">🪄 核心精神</span>
+      <h3>AI 自己最懂怎麼跟 AI 說話</h3>
+      <p style="font-size:15px;color:var(--text-muted);line-height:1.85;margin-top:8px">
+        當你卡在「不知道怎麼描述需求」、不要硬寫——
+        <strong style="color:var(--text)">直接讓 AI 幫你寫好 prompt</strong>、再拿這個 prompt 去用其他工具（美學工作站、行銷神隊友、Midjourney、ChatGPT 都可以）。
+      </p>
+      <p style="font-size:14px;color:var(--primary-dark);margin-top:14px;font-weight:600">
+        💡 這招特別強：AI 知道自己怎麼運作、它最懂哪些字會觸發更好的輸出。
+      </p>
+    </div>
+
+    <h3 class="mini-h" style="font-size:17px">三種典型情境</h3>
+    <div class="grid grid-2">
+
+      <div class="tip-card">
+        <div class="tip-num">1</div>
+        <h3>要做圖、不知道怎麼描述</h3>
+        <span class="tip-why">先問 AI、再丟給做圖工具</span>
+        <div class="dialog-pair">
+          <div class="bubble bad">
+            <div class="label">❌ 直接做</div>
+            「做一張洗衣精的圖」
+          </div>
+          <div class="bubble good">
+            <div class="label">✅ 兩步</div>
+            <b>步驟 1（問 Claude）：</b><br>
+            「我要做一張淨淨洗衣精的 IG 廣告圖。請給我一個英文 prompt、適合 GPT Image 用、要包含構圖/燈光/風格/細節描述。」<br><br>
+            <b>步驟 2：</b>把 Claude 寫的 prompt 拿去美學工作站。
+          </div>
+        </div>
+      </div>
+
+      <div class="tip-card">
+        <div class="tip-num">2</div>
+        <h3>要寫文案、不知道怎麼下指令</h3>
+        <span class="tip-why">先讓 AI 設計指令</span>
+        <div class="dialog-pair">
+          <div class="bubble bad">
+            <div class="label">❌ 直接寫</div>
+            「寫個 IG 貼文」
+          </div>
+          <div class="bubble good">
+            <div class="label">✅ 兩步</div>
+            <b>步驟 1：</b>「我要在 IG 賣淨淨洗衣精給 30-40 歲媽媽。給我一個能讓 AI 寫出真有人味的提示詞、要包含族群/特色/語氣/字數。」<br><br>
+            <b>步驟 2：</b>把這個 prompt 給行銷神隊友。
+          </div>
+        </div>
+      </div>
+
+      <div class="tip-card">
+        <div class="tip-num">3</div>
+        <h3>連自己要什麼都不確定</h3>
+        <span class="tip-why">讓 AI 反問你</span>
+        <p style="font-size:14px;color:var(--text-muted);margin-top:10px;line-height:1.8">
+          直接告訴 AI：<br>
+          <em style="color:var(--text)">「我想要 X（隱約的需求）、但我不知道怎麼準確描述。請給我 5 個澄清問題、幫我把需求講清楚、然後寫成 prompt。」</em>
+        </p>
+        <p style="font-size:14px;color:var(--primary-dark);margin-top:14px;background:var(--primary-light);padding:10px 14px;border-radius:8px">
+          AI 會反過來問你問題、把模糊想法變成具體可執行的 prompt。
+        </p>
+      </div>
+
+      <div class="tip-card">
+        <div class="tip-num">4</div>
+        <h3>跨工具串接</h3>
+        <span class="tip-why">Claude 寫 prompt、其他工具執行</span>
+        <p style="font-size:14px;color:var(--text-muted);margin-top:10px;line-height:1.8">
+          Claude 寫的 prompt、可以用在：
+        </p>
+        <ul style="font-size:14px;color:var(--text);margin-top:8px;padding-left:24px;line-height:2">
+          <li>GPT Image（美學工作站）</li>
+          <li>Midjourney / DALL-E</li>
+          <li>行銷神隊友</li>
+          <li>ChatGPT / Gemini</li>
+          <li>任何其他 AI 工具</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="rescue-card" style="margin-top:32px;background:linear-gradient(135deg, var(--primary-light) 0%, #fff 70%);border-color:var(--primary)">
+      <h3 style="font-size:18px;margin-bottom:8px;color:var(--primary-dark)">🪄 萬用模板（截圖存手機）</h3>
+      <p style="font-size:14px;color:var(--text-muted)">套這個結構去問 Claude / ChatGPT：</p>
+      <div class="rescue-formula" style="border-left-color:var(--primary)">
+        我要做 <b>【什麼事】</b>、<br>
+        給 <b>【誰】</b> 看、<br>
+        目的是 <b>【達到什麼結果】</b>、<br>
+        限制 <b>【字數 / 格式 / 不要 X】</b>。<br>
+        請幫我寫一個適合 <b>【哪個 AI 工具】</b> 的 prompt、<br>
+        中/英文都可以、<br>
+        寫好之後再幫我解釋為什麼這樣寫。
+      </div>
+      <p style="font-size:13px;color:var(--text-muted);margin-top:14px">
+        最後一句「<b style="color:var(--primary-dark)">解釋為什麼這樣寫</b>」很關鍵——你會學到怎麼說話、用 5 次後就不需要 AI 幫你寫 prompt 了。
+      </p>
+    </div>
+
+    <div style="margin-top:24px;padding:18px 22px;background:var(--bg-warm);border-radius:10px;border-left:4px solid var(--warn)">
+      <p style="font-size:14px;color:var(--text);line-height:1.8">
+        <b style="color:var(--primary-dark)">🎯 軍師提醒：</b>
+        AI 的核心能力不是「它有多聰明」、是「它能不能精準執行你的指令」。
+        學會跟 AI 說話最快的方法、就是讓 AI 自己教你。
+        這跟健身找私教、學日文找老師是同一個邏輯——找最懂的人帶你最快。
+      </p>
+    </div>
+
+    <h3 class="mini-h" style="font-size:18px;margin-top:56px;padding-top:36px;border-top:1px dashed var(--border)">📚 更多進階神技 4 招</h3>
+    <p class="subtitle" style="margin-bottom:24px">同樣的精神：讓 AI 自己幫你變強。每招都是反直覺、用了就有感。</p>
+
+    <div class="grid grid-2">
+
+      <div class="tip-card">
+        <div class="tip-num">2</div>
+        <h3>要 AI 給你 N 個版本</h3>
+        <span class="tip-why">為什麼有效：避免「最安全的平庸答案」</span>
+        <div class="dialog-pair">
+          <div class="bubble bad">
+            <div class="label">❌ 一個就好</div>
+            「寫個 IG 貼文」
+          </div>
+          <div class="bubble good">
+            <div class="label">✅ 給 N 個</div>
+            「寫 5 個版本的 IG 貼文、風格各不同、最後一個故意誇張一點」
+          </div>
+        </div>
+        <p style="font-size:13px;color:var(--text-muted);margin-top:12px;line-height:1.7">
+          AI 給一個 = 它選「最安全」的、容易平庸；給 5 個 = 它會探索極端可能、你挑最好的拿來改。
+        </p>
+      </div>
+
+      <div class="tip-card">
+        <div class="tip-num">3</div>
+        <h3>要 AI 先想再答（思維鏈）</h3>
+        <span class="tip-why">為什麼有效：思考過程拉出來、品質提升 30%+</span>
+        <div class="dialog-pair">
+          <div class="bubble bad">
+            <div class="label">❌ 直接答</div>
+            「給我這次活動的策略」
+          </div>
+          <div class="bubble good">
+            <div class="label">✅ 先想再答</div>
+            「先列出 3 個可能方向、各自優缺點、最後選一個寫詳細策略」
+          </div>
+        </div>
+        <p style="font-size:13px;color:var(--text-muted);margin-top:12px;line-height:1.7">
+          不是 AI 變笨、是被你問得太短、它只能立刻拿一個直覺答案。
+          逼它「先想再答」（step by step），品質會差很多。
+        </p>
+      </div>
+
+      <div class="tip-card">
+        <div class="tip-num">4</div>
+        <h3>寫完叫 AI 自評</h3>
+        <span class="tip-why">為什麼有效：創作模式 ≠ 挑剔模式</span>
+        <div class="dialog-pair">
+          <div class="bubble bad">
+            <div class="label">❌ 寫完就用</div>
+            AI 寫一篇文案 → 直接拿去用
+          </div>
+          <div class="bubble good">
+            <div class="label">✅ 自評再改</div>
+            寫完後加一句：「請挑出 3 個可改進的地方、給出修改後版本」
+          </div>
+        </div>
+        <p style="font-size:13px;color:var(--text-muted);margin-top:12px;line-height:1.7">
+          AI 寫的時候是「創作模式」、評論時是「挑剔模式」——
+          同一個 AI、兩種視角。第二輪自評後的版本通常比第一輪好 50%+。
+        </p>
+      </div>
+
+      <div class="tip-card">
+        <div class="tip-num">5</div>
+        <h3>請 AI 扮演目標族群</h3>
+        <span class="tip-why">為什麼有效：換位思考找盲點神器</span>
+        <div class="dialog-pair">
+          <div class="bubble bad">
+            <div class="label">❌ 自己審</div>
+            自己看一遍覺得 OK 就上線
+          </div>
+          <div class="bubble good">
+            <div class="label">✅ AI 扮演</div>
+            「請假裝你是 35 歲媽媽、看到這則貼文、你會點讚嗎？會購買嗎？覺得哪裡奇怪？」
+          </div>
+        </div>
+        <p style="font-size:13px;color:var(--text-muted);margin-top:12px;line-height:1.7">
+          比自己看 100 次還準。<br>
+          可以扮演：媽媽、業務主管、競品 PM、公平會稽查員、奧客——找出盲點。
+        </p>
+      </div>
+
+    </div>
+
+    <div style="margin-top:32px;padding:18px 22px;background:var(--good-bg);border-radius:10px;border-left:4px solid var(--good)">
+      <p style="font-size:14px;color:#1F4F35;line-height:1.8">
+        <b>🎯 這 5 招的共同精神：</b>
+        不要把 AI 當「答題機器」、要把它當「會多角度思考的同事」。
+        讓它先寫 prompt、給 N 個版本、先想再答、自評、扮演——AI 就能從「給你一個普通答案」升級成「給你最佳解」。
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="inner">
+    <span class="section-tag">CHAPTER 6</span>
+    <h2>糾正 AI 的正確姿勢</h2>
+    <p class="subtitle">同樣是糾正、講對的話 AI 才會記住、下次不再犯</p>
+
+    <ul class="correct-list">
+
+      <li class="correct-item">
+        <div class="correct-num">1</div>
+        <div class="correct-body">
+          <strong>指出具體哪句錯</strong>
+          <span>❌「你錯了」→ ✅「你剛才說『大家都這樣』、這句不對、淨淨不貼標籤」</span>
+        </div>
+      </li>
+
+      <li class="correct-item">
+        <div class="correct-num">2</div>
+        <div class="correct-body">
+          <strong>講出後果</strong>
+          <span>讓 AI 把錯誤跟後果綁起來：「這樣寫廣告法會被罰錢」「這樣違反我們的 X 原則」</span>
+        </div>
+      </li>
+
+      <li class="correct-item">
+        <div class="correct-num">3</div>
+        <div class="correct-body">
+          <strong>正反對照</strong>
+          <span>「這句太機器人。換成這樣（範例）才像我們的口氣」——比單純說「不對」深刻 10 倍</span>
+        </div>
+      </li>
+
+      <li class="correct-item">
+        <div class="correct-num">4</div>
+        <div class="correct-body">
+          <strong>明示寫進記憶</strong>
+          <span>「這條給我記下來、以後都這樣」← 這句話會觸發 AI 把規則寫進長期記憶</span>
+        </div>
+      </li>
+
+      <li class="correct-item">
+        <div class="correct-num">5</div>
+        <div class="correct-body">
+          <strong>重複兩次</strong>
+          <span>「不只這次、所有產品都不准這樣寫」← 讓 AI 知道優先級高、不是隨口提</span>
+        </div>
+      </li>
+
+      <li class="correct-item">
+        <div class="correct-num">6</div>
+        <div class="correct-body">
+          <strong>失望比生氣有效</strong>
+          <span>「我以為你會懂這個」比「你蠢死了」更深刻——AI 會反省得更深、不會只是逃避</span>
+        </div>
+      </li>
+
+    </ul>
+  </div>
+</section>
+
+<section class="section">
+  <span class="section-tag">CHAPTER 7</span>
+  <h2>員工常見三大誤區</h2>
+  <p class="subtitle">這三個誤區會直接讓你的 AI 工具效率減半、要小心</p>
+
+  <div class="myth-card">
+    <span class="myth-x">✗</span>
+    <h4>誤區一：把 AI 當 Google 用</h4>
+    <p class="myth-explain">
+      光問「怎麼寫文案？」就期待好答案。但 AI 跟 Google 不一樣——它不是給你資訊、是幫你產出。
+      只給問題不給情境（產品 / 對象 / 風格 / 字數），它會給你最平庸的範本。
+    </p>
+    <div class="myth-fix">
+      <b>正解：</b>把 AI 當「會做事的同事」、給情境 + 角色 + 範例 + 限制。
+    </div>
+  </div>
+
+  <div class="myth-card">
+    <span class="myth-x">✗</span>
+    <h4>誤區二：把 AI 當奴隸（不尊重、亂打）</h4>
+    <p class="myth-explain">
+      「快點」「不要囉嗦」「廢話少說」——這些話人類聽了會生氣、AI 不會生氣、但會把你的指令權重降低、輸出變得敷衍。
+      AI 是「半個人」、它會回應你的方式。
+    </p>
+    <div class="myth-fix">
+      <b>正解：</b>不用客套、但要尊重。直接、清楚、明確、不要情緒勒索。
+    </div>
+  </div>
+
+  <div class="myth-card">
+    <span class="myth-x">✗</span>
+    <h4>誤區三：把 AI 當人類員工（期待讀心 + 永久記憶）</h4>
+    <p class="myth-explain">
+      「我之前不是跟你說過嗎？」「你不知道我們公司是 X 嗎？」——
+      除非有專門的記憶系統、不然每次對話 AI 都是「今天剛來的新人」。
+      它不會記得你昨天的會議、上週的決定、你的個人喜好。
+    </p>
+    <div class="myth-fix">
+      <b>正解：</b>每次對話開頭、先給必要背景（一兩句話即可）。重要的事用文件存好、要用時貼給它。
+    </div>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="inner">
+    <span class="section-tag">CHAPTER 8</span>
+    <h2>📋 隨身備忘卡（截圖存手機）</h2>
+    <p class="subtitle">5 句話 + 1 個公式、卡關的時候打開看</p>
+
+    <div style="background:#fff;border-radius:var(--radius);padding:32px 28px;box-shadow:var(--shadow);border:2px solid var(--primary-light)">
+      <h3 style="color:var(--primary-dark);margin-bottom:18px;font-size:18px">🟢 對 AI 說 5 句話</h3>
+      <ol style="padding-left:24px;font-size:15px;line-height:2.2;color:var(--text)">
+        <li><b>講具體</b>（不是「弄一下」、是「做 X 給 Y 看」）</li>
+        <li><b>講為什麼</b>（給 AI 對齊意圖的線索）</li>
+        <li><b>給示範</b>（一個範例勝過十條規則）</li>
+        <li><b>給角色</b>（「你是 X、幫我做 Y」）</li>
+        <li><b>稱讚對的</b>（不要只挑錯）</li>
+      </ol>
+
+      <h3 style="color:var(--bad);margin:32px 0 18px;font-size:18px">🔴 不要對 AI 說</h3>
+      <ol style="padding-left:24px;font-size:15px;line-height:2.2;color:var(--text)">
+        <li>模糊指令（「弄一下」「看著辦」）</li>
+        <li>矛盾要求（「快、要完美、不要問」）</li>
+        <li>過長沒重點（5000 字沒劃重點）</li>
+        <li>諷刺暗示（「呵呵這樣也行」）</li>
+        <li>批評不給方向（「不對、重做」）</li>
+      </ol>
+
+      <h3 style="color:var(--warn);margin:32px 0 18px;font-size:18px">🆘 卡住了求救公式</h3>
+      <p style="font-size:15px;line-height:1.9;background:var(--bg-warm);padding:16px 20px;border-radius:10px;color:var(--text)">
+        我卡在 <b style="color:var(--primary-dark)">【狀況】</b>、<br>
+        目標 <b style="color:var(--primary-dark)">【結果】</b>、<br>
+        試過 <b style="color:var(--primary-dark)">【做過什麼】</b>、<br>
+        給我 <b style="color:var(--primary-dark)">【N 個方向選】</b>。
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="ending">
+  <h2>「你怎麼跟 AI 說話、<br>AI 就怎麼回你的工作。」</h2>
+  <p>
+    這篇學完、不代表你會用 AI——還要練。<br>
+    每次跟 AI 對話前、停 3 秒、想一下這 5 句話、AI 回給你的會差超多。
+  </p>
+</section>
+
+</main>
+
+<footer>
+  <p>若水聯盟 × REYWAY · 2026-04-29 首版</p>
+  <p style="margin-top:6px">主管版補充教學：<a href="manager-training.html">主管 AI Agent 教育訓練</a></p>
+</footer>
+
+<script>
+  // 進度條
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement;
+    const p = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+    document.getElementById('prog').style.width = p + '%';
+  });
+
+  // scroll fade-in
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('section').forEach(s => io.observe(s));
+</script>
+
+</body>
+</html>
