@@ -263,6 +263,26 @@ header .hero-quote{
   color:var(--accent-deep);
   margin-top:20px;letter-spacing:0.08em;line-height:1.7;
 }
+.hero-social{
+  display:flex;justify-content:center;gap:14px;
+  margin-top:18px;
+}
+.hero-social a{
+  width:38px;height:38px;border-radius:50%;
+  background:var(--surface);
+  border:1px solid var(--border-warm);
+  display:inline-flex;align-items:center;justify-content:center;
+  color:var(--accent);
+  text-decoration:none;
+  transition:all 0.25s cubic-bezier(0.16,1,0.3,1);
+}
+.hero-social a:hover{
+  background:var(--accent);color:#fff;
+  border-color:var(--accent);
+  transform:translateY(-2px);
+  box-shadow:0 6px 18px rgba(198,97,63,0.25);
+}
+.hero-social a .ph{font-size:1.2rem}
 @media(max-width:600px){
   header{padding:52px 0 32px}
   .avatar-ring{width:108px;height:108px;margin-bottom:22px}
@@ -494,6 +514,52 @@ section{margin-bottom:72px;scroll-margin-top:24px}
 }
 .stat-desc{font-size:0.86rem;color:var(--text-2);font-weight:400;letter-spacing:0.02em}
 
+/* ===== Dashboard Bar v9（取代 stats-grid、3 顆動態儀表卡）===== */
+.dashboard-bar{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:14px;
+  margin-bottom:64px;
+}
+.dash-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius-sm);
+  padding:18px 20px 16px;
+  position:relative;
+  transition:all 0.3s cubic-bezier(0.16,1,0.3,1);
+}
+.dash-card:hover{
+  border-color:var(--accent-edge);
+  transform:translateY(-2px);
+  box-shadow:0 8px 24px rgba(198,97,63,0.08);
+}
+.dash-icon{
+  width:36px;height:36px;border-radius:9px;
+  background:rgba(198,97,63,0.10);color:var(--accent);
+  display:inline-flex;align-items:center;justify-content:center;
+  margin-bottom:10px;
+}
+.dash-icon .ph{font-size:1.2rem}
+.dash-label{
+  font-family:var(--font-ui);
+  font-size:0.7rem;color:var(--text-3);
+  letter-spacing:0.18em;text-transform:uppercase;
+  font-weight:500;margin-bottom:4px;
+}
+.dash-value{
+  font-family:var(--font-serif);
+  font-size:1.5rem;font-weight:600;color:var(--text);
+  letter-spacing:0;line-height:1.3;margin-bottom:3px;
+}
+.dash-trend{
+  font-size:0.78rem;color:var(--accent);
+  font-weight:500;letter-spacing:0.02em;
+}
+.dash-stamp{
+  position:absolute;top:16px;right:18px;
+  font-size:0.66rem;color:var(--text-3);
+  font-family:var(--font-ui);letter-spacing:0.04em;
+}
+
 /* ===== About / Philosophy v8 ===== */
 .about-grid{
   display:grid;grid-template-columns:1.4fr 1fr;gap:32px;
@@ -514,6 +580,56 @@ section{margin-bottom:72px;scroll-margin-top:24px}
 }
 .about-text p strong{color:var(--accent);font-weight:600}
 .about-tags{display:flex;flex-direction:column;gap:10px}
+
+/* ===== AI Timeline (v8 about 右欄重寫) ===== */
+.about-timeline{
+  position:relative;padding-left:8px;
+  max-height:380px;overflow-y:auto;
+  scrollbar-width:thin;scrollbar-color:var(--accent-edge) transparent;
+}
+.about-timeline::-webkit-scrollbar{width:4px}
+.about-timeline::-webkit-scrollbar-thumb{background:var(--accent-edge);border-radius:4px}
+.timeline-list{
+  position:relative;
+  padding-left:18px;
+  border-left:1.5px solid var(--accent-edge);
+}
+.timeline-item{
+  position:relative;
+  padding:8px 0 12px 4px;
+  display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:baseline;
+}
+.timeline-item::before{
+  content:'';position:absolute;
+  left:-25px;top:13px;
+  width:9px;height:9px;border-radius:50%;
+  background:var(--surface);
+  border:2px solid var(--accent-edge);
+  transition:all 0.25s ease;
+}
+.timeline-item:hover::before{
+  background:var(--accent);border-color:var(--accent);
+  transform:scale(1.2);
+}
+.timeline-item.current::before{
+  background:var(--accent);border-color:var(--accent);
+  box-shadow:0 0 0 4px rgba(198,97,63,0.18);
+}
+.timeline-date{
+  font-family:var(--font-ui);
+  font-size:0.74rem;font-weight:600;
+  color:var(--accent);
+  letter-spacing:0.04em;
+  font-variant-numeric:tabular-nums;
+  white-space:nowrap;
+}
+.timeline-text{
+  font-size:0.84rem;color:var(--text);font-weight:400;
+  line-height:1.65;letter-spacing:0.02em;
+}
+.timeline-item.current .timeline-text{
+  font-weight:500;
+}
 .tag-row{
   display:flex;align-items:center;gap:12px;
   padding:14px 18px;
@@ -653,9 +769,63 @@ footer{text-align:center;padding:56px 20px 64px;position:relative}
 .btn-ok:hover,.btn-approve:hover{background:var(--accent-deep) !important}
 .inbox-tab.active{background:var(--accent) !important;color:#fff !important}
 
+
+/* ===== Edit Mode v8 ===== */
+#edit-toggle{
+  position:fixed;bottom:18px;right:18px;z-index:990;
+  width:auto;padding:9px 16px 9px 13px;
+  background:var(--surface);
+  border:1px solid var(--border-warm);border-radius:100px;
+  display:none;
+  align-items:center;gap:8px;
+  font-family:var(--font-ui);font-size:0.82rem;font-weight:500;
+  color:var(--text);cursor:pointer;
+  box-shadow:0 2px 12px rgba(198,97,63,0.12);
+  transition:all 0.2s ease;
+  user-select:none;
+}
+#edit-toggle.show{display:inline-flex}
+#edit-toggle:hover{
+  border-color:var(--accent);
+  box-shadow:0 4px 18px rgba(198,97,63,0.22);
+}
+#edit-toggle.editing{
+  background:var(--accent);color:#fff;border-color:var(--accent);
+}
+#edit-toggle .ph{font-size:1rem}
+[data-edit-id]{transition:background 0.2s,box-shadow 0.2s,outline 0.2s}
+body.edit-on [data-edit-id]{
+  outline:1px dashed var(--accent-edge);
+  outline-offset:3px;
+  background:rgba(198,97,63,0.04);
+  border-radius:4px;
+  cursor:text;
+}
+body.edit-on [data-edit-id]:hover{
+  outline-color:var(--accent);
+  background:rgba(198,97,63,0.08);
+}
+body.edit-on [data-edit-id]:focus{
+  outline:2px solid var(--accent);outline-offset:3px;
+  background:rgba(255,255,255,0.85);
+  box-shadow:0 0 0 6px rgba(198,97,63,0.10);
+}
+#edit-toast{
+  position:fixed;bottom:78px;right:18px;z-index:991;
+  padding:9px 16px;
+  background:var(--text);color:#FAF7F0;
+  border-radius:8px;font-size:0.82rem;font-weight:500;
+  box-shadow:0 8px 24px rgba(0,0,0,0.2);
+  opacity:0;transform:translateY(8px);
+  transition:opacity 0.25s,transform 0.25s;
+  pointer-events:none;
+}
+#edit-toast.show{opacity:1;transform:translateY(0)}
+
 /* ===== Responsive ===== */
 @media(max-width:760px){
   .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .dashboard-bar{grid-template-columns:1fr;gap:10px}
   .about-grid{grid-template-columns:1fr;padding:28px 22px}
   .feed-item{grid-template-columns:1fr;gap:6px}
   .feed-date,.feed-tag{font-size:0.66rem}
@@ -728,11 +898,15 @@ footer{text-align:center;padding:56px 20px 64px;position:relative}
       </div>
     </div>
     <div class="eyebrow"><i class="ph ph-shield-check"></i> REYWAY · AI STUDIO</div>
-    <h1>阿笙的 <strong>AI 總站</strong></h1>
-    <div class="en">CHEN REY-SHENG</div>
+    <h1 data-edit-id="hero-title">阿笙的 <strong>AI 總站</strong></h1>
+    <div class="en" data-edit-id="hero-en">CHEN REY-SHENG</div>
     <div class="gold-divider"></div>
-    <div class="bio">苗栗囝仔・淨淨 CleanClean 創辦人<br>用 AI 改變品牌的玩法</div>
-    <div class="hero-quote">上善若水・利他不爭</div>
+    <div class="bio" data-edit-id="hero-bio">苗栗囝仔・淨淨 CleanClean 創辦人<br>用 AI 改變品牌的玩法</div>
+    <div class="hero-quote" data-edit-id="hero-quote">上善若水・利他不爭</div>
+    <div class="hero-social">
+      <a href="https://www.instagram.com/sheng0432/" target="_blank" rel="noopener" aria-label="Instagram"><i class="ph ph-instagram-logo"></i></a>
+      <a href="https://www.threads.com/@sheng0432" target="_blank" rel="noopener" aria-label="Threads"><i class="ph ph-threads-logo"></i></a>
+    </div>
   </header>
 
   <!-- 收件夾按鈕（主公專用、右上角固定）-->
@@ -742,29 +916,25 @@ footer{text-align:center;padding:56px 20px 64px;position:relative}
     <div class="notify-badge" id="notify-count">0</div>
   </div>
 
-  <!-- ═══ Studio Stats 數字儀表板 ═══ -->
-  <section class="stats-section">
-    <div class="stats-grid">
-      <div class="stat">
-        <div class="stat-num">13<span>+</span></div>
-        <div class="stat-label">BRANDS</div>
-        <div class="stat-desc">品牌生態系</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num">30<span>+</span></div>
-        <div class="stat-label">AI TOOLS</div>
-        <div class="stat-desc">內部 AI 工具</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num">24/7</div>
-        <div class="stat-label">AGENT TEAM</div>
-        <div class="stat-desc">若水軍團</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num">11</div>
-        <div class="stat-label">MENTAL MODELS</div>
-        <div class="stat-desc">思維模型庫</div>
-      </div>
+  <!-- ═══ Dashboard Bar v9（即時儀表板、編輯模式可改）═══ -->
+  <section class="dashboard-bar">
+    <div class="dash-card">
+      <div class="dash-icon"><i class="ph ph-coins"></i></div>
+      <div class="dash-label" data-edit-id="dash-revenue-label">淨淨本月營業額</div>
+      <div class="dash-value" data-edit-id="dash-revenue-num">NT$ 285 萬</div>
+      <div class="dash-trend" data-edit-id="dash-revenue-trend">+12% vs 上月</div>
+    </div>
+    <div class="dash-card">
+      <div class="dash-icon"><i class="ph ph-list-checks"></i></div>
+      <div class="dash-label" data-edit-id="dash-tasks-label">軍團最近工作</div>
+      <div class="dash-value" data-edit-id="dash-tasks-num">8 個任務進行中</div>
+      <div class="dash-trend" data-edit-id="dash-tasks-trend">最新：reyway dashboard 整合</div>
+    </div>
+    <div class="dash-card">
+      <div class="dash-icon"><i class="ph ph-fire"></i></div>
+      <div class="dash-label" data-edit-id="dash-cost-label">Claude AI 本月花費</div>
+      <div class="dash-value" data-edit-id="dash-cost-num">NT$ 3,420</div>
+      <div class="dash-trend" data-edit-id="dash-cost-trend">截至 4-30、預估月底 5,200</div>
     </div>
   </section>
 
@@ -772,110 +942,105 @@ footer{text-align:center;padding:56px 20px 64px;position:relative}
   <section id="sec-categories">
     <div class="section-intro">
       <div class="eyebrow">CORE COLLECTIONS</div>
-      <h2>核心 <strong>三</strong></h2>
+      <h2 data-edit-id="sec-core-title">核心 <strong>三</strong></h2>
       <div class="gold-line"></div>
-      <div class="sub">事業 · 系統 · 成長</div>
+      <div class="sub" data-edit-id="sec-core-sub">事業 · 系統 · 成長</div>
     </div>
 
     <div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;">
       <a class="card featured" href="https://brain.reyway.com">
         <div class="card-icon"><i class="ph ph-brain"></i></div>
-        <h3>第二大腦 · brain.reyway</h3>
-        <p>主公個人知識體系・DIKW 三階提煉<br>Inbox → Archive → Sanctum・取代 Obsidian</p>
-        <span class="card-tag">笙之道 · Phase 1</span>
+        <h3 data-edit-id="card-brain-title">第二大腦 · brain.reyway</h3>
+        <p data-edit-id="card-brain-desc">主公個人知識體系・DIKW 三階提煉<br>Inbox → Archive → Sanctum・取代 Obsidian</p>
+        <span class="card-tag" data-edit-id="card-brain-tag">笙之道 · Phase 1</span>
       </a>
 
       <a class="card" href="/cleanclean-hub/">
         <div class="card-icon"><i class="ph ph-leaf"></i></div>
-        <h3>淨淨體系</h3>
-        <p>家用清潔・個人護理品牌<br>營銷總站・門市小幫手・行銷神隊友・電商數據站</p>
-        <span class="card-tag">事業 · 5 個工具</span>
+        <h3 data-edit-id="card-clean-title">淨淨體系</h3>
+        <p data-edit-id="card-clean-desc">家用清潔・個人護理品牌<br>營銷總站・門市小幫手・行銷神隊友・電商數據站</p>
+        <span class="card-tag" data-edit-id="card-clean-tag">事業 · 5 個工具</span>
       </a>
 
       <a class="card" href="/founder/">
         <div class="card-icon"><i class="ph ph-buildings"></i></div>
-        <h3>若水聯盟</h3>
-        <p>AI 軍團指揮所・12 人董事會<br>七員核心：韓信／郭嘉／墨子／蕭何／小喬／周瑜／傳令</p>
-        <span class="card-tag">系統 · 24/7 軍團</span>
+        <h3 data-edit-id="card-ruoshui-title">若水聯盟</h3>
+        <p data-edit-id="card-ruoshui-desc">AI 軍團指揮所・12 人董事會<br>七員核心：韓信／郭嘉／墨子／蕭何／小喬／周瑜／傳令</p>
+        <span class="card-tag" data-edit-id="card-ruoshui-tag">系統 · 24/7 軍團</span>
       </a>
     </div>
   </section>
 
-  <!-- ═══ About / 笙之道 ═══ -->
-  <section id="sec-about">
-    <div class="section-intro">
-      <div class="eyebrow">THIS IS SHENG</div>
-      <h2>關於 <strong>笙</strong></h2>
-      <div class="gold-line"></div>
-      <div class="sub">FOUNDER · BUILDER · INTEGRATOR</div>
-    </div>
-
-    <div class="about-grid">
-      <div class="about-text">
-        <p class="about-quote">上善若水・水善利萬物而不爭</p>
-        <p>苗栗囝仔。2018 年創辦淨淨 CleanClean、把家用清潔做成有溫度的品牌——代言人李仁哥、SGS 認證、歐洲 ECARF 蓋章、3 萬戶台灣家庭的客廳裡。</p>
-        <p>2026 年起把 AI 推進每個工作流程——不是取代人、是讓 8 個人能做 80 個人的事。創立<strong>若水聯盟</strong>、12 個 AI 軍團人格 24/7 運作。</p>
-        <p>核心三件事：<strong>淨淨</strong>（事業）／<strong>若水</strong>（系統）／<strong>笙之道</strong>（成長）。其他、是朋友的幫忙跟家人的愛護。</p>
+  <!-- ═══ 笙闆個人 IP（獨立區塊）═══ -->
+  <section id="sec-shengboss" style="margin-top:0">
+    <a class="card card-full" href="https://shengboss.reyway.com"
+       style="background:linear-gradient(135deg,#FDF4EB 0%,#F8E3CC 100%);border:1.5px solid rgba(198,97,63,0.28);box-shadow:0 4px 20px rgba(198,97,63,0.12);text-decoration:none;color:inherit;">
+      <div class="card-icon" style="background:rgba(198,97,63,0.15);color:#C6613F;flex-shrink:0;">
+        <i class="ph ph-microphone-stage"></i>
       </div>
-      <div class="about-tags">
-        <div class="tag-row"><span class="tag-key">家</span><span>兩個兒子的把拔・太太的老公</span></div>
-        <div class="tag-row"><span class="tag-key">刺</span><span>3-6-9 三角架構（六大關係）</span></div>
-        <div class="tag-row"><span class="tag-key">信</span><span>天主教徒・上善若水</span></div>
-        <div class="tag-row"><span class="tag-key">志</span><span>用 AI 改變品牌的玩法</span></div>
-        <div class="tag-row"><span class="tag-key">讀</span><span>恩師林明樟・蒙格・賈伯斯・Naval</span></div>
+      <div class="card-body">
+        <h3 style="font-family:'Noto Serif TC',serif;font-size:1.1rem;font-weight:600;color:#1A1A1A;margin-bottom:4px;">笙闆 IP 工作室</h3>
+        <p style="font-size:0.85rem;color:#666;line-height:1.65;margin-bottom:0;">個人品牌經營中央指揮塔・Threads / IG / 短影音<br>文案庫 · 行事曆 · 互動數據・從發文到覆盤一站搞定</p>
       </div>
-    </div>
+      <div class="card-arrow" style="font-size:1.1rem;color:#C6613F;flex-shrink:0;">
+        <i class="ph ph-arrow-right"></i>
+      </div>
+    </a>
   </section>
 
   <!-- ═══ 折疊：合作品牌 + 內部工具 ═══ -->
   <section id="sec-extras">
     <div class="section-intro">
-      <div class="eyebrow">EXTRAS</div>
-      <h2>順手 <strong>交付</strong></h2>
+      <div class="eyebrow">COLLECTIONS</div>
+      <h2 data-edit-id="sec-extras-title">綜合 <strong>分類</strong></h2>
       <div class="gold-line"></div>
-      <div class="sub">朋友幫忙・內部工具</div>
+      <div class="sub" data-edit-id="sec-extras-sub">合作品牌・智能工具</div>
     </div>
 
     <details class="collapse-section">
       <summary>
         <i class="ph ph-handshake"></i>
         <span>合作品牌</span>
-        <span class="summary-meta">7 個朋友／家人專案</span>
+        <span class="summary-meta">8 個朋友專案</span>
         <i class="ph ph-caret-right caret"></i>
       </summary>
       <div class="collapse-body">
         <div class="mini-grid">
           <a class="mini-card" href="https://eagle.reyway.com" target="_blank" rel="noopener">
             <span class="mini-icon">伊</span>
-            <div><div class="mini-name">伊果國際集團</div><div class="mini-desc">服飾・餐飲・飲料</div></div>
+            <div><div class="mini-name" data-edit-id="mini-eagle-name">伊果國際集團</div><div class="mini-desc" data-edit-id="mini-eagle-desc">服飾・餐飲・飲料</div></div>
+          </a>
+          <a class="mini-card" href="https://suan7.reyway.com" target="_blank" rel="noopener">
+            <span class="mini-icon">酸</span>
+            <div><div class="mini-name" data-edit-id="mini-suan7-name">酸小七</div><div class="mini-desc" data-edit-id="mini-suan7-desc">伊果餐飲・酸湯魚</div></div>
+          </a>
+          <a class="mini-card" href="https://club.reyway.com" target="_blank" rel="noopener">
+            <span class="mini-icon">城</span>
+            <div><div class="mini-name" data-edit-id="mini-club-name">中國城酒店</div><div class="mini-desc" data-edit-id="mini-club-desc">帝豪中國城・餐飲娛樂</div></div>
           </a>
           <a class="mini-card" href="https://pc.reyway.com" target="_blank" rel="noopener">
             <span class="mini-icon">皮</span>
-            <div><div class="mini-name">皮爾卡登寢具</div><div class="mini-desc">PIERRE CARDIN</div></div>
+            <div><div class="mini-name" data-edit-id="mini-pc-name">皮爾卡登寢具</div><div class="mini-desc" data-edit-id="mini-pc-desc">PIERRE CARDIN</div></div>
           </a>
           <a class="mini-card" href="https://dadali.reyway.com" target="_blank" rel="noopener">
             <span class="mini-icon">力</span>
-            <div><div class="mini-name">大大力鍍膜</div><div class="mini-desc">汽車鍍膜・防護</div></div>
+            <div><div class="mini-name" data-edit-id="mini-dadali-name">大大力鍍膜</div><div class="mini-desc" data-edit-id="mini-dadali-desc">汽車鍍膜・防護</div></div>
           </a>
           <a class="mini-card" href="https://mori.reyway.com" target="_blank" rel="noopener">
             <span class="mini-icon">森</span>
-            <div><div class="mini-name">森築居家鍍膜</div><div class="mini-desc">居家空間防護</div></div>
+            <div><div class="mini-name" data-edit-id="mini-mori-name">森築居家鍍膜</div><div class="mini-desc" data-edit-id="mini-mori-desc">居家空間防護</div></div>
           </a>
           <a class="mini-card" href="https://lf.reyway.com" target="_blank" rel="noopener">
             <span class="mini-icon">戀</span>
-            <div><div class="mini-name">戀家小舖</div><div class="mini-desc">Lovingfamily · MIT 寢具</div></div>
+            <div><div class="mini-name" data-edit-id="mini-lf-name">戀家小舖</div><div class="mini-desc" data-edit-id="mini-lf-desc">Lovingfamily · MIT 寢具</div></div>
+          </a>
+          <a class="mini-card" href="https://bhks-reyway.pages.dev" target="_blank" rel="noopener">
+            <span class="mini-icon">B</span>
+            <div><div class="mini-name" data-edit-id="mini-bhk-name">BHK's 行銷站</div><div class="mini-desc" data-edit-id="mini-bhk-desc">保健食品行銷工具</div></div>
           </a>
           <a class="mini-card" href="https://yalun-reyway.pages.dev" target="_blank" rel="noopener">
             <span class="mini-icon">雅</span>
-            <div><div class="mini-name">陳雅倫議員工具站</div><div class="mini-desc">議員辦公室文案</div></div>
-          </a>
-          <a class="mini-card" href="https://leon.reyway.com" target="_blank" rel="noopener">
-            <span class="mini-icon">吐</span>
-            <div><div class="mini-name">吐司專屬小老師</div><div class="mini-desc">家人專案・小悟哥哥</div></div>
-          </a>
-          <a class="mini-card" href="https://oravi.reyway.com" target="_blank" rel="noopener">
-            <span class="mini-icon">歐</span>
-            <div><div class="mini-name">ORAVI 歐拉薇</div><div class="mini-desc">髮品子品牌</div></div>
+            <div><div class="mini-name" data-edit-id="mini-yalun-name">陳雅倫議員工具站</div><div class="mini-desc" data-edit-id="mini-yalun-desc">議員辦公室文案</div></div>
           </a>
         </div>
       </div>
@@ -884,32 +1049,91 @@ footer{text-align:center;padding:56px 20px 64px;position:relative}
     <details class="collapse-section">
       <summary>
         <i class="ph ph-toolbox"></i>
-        <span>內部工具</span>
-        <span class="summary-meta">智能工具・知識庫</span>
+        <span>綜合工具</span>
+        <span class="summary-meta">2 個小工具</span>
         <i class="ph ph-caret-right caret"></i>
       </summary>
       <div class="collapse-body">
         <div class="mini-grid">
           <a class="mini-card" href="/tools/">
             <span class="mini-icon"><i class="ph ph-wrench" style="font-size:1rem"></i></span>
-            <div><div class="mini-name">智能工具</div><div class="mini-desc">跨品牌通用 AI 小工具</div></div>
+            <div><div class="mini-name" data-edit-id="mini-tools-name">智能工具</div><div class="mini-desc" data-edit-id="mini-tools-desc">跨品牌通用 AI 小工具</div></div>
           </a>
-          <a class="mini-card" href="/knowledge/">
-            <span class="mini-icon"><i class="ph ph-books" style="font-size:1rem"></i></span>
-            <div><div class="mini-name">網頁知識庫</div><div class="mini-desc">教學・工具文件・品牌報告</div></div>
+          <a class="mini-card" href="https://leon.reyway.com" target="_blank" rel="noopener">
+            <span class="mini-icon"><i class="ph ph-graduation-cap" style="font-size:1rem"></i></span>
+            <div><div class="mini-name" data-edit-id="mini-leon-name">吐司小老師</div><div class="mini-desc" data-edit-id="mini-leon-desc">兒子吐司・小悟哥哥陪讀</div></div>
           </a>
         </div>
       </div>
     </details>
   </section>
 
+  <!-- ═══ About / 笙之道 ═══ -->
+  <section id="sec-about">
+    <div class="section-intro">
+      <div class="eyebrow">AI JOURNEY</div>
+      <h2 data-edit-id="sec-about-title">關於笙之道的 <strong>AI 之路</strong></h2>
+      <div class="gold-line"></div>
+      <div class="sub" data-edit-id="sec-about-sub">2025.12 → 現在進行中</div>
+    </div>
+
+    <div class="about-grid">
+      <div class="about-text">
+        <p class="about-quote" data-edit-id="about-quote">上善若水・水善利萬物而不爭</p>
+        <p data-edit-id="about-p1">苗栗囝仔。2018 年創辦淨淨 CleanClean、把家用清潔做成有溫度的品牌——代言人李仁哥、SGS 認證、歐洲 ECARF 蓋章、3 萬戶台灣家庭的客廳裡。</p>
+        <p data-edit-id="about-p2">2026 年起、把 AI 推進每個工作流程——不是取代人、是讓 8 個人能做 80 個人的事。創立<strong>若水聯盟</strong>、12 個 AI 軍團人格 24/7 運作。</p>
+        <p data-edit-id="about-p3">核心三件事：<strong>淨淨</strong>（事業）／<strong>若水</strong>（系統）／<strong>笙之道</strong>（成長）。其他、是朋友的幫忙跟家人的愛護。</p>
+      </div>
+      <div class="about-timeline">
+        <div class="timeline-list">
+          <div class="timeline-item">
+            <span class="timeline-date" data-edit-id="tl1-date">2025.12.29</span>
+            <span class="timeline-text" data-edit-id="tl1-text">試水期・第一次認真把 AI 當員工用</span>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-date" data-edit-id="tl2-date">2026.04.11</span>
+            <span class="timeline-text" data-edit-id="tl2-text">系統化・從聊天升級到工作流程</span>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-date" data-edit-id="tl3-date">2026.04.20</span>
+            <span class="timeline-text" data-edit-id="tl3-text">Memory 啟動・給 AI 長期記憶</span>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-date" data-edit-id="tl4-date">2026.04.22</span>
+            <span class="timeline-text" data-edit-id="tl4-text">若水聯盟成軍・12 個 AI 人格分工</span>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-date" data-edit-id="tl5-date">2026.04.23</span>
+            <span class="timeline-text" data-edit-id="tl5-text">工作習慣總則・最大授權／不講術語／邊做邊報</span>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-date" data-edit-id="tl6-date">2026.04.26</span>
+            <span class="timeline-text" data-edit-id="tl6-text">淨淨營銷總站上線・Notion 退場、AI 自架 SaaS</span>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-date" data-edit-id="tl7-date">2026.04.28</span>
+            <span class="timeline-text" data-edit-id="tl7-text">Hook 自動化體系・AI 背後的引擎</span>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-date" data-edit-id="tl8-date">2026.04.29</span>
+            <span class="timeline-text" data-edit-id="tl8-text">brain.reyway 規劃・個人第二大腦取代 Obsidian</span>
+          </div>
+          <div class="timeline-item current">
+            <span class="timeline-date" data-edit-id="tl9-date">2026.04.30</span>
+            <span class="timeline-text" data-edit-id="tl9-text">reyway.com v8・軍師五拍視覺改造</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ═══ Status Log / 進行中 ═══ -->
   <section id="sec-feed">
     <div class="section-intro">
       <div class="eyebrow">STATUS LOG</div>
-      <h2>進行 <strong>中</strong></h2>
+      <h2 data-edit-id="sec-feed-title">進行 <strong>中</strong></h2>
       <div class="gold-line"></div>
-      <div class="sub">最近 30 天</div>
+      <div class="sub" data-edit-id="sec-feed-sub">最近 30 天</div>
     </div>
 
     <div class="feed-list">
@@ -953,7 +1177,7 @@ footer{text-align:center;padding:56px 20px 64px;position:relative}
 
   <!-- ═══ Footer v8 軍師五拍 ═══ -->
   <footer>
-    <div class="footer-quote">上善若水・利他不爭</div>
+    <div class="footer-quote" data-edit-id="footer-quote">上善若水・利他不爭</div>
     <div class="footer-line"></div>
     <div class="footer-meta">
       REYWAY · v8.0 · BUILT WITH CLAUDE × SHENG<br>
@@ -1152,6 +1376,15 @@ document.getElementById('link-modal').addEventListener('click', function(e){
   if(e.target === this) closeLinkModal();
 });
 </script>
+
+
+<!-- ═══ 編輯模式（主公專用） ═══ -->
+<button id="edit-toggle" type="button" title="編輯模式">
+  <i class="ph ph-pencil-simple-line"></i>
+  <span id="edit-toggle-text">編輯模式</span>
+</button>
+<div id="edit-toast">已儲存 ✓</div>
+<script src="/edit-mode.js"></script>
 
 </body>
 </html>
