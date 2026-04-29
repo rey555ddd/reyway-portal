@@ -82,15 +82,15 @@ body{font-family:"Inter","Noto Sans TC",sans-serif;background:var(--bg);color:va
 
   <div class="hero">
     <h2>內部問卷 <span class="accent">調查中心</span></h2>
-    <p>課前調查・活動回饋・員工心聲<br>主公自建、不靠 Google Forms</p>
+    <p>課前調查・活動回饋・夥伴心聲<br>內部自建、不靠第三方平台</p>
   </div>
 
   <div class="actions">
     <a class="action-btn primary" href="/knowledge/問卷/admin.html">
       <i class="ph ph-chart-line-up"></i> 後台 · 看回覆 · 匯出 CSV
     </a>
-    <a class="action-btn" href="#new" onclick="alert('問卷生成器（拖拉式建新問卷）等下一場 session 補。目前可用 API 直接 POST 註冊新問卷');return false">
-      <i class="ph ph-plus-circle"></i> 新建問卷（v2 待補）
+    <a class="action-btn" href="#new" onclick="alert('拖拉式問卷生成器留待 v2、目前手動建一份 HTML 問卷即可（仿 manager-ai-survey.html）');return false">
+      <i class="ph ph-plus-circle"></i> 新建問卷（v2）
     </a>
   </div>
 
@@ -112,16 +112,15 @@ body{font-family:"Inter","Noto Sans TC",sans-serif;background:var(--bg);color:va
 
   </div>
 
-  <div class="coming-soon">
-    <h3><i class="ph-fill ph-rocket-launch"></i> 即將上線（已派工韓信）</h3>
-    <p>主公要的「**問卷生成器**」完整功能、軍師已備派工單給韓信下次 session 接手：</p>
-    <ul>
-      <li><strong>後端 API</strong>：Cloudflare Pages Functions + KV 儲存問卷定義 + 回覆</li>
-      <li><strong>後台頁</strong>：看每份問卷的填寫進度 + 回覆內容</li>
-      <li><strong>匯出功能</strong>：一鍵下載 CSV / 整理好的 Markdown 報告</li>
-      <li><strong>問卷生成器</strong>：拖拉式建新問卷（題型：單選 / 多選 / 文字 / 評分）</li>
-      <li><strong>權限控制</strong>：主公專用後台 / 員工只能填寫</li>
+  <div class="coming-soon" style="background:linear-gradient(135deg,#E8F7FA 0%,#fff 100%);border-color:#5BC8D5">
+    <h3 style="color:#1A8A98"><i class="ph-fill ph-check-circle"></i> 系統現況</h3>
+    <p style="color:#5A7A85;line-height:1.85;margin-bottom:8px">後端 + 後台 + 匯出 CSV <strong>已上線</strong>、可立刻用：</p>
+    <ul style="color:#5A7A85;line-height:2;padding-left:22px;font-size:13px">
+      <li>填問卷 → 自動進後台（KV 儲存、雙保險 fallback 複製傳 LINE）</li>
+      <li>後台輸入 email 進入、看每筆回覆 + 一鍵匯出 CSV（中文不亂碼）</li>
+      <li>新問卷自動 register 進後台（第一筆提交即建立）</li>
     </ul>
+    <p style="color:#8FA8B0;font-size:12px;margin-top:10px">v2 待補：拖拉式問卷生成器 UI（目前手動寫 HTML 仿 manager-ai-survey.html）</p>
   </div>
 
 </div>
