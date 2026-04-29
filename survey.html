@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>淨淨主管 AI 課前小調查</title>
+<meta name="robots" content="noindex,nofollow">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<!-- v2026-04-30-T2 force redeploy -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css">
+<style>
+  :root {
+    --primary: #5BC8D5;
+    --primary-light: #E8F7FA;
+    --primary-mid: #A8E4EB;
+    --primary-dark: #2FA8B8;
+    --primary-deep: #1A8A98;
+    --bg: #FFFFFF;
+    --bg-soft: #F7FBFC;
+    --text: #1A2E35;
+    --text-2: #5A7A85;
+    --text-3: #8FA8B0;
+    --border: #DFF0F3;
+    --shadow: 0 2px 12px rgba(91, 200, 213, 0.08);
+    --shadow-hover: 0 8px 28px rgba(91, 200, 213, 0.16);
+    --warn: #F0A030;
+    --warn-bg: #FFF6E5;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "Inter", "Noto Sans TC", -apple-system, sans-serif;
+    background: var(--bg-soft);
+    color: var(--text);
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+
+  .wrap { max-width: 760px; margin: 0 auto; padding: 0 20px; }
+
+  /* Hero */
+  .hero {
+    text-align: center;
+    padding: 56px 20px 28px;
+    background: linear-gradient(160deg, var(--primary-light) 0%, var(--bg) 70%);
+  }
+  .hero .logo {
+    width: 92px; height: 92px;
+    margin: 0 auto 18px;
+    border-radius: 22px;
+    background: #fff;
+    box-shadow: 0 6px 24px rgba(91, 200, 213, 0.18);
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+  .hero .logo img { width: 100%; height: 100%; object-fit: contain; padding: 8px; }
+  .hero .badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--primary); color: #fff;
+    font-size: 12px; font-weight: 600;
+    padding: 5px 16px; border-radius: 100px;
+    letter-spacing: 0.1em;
+    margin-bottom: 18px;
+  }
+  .hero h1 {
+    font-family: "Noto Serif TC", serif;
+    font-size: clamp(26px, 5vw, 40px);
+    font-weight: 700; line-height: 1.35;
+    color: var(--text);
+    margin-bottom: 12px;
+  }
+  .hero h1 .accent { color: var(--primary-dark); }
+  .hero p {
+    font-size: 15px; color: var(--text-2);
+    max-width: 540px; margin: 0 auto;
+    line-height: 1.85;
+  }
+  .hero-meta {
+    display: flex; justify-content: center; gap: 22px; flex-wrap: wrap;
+    margin-top: 22px;
+    font-size: 13px; color: var(--text-3);
+  }
+  .hero-meta i { color: var(--primary); margin-right: 4px; }
+
+  /* 課程預告 callout */
+  .preview {
+    background: #fff;
+    border-radius: 18px;
+    padding: 24px 28px;
+    margin: 24px 0;
+    border: 2px solid var(--primary-light);
+    box-shadow: var(--shadow);
+  }
+  .preview-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--primary); color: #fff;
+    font-size: 11px; font-weight: 700;
+    padding: 4px 12px; border-radius: 100px;
+    letter-spacing: 0.1em; margin-bottom: 12px;
+  }
+  .preview h3 {
+    font-family: "Noto Serif TC", serif;
+    font-size: 1.15rem; color: var(--primary-deep);
+    margin-bottom: 10px;
+  }
+  .preview p { font-size: 14px; color: var(--text-2); line-height: 1.85; margin-bottom: 8px; }
+  .preview ul { font-size: 13px; color: var(--text-2); padding-left: 22px; line-height: 2; }
+  .preview ul li { margin-bottom: 2px; }
+  .preview ul li b { color: var(--primary-deep); }
+
+  /* Form */
+  .form-wrap { padding: 12px 20px 60px; }
+
+  .name-block {
+    background: #fff;
+    border: 2px solid var(--primary-light);
+    border-radius: 16px;
+    padding: 22px 24px;
+    margin-bottom: 28px;
+    box-shadow: var(--shadow);
+  }
+  .name-block label.title {
+    display: block;
+    font-size: 14px; font-weight: 600;
+    color: var(--primary-dark);
+    margin-bottom: 12px;
+  }
+  .name-block label.title i { margin-right: 6px; }
+  .name-options {
+    display: flex; gap: 8px; flex-wrap: wrap;
+  }
+  .name-options label {
+    flex: 1 0 calc(33.33% - 6px); min-width: 90px;
+    cursor: pointer;
+  }
+  .name-options input[type="radio"] { display: none; }
+  .name-options .opt {
+    display: block; padding: 11px 14px;
+    background: var(--bg-soft);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    text-align: center;
+    font-size: 14px; font-weight: 500;
+    transition: all .2s;
+  }
+  .name-options input[type="radio"]:checked + .opt {
+    background: var(--primary); color: #fff; border-color: var(--primary);
+  }
+  .name-options .opt:hover { border-color: var(--primary); }
+  .name-other {
+    margin-top: 12px;
+    width: 100%; padding: 10px 14px;
+    background: var(--bg-soft);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-size: 14px; font-family: inherit;
+    display: none;
+  }
+  .name-other.show { display: block; }
+  .name-other:focus { border-color: var(--primary); outline: none; }
+
+  /* Section */
+  .section {
+    background: #fff;
+    border-radius: 18px;
+    padding: 30px 28px;
+    margin-bottom: 22px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    transition: box-shadow .25s;
+  }
+  .section:hover { box-shadow: var(--shadow-hover); }
+  .section-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 11px; font-weight: 700;
+    color: var(--primary-dark); background: var(--primary-light);
+    padding: 5px 14px; border-radius: 100px;
+    letter-spacing: 0.1em; margin-bottom: 12px;
+  }
+  .section h2 {
+    font-family: "Noto Serif TC", serif;
+    font-size: 1.3rem; font-weight: 700;
+    color: var(--text); margin-bottom: 6px;
+  }
+  .section .desc {
+    font-size: 13px; color: var(--text-3);
+    margin-bottom: 22px;
+  }
+
+  .q { margin-bottom: 22px; }
+  .q:last-child { margin-bottom: 0; }
+  .q-label {
+    display: block;
+    font-size: 15px; font-weight: 600;
+    color: var(--text);
+    margin-bottom: 8px;
+    line-height: 1.65;
+  }
+  .q-label .num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 24px; height: 24px;
+    background: var(--primary); color: #fff;
+    border-radius: 50%;
+    font-size: 13px; font-weight: 700;
+    margin-right: 8px;
+    font-family: "Inter", sans-serif;
+    flex-shrink: 0;
+  }
+  .q-hint {
+    font-size: 13px; color: var(--text-3);
+    margin-bottom: 8px;
+    margin-left: 32px;
+    line-height: 1.65;
+  }
+  textarea, select {
+    width: 100%;
+    padding: 12px 14px;
+    background: var(--bg-soft);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-size: 14px; font-family: inherit;
+    line-height: 1.75;
+    resize: vertical;
+    min-height: 90px;
+    transition: border-color .2s;
+    color: var(--text);
+  }
+  select { min-height: auto; padding: 12px 14px; cursor: pointer; }
+  textarea:focus, select:focus {
+    border-color: var(--primary); outline: none;
+    background: #fff;
+  }
+
+  /* Submit */
+  .submit-wrap {
+    background: linear-gradient(135deg, var(--primary-light) 0%, #fff 100%);
+    border-radius: 18px;
+    padding: 32px 28px;
+    margin-top: 28px;
+    text-align: center;
+    border: 2px solid var(--primary);
+    box-shadow: var(--shadow);
+  }
+  .submit-wrap p {
+    font-size: 14px; color: var(--text-2);
+    margin-bottom: 18px; line-height: 1.7;
+  }
+  .submit-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--primary); color: #fff;
+    border: none;
+    padding: 14px 36px;
+    font-size: 16px; font-weight: 600;
+    font-family: inherit;
+    border-radius: 100px;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(91, 200, 213, 0.35);
+    transition: all .25s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  .submit-btn:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px rgba(91, 200, 213, 0.45);
+  }
+  .submit-btn:disabled {
+    opacity: 0.7; cursor: not-allowed;
+    transform: none !important;
+  }
+
+  /* Result Modal */
+  .result {
+    display: none;
+    position: fixed; inset: 0; z-index: 100;
+    background: rgba(26,46,53,0.6);
+    backdrop-filter: blur(6px);
+    align-items: center; justify-content: center;
+    padding: 20px;
+  }
+  .result.show { display: flex; }
+  .result-box {
+    background: #fff;
+    border-radius: 20px;
+    padding: 36px 32px;
+    max-width: 560px; width: 100%;
+    max-height: 85vh; overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  }
+  .result-box h2 {
+    font-family: "Noto Serif TC", serif;
+    font-size: 22px; color: var(--primary-dark);
+    margin-bottom: 8px;
+  }
+  .result-box .sub {
+    font-size: 14px; color: var(--text-3);
+    margin-bottom: 20px;
+  }
+  .result-text {
+    background: var(--bg-soft);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 18px;
+    font-size: 13px;
+    line-height: 1.85;
+    white-space: pre-wrap;
+    max-height: 320px;
+    overflow-y: auto;
+    margin-bottom: 18px;
+    font-family: "Noto Sans TC", sans-serif;
+    color: var(--text);
+  }
+  .result-actions {
+    display: flex; gap: 10px; flex-wrap: wrap;
+  }
+  .btn {
+    flex: 1; min-width: 130px;
+    padding: 12px 20px;
+    border-radius: 100px;
+    font-size: 14px; font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    border: none;
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    transition: all .2s;
+  }
+  .btn-primary { background: var(--primary); color: #fff; }
+  .btn-primary:hover { background: var(--primary-dark); }
+  .btn-secondary {
+    background: var(--bg-soft); color: var(--text-2);
+    border: 1.5px solid var(--border);
+  }
+  .btn-secondary:hover { border-color: var(--primary); color: var(--primary-dark); }
+  .copy-toast {
+    position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+    background: var(--text); color: #fff;
+    padding: 12px 24px; border-radius: 100px;
+    font-size: 14px;
+    box-shadow: 0 8px 22px rgba(0,0,0,0.2);
+    opacity: 0; transition: opacity .3s;
+    pointer-events: none;
+    z-index: 200;
+  }
+  .copy-toast.show { opacity: 1; }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  footer {
+    text-align: center;
+    padding: 30px 20px 50px;
+    font-size: 12px; color: var(--text-3);
+    line-height: 1.85;
+  }
+
+  @media (max-width: 600px) {
+    .section { padding: 24px 20px; }
+    .submit-wrap { padding: 24px 20px; }
+    .name-options label { flex: 1 0 calc(50% - 5px); }
+    .preview { padding: 20px 22px; }
+  }
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="logo">
+    <img src="/logo-cleanclean.png" alt="淨淨 CleanClean" onerror="this.parentElement.innerHTML='<i class=&quot;ph-fill ph-sparkle&quot; style=&quot;font-size:48px;color:#5BC8D5&quot;></i>'">
+  </div>
+  <span class="badge"><i class="ph ph-clipboard-text"></i> 內部問卷</span>
+  <h1>淨淨主管 <span class="accent">AI 課前小調查</span></h1>
+  <p>下禮拜我們有 Claude Code 完整課程<br>上課前先聽聽你的真實狀況、課才會對到你需要的</p>
+  <div class="hero-meta">
+    <span><i class="ph ph-clock"></i> 約 12 分鐘</span>
+    <span><i class="ph ph-lock-key"></i> 機密回收</span>
+    <span><i class="ph ph-chat-circle-text"></i> 越誠實越好</span>
+  </div>
+</section>
+
+<div class="wrap">
+
+  <!-- 課程預告 callout -->
+  <div class="preview">
+    <span class="preview-tag"><i class="ph ph-graduation-cap"></i> 下禮拜課程預告</span>
+    <h3>Claude Code 完整用法 · 主管專場</h3>
+    <p>不只教「怎麼用 AI」、是教<b>「怎麼帶你的夥伴用得更好」</b>。三大支柱：</p>
+    <ul>
+      <li><b>Agent</b>（智能夥伴）：怎麼派工給 AI、像派員工一樣</li>
+      <li><b>Skill</b>（技能包）：怎麼讓 AI 永遠記得我們的品牌規範、合規禁忌</li>
+      <li><b>Memory</b>（記憶系統）：怎麼讓 AI 認得淨淨、不每次都從零開始</li>
+    </ul>
+    <p style="margin-top:12px;color:var(--primary-deep);font-weight:600">這份問卷是要讓課程**對到你真的需要的**——所以後面有幾題會問你目前對 AI 的認知到哪、不用緊張、誠實寫就好。</p>
+  </div>
+
+</div>
+
+<form id="surveyForm" class="form-wrap wrap">
+
+  <!-- 填表人 -->
+  <div class="name-block">
+    <label class="title"><i class="ph ph-user"></i> 你是誰？</label>
+    <div class="name-options">
+      <label><input type="radio" name="who" value="依庭" required><span class="opt">依庭</span></label>
+      <label><input type="radio" name="who" value="小瑄"><span class="opt">小瑄</span></label>
+      <label><input type="radio" name="who" value="妮妮"><span class="opt">妮妮</span></label>
+      <label><input type="radio" name="who" value="Cara"><span class="opt">Cara</span></label>
+      <label><input type="radio" name="who" value="冠達"><span class="opt">冠達</span></label>
+      <label><input type="radio" name="who" value="其他"><span class="opt">其他</span></label>
+    </div>
+    <input type="text" class="name-other" id="nameOther" placeholder="請輸入你的名字…">
+  </div>
+
+  <!-- Part 1 -->
+  <div class="section">
+    <span class="section-tag"><i class="ph ph-magnifying-glass"></i> PART 1 · 你的工作</span>
+    <h2>你目前的狀況 & 已經做的事</h2>
+    <p class="desc">先了解你個人現在的卡關 + 已經試過的工具</p>
+
+    <div class="q">
+      <label class="q-label"><span class="num">1</span>對淨淨總站（cleanclean-hub），你期待用到哪些功能？</label>
+      <p class="q-hint">不用查、想到什麼寫什麼。例如：「業績儀表板自動算」「客戶資料一站搞定」「會議記錄自動歸檔」</p>
+      <textarea name="q1" placeholder="期待總站幫你解決的事…"></textarea>
+    </div>
+
+    <div class="q">
+      <label class="q-label"><span class="num">2</span>你目前用的「既有系統」+ 工作流程、最讓你頭痛的是什麼？</label>
+      <p class="q-hint">
+        包含但不限：<br>
+        • <b>知識協作</b>：Notion / Slack / Google Docs / Excel<br>
+        • <b>客戶管理</b>：CRM（如有用 HubSpot / Salesforce / 自家 Excel 做的）<br>
+        • <b>傳統工具</b>：ERP / 進銷存 / 庫存系統 / 出貨單系統<br>
+        • <b>通路後台</b>：蝦皮 / momo / Pchome / 官網後台<br>
+        • <b>廣告 / 行銷</b>：Meta Ads / GA4 / LINE OA / Mailchimp<br>
+        • <b>其他</b>：跨部門對齊、夥伴管理、會議流程…<br>
+        哪個最讓你 OS「這太花時間了」？
+      </p>
+      <textarea name="q2" placeholder="例：&#10;• Notion 找文件超慢、新人找半天才找到&#10;• Excel 各部門格式不一、合併要花一小時&#10;• CRM（其實是 Excel）客戶資料散三個地方、業績難算&#10;• 每週業績要從蝦皮+momo+官網三系統手動對齊&#10;• Meta Ads 數據沒人整理、廣告效果只能用感覺判斷…" style="min-height:140px"></textarea>
+    </div>
+
+    <div class="q">
+      <label class="q-label"><span class="num">3</span>你或你帶的部門目前已經用 Claude Code 做了哪些 AI 工具？</label>
+      <p class="q-hint">簡單列出工具名稱 + 簡介即可（內容描述可以請 AI 幫忙生成）。讓我們知道現有成品、其他主管也能參考</p>
+      <textarea name="q3" placeholder="例：1. 客戶投訴回覆助手——把客訴貼進去、產出 3 種回覆語氣 2. 週報整理工具——把週報資料整理成主管要看的格式…"></textarea>
+    </div>
+  </div>
+
+  <!-- Part 2 -->
+  <div class="section">
+    <span class="section-tag"><i class="ph ph-users-three"></i> PART 2 · 夥伴的視角</span>
+    <h2>你帶的夥伴們現在怎麼用 AI</h2>
+    <p class="desc">幫忙觀察+收集你部門夥伴的狀況、課程才能解到他們的卡點</p>
+
+    <div class="q">
+      <label class="q-label"><span class="num">4</span>夥伴最近最常用 AI 做什麼？最常遇到什麼問題？</label>
+      <p class="q-hint">不用排序、想到幾個寫幾個。例如：「常用來寫 IG 文案、但出來的文字太機器人」</p>
+      <textarea name="q4" placeholder="夥伴常用的場景 + 卡關…"></textarea>
+    </div>
+
+    <div class="q">
+      <label class="q-label"><span class="num">5</span>對於這幾個未來要上線的網站、工具站、有什麼期待？希望有什麼功能？</label>
+      <p class="q-hint">可以請你部門夥伴一起腦力激盪後彙整。期待越具體越好</p>
+      <textarea name="q5" placeholder="例：希望客服小幫手能自動連訂單系統、希望廣告週報可以一鍵產出簡報…"></textarea>
+    </div>
+
+    <div class="q">
+      <label class="q-label"><span class="num">6</span>有沒有夥伴比較抗拒用 AI、或者比較有困難的？為什麼？</label>
+      <p class="q-hint"><b>這題最重要</b>——盡量具體寫、原因可能是「怕被取代」「不知道怎麼下指令」「覺得自己學不會」「上次用了結果很差」…我們課程要解的就是這些</p>
+      <textarea name="q6" placeholder="哪位夥伴 + 抗拒/困難原因（可以匿名、寫『某位資深夥伴』也可以）…"></textarea>
+    </div>
+  </div>
+
+  <!-- Part 3 -->
+  <div class="section">
+    <span class="section-tag"><i class="ph ph-brain"></i> PART 3 · 你跟 AI 的距離</span>
+    <h2>你目前對 AI 的認知 & 期待</h2>
+    <p class="desc">這幾題是課程內容調整的關鍵——誠實寫、不會打分數</p>
+
+    <div class="q">
+      <label class="q-label"><span class="num">7</span>你對 Claude Code 的「Agent / Skill / Memory」這三件事知道多少？</label>
+      <p class="q-hint">直覺選即可、課程會從你的程度開始講</p>
+      <select name="q7">
+        <option value="">請選擇…</option>
+        <option value="完全不知道這三個名詞">完全不知道這三個名詞</option>
+        <option value="聽過名詞、不知道實際在做什麼">聽過名詞、不知道實際在做什麼</option>
+        <option value="知道大概是什麼、但沒實際用過">知道大概是什麼、但沒實際用過</option>
+        <option value="會用、但用得不熟">會用、但用得不熟</option>
+        <option value="已經很熟、可以教別人">已經很熟、可以教別人</option>
+      </select>
+    </div>
+
+    <div class="q">
+      <label class="q-label"><span class="num">8</span>理想中、你希望 AI 能幫你做到哪些事？</label>
+      <p class="q-hint">天馬行空也可以——「希望 AI 能幫我看廣告數據自動寫週報」「希望 AI 能模擬客戶幫我預演簡報」… 越具體越好</p>
+      <textarea name="q8" placeholder="如果 AI 真的什麼都能做、你最想讓它幫你做什麼？"></textarea>
+    </div>
+
+    <div class="q">
+      <label class="q-label"><span class="num">9</span>你對 AI 最大的疑慮 / 期待是什麼？</label>
+      <p class="q-hint">疑慮也好、期待也好、混在一起也可以</p>
+      <textarea name="q9" placeholder="疑慮：例『資料安全』『會不會取代我』；期待：例『讓我下班早一點』…"></textarea>
+    </div>
+  </div>
+
+  <!-- Part 4 -->
+  <div class="section">
+    <span class="section-tag"><i class="ph ph-heart"></i> PART 4 · 你個人的話</span>
+    <h2>最後幾句</h2>
+
+    <div class="q">
+      <label class="q-label"><span class="num">10</span>你希望這次主管課程「多教什麼」？</label>
+      <p class="q-hint">具體說「希望學會 X」</p>
+      <textarea name="q10" placeholder="例：希望學會怎麼帶夥伴下指令、怎麼判斷 AI 產出好不好、怎麼跟其他主管交流 AI 工具…"></textarea>
+    </div>
+
+    <div class="q">
+      <label class="q-label"><span class="num">11</span>其他想說的話？<span style="color:var(--text-3);font-weight:400;font-size:13px">（可選）</span></label>
+      <p class="q-hint">想到什麼寫什麼、不寫也行 😊</p>
+      <textarea name="q11" placeholder="加薪以外都可以講…"></textarea>
+    </div>
+  </div>
+
+  <!-- Submit -->
+  <div class="submit-wrap">
+    <p><i class="ph-fill ph-info" style="color:var(--primary);"></i> <strong>填完按下面、會自動送回我們的後台</strong><br>不會收集你的 IP、只會看到你寫的內容 ✨</p>
+    <button type="submit" class="submit-btn">
+      <i class="ph ph-paper-plane-tilt"></i> 完成、送出
+    </button>
+  </div>
+
+</form>
+
+<!-- Result Modal -->
+<div class="result" id="resultModal">
+  <div class="result-box">
+    <h2>謝謝你的回答 🌿</h2>
+    <p class="sub" id="resultSub">已收到、下禮拜課程會用到</p>
+    <div class="result-text" id="resultText"></div>
+    <div class="result-actions">
+      <button class="btn btn-primary" id="copyBtn">
+        <i class="ph ph-copy"></i> 順手複製一份
+      </button>
+      <button class="btn btn-secondary" id="closeBtn">
+        <i class="ph ph-check"></i> 完成
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="copy-toast" id="toast"><i class="ph-fill ph-check-circle"></i> 已複製到剪貼簿</div>
+
+<footer>
+  淨淨 CleanClean · 內部問卷 · 2026-04-30<br>
+  本問卷僅供內部課程使用、回覆機密回收
+</footer>
+
+<script>
+  const SURVEY_ID = 'manager-ai-survey-2026';
+  const SURVEY_TITLE = '淨淨主管 AI 課前小調查';
+
+  // 名字「其他」切換
+  const nameRadios = document.querySelectorAll('input[name="who"]');
+  const nameOther = document.getElementById('nameOther');
+  nameRadios.forEach(r => r.addEventListener('change', () => {
+    nameOther.classList.toggle('show', r.value === '其他' && r.checked);
+    if (r.value === '其他' && r.checked) nameOther.focus();
+  }));
+
+  // 提交
+  document.getElementById('surveyForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const f = e.target;
+    const data = new FormData(f);
+    let who = data.get('who') || '未填';
+    if (who === '其他') who = nameOther.value.trim() || '其他';
+
+    const Q = [
+      ['對淨淨總站期待功能',                 'q1', data.get('q1')],
+      ['目前工作最大的問題',                 'q2', data.get('q2')],
+      ['已用 Claude Code 做的 AI 工具',     'q3', data.get('q3')],
+      ['夥伴最常用 AI 做什麼 / 卡關',        'q4', data.get('q4')],
+      ['對未來工具站的期待',                 'q5', data.get('q5')],
+      ['抗拒用 AI 的夥伴 + 原因',            'q6', data.get('q6')],
+      ['對 Agent/Skill/Memory 認知',         'q7', data.get('q7')],
+      ['理想中希望 AI 能做的事',             'q8', data.get('q8')],
+      ['對 AI 的疑慮 / 期待',                'q9', data.get('q9')],
+      ['希望課程多教什麼',                   'q10', data.get('q10')],
+      ['其他想說的話',                       'q11', data.get('q11')]
+    ];
+
+    // 組裝答案物件給後端
+    const answers = {};
+    Q.forEach(q => answers[q[1]] = (q[2] || '').trim());
+
+    const submitBtn = f.querySelector('.submit-btn');
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="ph ph-spinner-gap" style="animation:spin 1s linear infinite"></i> 送出中…';
+
+    let backendOK = false;
+    try {
+      const res = await fetch(`/api/survey?action=submit&id=${SURVEY_ID}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ who, answers, title: SURVEY_TITLE }),
+      });
+      backendOK = res.ok;
+    } catch (err) {
+      backendOK = false;
+    }
+
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = '<i class="ph ph-paper-plane-tilt"></i> 完成、送出';
+
+    // 整理可複製版（給填表人留底）
+    const today = new Date();
+    const dateStr = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+    let txt = `📋 ${SURVEY_TITLE}\n填表人：${who}\n日期：${dateStr}\n` + '─'.repeat(28) + '\n\n';
+    Q.forEach((q, i) => {
+      const ans = (q[2] || '').trim() || '（沒填）';
+      txt += `${i+1}. ${q[0]}\n${ans}\n\n`;
+    });
+    txt += '─'.repeat(28);
+
+    document.getElementById('resultText').textContent = txt;
+    document.getElementById('resultSub').textContent = backendOK
+      ? '✅ 已送進後台、課程準備時會看到'
+      : '⚠️ 後台暫存失敗、麻煩順手複製這段傳給笙哥';
+    document.getElementById('resultModal').classList.add('show');
+  });
+
+  // 複製
+  document.getElementById('copyBtn').addEventListener('click', async () => {
+    const txt = document.getElementById('resultText').textContent;
+    try {
+      await navigator.clipboard.writeText(txt);
+    } catch (e) {
+      const ta = document.createElement('textarea');
+      ta.value = txt; document.body.appendChild(ta);
+      ta.select(); document.execCommand('copy');
+      document.body.removeChild(ta);
+    }
+    const toast = document.getElementById('toast');
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2500);
+  });
+
+  // 關閉（直接關 modal、不導向任何地方）
+  document.getElementById('closeBtn').addEventListener('click', () => {
+    document.getElementById('resultModal').classList.remove('show');
+  });
+  document.getElementById('resultModal').addEventListener('click', (e) => {
+    if (e.target.id === 'resultModal') {
+      document.getElementById('resultModal').classList.remove('show');
+    }
+  });
+</script>
+
+</body>
+</html>
