@@ -503,8 +503,11 @@
     if (r.value === '其他' && r.checked) nameOther.focus();
   }));
 
+  // 問卷 ID（後台對應）
+  const SURVEY_ID = 'manager-ai-survey-2026';
+
   // 提交
-  document.getElementById('surveyForm').addEventListener('submit', (e) => {
+  document.getElementById('surveyForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     const f = e.target;
     const data = new FormData(f);
@@ -512,26 +515,55 @@
     if (who === '其他') who = nameOther.value.trim() || '其他';
 
     const Q = [
-      ['Notion/Excel/Slack 最受不了', data.get('q1')],
-      ['淨淨總站卡哪', data.get('q2')],
-      ['希望淨淨總站幫的忙', data.get('q3')],
-      ['員工最常問的 AI 問題', data.get('q4')],
-      ['員工用工具最常卡哪', data.get('q5')],
-      ['不敢用 AI 的員工 + 原因', data.get('q6')],
-      ['對 AI 的疑慮/期待', data.get('q7')],
-      ['希望課程多教什麼', data.get('q8')],
-      ['想跟主公說的話', data.get('q9')]
+      ['Notion/Excel/Slack 最受不了', 'q1', data.get('q1')],
+      ['淨淨總站卡哪', 'q2', data.get('q2')],
+      ['希望淨淨總站幫的忙', 'q3', data.get('q3')],
+      ['員工最常問的 AI 問題', 'q4', data.get('q4')],
+      ['員工用工具最常卡哪', 'q5', data.get('q5')],
+      ['不敢用 AI 的員工 + 原因', 'q6', data.get('q6')],
+      ['對 AI 的疑慮/期待', 'q7', data.get('q7')],
+      ['希望課程多教什麼', 'q8', data.get('q8')],
+      ['想跟主公說的話', 'q9', data.get('q9')]
     ];
 
+    // 組裝答案物件給後端
+    const answers = {};
+    Q.forEach(q => answers[q[1]] = (q[2] || '').trim());
+
+    // 先嘗試送後端（fetch）、失敗就 fallback 到複製模式
+    const submitBtn = f.querySelector('.submit-btn');
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="ph ph-spinner-gap" style="animation:spin 1s linear infinite"></i> 送出中…';
+
+    let backendOK = false;
+    try {
+      const res = await fetch(`/api/survey?action=submit&id=${SURVEY_ID}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ who, answers, title: '淨淨主管 AI 課前小調查' }),
+      });
+      backendOK = res.ok;
+    } catch (err) {
+      backendOK = false;
+    }
+
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = '<i class="ph ph-paper-plane-tilt"></i> 整理我的回答';
+
+    // 不論成功與否、都產生整理好的訊息（給填表人複製傳 LINE 雙保險）
     const today = new Date();
     const dateStr = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
-
     let txt = `📋 淨淨主管 AI 課前小調查\n填表人：${who}\n日期：${dateStr}\n` + '─'.repeat(28) + '\n\n';
     Q.forEach((q, i) => {
-      const ans = (q[1] || '').trim() || '（沒填）';
+      const ans = (q[2] || '').trim() || '（沒填）';
       txt += `${i+1}. ${q[0]}\n${ans}\n\n`;
     });
-    txt += '─'.repeat(28) + '\n發送給主公收 ✨';
+    txt += '─'.repeat(28) + '\n';
+    if (backendOK) {
+      txt += '✅ 已自動送進後台、主公會看到\n（這份你也可以複製貼 LINE 給主公雙保險）';
+    } else {
+      txt += '⚠️ 後台暫存失敗、請複製這段貼 LINE 給主公';
+    }
 
     document.getElementById('resultText').textContent = txt;
     document.getElementById('resultModal').classList.add('show');
