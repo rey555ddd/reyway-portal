@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>淨淨主管 AI 課前小調查</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@400;600;700&family=Klee+One:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css">
+<style>
+  :root {
+    --primary: #C6613F;
+    --primary-dark: #A04A2D;
+    --primary-light: #F5E6DD;
+    --bg: #FAF7F0;
+    --surface: #FFFFFF;
+    --text: #1A1A1A;
+    --text-2: #555;
+    --text-3: #888;
+    --border: #E8DDD2;
+    --shadow: 0 2px 12px rgba(198, 97, 63, 0.06);
+    --shadow-hover: 0 8px 28px rgba(198, 97, 63, 0.12);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "Inter", "Noto Sans TC", -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+
+  .topbar {
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(250,247,240,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 0;
+  }
+  .topbar-inner {
+    max-width: 760px; margin: 0 auto; padding: 0 20px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .back-btn {
+    font-size: 0.85rem; color: var(--text-2);
+    text-decoration: none; padding: 7px 14px;
+    border-radius: 100px; background: var(--surface);
+    box-shadow: var(--shadow);
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .back-btn:hover { box-shadow: var(--shadow-hover); }
+  .topbar h1 {
+    font-family: "Noto Serif TC", serif;
+    font-size: 1rem; font-weight: 600; flex: 1;
+    color: var(--primary-dark);
+  }
+
+  .wrap { max-width: 760px; margin: 0 auto; padding: 0 20px; }
+
+  /* Hero */
+  .hero {
+    padding: 60px 20px 40px;
+    text-align: center;
+  }
+  .hero .badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--primary); color: #fff;
+    font-size: 12px; font-weight: 600;
+    padding: 5px 16px; border-radius: 100px;
+    letter-spacing: 0.08em;
+    margin-bottom: 22px;
+  }
+  .hero h1 {
+    font-family: "Noto Serif TC", serif;
+    font-size: clamp(28px, 5vw, 44px);
+    font-weight: 700; line-height: 1.3;
+    color: var(--text);
+    margin-bottom: 14px;
+    letter-spacing: 0.01em;
+  }
+  .hero h1 .accent {
+    font-family: "Klee One", "Noto Serif TC", serif;
+    color: var(--primary);
+  }
+  .hero p {
+    font-size: 16px;
+    color: var(--text-2);
+    max-width: 560px;
+    margin: 0 auto;
+    line-height: 1.85;
+  }
+  .hero-meta {
+    display: flex; justify-content: center; gap: 24px;
+    margin-top: 28px;
+    font-size: 13px; color: var(--text-3);
+  }
+  .hero-meta i { color: var(--primary); margin-right: 4px; }
+
+  /* Form */
+  .form-wrap { padding: 20px 20px 60px; }
+
+  .name-block {
+    background: var(--surface);
+    border: 2px solid var(--primary-light);
+    border-radius: 16px;
+    padding: 22px 24px;
+    margin-bottom: 32px;
+    box-shadow: var(--shadow);
+  }
+  .name-block label {
+    display: block;
+    font-size: 14px; font-weight: 600;
+    color: var(--primary-dark);
+    margin-bottom: 10px;
+  }
+  .name-block label i { margin-right: 6px; }
+  .name-options {
+    display: flex; gap: 10px; flex-wrap: wrap;
+  }
+  .name-options label {
+    flex: 1; min-width: 100px;
+    margin-bottom: 0;
+    cursor: pointer;
+  }
+  .name-options input[type="radio"] { display: none; }
+  .name-options .opt {
+    display: block; padding: 12px 18px;
+    background: var(--bg);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    text-align: center;
+    font-size: 14px; font-weight: 500;
+    transition: all .2s;
+  }
+  .name-options input[type="radio"]:checked + .opt {
+    background: var(--primary); color: #fff; border-color: var(--primary);
+  }
+  .name-options .opt:hover { border-color: var(--primary); }
+  .name-other {
+    margin-top: 12px;
+    width: 100%; padding: 10px 14px;
+    background: var(--bg);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-size: 14px; font-family: inherit;
+    display: none;
+  }
+  .name-other.show { display: block; }
+  .name-other:focus { border-color: var(--primary); outline: none; }
+
+  /* Section */
+  .section {
+    background: var(--surface);
+    border-radius: 18px;
+    padding: 32px 28px;
+    margin-bottom: 24px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    transition: box-shadow .25s;
+  }
+  .section:hover { box-shadow: var(--shadow-hover); }
+  .section-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 11px; font-weight: 700;
+    color: var(--primary); background: var(--primary-light);
+    padding: 5px 14px; border-radius: 100px;
+    letter-spacing: 0.1em;
+    margin-bottom: 14px;
+  }
+  .section h2 {
+    font-family: "Noto Serif TC", serif;
+    font-size: 22px; font-weight: 700;
+    color: var(--text); margin-bottom: 8px;
+  }
+  .section .desc {
+    font-size: 14px; color: var(--text-3);
+    margin-bottom: 24px;
+  }
+
+  .q { margin-bottom: 22px; }
+  .q:last-child { margin-bottom: 0; }
+  .q-label {
+    display: block;
+    font-size: 15px; font-weight: 600;
+    color: var(--text);
+    margin-bottom: 10px;
+    line-height: 1.6;
+  }
+  .q-label .num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 24px; height: 24px;
+    background: var(--primary); color: #fff;
+    border-radius: 50%;
+    font-size: 13px; font-weight: 700;
+    margin-right: 8px;
+    font-family: "Inter", sans-serif;
+  }
+  .q-hint {
+    font-size: 13px; color: var(--text-3);
+    margin-bottom: 8px;
+    margin-left: 32px;
+  }
+  textarea, select {
+    width: 100%;
+    padding: 12px 14px;
+    background: var(--bg);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-size: 14px; font-family: inherit;
+    line-height: 1.7;
+    resize: vertical;
+    min-height: 80px;
+    transition: border-color .2s;
+  }
+  select { min-height: auto; padding: 12px 14px; }
+  textarea:focus, select:focus {
+    border-color: var(--primary); outline: none;
+    background: #fff;
+  }
+
+  /* Submit */
+  .submit-wrap {
+    background: linear-gradient(135deg, var(--primary-light) 0%, #fff 100%);
+    border-radius: 18px;
+    padding: 32px 28px;
+    margin-top: 32px;
+    text-align: center;
+    border: 2px solid var(--primary);
+    box-shadow: var(--shadow);
+  }
+  .submit-wrap p {
+    font-size: 14px; color: var(--text-2);
+    margin-bottom: 18px; line-height: 1.7;
+  }
+  .submit-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--primary); color: #fff;
+    border: none;
+    padding: 14px 36px;
+    font-size: 16px; font-weight: 600;
+    font-family: inherit;
+    border-radius: 100px;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(198, 97, 63, 0.3);
+    transition: all .25s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  .submit-btn:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px rgba(198, 97, 63, 0.4);
+  }
+
+  /* Result Modal */
+  .result {
+    display: none;
+    position: fixed; inset: 0; z-index: 100;
+    background: rgba(26,26,26,0.6);
+    backdrop-filter: blur(6px);
+    align-items: center; justify-content: center;
+    padding: 20px;
+  }
+  .result.show { display: flex; }
+  .result-box {
+    background: var(--surface);
+    border-radius: 20px;
+    padding: 36px 32px;
+    max-width: 560px; width: 100%;
+    max-height: 85vh; overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  }
+  .result-box h2 {
+    font-family: "Noto Serif TC", serif;
+    font-size: 22px; color: var(--primary-dark);
+    margin-bottom: 8px;
+  }
+  .result-box .sub {
+    font-size: 14px; color: var(--text-3);
+    margin-bottom: 20px;
+  }
+  .result-text {
+    background: var(--bg);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 18px;
+    font-size: 13px;
+    line-height: 1.85;
+    white-space: pre-wrap;
+    max-height: 320px;
+    overflow-y: auto;
+    margin-bottom: 18px;
+    font-family: "Noto Sans TC", sans-serif;
+  }
+  .result-actions {
+    display: flex; gap: 10px; flex-wrap: wrap;
+  }
+  .btn {
+    flex: 1; min-width: 130px;
+    padding: 12px 20px;
+    border-radius: 100px;
+    font-size: 14px; font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    border: none;
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    transition: all .2s;
+  }
+  .btn-primary {
+    background: var(--primary); color: #fff;
+  }
+  .btn-primary:hover { background: var(--primary-dark); }
+  .btn-secondary {
+    background: var(--bg); color: var(--text-2);
+    border: 1.5px solid var(--border);
+  }
+  .btn-secondary:hover { border-color: var(--primary); color: var(--primary); }
+  .copy-toast {
+    position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+    background: var(--text); color: #fff;
+    padding: 12px 24px; border-radius: 100px;
+    font-size: 14px;
+    box-shadow: 0 8px 22px rgba(0,0,0,0.2);
+    opacity: 0; transition: opacity .3s;
+    pointer-events: none;
+    z-index: 200;
+  }
+  .copy-toast.show { opacity: 1; }
+
+  /* Klee accent for section titles in body */
+  .klee {
+    font-family: "Klee One", serif;
+    color: var(--primary);
+  }
+
+  footer {
+    text-align: center;
+    padding: 30px 20px 50px;
+    font-size: 12px; color: var(--text-3);
+    font-family: "Klee One", serif;
+  }
+  footer .heart { color: var(--primary); }
+
+  @media (max-width: 600px) {
+    .section { padding: 24px 20px; }
+    .submit-wrap { padding: 24px 20px; }
+    .name-options label { min-width: calc(50% - 5px); }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a class="back-btn" href="/knowledge/"><i class="ph ph-arrow-left"></i> 知識庫</a>
+    <h1>主管 AI 課前小調查</h1>
+  </div>
+</div>
+
+<section class="hero">
+  <span class="badge"><i class="ph ph-clipboard-text"></i> 內部問卷</span>
+  <h1>淨淨主管<br><span class="accent">AI 課前小調查</span></h1>
+  <p>下禮拜上課前先聽聽你們的真實狀況、課才會對到你們真的需要的。<br>
+    認真填、不用客套——這份不打分數、是要讓課程更有用。</p>
+  <div class="hero-meta">
+    <span><i class="ph ph-clock"></i> 約 8 分鐘</span>
+    <span><i class="ph ph-lock-key"></i> 只給主公看</span>
+    <span><i class="ph ph-chat-circle-text"></i> 越誠實越好</span>
+  </div>
+</section>
+
+<form id="surveyForm" class="form-wrap">
+
+  <!-- 填表人 -->
+  <div class="name-block">
+    <label><i class="ph ph-user"></i> 你是誰？</label>
+    <div class="name-options">
+      <label><input type="radio" name="who" value="依庭" required><span class="opt">依庭</span></label>
+      <label><input type="radio" name="who" value="小瑄"><span class="opt">小瑄</span></label>
+      <label><input type="radio" name="who" value="妮妮"><span class="opt">妮妮</span></label>
+      <label><input type="radio" name="who" value="Cara"><span class="opt">Cara</span></label>
+      <label><input type="radio" name="who" value="冠達"><span class="opt">冠達</span></label>
+      <label><input type="radio" name="who" value="其他"><span class="opt">其他</span></label>
+    </div>
+    <input type="text" class="name-other" id="nameOther" placeholder="請輸入名字…">
+  </div>
+
+  <!-- Part 1 -->
+  <div class="section">
+    <span class="section-tag"><i class="ph ph-magnifying-glass"></i> PART 1</span>
+    <h2>你們現在的痛點</h2>
+    <p class="desc">主管視角：你們目前用工具最受不了的事</p>
+
+    <div class="q">
+      <label class="q-label"><span class="num">1</span>你們現在用 Notion / Excel / Slack 最受不了的事是什麼？</label>
+      <p class="q-hint">想到什麼寫什麼、不用整理</p>
+      <textarea name="q1" placeholder="例：Notion 找東西很慢、Excel 大家用不一樣的格式、Slack 訊息淹沒重要的事…"></textarea>
+    </div>
+
+    <div class="q">
+      <label class="q-label"><span class="num">2</span>淨淨總站（cleanclean-hub）你用過了嗎？哪裡卡？</label>
+      <p class="q-hint">4-26 才剛上線、卡點都正常、我們要改</p>
+      <textarea name="q2" placeholder="例：完全沒用過 / 用過但找不到 X 在哪 / 介面跟我習慣的差太多…"></textarea>
+    </div>
+
+    <div class="q">
+      <label class="q-label"><span class="num">3</span>5 月你希望淨淨總站幫你什麼忙？</label>
+      <p class="q-hint">越具體越好——「希望 X 自動算好給我」之類</p>
+      <textarea name="q3" placeholder="例：每週業績報表自動產、客戶資料一站搞定、不用三個地方對齊…"></textarea>
+    </div>
+  </div>
+
+  <!-- Part 2 -->
+  <div class="section">
+    <span class="section-tag"><i class="ph ph-users-three"></i> PART 2</span>
+    <h2>員工的卡關</h2>
+    <p class="desc">員工視角：你們帶員工時看到的真實狀況</p>
+
+    <div class="q">
+      <label class="q-label"><span class="num">4</span>員工最常問你什麼 AI 問題？</label>
+      <p class="q-hint">不用排序、想到幾個寫幾個</p>
+      <textarea name="q4" placeholder="例：怎麼下指令、生出來的東西好爛、不知道哪些可以給 AI 做…"></textarea>
+    </div>
+
+    <div class="q">
+      <label class="q-label"><span class="num">5</span>員工用我們的 AI 工具最常卡在哪？</label>
+      <p class="q-hint">行銷神隊友 / 美學工作站 / 客服小幫手 / 門市小幫手都可以</p>
+      <textarea name="q5" placeholder="例：寫文案出來太機器人、做圖人臉怪、客服回覆太正式…"></textarea>
+    </div>
+
+    <div class="q">
+      <label class="q-label"><span class="num">6</span>有沒有員工根本不敢用 AI？為什麼？</label>
+      <p class="q-hint">這個最重要——不敢用的原因是課程要解的</p>
+      <textarea name="q6" placeholder="例：覺得自己不懂、怕被 AI 取代、覺得學這個太累…"></textarea>
+    </div>
+  </div>
+
+  <!-- Part 3 -->
+  <div class="section">
+    <span class="section-tag"><i class="ph ph-heart"></i> PART 3</span>
+    <h2>你個人的話</h2>
+    <p class="desc">講你心裡話、軍師才能對症下藥</p>
+
+    <div class="q">
+      <label class="q-label"><span class="num">7</span>你對 AI 最大的疑慮 / 期待是什麼？</label>
+      <p class="q-hint">這份只給主公看、誠實寫</p>
+      <textarea name="q7" placeholder="疑慮也好、期待也好、混在一起也可以…"></textarea>
+    </div>
+
+    <div class="q">
+      <label class="q-label"><span class="num">8</span>你希望這次主管課程多教什麼？</label>
+      <p class="q-hint">具體說「希望學會 X」</p>
+      <textarea name="q8" placeholder="例：希望學會怎麼帶員工用 AI、怎麼判斷 AI 產出好不好…"></textarea>
+    </div>
+
+    <div class="q">
+      <label class="q-label"><span class="num">9</span>其他想跟主公說的話？<span style="color:var(--text-3);font-weight:400;font-size:13px">（可選）</span></label>
+      <p class="q-hint">加薪以外都可以講 😎</p>
+      <textarea name="q9" placeholder="想到什麼寫什麼、不寫也行…"></textarea>
+    </div>
+  </div>
+
+  <!-- Submit -->
+  <div class="submit-wrap">
+    <p><i class="ph-fill ph-info" style="color:var(--primary);"></i> <strong>填完按下面、會產生整理好的訊息</strong><br>
+      你直接複製貼給主公 LINE 就完成了 ✨</p>
+    <button type="submit" class="submit-btn">
+      <i class="ph ph-paper-plane-tilt"></i> 整理我的回答
+    </button>
+  </div>
+
+</form>
+
+<!-- Result Modal -->
+<div class="result" id="resultModal">
+  <div class="result-box">
+    <h2>謝謝你的回答 <span class="klee">🌿</span></h2>
+    <p class="sub">下面是整理好的內容、複製後貼給主公 LINE 即可</p>
+    <div class="result-text" id="resultText"></div>
+    <div class="result-actions">
+      <button class="btn btn-primary" id="copyBtn">
+        <i class="ph ph-copy"></i> 複製到剪貼簿
+      </button>
+      <button class="btn btn-secondary" id="closeBtn">
+        <i class="ph ph-pencil"></i> 回去再改
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="copy-toast" id="toast"><i class="ph-fill ph-check-circle"></i> 已複製、貼到 LINE 給主公！</div>
+
+<footer>
+  <span class="heart">●</span> 笙之道 · 上善若水 · 淨淨主管 AI 課前 <span class="heart">●</span><br>
+  2026-04-30 軍師郭嘉設計 · 主公專用
+</footer>
+
+<script>
+  // 名字「其他」切換
+  const nameRadios = document.querySelectorAll('input[name="who"]');
+  const nameOther = document.getElementById('nameOther');
+  nameRadios.forEach(r => r.addEventListener('change', () => {
+    nameOther.classList.toggle('show', r.value === '其他' && r.checked);
+    if (r.value === '其他' && r.checked) nameOther.focus();
+  }));
+
+  // 提交
+  document.getElementById('surveyForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const f = e.target;
+    const data = new FormData(f);
+    let who = data.get('who') || '未填';
+    if (who === '其他') who = nameOther.value.trim() || '其他';
+
+    const Q = [
+      ['Notion/Excel/Slack 最受不了', data.get('q1')],
+      ['淨淨總站卡哪', data.get('q2')],
+      ['希望淨淨總站幫的忙', data.get('q3')],
+      ['員工最常問的 AI 問題', data.get('q4')],
+      ['員工用工具最常卡哪', data.get('q5')],
+      ['不敢用 AI 的員工 + 原因', data.get('q6')],
+      ['對 AI 的疑慮/期待', data.get('q7')],
+      ['希望課程多教什麼', data.get('q8')],
+      ['想跟主公說的話', data.get('q9')]
+    ];
+
+    const today = new Date();
+    const dateStr = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+
+    let txt = `📋 淨淨主管 AI 課前小調查\n填表人：${who}\n日期：${dateStr}\n` + '─'.repeat(28) + '\n\n';
+    Q.forEach((q, i) => {
+      const ans = (q[1] || '').trim() || '（沒填）';
+      txt += `${i+1}. ${q[0]}\n${ans}\n\n`;
+    });
+    txt += '─'.repeat(28) + '\n發送給主公收 ✨';
+
+    document.getElementById('resultText').textContent = txt;
+    document.getElementById('resultModal').classList.add('show');
+  });
+
+  // 複製
+  document.getElementById('copyBtn').addEventListener('click', async () => {
+    const txt = document.getElementById('resultText').textContent;
+    try {
+      await navigator.clipboard.writeText(txt);
+    } catch (e) {
+      // fallback
+      const ta = document.createElement('textarea');
+      ta.value = txt; document.body.appendChild(ta);
+      ta.select(); document.execCommand('copy');
+      document.body.removeChild(ta);
+    }
+    const toast = document.getElementById('toast');
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2500);
+  });
+
+  // 關閉
+  document.getElementById('closeBtn').addEventListener('click', () => {
+    document.getElementById('resultModal').classList.remove('show');
+  });
+  document.getElementById('resultModal').addEventListener('click', (e) => {
+    if (e.target.id === 'resultModal') {
+      document.getElementById('resultModal').classList.remove('show');
+    }
+  });
+</script>
+
+</body>
+</html>

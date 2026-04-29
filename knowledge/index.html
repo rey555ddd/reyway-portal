@@ -47,6 +47,7 @@ body{font-family:"Inter","Noto Sans TC",sans-serif;background:var(--bg);color:va
 #auth-gate{position:fixed;inset:0;z-index:999;background:var(--bg);display:flex;align-items:center;justify-content:center}
 #auth-gate.hidden{display:none}
 </style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css">
 </head>
 <body>
 
@@ -54,7 +55,7 @@ body{font-family:"Inter","Noto Sans TC",sans-serif;background:var(--bg);color:va
 
 <div class="topbar"><div class="wrap topbar-inner">
   <a class="back-btn" href="/">← 返回總站</a>
-  <h1>📚 網頁知識庫</h1>
+  <h1><i class="ph ph-books"></i> 網頁知識庫</h1>
 </div></div>
 
 <div class="wrap">
@@ -72,15 +73,21 @@ body{font-family:"Inter","Noto Sans TC",sans-serif;background:var(--bg);color:va
       <div class="cat-count">4 個頁面</div>
     </a>
     <a class="cat-card" href="/knowledge/工具/">
-      <div class="cat-icon">🛠</div>
+      <div class="cat-icon"><i class="ph ph-toolbox"></i></div>
       <div class="cat-name">工具</div>
       <div class="cat-desc">臨時工具頁面<br>生成器・轉換器</div>
       <div class="cat-count">6 個頁面</div>
     </a>
     <a class="cat-card" href="/knowledge/報告/">
-      <div class="cat-icon">📊</div>
+      <div class="cat-icon"><i class="ph ph-chart-bar"></i></div>
       <div class="cat-name">報告</div>
       <div class="cat-desc">年度報告・數據分析<br>品牌洞察</div>
+      <div class="cat-count">1 個頁面</div>
+    </a>
+    <a class="cat-card" href="/knowledge/問卷/">
+      <div class="cat-icon"><i class="ph ph-clipboard-text"></i></div>
+      <div class="cat-name">問卷</div>
+      <div class="cat-desc">內部調查・課前問卷<br>活動回饋</div>
       <div class="cat-count">1 個頁面</div>
     </a>
   </div>
@@ -88,8 +95,17 @@ body{font-family:"Inter","Noto Sans TC",sans-serif;background:var(--bg);color:va
   <div class="section-label">近期更新</div>
   <div class="recent-list">
 
+    <a class="kb-card" href="/knowledge/問卷/manager-ai-survey.html" target="_blank">
+      <div class="kb-icon" style="color:#C6613F"><i class="ph ph-clipboard-text"></i></div>
+      <div class="kb-body">
+        <div class="kb-title">淨淨主管 AI 課前小調查</div>
+        <div class="kb-meta"><span class="kb-tag" style="background:rgba(198,97,63,0.12);color:#A04A2D">問卷</span><span class="kb-date">2026-04-30 · 內部</span></div>
+      </div>
+      <div class="kb-arrow">→</div>
+    </a>
+
     <a class="kb-card" href="/knowledge/教學/staff-training.html" target="_blank">
-      <div class="kb-icon">👥</div>
+      <div class="kb-icon"><i class="ph ph-users"></i></div>
       <div class="kb-body">
         <div class="kb-title">全體員工 AI 工具使用教學</div>
         <div class="kb-meta"><span class="kb-tag">教學</span><span class="kb-date">2026-04-24</span></div>
@@ -107,7 +123,7 @@ body{font-family:"Inter","Noto Sans TC",sans-serif;background:var(--bg);color:va
     </a>
 
     <a class="kb-card" href="/knowledge/教學/ai-team-training.html" target="_blank">
-      <div class="kb-icon">🤖</div>
+      <div class="kb-icon"><i class="ph ph-robot"></i></div>
       <div class="kb-body">
         <div class="kb-title">AI 軍團完整教學</div>
         <div class="kb-meta"><span class="kb-tag">教學</span><span class="kb-date">2026-04-26</span></div>
@@ -116,7 +132,7 @@ body{font-family:"Inter","Noto Sans TC",sans-serif;background:var(--bg);color:va
     </a>
 
     <a class="kb-card" href="/knowledge/教學/ai-stages.html" target="_blank">
-      <div class="kb-icon">🧠</div>
+      <div class="kb-icon"><i class="ph ph-brain"></i></div>
       <div class="kb-body">
         <div class="kb-title">AI 的五個發展階段</div>
         <div class="kb-meta"><span class="kb-tag">教學</span><span class="kb-date">2026-04-24</span></div>
@@ -125,7 +141,7 @@ body{font-family:"Inter","Noto Sans TC",sans-serif;background:var(--bg);color:va
     </a>
 
     <a class="kb-card" href="/knowledge/報告/eagle-group-dashboard.html" target="_blank">
-      <div class="kb-icon">📊</div>
+      <div class="kb-icon"><i class="ph ph-chart-bar"></i></div>
       <div class="kb-body">
         <div class="kb-title">伊果集團損益分析儀表板</div>
         <div class="kb-meta"><span class="kb-tag">報告</span><span class="kb-date">2026-04-21</span></div>
@@ -134,7 +150,7 @@ body{font-family:"Inter","Noto Sans TC",sans-serif;background:var(--bg);color:va
     </a>
 
     <a class="kb-card" href="/knowledge/工具/color-system.html" target="_blank">
-      <div class="kb-icon">🎨</div>
+      <div class="kb-icon"><i class="ph ph-palette"></i></div>
       <div class="kb-body">
         <div class="kb-title">REYWAY 色彩系統</div>
         <div class="kb-meta"><span class="kb-tag">工具</span><span class="kb-date">2026-04-24</span></div>
