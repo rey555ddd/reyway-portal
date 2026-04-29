@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>笙之道｜第二大腦 — REYWAY 知識庫</title>
+<meta name="description" content="自建知識管理系統 brain.reyway.com — 從 Obsidian 走出來、自建一個會長大的活器官。vs Obsidian 比較表 + 完整使用說明。">
+<meta property="og:title" content="笙之道｜第二大腦">
+<meta property="og:description" content="從 Obsidian 走出來、自建一個會長大的活器官。12 小時從零到上線。">
+<meta property="og:type" content="article">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Noto+Sans+TC:wght@300;400;500;600&family=Noto+Serif+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --paper:#F4EFE3;        /* 宣紙白 */
+  --paper-2:#EAE3D2;      /* 米黃陰影 */
+  --jade:#2A4338;         /* 古玉墨綠 */
+  --jade-soft:#3a5448;
+  --bronze:#B59548;       /* 古銅金 */
+  --bronze-soft:#cdb277;
+  --ink:#1F2A24;          /* 墨字 */
+  --ink-2:#5a6760;
+  --ink-3:#8b948f;
+  --line:rgba(42,67,56,0.12);
+  --line-soft:rgba(42,67,56,0.06);
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Noto Sans TC',-apple-system,sans-serif;
+  background:var(--paper);
+  color:var(--ink);
+  -webkit-font-smoothing:antialiased;
+  line-height:1.8;
+  min-height:100vh;
+  background-image:
+    radial-gradient(circle at 15% 20%, rgba(181,149,72,0.04) 0%, transparent 40%),
+    radial-gradient(circle at 85% 70%, rgba(42,67,56,0.04) 0%, transparent 40%);
+}
+
+/* ===== Top nav (保留 reyway 風格、簡化) ===== */
+.topbar{
+  background:var(--paper);
+  border-bottom:1px solid var(--line);
+  padding:14px 24px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:10;
+  backdrop-filter:blur(8px);
+}
+.topbar-left{display:flex;align-items:center;gap:18px;font-size:0.85rem;color:var(--ink-2)}
+.topbar-left a{color:var(--ink-2);text-decoration:none;transition:color 0.5s ease-out}
+.topbar-left a:hover{color:var(--jade)}
+.topbar-left .crumb-sep{color:var(--ink-3);font-size:0.7rem}
+.topbar-right a{
+  font-size:0.78rem;color:var(--bronze);text-decoration:none;
+  letter-spacing:0.08em;text-transform:uppercase;
+  transition:color 0.5s ease-out;
+}
+.topbar-right a:hover{color:var(--jade)}
+
+/* ===== Wrap ===== */
+.wrap{max-width:780px;margin:0 auto;padding:0 24px}
+
+/* ===== Hero ===== */
+.hero{
+  text-align:center;
+  padding:88px 0 64px;
+  position:relative;
+}
+.hero-eyebrow{
+  font-family:'Cormorant Garamond',serif;
+  font-size:0.78rem;letter-spacing:0.32em;
+  color:var(--bronze);
+  text-transform:uppercase;
+  margin-bottom:24px;
+  font-style:italic;
+}
+.hero h1{
+  font-family:'Noto Serif TC','Cormorant Garamond',serif;
+  font-size:3.4rem;font-weight:500;
+  letter-spacing:0.02em;
+  color:var(--jade);
+  margin-bottom:18px;
+  line-height:1.3;
+}
+.hero h1 .sep{
+  color:var(--bronze);font-weight:400;
+  margin:0 0.3em;font-family:'Cormorant Garamond',serif;
+}
+.hero-sub{
+  font-family:'Noto Serif TC',serif;
+  font-size:1.05rem;color:var(--ink-2);
+  font-weight:400;line-height:1.85;
+  max-width:480px;margin:0 auto 36px;
+}
+.hero-cta{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:14px 32px;
+  background:var(--jade);color:var(--paper);
+  border-radius:2px;text-decoration:none;
+  font-family:'Noto Serif TC',serif;
+  font-size:0.95rem;font-weight:500;
+  letter-spacing:0.08em;
+  transition:background 0.5s ease-out,transform 0.5s ease-out;
+}
+.hero-cta:hover{background:var(--jade-soft);transform:translateY(-1px)}
+.hero-cta i{width:16px;height:16px}
+
+/* ===== Hero 太極點綴 ===== */
+.taiji-mark{
+  width:42px;height:42px;margin:0 auto 28px;
+  opacity:0.85;
+}
+
+/* ===== Section ===== */
+section.chapter{
+  padding:48px 0;
+  border-top:1px solid var(--line-soft);
+}
+section.chapter:first-of-type{border-top:none}
+.chapter-num{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  font-size:0.85rem;letter-spacing:0.2em;
+  color:var(--bronze);
+  text-transform:uppercase;
+  margin-bottom:10px;
+}
+.chapter h2{
+  font-family:'Noto Serif TC',serif;
+  font-size:1.85rem;font-weight:600;
+  color:var(--jade);
+  margin-bottom:24px;
+  letter-spacing:0.01em;
+}
+.chapter p{
+  font-size:1rem;color:var(--ink);
+  margin-bottom:18px;line-height:1.95;
+}
+.chapter p.lead{
+  font-family:'Noto Serif TC',serif;
+  font-size:1.08rem;color:var(--ink-2);
+  font-weight:400;
+}
+.chapter ul{padding-left:1.2em;margin-bottom:20px}
+.chapter ul li{margin-bottom:10px;line-height:1.85}
+.chapter strong{color:var(--jade);font-weight:600}
+
+/* ===== 比較表 ===== */
+.compare-table{
+  width:100%;border-collapse:collapse;
+  margin:28px 0;
+  font-size:0.93rem;
+  background:rgba(255,253,247,0.5);
+  border-radius:4px;
+  overflow:hidden;
+  box-shadow:0 2px 24px rgba(42,67,56,0.06);
+}
+.compare-table th,.compare-table td{
+  padding:14px 16px;
+  text-align:left;
+  border-bottom:1px solid var(--line-soft);
+  vertical-align:top;
+}
+.compare-table th{
+  background:var(--jade);color:var(--paper);
+  font-family:'Noto Serif TC',serif;
+  font-weight:500;
+  letter-spacing:0.05em;
+  font-size:0.92rem;
+}
+.compare-table th.dim{
+  background:var(--jade-soft);
+  width:25%;
+}
+.compare-table td.dim{
+  font-weight:600;color:var(--jade);
+  background:rgba(181,149,72,0.05);
+  width:25%;
+  font-family:'Noto Serif TC',serif;
+}
+.compare-table td .x{color:#a85a4a;margin-right:4px}
+.compare-table td .v{color:#3a7a5e;margin-right:4px;font-weight:600}
+.compare-table tr:last-child td{border-bottom:none}
+.compare-table-wrap{overflow-x:auto;margin:28px -8px}
+
+/* ===== 功能說明卡 ===== */
+.feature-block{
+  margin:32px 0;
+  padding:24px 28px;
+  background:rgba(255,253,247,0.6);
+  border-left:2px solid var(--bronze);
+  border-radius:0 4px 4px 0;
+}
+.feature-block h3{
+  font-family:'Noto Serif TC',serif;
+  font-size:1.2rem;font-weight:600;
+  color:var(--jade);
+  margin-bottom:14px;
+  display:flex;align-items:center;gap:10px;
+}
+.feature-block h3 svg{
+  width:18px;height:18px;
+  color:var(--bronze);
+  stroke-width:1.5;
+  flex-shrink:0;
+}
+.icon-inline{width:16px;height:16px;display:inline-block;vertical-align:-2px}
+.feature-block ul{margin-bottom:0}
+.feature-block ul li{
+  margin-bottom:8px;
+  font-size:0.96rem;
+  line-height:1.85;
+}
+.feature-block ul li strong{color:var(--jade)}
+
+/* ===== 技術架構 ===== */
+.tech-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  gap:14px;
+  margin:24px 0;
+}
+.tech-card{
+  background:rgba(255,253,247,0.7);
+  padding:16px 18px;
+  border-radius:3px;
+  border:1px solid var(--line);
+}
+.tech-card-label{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  font-size:0.78rem;letter-spacing:0.18em;
+  color:var(--bronze);
+  text-transform:uppercase;
+  margin-bottom:6px;
+}
+.tech-card-value{
+  font-size:0.92rem;color:var(--ink);
+  line-height:1.7;
+}
+
+/* ===== 哲學引言 ===== */
+.philo-quote{
+  font-family:'Noto Serif TC',serif;
+  font-style:italic;
+  font-size:1.15rem;
+  color:var(--ink-2);
+  text-align:center;
+  margin:32px auto;
+  padding:20px 0;
+  max-width:520px;
+  line-height:2;
+  border-top:1px solid var(--line-soft);
+  border-bottom:1px solid var(--line-soft);
+}
+
+/* ===== 致謝區 ===== */
+.thanks{
+  background:rgba(181,149,72,0.06);
+  padding:32px 36px;
+  border-radius:4px;
+  border:1px solid rgba(181,149,72,0.2);
+  margin:32px 0;
+  font-family:'Noto Serif TC',serif;
+}
+.thanks p{
+  font-size:1rem;color:var(--ink);
+  margin-bottom:0;line-height:1.95;
+}
+.thanks .quote-mark{
+  font-family:'Cormorant Garamond',serif;
+  font-size:2.5rem;color:var(--bronze);
+  line-height:1;float:left;
+  margin-right:10px;margin-top:-4px;
+}
+
+/* ===== CTA 區 ===== */
+.cta-block{
+  text-align:center;
+  padding:56px 0;
+  border-top:1px solid var(--line);
+  margin-top:32px;
+}
+.cta-block h2{
+  font-family:'Noto Serif TC',serif;
+  font-size:1.5rem;font-weight:500;
+  color:var(--jade);
+  margin-bottom:24px;
+}
+.cta-row{
+  display:flex;gap:14px;justify-content:center;flex-wrap:wrap;
+}
+.cta-btn{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:13px 28px;
+  border-radius:2px;text-decoration:none;
+  font-family:'Noto Serif TC',serif;
+  font-size:0.93rem;font-weight:500;
+  letter-spacing:0.06em;
+  transition:all 0.5s ease-out;
+}
+.cta-btn.primary{background:var(--jade);color:var(--paper)}
+.cta-btn.primary:hover{background:var(--jade-soft);transform:translateY(-1px)}
+.cta-btn.ghost{background:transparent;color:var(--jade);border:1px solid var(--jade)}
+.cta-btn.ghost:hover{background:var(--jade);color:var(--paper)}
+.cta-btn i{width:16px;height:16px}
+
+/* ===== Footer 落款 ===== */
+footer{
+  text-align:center;
+  padding:56px 24px 80px;
+  border-top:1px solid var(--line-soft);
+  margin-top:48px;
+}
+.footer-seal{
+  font-family:'Noto Serif TC',serif;
+  writing-mode:vertical-rl;
+  font-size:1.05rem;
+  letter-spacing:0.8em;
+  color:var(--bronze);
+  margin:0 auto 16px;
+  height:auto;
+  display:inline-block;
+  font-weight:500;
+}
+.footer-meta{
+  font-size:0.76rem;color:var(--ink-3);
+  letter-spacing:0.1em;
+  margin-top:24px;
+}
+
+/* ===== Responsive ===== */
+@media(max-width:640px){
+  .hero{padding:56px 0 40px}
+  .hero h1{font-size:2.4rem}
+  .hero h1 .sep{display:block;height:0;margin:8px 0}
+  .hero-sub{font-size:0.95rem}
+  .chapter{padding:36px 0}
+  .chapter h2{font-size:1.4rem}
+  .compare-table{font-size:0.85rem}
+  .compare-table th,.compare-table td{padding:10px 10px}
+  .feature-block{padding:18px 20px}
+  .tech-grid{grid-template-columns:1fr}
+  .topbar{padding:12px 16px}
+  .topbar-left{font-size:0.78rem;gap:10px}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== Top nav ===== -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <a href="/">REYWAY</a>
+    <span class="crumb-sep">／</span>
+    <a href="/knowledge/">知識庫</a>
+    <span class="crumb-sep">／</span>
+    <span style="color:var(--jade)">笙之道</span>
+  </div>
+  <div class="topbar-right">
+    <a href="https://brain.reyway.com" target="_blank" rel="noopener">brain.reyway.com →</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <!-- ===== Hero ===== -->
+  <header class="hero">
+    <!-- 太極點 -->
+    <svg class="taiji-mark" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="12" cy="12" r="11" fill="none" stroke="#B59548" stroke-width="0.8"/>
+      <path d="M 12,1 A 11,11 0 0 1 12,23 A 5.5,5.5 0 0 0 12,12 A 5.5,5.5 0 0 1 12,1 Z"
+            fill="#B59548" fill-opacity="0.55"/>
+    </svg>
+    <div class="hero-eyebrow">BRAIN.REYWAY.COM</div>
+    <h1>笙之道<span class="sep">｜</span>第二大腦</h1>
+    <p class="hero-sub">
+      從 Obsidian 走出來、自建一個會長大的活器官。<br>
+      12 小時從零到上線、八路 sub-agent 並行打造。
+    </p>
+    <a class="hero-cta" href="https://brain.reyway.com" target="_blank" rel="noopener">
+      <svg class="icon-inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+      直接訪問 brain.reyway.com
+    </a>
+  </header>
+
+  <!-- ===== 章一 緣起 ===== -->
+  <section class="chapter">
+    <div class="chapter-num">CHAPTER ONE · ORIGIN</div>
+    <h2>為什麼自建</h2>
+    <p class="lead">
+      主公裝了 Obsidian、看一眼、覺得太複雜。500 個外掛、Graph View 一團亂、永遠都是檔案。
+    </p>
+    <p>
+      但「第二大腦」這個概念太重要、不能放棄——人的腦子裝不下、靈光一現的想法每天蒸發、
+      看到的好東西轉頭就忘。所以拍板自建——12 小時從零到上線、不裝插件、不學語法、
+      用我們最熟悉的工具：純 HTML + Cloudflare Pages + Claude + Gemini，做一個只服務一個人的腦。
+    </p>
+    <p class="lead">
+      不是 Obsidian 的替代品。是換一條路、走得更深。
+    </p>
+  </section>
+
+  <!-- ===== 章二 比較表 ===== -->
+  <section class="chapter">
+    <div class="chapter-num">CHAPTER TWO · COMPARISON</div>
+    <h2>vs Obsidian 全維比較</h2>
+    <p>
+      Obsidian 是工程師寫給工程師的工具——強、但要學、要設定、要插件。
+      笙之道走另一條路：<strong>不給工具、給活器官</strong>。
+    </p>
+
+    <div class="compare-table-wrap">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th class="dim">維度</th>
+            <th>Obsidian</th>
+            <th>笙之道（brain）</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="dim">本質</td>
+            <td>封閉的儲存箱</td>
+            <td>會長大、會互動、會迴流的活器官</td>
+          </tr>
+          <tr>
+            <td class="dim">階級設計</td>
+            <td>全部一層、靠人手分類</td>
+            <td>DIKW 三階自動推進（Inbox → Archive → Sanctum）</td>
+          </tr>
+          <tr>
+            <td class="dim">AI 整合</td>
+            <td>要靠插件硬接</td>
+            <td>Claude + Gemini + OpenAI 原生串好</td>
+          </tr>
+          <tr>
+            <td class="dim">Agent 互動</td>
+            <td><span class="x">✕</span> 做不到</td>
+            <td><span class="v">✓</span> 七員共腦、雙向迴流</td>
+          </tr>
+          <tr>
+            <td class="dim">視覺化</td>
+            <td>Graph View 一團亂</td>
+            <td>Atlas 思維地圖、只畫 Sanctum、有意義</td>
+          </tr>
+          <tr>
+            <td class="dim">投入入口</td>
+            <td>只有桌機 app</td>
+            <td>網頁 + LINE + 瀏覽器外掛 + iPhone 分享 + Agent 推回</td>
+          </tr>
+          <tr>
+            <td class="dim">對話功能</td>
+            <td>沒有</td>
+            <td>17 角色視角（七員 + 馬斯克 / Karpathy / 林明樟 ...）</td>
+          </tr>
+          <tr>
+            <td class="dim">內化機制</td>
+            <td>永遠是檔案</td>
+            <td>一鍵升 Skill / 思維模型、變成本能</td>
+          </tr>
+          <tr>
+            <td class="dim">可分享</td>
+            <td>付費 Publish 服務</td>
+            <td>送禮卡（24h / 7d / forever）+ 公開頁</td>
+          </tr>
+          <tr>
+            <td class="dim">新陳代謝</td>
+            <td>不會老</td>
+            <td>30 天老化提示 / 重複命中升級提案</td>
+          </tr>
+          <tr>
+            <td class="dim">視覺風格</td>
+            <td>工程師預設醜</td>
+            <td>道家 × 精品酒店、宣紙白 + 古玉墨綠 + 古銅金</td>
+          </tr>
+          <tr>
+            <td class="dim">學習成本</td>
+            <td>高（500 外掛 / 語法）</td>
+            <td>0（看到三按鈕就懂）</td>
+          </tr>
+          <tr>
+            <td class="dim">鎖定風險</td>
+            <td>中（插件配置搬家會失）</td>
+            <td>0（資料在 Cloudflare KV、可匯出）</td>
+          </tr>
+          <tr>
+            <td class="dim">建置時間</td>
+            <td>安裝 + 配置 1–2 天</td>
+            <td>12 小時、八路 sub-agent 並行</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="lead">
+      重點不是哪個比較強——是<strong>哪個會跟你一起長大</strong>。
+    </p>
+  </section>
+
+  <!-- ===== 章三 使用說明 ===== -->
+  <section class="chapter">
+    <div class="chapter-num">CHAPTER THREE · HOW IT WORKS</div>
+    <h2>使用說明</h2>
+    <p>
+      五個面向：<strong>投入</strong>（讓靈光不蒸發）→ <strong>處理</strong>（AI 自動整理）→
+      <strong>整理</strong>（DIKW 三階）→ <strong>共腦</strong>（七員一起長大）→
+      <strong>視覺化</strong>（看見全貌）→ <strong>共享</strong>（送出去）。
+    </p>
+
+    <div class="feature-block">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/></svg>投入端 · 讓靈光不再蒸發</h3>
+      <ul>
+        <li><strong>投入頁</strong>：貼網址 / 寫想法 / 丟連結 / 拖截圖 / 上傳 PDF。</li>
+        <li><strong>LINE 自動投入</strong>：在 LINE 直接傳網址、或寫 30 字以上想法 → 自動進 brain。</li>
+        <li><strong>瀏覽器外掛</strong>：右鍵任何網頁「投進笙之道」、一秒入庫。</li>
+        <li><strong>PWA iPhone 分享</strong>：Add to Home Screen 後、IG / 任何 app 分享 → brain。</li>
+        <li><strong>Agent 推回</strong>：七員工作時看到值得記的、自動推回 brain inbox。</li>
+      </ul>
+    </div>
+
+    <div class="feature-block">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.582a.5.5 0 0 1 0 .962L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/><path d="M20 3v4"/><path d="M22 5h-4"/><path d="M4 17v2"/><path d="M5 18H3"/></svg>處理端 · AI 自動整理</h3>
+      <ul>
+        <li>投入後 AI 立即<strong>摘要 + 自動標籤 + 開場白</strong>（17 角色視角擇一）。</li>
+        <li><strong>YouTube 連結</strong>：Gemini 直吃影片、看畫面 + 聽聲音、產出時間軸摘要。</li>
+        <li><strong>IG / TikTok / Threads 短影音</strong>：cobalt.tools 下載 + Gemini Files 分析。</li>
+        <li><strong>一般網址</strong>：fetch 內文 + Claude Sonnet 摘要、開啟 prompt caching。</li>
+        <li><strong>截圖 / PDF</strong>：Vision 讀內容、自動 OCR + 摘要。</li>
+      </ul>
+    </div>
+
+    <div class="feature-block">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg>整理端 · DIKW 三階</h3>
+      <ul>
+        <li><strong>來水（Inbox）</strong>：剛投入、待主公決定。Data → Information。</li>
+        <li><strong>儲藏（Archive）</strong>：已整理永久、全文搜尋 + 語意搜尋 + 標籤雲 + 過月回顧。Information → Knowledge。</li>
+        <li><strong>悟（Sanctum）</strong>：思維模型 / 鐵律 / Skill 三類、主公親手萃取的智慧。Knowledge → Wisdom。</li>
+      </ul>
+    </div>
+
+    <div class="feature-block">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>共腦端 · 七員一起長大</h3>
+      <ul>
+        <li>Sanctum 內容自動同步到本機 <code style="background:rgba(42,67,56,0.06);padding:1px 6px;border-radius:2px;font-size:0.88em">memory/</code>。</li>
+        <li>七員（韓信／郭嘉／墨子／蕭何／小喬／周瑜／傳令）session 啟動讀 memory → 自動繼承主公的新模型。</li>
+        <li>不用改任何 SKILL.md、agent 自然變聰明。</li>
+      </ul>
+    </div>
+
+    <div class="feature-block">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788 0l-3.659 1.83A1 1 0 0 1 3 19.381V6.618a1 1 0 0 1 .553-.894l4.553-2.277a2 2 0 0 1 1.788 0z"/><path d="M15 5.764v15"/><path d="M9 3.236v15"/></svg>視覺化端 · Atlas 思維地圖</h3>
+      <ul>
+        <li>D3.js 力導向節點圖、看 Sanctum 全貌。</li>
+        <li>節點顏色分三類（思維模型 / 鐵律 / Skill）、邊厚度看共同 tag。</li>
+        <li>太極自轉感、慢動效、不滿屏。</li>
+        <li><strong>Daily 每日思維卡</strong>：每天抽一張、配 AI 引言、可跟該模型對話。</li>
+      </ul>
+    </div>
+
+    <div class="feature-block">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5"/></svg>共享端 · 送禮分享</h3>
+      <ul>
+        <li>點任一張 sanctum 卡 →「送這張卡」。</li>
+        <li>三種輸出：Markdown / HTML / 圖片（gpt-image-1 自動排版）。</li>
+        <li>三種有效期：24 小時 / 7 天 / 永久。</li>
+        <li>可加密碼保護、可看點擊數。</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ===== 章四 技術架構 ===== -->
+  <section class="chapter">
+    <div class="chapter-num">CHAPTER FOUR · STACK</div>
+    <h2>技術架構</h2>
+    <p>
+      全棧無框架、只用最熟的工具——這不是工程練習、是純粹的「先能用、再漂亮」。
+    </p>
+
+    <div class="tech-grid">
+      <div class="tech-card">
+        <div class="tech-card-label">Frontend</div>
+        <div class="tech-card-value">純 HTML + vanilla JS<br>D3.js（atlas 視覺化）</div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-card-label">Backend</div>
+        <div class="tech-card-value">Cloudflare Pages Functions<br>TypeScript · SSE streaming</div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-card-label">Storage</div>
+        <div class="tech-card-value">Cloudflare KV（brain-kv 獨立）<br>prompt caching ≥ 1024 tokens</div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-card-label">Chat / Summary</div>
+        <div class="tech-card-value">Claude Sonnet 4.5<br>開 prompt caching</div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-card-label">Video / Image</div>
+        <div class="tech-card-value">Gemini 2.5 Flash<br>YouTube / 短影音 / PDF</div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-card-label">Card Export</div>
+        <div class="tech-card-value">OpenAI gpt-image-1<br>思維卡轉圖</div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-card-label">Third-party</div>
+        <div class="tech-card-value">cobalt.tools<br>IG / TikTok / Threads mp4</div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-card-label">Deploy</div>
+        <div class="tech-card-value">CF Pages auto-deploy<br>git push 即上線</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 章五 哲學 ===== -->
+  <section class="chapter">
+    <div class="chapter-num">CHAPTER FIVE · PHILOSOPHY</div>
+    <h2>笙之道核心</h2>
+
+    <div class="philo-quote">
+      上善若水。水善利萬物而不爭、<br>處眾人之所惡、故幾於道。
+    </div>
+
+    <ul>
+      <li><strong>DIKW 三階提煉</strong>：資料 → 資訊 → 知識 → 智慧、自動推進、不靠人工分類。</li>
+      <li><strong>萃取過才共享</strong>：只有智慧層（Sanctum）該被七員繼承、原始材料留在 archive 不汙染腦。</li>
+      <li><strong>開放式腦</strong>：能跟任何系統互動、雙向迴流、不被綁定。資料隨時可匯出。</li>
+      <li><strong>道 ⊃ 團隊 ⊃ 工具</strong>：笙之道是道、若水聯盟是團隊、Skill 是執行——三層分明、不混淆。</li>
+    </ul>
+
+    <p class="lead">
+      不堆功能、堆連結。不收資料、收意義。
+    </p>
+  </section>
+
+  <!-- ===== 章六 致謝 ===== -->
+  <section class="chapter">
+    <div class="chapter-num">CHAPTER SIX · GRATITUDE</div>
+    <h2>致 戴蒙</h2>
+
+    <div class="thanks">
+      <span class="quote-mark">"</span>
+      <p>
+        感謝戴蒙啟發了若水體系吸收的核心概念——
+        <strong>spec-forge 三件 SOP</strong>、<strong>Agent Harness 框架</strong>、
+        <strong>邊用邊記三標籤</strong> 等、都源自此。
+      </p>
+      <p style="margin-top:14px">
+        本專案是若水體系把這些概念笙之道化（拆解 → 重組 → 建模 → 內化）後的成果。
+        外來框架先理解、再抽取核心、最後改寫成自己的版本——這是我們的「盡信書不如無書」鐵律。
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== CTA ===== -->
+  <section class="cta-block">
+    <h2>看一眼、感受一下</h2>
+    <div class="cta-row">
+      <a class="cta-btn primary" href="https://brain.reyway.com" target="_blank" rel="noopener">
+        <svg class="icon-inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+        訪問 brain.reyway.com
+      </a>
+      <a class="cta-btn ghost" href="https://brain.reyway.com/atlas.html" target="_blank" rel="noopener">
+        <svg class="icon-inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788 0l-3.659 1.83A1 1 0 0 1 3 19.381V6.618a1 1 0 0 1 .553-.894l4.553-2.277a2 2 0 0 1 1.788 0z"/><path d="M15 5.764v15"/><path d="M9 3.236v15"/></svg>
+        看 Atlas 思維地圖
+      </a>
+      <a class="cta-btn ghost" href="https://brain.reyway.com/sanctum.html" target="_blank" rel="noopener">
+        <svg class="icon-inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l4 6-10 13L2 9Z"/><path d="M11 3 8 9l4 13 4-13-3-6"/><path d="M2 9h20"/></svg>
+        看 Sanctum 智慧層
+      </a>
+    </div>
+  </section>
+
+</div>
+
+<!-- ===== Footer 落款 ===== -->
+<footer>
+  <div class="footer-seal">上&nbsp;善&nbsp;若&nbsp;水</div>
+  <div class="footer-meta">
+    REYWAY · 笙之道 第二大腦 · 2026-04-29
+  </div>
+</footer>
+
+</body>
+</html>
