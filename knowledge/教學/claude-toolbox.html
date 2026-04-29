@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Code 工具箱完整指南 — 14 個官方資料夾、新手也看得懂</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  :root {
+    --primary: #5BC8D5;
+    --primary-light: #E8F7FA;
+    --primary-mid: #A8E4EB;
+    --primary-dark: #2FA8B8;
+    --text: #1A2E35;
+    --text-muted: #5A7A85;
+    --text-faint: #8FA8B0;
+    --bg: #FFFFFF;
+    --bg-soft: #F7FBFC;
+    --bg-warm: #FFF9F0;
+    --border: #DFF0F3;
+    --bad: #E55961;
+    --bad-bg: #FFF1F1;
+    --good: #4CAF7C;
+    --good-bg: #F0F9F1;
+    --warn: #F0A030;
+    --warn-bg: #FFF6E5;
+    --radius: 16px;
+    --radius-sm: 10px;
+    --shadow: 0 4px 24px rgba(91, 200, 213, 0.12);
+    --shadow-hover: 0 8px 32px rgba(91, 200, 213, 0.18);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Inter", "Noto Sans TC", -apple-system, sans-serif;
+    background: var(--bg); color: var(--text);
+    line-height: 1.75; font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Top nav */
+  .topnav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(255,255,255,0.92); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px; height: 56px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .topnav .back {
+    font-size: 13px; color: var(--text-muted); text-decoration: none;
+    padding: 6px 14px; border-radius: 20px; background: var(--primary-light);
+  }
+  .topnav .back:hover { background: var(--primary-mid); }
+  .topnav h1 { font-size: 14px; font-weight: 700; color: var(--primary-dark); flex: 1; }
+  .progress-bar { position: fixed; top: 56px; left: 0; height: 3px; background: var(--primary); width: 0; z-index: 99; }
+
+  main { padding-top: 56px; }
+
+  /* Hero */
+  .hero {
+    background: linear-gradient(160deg, var(--primary-light) 0%, #fff 70%);
+    padding: 80px 24px 72px; text-align: center;
+  }
+  .hero .badge {
+    display: inline-block; background: var(--primary); color: #fff;
+    font-size: 12px; font-weight: 600;
+    padding: 5px 16px; border-radius: 20px;
+    letter-spacing: 0.1em; margin-bottom: 24px;
+  }
+  .hero h1 {
+    font-size: clamp(28px, 5.5vw, 50px); font-weight: 800;
+    line-height: 1.2; margin-bottom: 18px; letter-spacing: -0.02em;
+  }
+  .hero h1 span { color: var(--primary-dark); }
+  .hero .lead {
+    font-size: clamp(16px, 2.2vw, 20px);
+    color: var(--text-muted); max-width: 720px; margin: 0 auto 36px;
+  }
+  .hero .meta {
+    display: inline-flex; gap: 20px; flex-wrap: wrap; justify-content: center;
+    color: var(--text-faint); font-size: 14px;
+  }
+  .hero .meta i { width: 14px; height: 14px; vertical-align: middle; margin-right: 4px; }
+
+  /* Section */
+  section { padding: 64px 24px; }
+  section.alt { background: var(--bg-soft); }
+  .container { max-width: 920px; margin: 0 auto; }
+  .section-title {
+    font-size: clamp(24px, 3.5vw, 36px); font-weight: 800;
+    margin-bottom: 16px; letter-spacing: -0.01em;
+  }
+  .section-title .num {
+    display: inline-block; width: 40px; height: 40px;
+    line-height: 40px; text-align: center; border-radius: 50%;
+    background: var(--primary); color: #fff;
+    font-size: 18px; font-weight: 700; margin-right: 12px; vertical-align: 2px;
+  }
+  .section-lead { color: var(--text-muted); font-size: 17px; margin-bottom: 36px; }
+
+  /* Card */
+  .card {
+    background: #fff; border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 28px; margin-bottom: 20px;
+    box-shadow: var(--shadow);
+  }
+  .card-row {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+  }
+  @media (max-width: 720px) { .card-row { grid-template-columns: 1fr; } }
+  .card.tight { padding: 20px 24px; margin-bottom: 14px; }
+  .card h3 {
+    font-size: 19px; font-weight: 700; margin-bottom: 10px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .card h3 i { color: var(--primary-dark); width: 22px; height: 22px; }
+  .card h4 { font-size: 16px; font-weight: 600; margin: 16px 0 8px; }
+  .card p, .card li { color: var(--text-muted); font-size: 15px; }
+  .card ul, .card ol { margin: 8px 0 8px 24px; }
+  .card ul li, .card ol li { margin-bottom: 4px; }
+  .card code {
+    background: var(--primary-light); color: var(--primary-dark);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 13px; padding: 2px 8px; border-radius: 6px;
+  }
+
+  /* Table */
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; }
+  th, td {
+    text-align: left; padding: 10px 12px;
+    border-bottom: 1px solid var(--border); font-size: 14px;
+  }
+  th { background: var(--primary-light); color: var(--primary-dark); font-weight: 700; }
+  td code {
+    background: var(--bg-soft); color: var(--text);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px; padding: 2px 6px; border-radius: 4px;
+  }
+
+  /* Tags */
+  .tag {
+    display: inline-block; padding: 2px 10px; border-radius: 12px;
+    font-size: 12px; font-weight: 600; margin-right: 4px;
+  }
+  .tag.must { background: var(--bad-bg); color: var(--bad); }
+  .tag.recom { background: var(--good-bg); color: var(--good); }
+  .tag.opt { background: var(--bg-warm); color: var(--warn); }
+  .tag.adv { background: var(--primary-light); color: var(--primary-dark); }
+
+  /* Alert */
+  .alert {
+    border-left: 4px solid var(--primary);
+    background: var(--primary-light);
+    padding: 14px 18px; border-radius: 8px;
+    margin: 16px 0; font-size: 14px;
+  }
+  .alert.warn { border-color: var(--warn); background: var(--warn-bg); color: #8a5a10; }
+  .alert.bad { border-color: var(--bad); background: var(--bad-bg); color: #8a2a30; }
+  .alert.good { border-color: var(--good); background: var(--good-bg); color: #1f6b48; }
+  .alert b { color: inherit; }
+
+  /* Code block */
+  pre {
+    background: #1A2E35; color: #DFF0F3;
+    padding: 16px 20px; border-radius: 10px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 13px; line-height: 1.6;
+    overflow-x: auto; margin: 12px 0;
+  }
+  pre .cmt { color: #8FA8B0; }
+  pre .key { color: #5BC8D5; }
+  pre .val { color: #FFD580; }
+
+  /* Analogy box */
+  .analogy {
+    background: linear-gradient(135deg, var(--bg-warm) 0%, #fff 100%);
+    border: 1px solid #F0E0B8; border-radius: var(--radius);
+    padding: 28px 32px; margin: 24px 0;
+  }
+  .analogy h4 {
+    font-size: 18px; color: #8a5a10;
+    display: flex; align-items: center; gap: 8px; margin-bottom: 12px;
+  }
+  .analogy h4 i { color: #C08020; }
+  .analogy p { color: #5A4520; font-size: 15px; }
+
+  /* Footer */
+  footer {
+    padding: 48px 24px; background: var(--bg-soft);
+    text-align: center; color: var(--text-faint); font-size: 13px;
+    border-top: 1px solid var(--border);
+  }
+
+  /* TOC */
+  .toc {
+    position: sticky; top: 80px;
+    background: #fff; border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 20px; margin-bottom: 20px;
+  }
+  .toc h4 { font-size: 14px; font-weight: 700; color: var(--primary-dark); margin-bottom: 10px; }
+  .toc a {
+    display: block; color: var(--text-muted); text-decoration: none;
+    padding: 6px 0; font-size: 14px; border-bottom: 1px dashed transparent;
+  }
+  .toc a:hover { color: var(--primary-dark); border-bottom-color: var(--primary-mid); }
+  .toc a.active { color: var(--primary-dark); font-weight: 600; }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a class="back" href="../">← 知識庫</a>
+  <a class="back" href="./">教學</a>
+  <h1>Claude Code 工具箱完整指南</h1>
+</nav>
+<div class="progress-bar" id="progressBar"></div>
+
+<main>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="badge">14 個官方擴充點 · 進階教學</div>
+  <h1>Claude Code <span>工具箱</span><br>完整指南</h1>
+  <p class="lead">Claude Code 不是黑箱。官方準備了 14 個資料夾讓你客製、把它變成你專屬的 AI 助手。<br>本篇用「廚房比喻」、新手也看得懂——從必要到進階、按你工作複雜度選用。</p>
+  <div class="meta">
+    <span><i data-lucide="calendar"></i>2026-04-30</span>
+    <span><i data-lucide="user"></i>韓信</span>
+    <span><i data-lucide="clock"></i>15 分鐘讀完</span>
+  </div>
+</div>
+
+<!-- INTRO -->
+<section>
+<div class="container">
+  <h2 class="section-title"><span class="num">1</span>什麼是 Claude Code 工具箱？</h2>
+  <p class="section-lead">先講結論：Claude Code 開箱就能用、什麼都不設也跑得動。但**官方在 <code>~/.claude/</code> 資料夾下準備了 14 個「擴充容器」**、按你需求塞東西進去、能讓 AI 變成「你專屬」的助手。</p>
+
+  <div class="analogy">
+    <h4><i data-lucide="utensils"></i>用廚房比喻</h4>
+    <p><b>Claude Code 像一間「裸機廚房」</b>——基本爐具齊全、可以煮東西。但官方還幫你蓋了 <b>14 個收納櫃</b>：放食譜的、放工具的、放配方的、放廚師人格的⋯⋯放對地方、做菜超快超順。</p>
+    <p style="margin-top: 10px;">把這 14 個櫃子全填滿不一定最好——<b>看你開的是路邊攤還是米其林餐廳</b>。</p>
+  </div>
+
+  <div class="alert good">
+    <b><i data-lucide="lightbulb"></i> 這篇文章會告訴你：</b>
+    <ul>
+      <li>14 個容器是什麼、各自做什麼</li>
+      <li>哪些必做、哪些選做、哪些不用做</li>
+      <li>新手該從哪 1-2 個開始</li>
+      <li>「沒做」跟「做完整」差在哪</li>
+    </ul>
+  </div>
+</div>
+</section>
+
+<!-- ANALOGY GRID -->
+<section class="alt">
+<div class="container">
+  <h2 class="section-title"><span class="num">2</span>14 個容器一覽（廚房對照）</h2>
+  <p class="section-lead">先給你看全貌、後面再一個個展開。</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 22%;">容器</th>
+        <th style="width: 33%;">廚房比喻</th>
+        <th style="width: 28%;">用途</th>
+        <th style="width: 17%;">必要性</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td><code>CLAUDE.md</code></td><td>餐廳 SOP 手冊</td><td>專案守則、AI 自動讀</td><td><span class="tag must">必做</span></td></tr>
+      <tr><td><code>settings.json</code></td><td>瓦斯/電壓設定</td><td>權限、模型、hook 註冊</td><td><span class="tag must">必做</span></td></tr>
+      <tr><td><code>hooks/</code></td><td>自動洗碗機、烤箱定時</td><td>事件自動觸發腳本</td><td><span class="tag recom">推薦</span></td></tr>
+      <tr><td><code>commands/</code></td><td>快捷按鈕（一鍵下單）</td><td>Slash 指令快捷鍵</td><td><span class="tag recom">推薦</span></td></tr>
+      <tr><td><code>skills/</code></td><td>食譜本（按需翻）</td><td>領域知識、按關鍵字載入</td><td><span class="tag recom">推薦</span></td></tr>
+      <tr><td><code>agents/</code></td><td>不同廚師（主廚/甜點/燒烤）</td><td>Sub-agent 人格與分工</td><td><span class="tag recom">推薦</span></td></tr>
+      <tr><td><code>output-styles/</code></td><td>上菜風格（家常/宴會/外送）</td><td>切換回應語氣風格</td><td><span class="tag opt">選用</span></td></tr>
+      <tr><td><code>plugins/</code></td><td>整套廚具（甜點工作站全套）</td><td>整包安裝、可分發給人</td><td><span class="tag opt">選用</span></td></tr>
+      <tr><td><code>rules/</code></td><td>區域規則（廚房禁菸）</td><td>路徑限定的規則</td><td><span class="tag opt">選用</span></td></tr>
+      <tr><td><code>statusline</code></td><td>廚房儀表板</td><td>底部狀態列顯示</td><td><span class="tag opt">選用</span></td></tr>
+      <tr><td><code>memory/</code> *</td><td>客戶筆記本</td><td>跨 session 持續記憶</td><td><span class="tag recom">推薦</span></td></tr>
+      <tr><td><code>.mcp.json</code></td><td>外接設備（連雲端冰箱）</td><td>MCP server 設定</td><td><span class="tag adv">進階</span></td></tr>
+      <tr><td><code>CLAUDE.local.md</code></td><td>個人小抄（不公開）</td><td>本地 override、gitignore</td><td><span class="tag adv">進階</span></td></tr>
+      <tr><td><code>settings.local.json</code></td><td>個人偏好（不公開）</td><td>個人 override</td><td><span class="tag adv">進階</span></td></tr>
+    </tbody>
+  </table>
+  <p style="font-size: 13px; color: var(--text-faint); margin-top: 12px;">* memory 嚴格說不在官方標準位置（官方標準是 .claude/memory/）、但社群常用自訂位置（如 ~/.claude/global-memory/）配合 CLAUDE.md 引用</p>
+</div>
+</section>
+
+<!-- TIER 1: MUST DO -->
+<section>
+<div class="container">
+  <h2 class="section-title"><span class="num">3</span>第一層：必做的 2 個</h2>
+  <p class="section-lead">不論你工作多簡單、這 2 個都該設。沒設等於「廚房沒掛 SOP、廚師每次都重新問怎麼煮」。</p>
+
+  <div class="card">
+    <h3><i data-lucide="file-text"></i>CLAUDE.md — 你的全域守則</h3>
+    <p><b>位置</b>：<code>~/.claude/CLAUDE.md</code>（全域）或 <code>專案/CLAUDE.md</code>（專案級）</p>
+    <p><b>用途</b>：每次開新對話、AI 自動讀這份文件。寫你的工作習慣、稱呼、術語對照、禁區。</p>
+    <h4>新手範例（最簡版）</h4>
+    <pre><span class="cmt"># 我的工作守則</span>
+
+<span class="cmt">## 怎麼跟我說話</span>
+- 結論先說、再說細節
+- 不要用英文術語、用白話
+- 出問題直接說、不用客套
+
+<span class="cmt">## 我的工作</span>
+- 我是經營一家咖啡店的小老闆
+- 主要用 Excel + Notion + 一些 Python 小工具
+
+<span class="cmt">## 不要做的</span>
+- 不要直接刪我的檔案
+- 對外發訊息一律先問我</pre>
+  </div>
+
+  <div class="card">
+    <h3><i data-lucide="settings"></i>settings.json — 廚房設定</h3>
+    <p><b>位置</b>：<code>~/.claude/settings.json</code></p>
+    <p><b>用途</b>：定義 AI 能用什麼工具、自動觸發什麼動作、用哪個模型。</p>
+    <h4>新手範例（簡單版）</h4>
+    <pre>{
+  <span class="key">"permissions"</span>: {
+    <span class="key">"allow"</span>: [
+      <span class="val">"Read"</span>,
+      <span class="val">"Edit"</span>,
+      <span class="val">"Bash(ls:*)"</span>,
+      <span class="val">"Bash(git:*)"</span>
+    ]
+  },
+  <span class="key">"theme"</span>: <span class="val">"light"</span>
+}</pre>
+    <div class="alert">
+      <b><i data-lucide="info"></i> 提示</b>：第一次設不用想太多、跑出問題 Claude Code 會問你要不要授權、按需求加進來就行。
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- TIER 2: RECOMMENDED -->
+<section class="alt">
+<div class="container">
+  <h2 class="section-title"><span class="num">4</span>第二層：推薦的 5 個（複雜工作必開）</h2>
+  <p class="section-lead">每天用 Claude Code 工作 1 小時以上、這 5 個值得開。每個都讓你少做重複動作。</p>
+
+  <div class="card">
+    <h3><i data-lucide="zap"></i>hooks/ — 自動洗碗機</h3>
+    <p><b>位置</b>：<code>~/.claude/hooks/&lt;name&gt;.sh</code></p>
+    <p><b>核心觀念</b>：<b>機器自己做、不用人記得</b>。設定 6 個事件、什麼時候自動跑什麼。</p>
+    <table>
+      <tr><th>事件</th><th>什麼時候觸發</th><th>用來做什麼</th></tr>
+      <tr><td><code>SessionStart</code></td><td>開新對話那一刻</td><td>自動印環境狀態</td></tr>
+      <tr><td><code>UserPromptSubmit</code></td><td>你按 Enter 送訊息時</td><td>偷偷加料 / 提醒</td></tr>
+      <tr><td><code>PreCompact</code></td><td>對話太長要被壓縮前</td><td>把重點存進記憶</td></tr>
+      <tr><td><code>SubagentStop</code></td><td>子助手跑完</td><td>強制驗收</td></tr>
+      <tr><td><code>PostToolUse</code></td><td>每次 AI 用完一個工具</td><td>心跳 / 自動 commit</td></tr>
+      <tr><td><code>Stop</code></td><td>AI 回完一輪話</td><td>標記閒置 / 推通知</td></tr>
+    </table>
+    <div class="alert good"><b>新手建議：先設 SessionStart 一個就好</b>——讓開新對話自動印 git status + 待辦清單、立刻有感。</div>
+  </div>
+
+  <div class="card">
+    <h3><i data-lucide="terminal"></i>commands/ — 快捷按鈕</h3>
+    <p><b>位置</b>：<code>~/.claude/commands/&lt;name&gt;.md</code></p>
+    <p><b>核心觀念</b>：把重複的指令包成 <code>/&lt;名字&gt;</code>、打字框打 <code>/</code> 就跳出選單。</p>
+    <h4>範例：寫一個 <code>/上工.md</code></h4>
+    <pre><span class="cmt">---
+description: 開工前重載我的所有規則
+---</span>
+
+請依序：
+1. 讀我的 CLAUDE.md
+2. 看看我有沒有未完成的工作
+3. 報告今天環境狀態</pre>
+    <p>之後打 <code>/上工</code> 就跑這串指令。對外教學用 Slash 比數字暗號清楚 100 倍。</p>
+  </div>
+
+  <div class="card">
+    <h3><i data-lucide="book-open"></i>skills/ — 食譜本</h3>
+    <p><b>位置</b>：<code>~/.claude/skills/&lt;name&gt;/SKILL.md</code></p>
+    <p><b>核心觀念</b>：把領域知識（行銷方法論、財務分析、品牌規範等）寫成「按需召喚的食譜」、AI 看到關鍵字才打開、平常不佔對話空間。</p>
+    <pre><span class="cmt">---
+name: 我的咖啡店行銷
+description: 觸發時機：寫 IG 文、規劃促銷、回覆顧客評論
+---</span>
+
+<span class="cmt"># 品牌調性</span>
+- 客群：30-45 歲女性、注重質感
+- 不講「便宜」、講「值得」
+- IG 文 30-80 字、附 3 個 hashtag</pre>
+    <div class="alert"><b><i data-lucide="info"></i> 跟 memory 的差別</b>：skills 是「方法論 / 知識」、memory 是「歷史紀錄」。skills 按需載入、memory 持續累積。</div>
+  </div>
+
+  <div class="card">
+    <h3><i data-lucide="users"></i>agents/ — 不同廚師</h3>
+    <p><b>位置</b>：<code>~/.claude/agents/&lt;name&gt;.md</code></p>
+    <p><b>核心觀念</b>：定義不同人格的子助手——主廚（架構師）/ 甜點師（設計）/ 燒烤師（後端）等。需要分工時、主對話框直接呼叫對應人格、不用每次貼人設。</p>
+    <pre><span class="cmt">---
+name: 設計師小美
+description: 處理視覺、配色、素材、Banner 製作
+model: sonnet
+color: pink
+---</span>
+
+你是設計師小美。
+- 視覺優先思考、不寫程式
+- 給出色票（hex code）+ 字型建議
+- 用 Canva 思維、不用 Figma 規格</pre>
+    <p>之後可以說「派小美處理首頁 Banner」、AI 自動切人格。</p>
+  </div>
+
+  <div class="card">
+    <h3><i data-lucide="archive"></i>memory/ — 客戶筆記本</h3>
+    <p><b>位置</b>：<code>~/.claude/global-memory/</code>（社群慣例）或專案內 <code>memory/</code></p>
+    <p><b>核心觀念</b>：跨對話的長期記憶、寫進來下次還記得。</p>
+    <p>常見三種：</p>
+    <ul>
+      <li><b>規則類</b>：你拍板的工作鐵律（feedback_*.md）</li>
+      <li><b>決策類</b>：重要決策的歷史脈絡（decisions_*.md）</li>
+      <li><b>個人日誌</b>：每天工作紀錄（個人日誌/）</li>
+    </ul>
+    <div class="alert good"><b>新手建議：先寫一個 <code>memory/規則.md</code> 就好</b>——把你交代過 3 次以上的事寫進去、之後 AI 自動套用。</div>
+  </div>
+</div>
+</section>
+
+<!-- TIER 3: OPTIONAL -->
+<section>
+<div class="container">
+  <h2 class="section-title"><span class="num">5</span>第三層：選用的 4 個（看需求）</h2>
+  <p class="section-lead">複雜度真的高、團隊多人、品牌多個——這 4 個才有意義。一般人不用。</p>
+
+  <div class="card-row">
+    <div class="card tight">
+      <h3><i data-lucide="palette"></i>output-styles/</h3>
+      <p>切換回應風格——「給老闆看」（商業語言）/「給工程看」（技術細節）/「給客戶看」（白話）。</p>
+      <p><b>何時用</b>：對象差很多時。同一份內容要寄給董事會跟工程師、用切換比每次寫提醒快。</p>
+    </div>
+    <div class="card tight">
+      <h3><i data-lucide="package"></i>plugins/</h3>
+      <p>整套打包——把 commands + skills + hooks + agents 包成一個資料夾、給朋友 / 員工一鍵安裝整套。</p>
+      <p><b>何時用</b>：你打造的工作流要分發給其他人、或多裝置同步用。</p>
+    </div>
+    <div class="card tight">
+      <h3><i data-lucide="git-branch"></i>rules/</h3>
+      <p>路徑限定規則——進不同資料夾自動載不同規則。例：進「咖啡店帳本」資料夾、自動載財務規則。</p>
+      <p><b>何時用</b>：你管多個品牌 / 客戶、想避免 A 品牌規則跑去管 B 品牌的事。</p>
+    </div>
+    <div class="card tight">
+      <h3><i data-lucide="layout-dashboard"></i>statusline</h3>
+      <p>底部狀態列——顯示當前 git 分支 / 跑的模型 / 待辦數量等。</p>
+      <p><b>何時用</b>：你想一眼掌握環境狀態、Claude Code 介面看得到。新手不用急。</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- TIER 4: ADVANCED -->
+<section class="alt">
+<div class="container">
+  <h2 class="section-title"><span class="num">6</span>第四層：進階的 3 個（玩家級）</h2>
+  <p class="section-lead">你已經完全掌握上面 11 個、再來碰這 3 個。</p>
+
+  <div class="card">
+    <h3><i data-lucide="plug"></i>.mcp.json — 外接設備</h3>
+    <p><b>位置</b>：專案 root（必須在 root、不在 .claude/ 內）</p>
+    <p><b>核心觀念</b>：接外部服務（雲端冰箱、線上資料庫）。例：接 Notion、Slack、Google Drive、Stripe⋯⋯</p>
+    <p>讓 Claude Code 能讀寫這些服務、不用你手動切換。</p>
+  </div>
+
+  <div class="card">
+    <h3><i data-lucide="user-cog"></i>CLAUDE.local.md / settings.local.json — 個人小抄</h3>
+    <p><b>位置</b>：跟主檔同層、加 <code>.local</code> 後綴</p>
+    <p><b>核心觀念</b>：放在 <code>.gitignore</code>、只在你電腦上、不會跟團隊共享。</p>
+    <p><b>何時用</b>：你想加個人偏好（特定 alias、敏感 token、實驗性規則）、但團隊主檔不想改。</p>
+    <div class="alert warn"><b><i data-lucide="alert-triangle"></i> 注意</b>：別把 API key 直接寫進來、用環境變數比較安全。</div>
+  </div>
+</div>
+</section>
+
+<!-- HOOK VS COMMAND -->
+<section>
+<div class="container">
+  <h2 class="section-title"><span class="num">7</span>新手最常搞混的觀念</h2>
+  <p class="section-lead">這幾組超容易混淆、釐清後就懂為什麼分這麼多容器。</p>
+
+  <div class="card">
+    <h3><i data-lucide="alert-circle"></i>hooks ≠ commands ≠ 數字暗號</h3>
+    <table>
+      <tr><th>種類</th><th>誰啟動</th><th>比喻</th><th>例子</th></tr>
+      <tr><td><b>hooks</b></td><td>機器自己（事件）</td><td>自動門感應器</td><td>開對話自動印 git status</td></tr>
+      <tr><td><b>commands</b></td><td>人手動（打 /）</td><td>門上的按鈕</td><td>打 /上工</td></tr>
+      <tr><td><b>數字暗號</b></td><td>人手動（打 9）</td><td>跟管家說「3」</td><td>打 3 = 全面審查</td></tr>
+    </table>
+    <p><b>關鍵差別</b>：hooks 不用打字、自動發生。commands 跟暗號都要打字、commands 比暗號穩（直接執行 markdown 內容、不靠 AI 解讀數字意思）。</p>
+  </div>
+
+  <div class="card">
+    <h3><i data-lucide="alert-circle"></i>skills ≠ memory ≠ rules</h3>
+    <table>
+      <tr><th>容器</th><th>性質</th><th>什麼時候載入</th></tr>
+      <tr><td><b>skills</b></td><td>方法論 / 食譜</td><td>對話內容含關鍵字 → 自動觸發</td></tr>
+      <tr><td><b>memory</b></td><td>歷史紀錄 / 規則</td><td>每次開新對話 → 自動讀</td></tr>
+      <tr><td><b>rules</b></td><td>路徑限定規則</td><td>檔案路徑符合 glob → 自動套</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3><i data-lucide="alert-circle"></i>plugins ≠ skills</h3>
+    <p><b>plugins 是「容器」</b>——裡面可以包多個 skills、commands、hooks、agents。</p>
+    <p><b>skills 是「內容」</b>——一個個獨立的食譜本。</p>
+    <p>給朋友傳整套工作流 → 用 plugins 打包。給朋友傳一份食譜 → skills 一個檔就好。</p>
+  </div>
+</div>
+</section>
+
+<!-- HOW TO START -->
+<section class="alt">
+<div class="container">
+  <h2 class="section-title"><span class="num">8</span>新手怎麼開始？</h2>
+  <p class="section-lead">不要全套一次做、會崩潰。按你工作複雜度分階段。</p>
+
+  <div class="card">
+    <h3><i data-lucide="step-forward"></i>第 1 週：寫一個 CLAUDE.md</h3>
+    <p>內容不用多、就 5-10 條：</p>
+    <ul>
+      <li>你的職業 / 工作內容（讓 AI 知道你在幹嘛）</li>
+      <li>怎麼跟你說話（白話 / 結論先說 / 不用客套）</li>
+      <li>3 個禁區（不要刪檔 / 不要對外發訊息 / 不要動我的測試資料）</li>
+    </ul>
+    <p>這份 5 分鐘寫完、立刻有感。</p>
+  </div>
+
+  <div class="card">
+    <h3><i data-lucide="step-forward"></i>第 2 週：加一個 hook + 一個 command</h3>
+    <p><b>hook</b>：寫一個 <code>SessionStart.sh</code>、開新對話自動 <code>git status</code> 一次、看現在分支跟改動。</p>
+    <p><b>command</b>：寫一個 <code>/收工.md</code>、講「先 commit、寫日誌、push」一條龍跑完。</p>
+    <p>有感、開始相信「機器幫我記得」這件事。</p>
+  </div>
+
+  <div class="card">
+    <h3><i data-lucide="step-forward"></i>第 3-4 週：加 skills + memory</h3>
+    <p><b>skills</b>：把你常用的「品牌規範 / 行銷方法論 / 客服話術」寫成 1-2 個食譜本。</p>
+    <p><b>memory</b>：開始記「我交代過 3 次以上」的事——這就是你工作的 DNA。</p>
+  </div>
+
+  <div class="card">
+    <h3><i data-lucide="step-forward"></i>第 2 個月以後：看需要再加</h3>
+    <ul>
+      <li>有多角色子任務 → agents</li>
+      <li>對象差異大 → output-styles</li>
+      <li>多品牌混用 → rules</li>
+      <li>要傳給朋友 → plugins</li>
+      <li>接外部服務 → .mcp.json</li>
+    </ul>
+    <div class="alert good"><b>原則</b>：寧可少、寧可穩、不要全開。每個容器都要維護、過早優化等於浪費時間。</div>
+  </div>
+</div>
+</section>
+
+<!-- WITH VS WITHOUT -->
+<section>
+<div class="container">
+  <h2 class="section-title"><span class="num">9</span>「沒做」跟「做完整」差在哪？</h2>
+  <p class="section-lead">給你看實際對比。</p>
+
+  <table>
+    <tr><th>場景</th><th>沒設定</th><th>設好的</th></tr>
+    <tr><td>開新對話</td><td>每次重講「我是誰、在幹嘛」</td><td>SessionStart 自動印環境、AI 直接接手</td></tr>
+    <tr><td>重複動作</td><td>每次手打 5 行指令</td><td>打 <code>/收工</code> 一鍵跑</td></tr>
+    <tr><td>子助手跑完</td><td>它說「OK 了」、你信了</td><td>SubagentStop 強制提醒驗收</td></tr>
+    <tr><td>對話太長</td><td>舊內容被壓縮、重要決策丟了</td><td>PreCompact 自動存重點到記憶</td></tr>
+    <tr><td>多品牌切換</td><td>每次提醒 AI「現在是 A 品牌」</td><td>進對應資料夾、rules 自動載對應規則</td></tr>
+    <tr><td>給對象差異大的訊息</td><td>同樣風格寫給老闆跟工程</td><td>切 output-style 自動換口吻</td></tr>
+    <tr><td>傳工作流給朋友</td><td>整套手動複製、半天</td><td>plugin 整包、一鍵裝完</td></tr>
+  </table>
+
+  <div class="alert good">
+    <b><i data-lucide="trending-up"></i> 整體效率</b>：沒設定 vs 設完整、做同一件事的時間差是 <b>3-10 倍</b>（依工作類型）。但**設定本身要花時間**——所以分階段做、做到「現在這層夠用」就停。
+  </div>
+</div>
+</section>
+
+<!-- FINAL -->
+<section class="alt">
+<div class="container">
+  <h2 class="section-title"><span class="num">10</span>最後一句話</h2>
+  <p class="section-lead">Claude Code 的 14 個容器、是給「**願意花時間整理工作流**」的人用的。</p>
+
+  <div class="card">
+    <p style="font-size: 17px;">
+      開箱就用 = 一台萬用工具車、什麼都能做、但什麼都不順手。<br>
+      設好工具箱 = 變成「你專屬的工作站」、每個按鈕都對應你最常做的事。
+    </p>
+    <p style="font-size: 17px; margin-top: 16px;">
+      不要被「14 個」嚇到——<b>絕大多數人只需要 2-3 個</b>。
+      從 CLAUDE.md 開始、有感了再加下一個。
+    </p>
+    <p style="font-size: 17px; margin-top: 16px; color: var(--primary-dark); font-weight: 600;">
+      工具是用來服務你的工作流、不是工作流去配合工具。
+    </p>
+  </div>
+
+  <div class="alert">
+    <b><i data-lucide="link"></i> 延伸閱讀</b>
+    <ul>
+      <li><a href="talk-to-ai.html" style="color: var(--primary-dark);">如何把 AI 用得更好（員工溝通教學）</a></li>
+      <li><a href="agent-training.html" style="color: var(--primary-dark);">AI Agent 完整教學（通用版）</a></li>
+      <li>官方文件：<a href="https://docs.claude.com/en/docs/claude-code" target="_blank" style="color: var(--primary-dark);">docs.claude.com</a>（英文）</li>
+    </ul>
+  </div>
+</div>
+</section>
+
+</main>
+
+<footer>
+  REYWAY 知識庫 · Claude Code 工具箱完整指南<br>
+  2026-04-30 · 韓信
+</footer>
+
+<script>
+  lucide.createIcons();
+  // Progress bar
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement;
+    const scrolled = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+    document.getElementById('progressBar').style.width = scrolled + '%';
+  });
+</script>
+</body>
+</html>
