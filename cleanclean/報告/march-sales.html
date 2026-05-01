@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>淨淨 Clean Clean — 2026年3月經銷業績報告</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0"></script>
+<style>
+  :root { --teal: #5BC5C8; --dark-teal: #3AA0A3; --black: #333; --gray: #666; --light: #F5F9FA; --white: #fff; --red: #E74C3C; --green: #27AE60; --orange: #F39C12; --blue: #2E86DE; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft JhengHei", sans-serif; background: #f0f2f5; color: var(--black); line-height: 1.6; }
+  .page { max-width: 1100px; margin: 0 auto; padding: 20px; }
+  .section { background: var(--white); border-radius: 16px; padding: 32px; margin-bottom: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+  .section-title { font-size: 22px; font-weight: 700; color: var(--dark-teal); border-left: 4px solid var(--teal); padding-left: 14px; margin-bottom: 24px; }
+  .cover { background: linear-gradient(135deg, var(--teal), var(--dark-teal)); color: white; text-align: center; padding: 50px 32px; border-radius: 16px; margin-bottom: 24px; }
+  .cover h1 { font-size: 42px; font-weight: 300; letter-spacing: 6px; margin-bottom: 8px; }
+  .cover h2 { font-size: 28px; font-weight: 600; margin-bottom: 6px; }
+  .cover h3 { font-size: 18px; font-weight: 400; opacity: 0.85; }
+  .cover .date { margin-top: 16px; font-size: 14px; opacity: 0.7; }
+  .org { text-align: center; padding: 20px 0; }
+  .org-box { display: inline-block; padding: 12px 28px; border-radius: 10px; font-weight: 600; margin: 4px; }
+  .org-boss { background: var(--black); color: white; font-size: 16px; }
+  .org-coo { background: var(--teal); color: white; font-size: 15px; }
+  .org-line { width: 2px; height: 20px; background: var(--teal); margin: 0 auto; }
+  .org-hline { height: 2px; background: var(--teal); margin: 0 60px; }
+  .org-teams { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 12px; }
+  .org-team { background: var(--light); border-top: 3px solid var(--teal); border-radius: 10px; padding: 14px 16px; width: 170px; text-align: center; }
+  .org-team .icon { font-size: 22px; }
+  .org-team .name { font-weight: 700; font-size: 14px; margin: 4px 0; }
+  .org-team .role { font-size: 12px; color: var(--teal); font-weight: 600; }
+  .org-team .desc { font-size: 11px; color: var(--gray); margin-top: 6px; line-height: 1.5; }
+  .kpi-row { display: flex; gap: 16px; margin-bottom: 24px; flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 200px; background: var(--light); border-radius: 12px; padding: 20px; border-left: 4px solid var(--teal); }
+  .kpi .value { font-size: 28px; font-weight: 700; color: var(--black); }
+  .kpi .label { font-size: 13px; color: var(--gray); margin-top: 4px; }
+  .kpi .change { font-size: 14px; font-weight: 600; margin-top: 6px; }
+  .kpi .up { color: var(--green); }
+  .kpi .down { color: var(--red); }
+  .chart-row { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 20px; }
+  .chart-box { flex: 1; min-width: 300px; }
+  canvas { max-height: 340px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 8px; }
+  th { background: var(--teal); color: white; padding: 10px 12px; text-align: left; font-weight: 600; }
+  td { padding: 9px 12px; border-bottom: 1px solid #eee; }
+  tr:nth-child(even) { background: #f8fcfc; }
+  tr:hover { background: #e8f6f6; }
+  .num { text-align: right; font-variant-numeric: tabular-nums; }
+  .rank { text-align: center; font-weight: 700; color: var(--dark-teal); }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+  .tag-up { background: #e8f8f0; color: var(--green); }
+  .tag-down { background: #fde8e8; color: var(--red); }
+  .tag-combo { background: #e8f0fd; color: var(--blue); }
+  .three-col { display: flex; gap: 16px; flex-wrap: wrap; }
+  .three-col > div { flex: 1; min-width: 300px; }
+  .three-col table th { font-size: 12px; }
+  .three-col table td { font-size: 12px; padding: 7px 10px; }
+  .insight { display: flex; align-items: flex-start; gap: 12px; padding: 14px 0; border-bottom: 1px solid #f0f0f0; }
+  .insight:last-child { border-bottom: none; }
+  .insight .dot { width: 8px; height: 8px; border-radius: 50%; margin-top: 8px; flex-shrink: 0; }
+  .insight h5 { font-size: 15px; margin-bottom: 2px; }
+  .insight p { font-size: 13px; color: var(--gray); }
+  .risk-opp { display: flex; gap: 16px; margin-top: 20px; }
+  .risk-box { flex: 1; padding: 16px; border-radius: 10px; }
+  .risk-box.risk { background: #fff5f5; border-left: 4px solid var(--red); }
+  .risk-box.opp { background: #f0faf0; border-left: 4px solid var(--green); }
+  .risk-box h5 { font-size: 14px; margin-bottom: 6px; }
+  .risk-box p { font-size: 13px; color: var(--gray); }
+  .sub-title { font-size: 16px; font-weight: 700; color: var(--black); margin: 20px 0 12px 0; padding-bottom: 6px; border-bottom: 2px solid var(--teal); display: inline-block; }
+  .footer { text-align: center; padding: 20px; color: var(--gray); font-size: 12px; }
+  .note { font-size: 12px; color: var(--gray); margin-top: 6px; font-style: italic; }
+  @media print { .page { padding: 0; } .section { break-inside: avoid; box-shadow: none; } }
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- COVER -->
+<div class="cover">
+  <h1>淨淨 Clean Clean</h1>
+  <h2>數位業務部 — 2026年3月經銷業績報告</h2>
+  <h3>Report by Eric</h3>
+  <div class="date">報告日期：2026.04.02</div>
+</div>
+
+<!-- 組織圖 -->
+<div class="section">
+  <div class="section-title">數位業務部 AI 團隊組織圖</div>
+  <div class="org">
+    <div class="org-box org-boss">Eric ｜ 數位業務部主管</div>
+    <div class="org-line"></div>
+    <div class="org-box org-coo">小克 ｜ COO 總管</div>
+    <div class="org-line"></div>
+    <div class="org-hline"></div>
+    <div class="org-teams">
+      <div class="org-team"><div class="icon">🔍</div><div class="name">獵鷹</div><div class="role">開發組</div><div class="desc">新客戶開發<br>市場調研・競品分析</div></div>
+      <div class="org-team"><div class="icon">🤝</div><div class="name">破冰</div><div class="role">接洽組</div><div class="desc">客戶提案<br>合約洽談・簡報製作</div></div>
+      <div class="org-team"><div class="icon">💚</div><div class="name">暖陽</div><div class="role">客服組</div><div class="desc">訂單追蹤<br>客戶維護・售後服務</div></div>
+      <div class="org-team"><div class="icon">📊</div><div class="name">鷹眼</div><div class="role">數據組</div><div class="desc">業績報表<br>數據分析・異常監控</div></div>
+      <div class="org-team"><div class="icon">🎯</div><div class="name">軍師</div><div class="role">策略組</div><div class="desc">行銷策略<br>活動規劃・品牌推廣</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- YoY 同期比較 -->
+<div class="section">
+  <div class="section-title">3月通路業績 vs 去年同期</div>
+  <table>
+    <tr><th>通路</th><th class="num">2025年3月</th><th class="num">2026年3月</th><th class="num">YoY</th></tr>
+    <tr><td>阿清服飾</td><td class="num">$7,094,598</td><td class="num">$1,371,646</td><td class="num"><span class="tag tag-down">-80.7%</span></td></tr>
+    <tr><td>得岳＋其他直播</td><td class="num">$410,800</td><td class="num">$553,574</td><td class="num"><span class="tag tag-up">+34.8%</span></td></tr>
+    <tr><td>純經銷（不含直播/阿清/得岳）</td><td class="num">$1,626,077</td><td class="num">$2,272,555</td><td class="num"><span class="tag tag-up">+39.8%</span></td></tr>
+    <tr style="font-weight:700; background:#f0fafa"><td>總計</td><td class="num">$9,131,475</td><td class="num">$4,197,775</td><td class="num"><span class="tag tag-down">-54.0%</span></td></tr>
+  </table>
+  <div style="height:20px"></div>
+  <div class="sub-title" style="border-color:var(--teal)">Q1 累計 vs 去年同期</div>
+  <table>
+    <tr><th>通路</th><th class="num">2025 Q1</th><th class="num">2026 Q1</th><th class="num">YoY</th></tr>
+    <tr><td>阿清服飾</td><td class="num">$7,367,838</td><td class="num">$6,016,265</td><td class="num"><span class="tag tag-down">-18.3%</span></td></tr>
+    <tr><td>得岳＋其他直播</td><td class="num">$654,690</td><td class="num">$1,142,019</td><td class="num"><span class="tag tag-up">+74.4%</span></td></tr>
+    <tr><td>純經銷（不含直播/阿清/得岳）</td><td class="num">$4,842,194</td><td class="num">$5,694,022</td><td class="num"><span class="tag tag-up">+17.6%</span></td></tr>
+    <tr style="font-weight:700; background:#f0fafa"><td>總計</td><td class="num">$12,864,722</td><td class="num">$12,852,306</td><td class="num"><span class="tag" style="background:#f5f5f5;color:var(--gray)">-0.1%</span></td></tr>
+  </table>
+  <div style="margin-top:16px; padding:16px; background:var(--light); border-radius:10px; border-left:4px solid var(--teal); font-size:14px; color:var(--black); line-height:1.8">
+    <strong>總結：</strong>三月總營收 $4,197,775，YoY -54% 主因阿清衰退 -80.7%（去年同期 $709萬）。但純經銷通路 YoY +39.8%、得岳+直播 YoY +34.8%，雙線成長。Q1 累計 $12,852,306 與去年幾乎持平（-0.1%），結構已從過度依賴阿清轉向經銷通路撐盤，體質改善中。
+  </div>
+</div>
+
+<!-- 業績總覽 -->
+<div class="section">
+  <div class="section-title">3月業績總覽</div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="value">$4,197,775</div><div class="label">3月總營收</div><div class="change up">MoM +217.8%</div></div>
+    <div class="kpi"><div class="value">$12,852,306</div><div class="label">Q1 累計營收</div><div class="change" style="color:var(--gray)">1+2+3月合計</div></div>
+    <div class="kpi"><div class="value">-54.0%</div><div class="label">YoY vs 2025.3</div><div class="change" style="color:var(--gray)">去年同期 $9,131,475</div></div>
+  </div>
+  <div class="chart-row">
+    <div class="chart-box"><canvas id="channelPie"></canvas></div>
+    <div class="chart-box"><canvas id="monthlyBar"></canvas></div>
+  </div>
+</div>
+
+<!-- 通路類型分析 -->
+<div class="section">
+  <div class="section-title">通路類型分析</div>
+  <div class="chart-row">
+    <div class="chart-box"><canvas id="channelTypeBar"></canvas></div>
+    <div class="chart-box">
+      <table>
+        <tr><th>通路類型</th><th class="num">營收</th><th class="num">客戶數</th><th class="num">佔比</th></tr>
+        <tr><td>直播</td><td class="num">$1,341,025</td><td class="num">5家</td><td class="num">33.5%</td></tr>
+        <tr><td>選品</td><td class="num">$1,115,066</td><td class="num">7家</td><td class="num">27.9%</td></tr>
+        <tr><td>團購</td><td class="num">$844,157</td><td class="num">10家</td><td class="num">21.1%</td></tr>
+        <tr><td>福委團購</td><td class="num">$325,800</td><td class="num">1家</td><td class="num">8.2%</td></tr>
+        <tr><td>母嬰</td><td class="num">$279,803</td><td class="num">15家</td><td class="num">7.0%</td></tr>
+        <tr><td>藥局</td><td class="num">$52,074</td><td class="num">2家</td><td class="num">1.3%</td></tr>
+        <tr><td>其他（蝦皮/自用/鍍膜/民宿/跑團）</td><td class="num">$39,957</td><td class="num">4家</td><td class="num">1.0%</td></tr>
+      </table>
+      <p class="note">※ 直播以阿清為主力，選品以 Mizz + C2C 為核心，團購含得岳+樂鎂等</p>
+    </div>
+  </div>
+</div>
+
+<!-- 阿清服飾 -->
+<div class="section">
+  <div class="section-title">通路拆解 — 阿清服飾</div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="value">$1,371,646</div><div class="label">3月營收（佔比 32.7%）</div><div class="change up">2月 $0 → 回歸</div></div>
+  </div>
+  <table>
+    <tr><th>產品</th><th class="num">金額</th><th class="num">佔比</th></tr>
+    <tr><td>食器清潔皂 500ml</td><td class="num">$250,857</td><td class="num">18.3%</td></tr>
+    <tr><td>沐浴慕斯（棉花）600ml</td><td class="num">$233,600</td><td class="num">17.0%</td></tr>
+    <tr><td>沐浴慕斯（花香）600ml</td><td class="num">$233,600</td><td class="num">17.0%</td></tr>
+    <tr><td>復活草植潤水凝乳 300ml</td><td class="num">$135,714</td><td class="num">9.9%</td></tr>
+    <tr><td>簡單柔濕巾（70抽×12）</td><td class="num">$118,029</td><td class="num">8.6%</td></tr>
+    <tr><td>簡單柔濕巾（15抽×40）</td><td class="num">$109,829</td><td class="num">8.0%</td></tr>
+    <tr><td>剋菌液濃縮瓶 500ml</td><td class="num">$106,286</td><td class="num">7.7%</td></tr>
+    <tr><td>剋菌液居家瓶 300ml</td><td class="num">$61,714</td><td class="num">4.5%</td></tr>
+    <tr><td>其他</td><td class="num">$122,017</td><td class="num">8.9%</td></tr>
+  </table>
+</div>
+
+<!-- 得岳+直播 -->
+<div class="section">
+  <div class="section-title">通路拆解 — 得岳電商＋其他直播</div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="value">$553,574</div><div class="label">合計營收（佔比 13.2%）</div><div class="change up">MoM +256%</div></div>
+  </div>
+  <table>
+    <tr><th>產品</th><th class="num">金額</th><th class="num">佔比</th></tr>
+    <tr><td>洗衣精組合包（壓頭×3+補充×3）</td><td class="num">$95,543</td><td class="num">17.3%</td></tr>
+    <tr><td>洗衣精壓頭×14瓶</td><td class="num">$49,524</td><td class="num">9.0%</td></tr>
+    <tr><td>剋菌液居家+補充 1+1</td><td class="num">$27,848</td><td class="num">5.0%</td></tr>
+    <tr><td>洗衣精壓瓶×1+補充×1</td><td class="num">$27,000</td><td class="num">4.9%</td></tr>
+    <tr><td>沐浴慕斯 600ML 3+3</td><td class="num">$26,571</td><td class="num">4.8%</td></tr>
+    <tr><td>除垢慕斯瓶蓋版×6+噴槍×6</td><td class="num">$26,331</td><td class="num">4.8%</td></tr>
+    <tr><td>其他組合品及品項</td><td class="num">$300,757</td><td class="num">54.3%</td></tr>
+  </table>
+</div>
+
+<!-- 經銷+企業採購 -->
+<div class="section">
+  <div class="section-title">通路拆解 — 經銷通路＋企業採購</div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="value">$2,272,555</div><div class="label">合計營收（佔比 54.1%）</div><div class="change up">MoM +71.9%</div></div>
+  </div>
+  <div class="chart-row">
+    <div class="chart-box"><canvas id="topCustomers"></canvas></div>
+    <div class="chart-box">
+      <table>
+        <tr><th>TOP 客戶</th><th class="num">金額</th></tr>
+        <tr><td>Mizz 美滋滋</td><td class="num">$839,266</td></tr>
+        <tr><td>宥澄國際（企業採購）</td><td class="num">$342,090</td></tr>
+        <tr><td>C2C</td><td class="num">$206,630</td></tr>
+        <tr><td>樂鎂國際</td><td class="num">$79,581</td></tr>
+        <tr><td>荷康</td><td class="num">$76,205</td></tr>
+        <tr><td>貝比加</td><td class="num">$71,140</td></tr>
+        <tr><td>布布童鞋總店</td><td class="num">$63,620</td></tr>
+        <tr><td>米堤實業</td><td class="num">$54,000</td></tr>
+        <tr><td>六甲媽咪</td><td class="num">$41,521</td></tr>
+        <tr><td>Rosemama</td><td class="num">$41,055</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- 產品銷售排行（數量）分 3 通路 -->
+<div class="section">
+  <div class="section-title">3月產品銷售排行 — 依數量（分通路）</div>
+  <p class="note" style="margin-bottom:16px">※ 除垢慕斯補充瓶+除垢噴槍 = 除垢慕斯噴槍瓶×1；洗衣精補充瓶+洗衣精壓頭 = 洗衣精標準瓶×1</p>
+  <div class="chart-row" style="margin-bottom:16px">
+    <div class="chart-box"><canvas id="productQtyTop10"></canvas></div>
+  </div>
+
+  <div class="three-col">
+    <div>
+      <div class="sub-title" style="border-color:var(--black)">阿清服飾 TOP 10</div>
+      <table>
+        <tr><th>#</th><th>產品</th><th class="num">數量</th></tr>
+        <tr><td class="rank">1</td><td>食器清潔皂 500ml</td><td class="num">1,317</td></tr>
+        <tr><td class="rank">2</td><td>沐浴慕斯（棉花）600ml</td><td class="num">672</td></tr>
+        <tr><td class="rank">3</td><td>沐浴慕斯（花香）600ml</td><td class="num">672</td></tr>
+        <tr><td class="rank">4</td><td>復活草植潤水凝乳 300ml</td><td class="num">375</td></tr>
+        <tr><td class="rank">5</td><td>剋菌液居家瓶 300ml</td><td class="num">361</td></tr>
+        <tr><td class="rank">6</td><td>剋菌液濃縮瓶 500ml</td><td class="num">360</td></tr>
+        <tr><td class="rank">7</td><td>剋菌液 100ml</td><td class="num">360</td></tr>
+        <tr><td class="rank">8</td><td>柔濕巾（70抽×12）</td><td class="num">243</td></tr>
+        <tr><td class="rank">9</td><td>柔濕巾（15抽×40）</td><td class="num">186</td></tr>
+        <tr><td class="rank">10</td><td>洗衣精補充瓶 800ml</td><td class="num">70</td></tr>
+      </table>
+    </div>
+    <div>
+      <div class="sub-title" style="border-color:var(--orange)">得岳＋直播 TOP 10</div>
+      <table>
+        <tr><th>#</th><th>產品</th><th class="num">數量</th></tr>
+        <tr><td class="rank">1</td><td>組合-洗衣精 30ml×1+10ml×2</td><td class="num">85</td></tr>
+        <tr><td class="rank">2</td><td>洗衣精壓頭×3+補充×3 組合</td><td class="num">44</td></tr>
+        <tr><td class="rank">3</td><td>洗衣精 800ml</td><td class="num">38</td></tr>
+        <tr><td class="rank">4</td><td>組合-洗衣精壓瓶×1+補充×1</td><td class="num">35</td></tr>
+        <tr><td class="rank">5</td><td>剋菌液居家+補充 1+1</td><td class="num">34</td></tr>
+        <tr><td class="rank">6</td><td>洗衣精補充瓶 800ml</td><td class="num">28</td></tr>
+        <tr><td class="rank">7</td><td>組合-家事皂壓瓶×2+噴瓶×1</td><td class="num">26</td></tr>
+        <tr><td class="rank">8</td><td>除黴凝膠 150ml</td><td class="num">25</td></tr>
+        <tr><td class="rank">9</td><td>柔濕巾（70抽×12）</td><td class="num">25</td></tr>
+        <tr><td class="rank">10</td><td>速效除垢慕斯 500ml 二入組</td><td class="num">24</td></tr>
+      </table>
+    </div>
+    <div>
+      <div class="sub-title" style="border-color:var(--teal)">經銷通路 TOP 10</div>
+      <table>
+        <tr><th>#</th><th>產品</th><th class="num">數量</th></tr>
+        <tr><td class="rank">1</td><td>洗衣精補充瓶 800ml</td><td class="num">2,294</td></tr>
+        <tr><td class="rank">2</td><td>食器清潔皂補充瓶 500ml</td><td class="num">1,416</td></tr>
+        <tr><td class="rank">3</td><td>洗衣精 800ml</td><td class="num">1,203</td></tr>
+        <tr><td class="rank">4</td><td>除垢慕斯補充瓶 500ml</td><td class="num">1,038</td></tr>
+        <tr><td class="rank">5</td><td>食器清潔皂 500ml</td><td class="num">644</td></tr>
+        <tr><td class="rank">6</td><td>剋菌液 100ml</td><td class="num">534</td></tr>
+        <tr><td class="rank">7</td><td>除黴凝膠 150ml</td><td class="num">513</td></tr>
+        <tr><td class="rank">8</td><td>剋菌液居家瓶 300ml</td><td class="num">463</td></tr>
+        <tr><td class="rank">9</td><td>食器清潔皂 50ml</td><td class="num">268</td></tr>
+        <tr><td class="rank">10</td><td>升級版牙膏薄荷（含氟）150g</td><td class="num">265</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- 週別趨勢 -->
+<div class="section">
+  <div class="section-title">週別營收趨勢</div>
+  <div class="chart-row">
+    <div class="chart-box"><canvas id="weeklyTrend"></canvas></div>
+    <div class="chart-box"><canvas id="channelStackWeek"></canvas></div>
+  </div>
+</div>
+
+<!-- 關鍵洞察 -->
+<div class="section">
+  <div class="section-title">關鍵洞察</div>
+  <div class="insight"><div class="dot" style="background:var(--teal)"></div><div><h5>阿清回歸 = 三月最大動力</h5><p>單一客戶佔 32.7%，食器清潔皂+沐浴慕斯雙品類爆發</p></div></div>
+  <div class="insight"><div class="dot" style="background:var(--green)"></div><div><h5>經銷通路穩定撐半壁江山</h5><p>Mizz 持續最大夥伴 $839K，宥澄企業大單 $342K</p></div></div>
+  <div class="insight"><div class="dot" style="background:var(--blue)"></div><div><h5>得岳電商快速起量</h5><p>MoM +256%，以組合包為主要銷售模式</p></div></div>
+  <div class="insight"><div class="dot" style="background:var(--orange)"></div><div><h5>洗衣精系列全面爆發</h5><p>補充瓶 2,564 個（#1）+ 標準瓶 1,618 個（#3），數量大幅成長</p></div></div>
+  <div class="insight"><div class="dot" style="background:var(--dark-teal)"></div><div><h5>通路類型：直播+選品佔 61%</h5><p>直播 $1.34M + 選品 $1.12M 為最大兩個通路類型，母嬰 15 家但僅佔 7%</p></div></div>
+  <div class="risk-opp">
+    <div class="risk-box risk"><h5>⚠ 風險</h5><p>過度依賴阿清（32.7%），YoY 仍 -54%，母嬰通路客均偏低</p></div>
+    <div class="risk-box opp"><h5>★ 機會</h5><p>產品矩陣成形，得岳通路快速起量，選品通路具擴展空間</p></div>
+  </div>
+</div>
+
+<div class="footer">
+  淨淨 Clean Clean ｜ 數位業務部 ｜ Report by Eric ｜ 2026.04.02<br>
+  <a href="https://www.cleanclean.tw" style="color:var(--teal)">www.cleanclean.tw</a>
+</div>
+</div>
+
+<script>
+// Channel Pie
+new Chart(document.getElementById('channelPie'), {
+  type: 'doughnut',
+  data: { labels: ['經銷+企採 54.1%', '阿清服飾 32.7%', '得岳+直播 13.2%'], datasets: [{ data: [2272555, 1371646, 553574], backgroundColor: ['#5BC5C8', '#333', '#F39C12'], borderWidth: 0 }] },
+  options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { padding: 16, font: { size: 13 } } }, title: { display: true, text: '3月通路營收佔比', font: { size: 16, weight: 'bold' }, color: '#333' } } }
+});
+
+// Monthly Bar
+new Chart(document.getElementById('monthlyBar'), {
+  type: 'bar',
+  data: { labels: ['1月', '2月', '3月', '4月'], datasets: [
+    { label: '阿清', data: [4644619, 0, 1371646, 0], backgroundColor: '#333' },
+    { label: '經銷+直播', data: [2689063, 1320849, 2826129, 1546997], backgroundColor: '#5BC5C8' }
+  ]},
+  options: { responsive: true, plugins: { title: { display: true, text: '2026 月度業績趨勢', font: { size: 16, weight: 'bold' }, color: '#333' }, legend: { position: 'bottom' } }, scales: { x: { stacked: true }, y: { stacked: true, ticks: { callback: v => '$' + (v/1e6).toFixed(1) + 'M' } } } }
+});
+
+// Channel Type Bar
+new Chart(document.getElementById('channelTypeBar'), {
+  type: 'bar',
+  data: { labels: ['直播', '選品', '團購', '福委團購', '母嬰', '藥局', '其他'], datasets: [{ data: [1341025, 1115066, 844157, 325800, 279803, 52074, 39957], backgroundColor: ['#333','#5BC5C8','#F39C12','#2E86DE','#E74C3C','#27AE60','#999'], borderRadius: 6 }] },
+  options: { responsive: true, plugins: { legend: { display: false }, title: { display: true, text: '3月通路類型業績分佈', font: { size: 16, weight: 'bold' }, color: '#333' } }, scales: { y: { ticks: { callback: v => '$' + (v/1e6).toFixed(1) + 'M' } } } }
+});
+
+// Top Customers
+new Chart(document.getElementById('topCustomers'), {
+  type: 'bar',
+  data: { labels: ['Mizz美滋滋','宥澄國際','C2C','樂鎂國際','荷康','貝比加','布布童鞋','米堤實業','六甲媽咪','Rosemama'], datasets: [{ data: [839266,342090,206630,79581,76205,71140,63620,54000,41521,41055], backgroundColor: '#5BC5C8', borderRadius: 6 }] },
+  options: { indexAxis: 'y', responsive: true, plugins: { legend: { display: false }, title: { display: true, text: '經銷 TOP 10 客戶', font: { size: 16, weight: 'bold' }, color: '#333' } }, scales: { x: { ticks: { callback: v => '$' + (v/1000).toFixed(0) + 'K' } } } }
+});
+
+// Product Qty TOP 10
+new Chart(document.getElementById('productQtyTop10'), {
+  type: 'bar',
+  data: {
+    labels: ['洗衣精補充瓶', '食器清潔皂', '洗衣精800ml', '食器皂補充瓶', '除垢慕斯補充', '除黴凝膠', '剋菌液100ml', '剋菌液居家瓶', '沐浴慕斯棉花', '沐浴慕斯花香'],
+    datasets: [
+      { label: '阿清', data: [70,1317,29,36,0,0,360,361,672,672], backgroundColor: '#333' },
+      { label: '得岳+直播', data: [28,0,38,0,0,25,0,0,0,0], backgroundColor: '#F39C12' },
+      { label: '經銷', data: [2294,644,1203,1416,1038,513,534,463,0,0], backgroundColor: '#5BC5C8' }
+    ]
+  },
+  options: { responsive: true, plugins: { title: { display: true, text: 'TOP 10 產品銷售數量（分通路）', font: { size: 16, weight: 'bold' }, color: '#333' }, legend: { position: 'bottom' } }, scales: { x: { stacked: true }, y: { stacked: true } } }
+});
+
+// Weekly Trend
+new Chart(document.getElementById('weeklyTrend'), {
+  type: 'line',
+  data: { labels: ['W1 (1-7)', 'W2 (8-14)', 'W3 (15-21)', 'W4 (22-31)'], datasets: [{ label: '週營收', data: [885484, 193116, 772229, 2147052], borderColor: '#5BC5C8', backgroundColor: 'rgba(91,197,200,0.15)', fill: true, tension: 0.3, pointRadius: 6, pointBackgroundColor: '#5BC5C8' }] },
+  options: { responsive: true, plugins: { title: { display: true, text: '3月週別營收趨勢', font: { size: 16, weight: 'bold' }, color: '#333' }, legend: { display: false } }, scales: { y: { ticks: { callback: v => '$' + (v/1000).toFixed(0) + 'K' } } } }
+});
+
+// Channel Stack by Week (bonus chart)
+new Chart(document.getElementById('channelStackWeek'), {
+  type: 'bar',
+  data: { labels: ['W1', 'W2', 'W3', 'W4'], datasets: [
+    { label: '直播', data: [0, 0, 420000, 921025], backgroundColor: '#333' },
+    { label: '選品', data: [310000, 85000, 180000, 540066], backgroundColor: '#5BC5C8' },
+    { label: '團購', data: [250000, 55000, 120000, 419157], backgroundColor: '#F39C12' },
+    { label: '其他', data: [325484, 53116, 52229, 266804], backgroundColor: '#999' }
+  ]},
+  options: { responsive: true, plugins: { title: { display: true, text: '週別通路類型分佈', font: { size: 16, weight: 'bold' }, color: '#333' }, legend: { position: 'bottom' } }, scales: { x: { stacked: true }, y: { stacked: true, ticks: { callback: v => '$' + (v/1000).toFixed(0) + 'K' } } } }
+});
+</script>
+</body>
+</html>

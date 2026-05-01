@@ -1,0 +1,3133 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Code AI Agent 教育訓練 ｜ 主管核心幹部版</title>
+<style>
+  :root {
+    --teal: #5BC8D5;
+    --teal-light: #E8F8FA;
+    --teal-mid: #C5EDF1;
+    --teal-dark: #2AABBBC;
+    --navy: #1E293B;
+    --slate: #475569;
+    --muted: #94A3B8;
+    --border: #E2E8F0;
+    --bg: #FFFFFF;
+    --bg-soft: #F8FDFE;
+    --green: #10B981;
+    --orange: #F59E0B;
+    --red: #EF4444;
+    --purple: #8B5CF6;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'PingFang TC', 'Noto Sans TC', sans-serif;
+    background: var(--bg);
+    color: var(--navy);
+    line-height: 1.7;
+  }
+
+  /* Progress Bar */
+  #progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    background: var(--teal);
+    z-index: 9999;
+    transition: width 0.1s;
+    width: 0%;
+  }
+
+  /* Top Nav */
+  nav {
+    position: fixed;
+    top: 3px;
+    left: 0;
+    right: 0;
+    background: rgba(255,255,255,0.96);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    z-index: 100;
+    padding: 0 24px;
+  }
+
+  .nav-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 10px 0;
+  }
+
+  .nav-inner::-webkit-scrollbar { display: none; }
+
+  .nav-inner a {
+    white-space: nowrap;
+    text-decoration: none;
+    font-size: 12px;
+    color: var(--slate);
+    padding: 4px 10px;
+    border-radius: 20px;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+
+  .nav-inner a:hover {
+    background: var(--teal-light);
+    color: var(--navy);
+  }
+
+  .nav-logo {
+    font-weight: 700;
+    color: var(--teal) !important;
+    margin-right: 8px;
+    font-size: 13px !important;
+  }
+
+  /* Main */
+  main {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 80px 24px 100px;
+  }
+
+  /* Hero */
+  .hero {
+    text-align: center;
+    padding: 60px 0 50px;
+    border-bottom: 2px solid var(--teal-light);
+    margin-bottom: 70px;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    background: var(--teal-light);
+    color: var(--teal);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    letter-spacing: 0.05em;
+  }
+
+  .hero h1 {
+    font-size: clamp(26px, 5vw, 40px);
+    font-weight: 800;
+    color: var(--navy);
+    line-height: 1.3;
+    margin-bottom: 16px;
+  }
+
+  .hero h1 span { color: var(--teal); }
+
+  .hero p {
+    font-size: 16px;
+    color: var(--slate);
+    max-width: 580px;
+    margin: 0 auto 28px;
+  }
+
+  .hero-meta {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .hero-meta span {
+    font-size: 13px;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  /* Section */
+  section {
+    margin-bottom: 80px;
+    scroll-margin-top: 70px;
+  }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--teal);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  section h2 {
+    font-size: clamp(22px, 4vw, 30px);
+    font-weight: 800;
+    color: var(--navy);
+    margin-bottom: 10px;
+    line-height: 1.3;
+  }
+
+  .section-sub {
+    font-size: 15px;
+    color: var(--slate);
+    margin-bottom: 32px;
+    line-height: 1.6;
+  }
+
+  /* Divider */
+  .section-divider {
+    width: 48px;
+    height: 3px;
+    background: var(--teal);
+    border-radius: 2px;
+    margin-bottom: 28px;
+  }
+
+  /* Cards */
+  .card {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+  }
+
+  .card-teal {
+    background: var(--teal-light);
+    border-color: var(--teal-mid);
+  }
+
+  .card h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 10px;
+  }
+
+  .card p, .card li {
+    font-size: 14px;
+    color: var(--slate);
+    line-height: 1.7;
+  }
+
+  .card ul { padding-left: 20px; }
+  .card li { margin-bottom: 6px; }
+
+  /* Grid */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  /* Table */
+  .table-wrap { overflow-x: auto; margin-bottom: 24px; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+
+  thead th {
+    background: var(--navy);
+    color: #fff;
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 13px;
+  }
+
+  thead th:first-child { border-radius: 8px 0 0 0; }
+  thead th:last-child { border-radius: 0 8px 0 0; }
+
+  tbody tr { border-bottom: 1px solid var(--border); }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:nth-child(even) { background: var(--bg-soft); }
+
+  tbody td {
+    padding: 12px 16px;
+    color: var(--slate);
+    vertical-align: top;
+  }
+
+  tbody td:first-child { font-weight: 600; color: var(--navy); }
+
+  .tag-green { color: var(--green); font-weight: 700; }
+  .tag-red { color: var(--red); font-weight: 700; }
+  .tag-orange { color: var(--orange); font-weight: 700; }
+  .tag-teal { color: var(--teal); font-weight: 700; }
+
+  /* Highlight Box */
+  .highlight {
+    background: var(--teal-light);
+    border-left: 4px solid var(--teal);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+  }
+
+  .highlight p {
+    font-size: 14px;
+    color: var(--navy);
+    line-height: 1.7;
+  }
+
+  .highlight strong { color: var(--teal); }
+
+  /* Quote */
+  .quote {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 20px;
+    font-size: 15px;
+    color: var(--navy);
+    font-style: italic;
+    line-height: 1.8;
+  }
+
+  .quote cite {
+    display: block;
+    margin-top: 10px;
+    font-size: 13px;
+    color: var(--muted);
+    font-style: normal;
+    font-weight: 600;
+  }
+
+  /* Flywheel */
+  .flywheel {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px 24px;
+    margin-bottom: 24px;
+  }
+
+  .flywheel-steps {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .fw-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 110px;
+  }
+
+  .fw-circle {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--teal);
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 8px;
+    line-height: 1.3;
+    margin-bottom: 8px;
+  }
+
+  .fw-step span {
+    font-size: 11px;
+    color: var(--slate);
+    font-weight: 600;
+  }
+
+  .fw-arrow {
+    font-size: 20px;
+    color: var(--teal);
+    margin: 0 -4px;
+    padding-bottom: 20px;
+  }
+
+  /* Person card */
+  .person-card {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+
+  .person-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .person-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--teal);
+    color: white;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .person-info h4 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--navy);
+  }
+
+  .person-info span {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .person-card h5 {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--teal);
+    margin-bottom: 8px;
+  }
+
+  .person-card ul {
+    padding-left: 18px;
+    margin-bottom: 12px;
+  }
+
+  .person-card li {
+    font-size: 14px;
+    color: var(--slate);
+    margin-bottom: 5px;
+  }
+
+  /* Code block */
+  .code-block {
+    background: var(--navy);
+    color: #E2E8F0;
+    border-radius: 10px;
+    padding: 16px 20px;
+    font-family: 'SF Mono', 'Consolas', monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    margin-bottom: 16px;
+    overflow-x: auto;
+  }
+
+  .code-block .comment { color: #64748B; }
+  .code-block .teal { color: #5BC8D5; }
+  .code-block .green { color: #86EFAC; }
+
+  /* Bad/Good compare */
+  .compare-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  @media (max-width: 600px) {
+    .compare-wrap { grid-template-columns: 1fr; }
+  }
+
+  .compare-bad {
+    background: #FFF5F5;
+    border: 1px solid #FCA5A5;
+    border-radius: 10px;
+    padding: 16px;
+  }
+
+  .compare-good {
+    background: #F0FDF4;
+    border: 1px solid #86EFAC;
+    border-radius: 10px;
+    padding: 16px;
+  }
+
+  .compare-label {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .compare-bad .compare-label { color: var(--red); }
+  .compare-good .compare-label { color: var(--green); }
+
+  .compare-bad p, .compare-good p {
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  .compare-bad p { color: #991B1B; }
+  .compare-good p { color: #14532D; }
+
+  /* Agent row */
+  .agent-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .agent-row:last-child { border-bottom: none; }
+
+  .agent-emoji {
+    font-size: 22px;
+    width: 36px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  .agent-name {
+    font-weight: 700;
+    color: var(--navy);
+    font-size: 14px;
+    width: 100px;
+    flex-shrink: 0;
+  }
+
+  .agent-role {
+    font-size: 12px;
+    color: var(--muted);
+    width: 80px;
+    flex-shrink: 0;
+  }
+
+  .agent-desc {
+    font-size: 13px;
+    color: var(--slate);
+    flex: 1;
+  }
+
+  /* Tip box */
+  .tip {
+    background: #FFFBEB;
+    border: 1px solid #FCD34D;
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 16px;
+    font-size: 14px;
+    color: #92400E;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .tip-icon { font-size: 18px; flex-shrink: 0; }
+
+  /* Warning */
+  .warning {
+    background: #FFF5F5;
+    border: 1px solid #FCA5A5;
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 16px;
+    font-size: 14px;
+    color: #991B1B;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  /* Memory layers */
+  .memory-tree {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 20px;
+    font-family: 'SF Mono', 'Consolas', monospace;
+    font-size: 13px;
+    line-height: 2;
+    color: var(--slate);
+  }
+
+  .memory-tree .tree-folder { color: var(--teal); font-weight: 700; }
+  .memory-tree .tree-note { color: var(--muted); font-size: 11px; }
+
+  /* Session indicator */
+  .session-box {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+
+  .session-box h4 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .session-box ul {
+    padding-left: 18px;
+  }
+
+  .session-box li {
+    font-size: 13px;
+    color: var(--slate);
+    margin-bottom: 5px;
+  }
+
+  /* Iron rule */
+  .iron-rule {
+    background: var(--navy);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+    color: white;
+  }
+
+  .iron-rule h4 {
+    color: var(--teal);
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+
+  .iron-rule li {
+    font-size: 13px;
+    color: #CBD5E1;
+    margin-bottom: 6px;
+  }
+
+  .iron-rule ul { padding-left: 18px; }
+
+  /* Skill tag */
+  .skill-tag {
+    display: inline-block;
+    background: var(--teal-light);
+    color: var(--teal);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 12px;
+    margin: 3px;
+    font-family: 'SF Mono', monospace;
+  }
+
+  /* Chapter number */
+  .ch-num {
+    display: inline-block;
+    background: var(--teal);
+    color: white;
+    font-size: 11px;
+    font-weight: 800;
+    padding: 2px 10px;
+    border-radius: 12px;
+    margin-bottom: 8px;
+    letter-spacing: 0.05em;
+  }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 40px 24px;
+    font-size: 12px;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+  }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    main { padding: 70px 16px 60px; }
+    .flywheel-steps { gap: 4px; }
+    .fw-step { width: 80px; }
+    .fw-circle { width: 52px; height: 52px; font-size: 10px; }
+    .fw-arrow { font-size: 16px; }
+  }
+
+  /* ==============================
+     APPLE-GRADE UPGRADES
+     ============================== */
+
+  /* Smooth scroll + font rendering */
+  html { scroll-behavior: smooth; }
+  body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+  /* Card hover depth */
+  .card {
+    transition: box-shadow 0.28s cubic-bezier(0.34,1.56,0.64,1), transform 0.28s cubic-bezier(0.34,1.56,0.64,1);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .card:hover {
+    box-shadow: 0 4px 24px rgba(91,200,213,0.13), 0 1px 6px rgba(0,0,0,0.07);
+    transform: translateY(-3px);
+  }
+
+  /* Person card depth */
+  .person-card {
+    transition: box-shadow 0.28s ease, transform 0.28s ease;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  }
+  .person-card:hover {
+    box-shadow: 0 6px 28px rgba(91,200,213,0.14), 0 1px 6px rgba(0,0,0,0.07);
+    transform: translateY(-2px);
+  }
+
+  /* Flywheel circles pulse on hover */
+  .fw-circle {
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
+    box-shadow: 0 2px 10px rgba(91,200,213,0.25);
+  }
+  .fw-step:hover .fw-circle {
+    transform: scale(1.12);
+    box-shadow: 0 4px 20px rgba(91,200,213,0.45);
+  }
+
+  /* Section fade-in on scroll */
+  section {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.55s ease, transform 0.55s ease;
+  }
+  section.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Table row hover */
+  tbody tr {
+    transition: background 0.18s ease;
+  }
+  tbody tr:hover {
+    background: var(--teal-light) !important;
+  }
+
+  /* Highlight box subtle left glow */
+  .highlight {
+    box-shadow: inset 0 0 0 0 transparent;
+    transition: box-shadow 0.3s ease;
+  }
+  .highlight:hover {
+    box-shadow: inset 3px 0 0 var(--teal), 0 2px 12px rgba(91,200,213,0.1);
+  }
+
+  /* Code block cursor glow */
+  .code-block {
+    box-shadow: 0 2px 16px rgba(30,41,59,0.12);
+    transition: box-shadow 0.25s ease;
+  }
+  .code-block:hover {
+    box-shadow: 0 4px 28px rgba(30,41,59,0.2);
+  }
+
+  /* Nav link active indicator */
+  .nav-inner a.active {
+    background: var(--teal-light);
+    color: var(--teal);
+    font-weight: 700;
+  }
+
+  /* Chip button style for commands */
+  code.cmd {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    height: 32px;
+    background: var(--navy);
+    color: #fff;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 800;
+    font-family: 'SF Mono', 'Consolas', monospace;
+    padding: 0 10px;
+    box-shadow: 0 2px 6px rgba(30,41,59,0.2), 0 0 0 2px rgba(91,200,213,0.15);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+    cursor: default;
+    letter-spacing: 0;
+    vertical-align: middle;
+  }
+  code.cmd:hover {
+    transform: translateY(-2px) scale(1.08);
+    box-shadow: 0 4px 14px rgba(30,41,59,0.28), 0 0 0 2px rgba(91,200,213,0.35);
+  }
+  code.cmd.teal {
+    background: var(--teal);
+    box-shadow: 0 2px 8px rgba(91,200,213,0.35);
+  }
+
+  /* Manus comparison visual badges */
+  .vs-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 20px;
+  }
+  .vs-badge.bad  { background:#FEE2E2; color:#B91C1C; }
+  .vs-badge.good { background:#DCFCE7; color:#15803D; }
+  .vs-badge.warn { background:#FEF3C7; color:#B45309; }
+
+  /* Mini flywheel for Manus section */
+  .mini-flywheel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    flex-wrap: wrap;
+    padding: 20px 0 8px;
+  }
+  .mfw-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+  }
+  .mfw-circle {
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--teal) 0%, #2ab8c8 100%);
+    color: white;
+    font-size: 10px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    line-height: 1.25;
+    padding: 6px;
+    box-shadow: 0 3px 12px rgba(91,200,213,0.4);
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
+  }
+  .mfw-circle:hover { transform: scale(1.12); box-shadow: 0 5px 20px rgba(91,200,213,0.55); }
+  .mfw-label { font-size: 10px; color: var(--slate); font-weight: 600; }
+  .mfw-arr {
+    color: var(--teal);
+    font-size: 18px;
+    font-weight: 700;
+    padding-bottom: 18px;
+    margin: 0 -2px;
+  }
+  .mfw-loop {
+    text-align: center;
+    font-size: 12px;
+    color: var(--teal);
+    font-weight: 700;
+    margin-top: 6px;
+    letter-spacing: 0.04em;
+  }
+
+  /* Progress bar gradient */
+  #progress-bar {
+    background: linear-gradient(90deg, var(--teal) 0%, #2ab8c8 50%, #5BC8D5 100%);
+    height: 3px;
+    box-shadow: 0 0 8px rgba(91,200,213,0.6);
+  }
+
+  /* Hero subtle gradient bg */
+  .hero {
+    background: linear-gradient(180deg, rgba(232,248,250,0.5) 0%, transparent 100%);
+    border-radius: 20px;
+    padding: 60px 32px 50px;
+  }
+
+  /* Grid-3 cards equal height */
+  .grid-3 { align-items: stretch; }
+  .grid-3 .card { margin-bottom: 0; }
+
+  /* Mini Quiz */
+  .mini-quiz {
+    background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%);
+    border: 2px dashed #F59E0B;
+    border-radius: 16px;
+    padding: 20px;
+  }
+  .mini-quiz .quiz-q {
+    font-size: 14px;
+    color: var(--navy);
+    margin-bottom: 14px;
+    line-height: 1.7;
+  }
+  .mini-quiz .quiz-options {
+    display: grid;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .mini-quiz .quiz-options button {
+    text-align: left;
+    background: white;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 13px;
+    color: var(--navy);
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s;
+  }
+  .mini-quiz .quiz-options button:hover {
+    border-color: var(--teal);
+    background: var(--teal-light);
+  }
+  .mini-quiz .quiz-options button.correct {
+    background: #D1FAE5;
+    border-color: var(--green);
+    color: #065F46;
+    font-weight: 700;
+  }
+  .mini-quiz .quiz-options button.wrong {
+    background: #FEE2E2;
+    border-color: var(--red);
+    color: #991B1B;
+  }
+  .mini-quiz .quiz-explain {
+    display: none;
+    background: white;
+    border-left: 3px solid var(--green);
+    padding: 12px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    color: var(--slate);
+    line-height: 1.7;
+  }
+  .mini-quiz.answered .quiz-explain { display: block; }
+  .mini-quiz.answered .quiz-options button { cursor: default; pointer-events: none; }
+
+  /* Chapter checkbox */
+  .ch-check {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: white;
+    border: 1.5px solid var(--border);
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 12px;
+    color: var(--slate);
+    cursor: pointer;
+    margin-left: 10px;
+    user-select: none;
+    transition: all 0.15s;
+    vertical-align: middle;
+  }
+  .ch-check:hover { border-color: var(--teal); }
+  .ch-check.done {
+    background: var(--green);
+    border-color: var(--green);
+    color: white;
+    font-weight: 700;
+  }
+  .ch-check::before {
+    content: "○";
+    font-size: 14px;
+  }
+  .ch-check.done::before { content: "✓"; }
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="#top">淨淨 AI</a>
+    <a href="#ch0">為什麼 Agent</a>
+    <a href="#ch1">Claude Code</a>
+    <a href="#ch2">底層邏輯</a>
+    <a href="#ch3">Agent</a>
+    <a href="#ch4">Memory</a>
+    <a href="#ch5">Skill</a>
+    <a href="#ch6">下指令</a>
+    <a href="#ch-tools">工具調校</a>
+    <a href="#ch7">多對話策略</a>
+    <a href="#ch7a">帶員工用工具</a>
+    <a href="#ch7b">優化工具</a>
+    <a href="#ch8b">實戰習慣</a>
+    <a href="#ch8">部門實戰</a>
+    <a href="#ch85">2×2 矩陣</a>
+    <a href="#ch9">注意事項</a>
+  </div>
+</nav>
+
+<main id="top">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-badge">主管 · 核心幹部版</div>
+    <h1>用 <span>AI Agent</span> 打造<br>屬於你的智能工作夥伴</h1>
+    <p>這不是給一般員工看的教學。這是給工具創造者的課程——讓你也能像笙闆一樣，用 AI 從頭打造任何工具。</p>
+    <div class="hero-meta">
+      <span>🎯 對象：妮妮 · 依庭 · 小瑄 · Cara · 冠達</span>
+      <span>⏱ 預計 1.5–2 小時</span>
+      <span>📅 笙闆 AI · 2026</span>
+    </div>
+  </div>
+
+  <!-- Ch.0 -->
+  <section id="ch0">
+    <div class="ch-num">Ch.0</div>
+    <div class="section-label">開場</div>
+    <h2>為什麼要用 AI Agent？</h2>
+    <div class="section-divider"></div>
+    <p class="section-sub">在學怎麼用之前，先搞清楚「為什麼這套系統跟你以前用過的完全不一樣」。</p>
+
+    <div class="quote">
+      「我對未來公司的願景：假設我們有十個人，其中就有六個核心幹部是工具的創造者與修改者。他們待在前線最了解需求，能做出各種工具並整合在淨淨總站裡。」
+      <cite>— 笙闆</cite>
+    </div>
+
+    <!-- Agent 核心公式 -->
+    <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:32px 0 14px;">先搞懂一個核心觀念：什麼是 Agent？</h3>
+    <p style="font-size:14px;color:var(--slate);margin-bottom:18px;">把 Agent 想像成<strong style="color:var(--navy);">一個虛擬的 AI 助理</strong>——你可以設定它<strong style="color:var(--navy);">記得什麼</strong>（Memory）、設定它<strong style="color:var(--navy);">會什麼專業</strong>（Skill）。它就會變成一個越用越懂你、越來越專業的個人員工。</p>
+
+    <!-- 公式視覺 -->
+    <div style="background:linear-gradient(135deg,var(--bg-soft) 0%,rgba(232,248,250,0.55) 100%);border:1.5px solid var(--teal-mid);border-radius:18px;padding:28px 24px;margin-bottom:24px;">
+      <div style="display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;">
+        <div style="background:white;border:1.5px solid var(--teal-mid);border-radius:14px;padding:16px 22px;text-align:center;min-width:130px;box-shadow:0 4px 14px rgba(91,200,213,0.12);">
+          <div style="font-size:22px;margin-bottom:4px;">🧠</div>
+          <div style="font-size:14px;font-weight:800;color:var(--navy);">Memory</div>
+          <div style="font-size:11px;color:var(--slate);margin-top:2px;">它記得什麼</div>
+        </div>
+        <div style="font-size:28px;color:var(--teal);font-weight:800;">+</div>
+        <div style="background:white;border:1.5px solid var(--teal-mid);border-radius:14px;padding:16px 22px;text-align:center;min-width:130px;box-shadow:0 4px 14px rgba(91,200,213,0.12);">
+          <div style="font-size:22px;margin-bottom:4px;">📚</div>
+          <div style="font-size:14px;font-weight:800;color:var(--navy);">Skill</div>
+          <div style="font-size:11px;color:var(--slate);margin-top:2px;">它會什麼</div>
+        </div>
+        <div style="font-size:28px;color:var(--teal);font-weight:800;">=</div>
+        <div style="background:linear-gradient(135deg,var(--teal) 0%,#2ab8c8 100%);border-radius:14px;padding:16px 22px;text-align:center;min-width:130px;color:white;box-shadow:0 6px 20px rgba(91,200,213,0.35);">
+          <div style="font-size:22px;margin-bottom:4px;">🤖</div>
+          <div style="font-size:14px;font-weight:800;">Agent</div>
+          <div style="font-size:11px;opacity:0.9;margin-top:2px;">虛擬 AI 助理</div>
+        </div>
+      </div>
+      <p style="text-align:center;font-size:13px;color:var(--slate);margin-top:18px;line-height:1.7;">
+        想像你雇用了一個助理，告訴它<strong style="color:var(--navy);">「你是淨淨的廣告投手」（Skill）</strong>、<br>
+        並讓它<strong style="color:var(--navy);">記得我們所有的廣告策略歷史（Memory）</strong>——這就是 Agent。
+      </p>
+    </div>
+
+    <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin-bottom:16px;">四個層次的對比</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>工具</th>
+            <th>怎麼用</th>
+            <th>記得你嗎</th>
+            <th>能主動行動</th>
+            <th>懂你的品牌</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Gemini / ChatGPT</td>
+            <td>問問題，拿答案</td>
+            <td class="tag-red">❌ 每次重來</td>
+            <td class="tag-red">❌ 只說不做</td>
+            <td class="tag-red">❌ 不認識你</td>
+          </tr>
+          <tr>
+            <td>Claude（一般對話）</td>
+            <td>更聰明的問答</td>
+            <td class="tag-red">❌ 關掉就忘</td>
+            <td class="tag-red">❌ 還是只說</td>
+            <td class="tag-red">❌ 陌生人</td>
+          </tr>
+          <tr>
+            <td>Claude Code（有手有腳）</td>
+            <td>能寫程式、操作電腦</td>
+            <td class="tag-orange">⚠️ 單次記得</td>
+            <td class="tag-green">✅ 可以動手</td>
+            <td class="tag-red">❌ 還是不認識</td>
+          </tr>
+          <tr>
+            <td style="color:var(--teal)">AI Agent 笙闆 AI 模式</td>
+            <td>有角色、有記憶、有知識庫</td>
+            <td class="tag-green">✅ 永久記得</td>
+            <td class="tag-green">✅ 判斷＋行動</td>
+            <td class="tag-green">✅ 深度認識</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </section>
+
+  <!-- Ch.1 -->
+  <section id="ch1">
+    <div class="ch-num">Ch.1</div>
+    <div class="section-label">基礎概念</div>
+    <h2>Claude Code 是什麼？</h2>
+    <div class="section-divider"></div>
+    <p class="section-sub">很多人把 Claude Code 當成「更聰明的 ChatGPT」，這是最大的誤解。</p>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3>💬 一般 Claude（對話版）</h3>
+        <ul>
+          <li>你問，它答，僅此而已</li>
+          <li>不能操作你的電腦</li>
+          <li>不能讀寫你的檔案</li>
+          <li>關掉視窗就完全忘記</li>
+          <li>每次都要重新介紹自己</li>
+        </ul>
+      </div>
+      <div class="card card-teal">
+        <h3>⚡ Claude Code（有手有腳）</h3>
+        <ul>
+          <li>可以寫程式並直接跑起來</li>
+          <li>可以讀寫你電腦上的任何檔案</li>
+          <li>可以搜尋網路、查資料</li>
+          <li>可以幫你操作瀏覽器</li>
+          <li>透過 Memory 永久記住你</li>
+          <li>透過 Skill 具備專業知識</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="highlight">
+      <p>重要觀念：Claude Code 不是「聊天工具」，它是<strong>可以接受派工、自主完成任務的 AI 員工</strong>。你說「幫我分析這份廣告數據並寫成週報」，它就真的去做完，而不是只告訴你「你可以這樣做」。</p>
+    </div>
+
+    <h3 style="font-size:16px;font-weight:700;color:var(--navy);margin:24px 0 12px;">它能做到的事（實際例子）</h3>
+    <div class="grid-3">
+      <div class="card">
+        <h3>📊 數據分析</h3>
+        <p>讀取廣告報表 CSV，自動分析 ROAS 趨勢，輸出圖表與建議</p>
+      </div>
+      <div class="card">
+        <h3>🌐 建工具網站</h3>
+        <p>從零打造電商數據站、廣告分析儀表板，部署到網路上</p>
+      </div>
+      <div class="card">
+        <h3>📝 生成文件</h3>
+        <p>自動產出會議記錄、週報、合意終止書、企劃書</p>
+      </div>
+      <div class="card">
+        <h3>🤖 自動化流程</h3>
+        <p>定期跑廣告報告、自動整理數據、發送摘要</p>
+      </div>
+      <div class="card">
+        <h3>🔍 研究調查</h3>
+        <p>搜尋競品、整理市場資料、分析消費者評論</p>
+      </div>
+      <div class="card">
+        <h3>🎨 素材生成</h3>
+        <p>AI 生圖、寫文案、製作廣告素材，整合品牌知識</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ch.2 -->
+  <section id="ch2">
+    <div class="ch-num">Ch.2</div>
+    <div class="section-label">核心思維</div>
+    <h2>AI 工作的底層邏輯</h2>
+    <div class="section-divider"></div>
+    <p class="section-sub">這是笙闆使用 AI 的核心思維，也是讓 AI 越用越強的根本原理。</p>
+
+    <div class="flywheel">
+      <p style="text-align:center;font-size:13px;color:var(--muted);margin-bottom:8px;font-weight:600;letter-spacing:0.05em;">AI 循環飛輪</p>
+      <p style="text-align:center;font-size:12px;color:var(--slate);margin-bottom:24px;line-height:1.6;">
+        飛輪的目的：讓你的 AI Agent <strong style="color:var(--teal);">越用越好用</strong>、<strong style="color:var(--teal);">越來越懂你</strong>、<strong style="color:var(--teal);">越來越有效率</strong>
+      </p>
+      <div class="flywheel-steps">
+        <div class="fw-step">
+          <div class="fw-circle">先定<br>目的</div>
+          <span>目標是什麼</span>
+        </div>
+        <div class="fw-arrow">→</div>
+        <div class="fw-step">
+          <div class="fw-circle">盤點<br>資源</div>
+          <span>手邊有什麼</span>
+        </div>
+        <div class="fw-arrow">→</div>
+        <div class="fw-step">
+          <div class="fw-circle">收集<br>資料</div>
+          <span>缺什麼補什麼</span>
+        </div>
+        <div class="fw-arrow">→</div>
+        <div class="fw-step">
+          <div class="fw-circle">AI<br>重組</div>
+          <span>讓AI分析整合</span>
+        </div>
+        <div class="fw-arrow">→</div>
+        <div class="fw-step">
+          <div class="fw-circle">人工<br>打磨</div>
+          <span>你來拍板調整</span>
+        </div>
+        <div class="fw-arrow">→</div>
+        <div class="fw-step">
+          <div class="fw-circle">存回<br>記憶</div>
+          <span>優化結果回存</span>
+        </div>
+      </div>
+      <p style="text-align:center;margin-top:20px;font-size:13px;color:var(--teal);font-weight:700;">↻ 每跑一圈，你的 AI 助理就比上一圈更聰明</p>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3>🎯 第一步：先知道目的</h3>
+        <p>在使用 AI 之前，最重要的事是<strong>釐清最終目標</strong>。不是「我想用 AI 做廣告」，而是「我想讓廣告週報從手動 4 小時變成自動 10 分鐘」。目的越清楚，AI 的輸出越精準。</p>
+      </div>
+      <div class="card">
+        <h3>🔄 最後一步：存回記憶</h3>
+        <p>每次你覺得某個指令特別好用、某個工作流程跑得很順——把它存進 Memory。下一次 AI 就從這個優化後的版本出發，而不是從零開始。<strong>這就是「越用越聰明」的秘密。</strong></p>
+      </div>
+    </div>
+
+    <div class="highlight">
+      <p><strong>實際例子（冠達）：</strong>第一次叫 AI 分析廣告，花了很多時間調整格式。把這個好版本存進 Memory 後，下一次 AI 一開口就用對格式，一次到位。三個月後，冠達的廣告分析 SOP 全都住在 AI 的 Memory 裡。</p>
+    </div>
+
+    <!-- ========== 數字指令心法 ========== -->
+    <h3 style="font-size:18px;font-weight:800;color:var(--navy);margin:44px 0 8px;">⚡ 笙闆心法：數字指令</h3>
+    <p style="font-size:14px;color:var(--slate);margin-bottom:18px;line-height:1.7;">
+      飛輪要跑得快，就要把「常用動作」變成<strong style="color:var(--navy);">肌肉記憶</strong>。<br>
+      笙闆把每個關鍵動作壓縮成一個數字——<strong style="color:var(--teal);">打一個數字 = 啟動一整套流程</strong>。這是實戰用下來，個人覺得最實用的心法。
+    </p>
+
+    <!-- 重要說明：要自己打 -->
+    <div style="background:#FFFBEB;border:1.5px solid #FCD34D;border-radius:14px;padding:16px 20px;margin-bottom:22px;">
+      <div style="display:flex;gap:12px;align-items:flex-start;">
+        <span style="font-size:20px;flex-shrink:0;">⚠️</span>
+        <div style="flex:1;">
+          <div style="font-size:14px;font-weight:800;color:#92400E;margin-bottom:6px;">這些指令需要你自己輸入到對話框</div>
+          <p style="font-size:13px;color:#78350F;line-height:1.7;margin-bottom:8px;">
+            <strong>第一次用 AI 時，它還不認識這些數字</strong>——所以你要先用完整句子讓 AI 記住規則，之後它就會懂。<br>
+            <strong style="color:#92400E;">捷徑：</strong>第一次先複製下面這段「規則設定」貼給 AI，它就會接受所有數字指令了。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 第一次設定的提示詞 -->
+    <details style="background:white;border:1.5px solid var(--teal-mid);border-radius:14px;padding:14px 18px;margin-bottom:24px;cursor:pointer;">
+      <summary style="font-size:14px;font-weight:800;color:var(--teal);list-style:none;display:flex;align-items:center;gap:8px;">
+        <span style="font-size:16px;">📋</span>
+        <span>點開複製：第一次教 AI 數字指令的提示詞</span>
+        <span style="margin-left:auto;font-size:12px;color:var(--slate);">↓ 展開</span>
+      </summary>
+      <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border);">
+        <p style="font-size:13px;color:var(--slate);margin-bottom:10px;line-height:1.6;">把這段整個複製貼給 AI，它就會記住數字指令的對應動作：</p>
+        <div class="code-block" style="font-size:12px;line-height:1.8;">
+從現在起請記住以下數字指令對應的動作，<br>
+之後我打數字（可多個用空格隔開）你就依序執行：<br>
+<br>
+<span class="teal">0</span> = 查我的收件夾、重載最新規則、回報目前進行中／卡住的任務<br>
+<span class="teal">1</span> = 工作日誌：整理本次對話的所有決策、產出、待辦，存進 Memory<br>
+<span class="teal">2</span> = 我這邊做完了（驗證、輸入密碼、檔案放好），你接著做下一步<br>
+<span class="teal">3</span> = 完整品質審查：用嚴格主管 + 陌生使用者 + 功能實測三個視角審查並直接修<br>
+<span class="teal">4</span> = 升級 Skill：把本次的踩坑解法、穩定 pattern、新發現補進對應 Skill 檔案<br>
+<span class="teal">5</span> = 全力跑：細節你自己決定，不用每步問我，最後給結果就好<br>
+<span class="teal">9</span> = 重載工作習慣：重新讀取所有共用規則檔案<br>
+<br>
+請回覆「<span class="green">已記住</span>」並列出你理解的對應，我之後就會用這些數字了。
+        </div>
+        <div style="margin-top:10px;padding:10px 14px;background:var(--teal-light);border-radius:8px;border:1px solid var(--teal-mid);">
+          <p style="font-size:12px;color:var(--navy);line-height:1.6;">
+            <strong style="color:var(--teal);">💡 進階：</strong>記得後可以再加一句「<strong>請把這套規則寫進你的 Memory，下次新對話也記得</strong>」——這樣以後每次新對話都能直接打數字。
+          </p>
+        </div>
+      </div>
+    </details>
+
+    <!-- 七張數字卡 -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:28px;">
+
+      <div style="background:white;border:1.5px solid var(--border);border-radius:16px;padding:18px 18px 16px;transition:all 0.28s cubic-bezier(0.34,1.56,0.64,1);box-shadow:0 1px 4px rgba(0,0,0,0.04);" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(91,200,213,0.18)'" onmouseout="this.style.transform='';this.style.boxShadow='0 1px 4px rgba(0,0,0,0.04)'">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+          <code class="cmd">0</code>
+          <div style="font-size:14px;font-weight:800;color:var(--navy);">開工確認</div>
+        </div>
+        <p style="font-size:13px;color:var(--slate);line-height:1.6;">查收件夾、重載最新規則、回報目前進行中／卡住的任務。每次新對話開頭打這個。</p>
+      </div>
+
+      <div style="background:white;border:1.5px solid var(--teal-mid);border-radius:16px;padding:18px 18px 16px;transition:all 0.28s cubic-bezier(0.34,1.56,0.64,1);box-shadow:0 1px 4px rgba(91,200,213,0.08);position:relative;" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(91,200,213,0.25)'" onmouseout="this.style.transform='';this.style.boxShadow='0 1px 4px rgba(91,200,213,0.08)'">
+        <div style="position:absolute;top:-8px;right:14px;background:var(--teal);color:white;font-size:10px;font-weight:800;padding:2px 9px;border-radius:20px;letter-spacing:0.05em;">最常用</div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+          <code class="cmd teal">1</code>
+          <div style="font-size:14px;font-weight:800;color:var(--navy);">存工作日誌</div>
+        </div>
+        <p style="font-size:13px;color:var(--slate);line-height:1.6;">把這次的決策、產出、待辦整理成 Memory 存起來。<strong>任務做完一定打。</strong></p>
+      </div>
+
+      <div style="background:white;border:1.5px solid var(--border);border-radius:16px;padding:18px 18px 16px;transition:all 0.28s cubic-bezier(0.34,1.56,0.64,1);box-shadow:0 1px 4px rgba(0,0,0,0.04);" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(91,200,213,0.18)'" onmouseout="this.style.transform='';this.style.boxShadow='0 1px 4px rgba(0,0,0,0.04)'">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+          <code class="cmd">2</code>
+          <div style="font-size:14px;font-weight:800;color:var(--navy);">我這邊好了</div>
+        </div>
+        <p style="font-size:13px;color:var(--slate);line-height:1.6;">你做完你的部分（驗證、輸入密碼、檔案放好），AI 接著做下一步。不用打字解釋。</p>
+      </div>
+
+      <div style="background:white;border:1.5px solid var(--teal-mid);border-radius:16px;padding:18px 18px 16px;transition:all 0.28s cubic-bezier(0.34,1.56,0.64,1);box-shadow:0 1px 4px rgba(91,200,213,0.08);position:relative;" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(91,200,213,0.25)'" onmouseout="this.style.transform='';this.style.boxShadow='0 1px 4px rgba(91,200,213,0.08)'">
+        <div style="position:absolute;top:-8px;right:14px;background:var(--teal);color:white;font-size:10px;font-weight:800;padding:2px 9px;border-radius:20px;letter-spacing:0.05em;">交付前</div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+          <code class="cmd teal">3</code>
+          <div style="font-size:14px;font-weight:800;color:var(--navy);">完整品質審查</div>
+        </div>
+        <p style="font-size:13px;color:var(--slate);line-height:1.6;">三視角全跑：嚴格主管 + 陌生使用者 + 功能實測。AI 自己抓問題、直接修。</p>
+      </div>
+
+      <div style="background:white;border:1.5px solid var(--teal-mid);border-radius:16px;padding:18px 18px 16px;transition:all 0.28s cubic-bezier(0.34,1.56,0.64,1);box-shadow:0 1px 4px rgba(91,200,213,0.08);position:relative;" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(91,200,213,0.25)'" onmouseout="this.style.transform='';this.style.boxShadow='0 1px 4px rgba(91,200,213,0.08)'">
+        <div style="position:absolute;top:-8px;right:14px;background:var(--teal);color:white;font-size:10px;font-weight:800;padding:2px 9px;border-radius:20px;letter-spacing:0.05em;">關鍵</div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+          <code class="cmd teal">4</code>
+          <div style="font-size:14px;font-weight:800;color:var(--navy);">升級 Skill</div>
+        </div>
+        <p style="font-size:13px;color:var(--slate);line-height:1.6;">把這次的踩坑解法、穩定 pattern、新發現補進知識庫。<strong>下一次 AI 就更厲害。</strong></p>
+      </div>
+
+      <div style="background:white;border:1.5px solid var(--border);border-radius:16px;padding:18px 18px 16px;transition:all 0.28s cubic-bezier(0.34,1.56,0.64,1);box-shadow:0 1px 4px rgba(0,0,0,0.04);" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(91,200,213,0.18)'" onmouseout="this.style.transform='';this.style.boxShadow='0 1px 4px rgba(0,0,0,0.04)'">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+          <code class="cmd">5</code>
+          <div style="font-size:14px;font-weight:800;color:var(--navy);">全力跑</div>
+        </div>
+        <p style="font-size:13px;color:var(--slate);line-height:1.6;">大任務時用，細節 AI 自己決定，不用每步都問。最後給你結果就好。</p>
+      </div>
+
+      <div style="background:white;border:1.5px solid var(--border);border-radius:16px;padding:18px 18px 16px;transition:all 0.28s cubic-bezier(0.34,1.56,0.64,1);box-shadow:0 1px 4px rgba(0,0,0,0.04);" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(91,200,213,0.18)'" onmouseout="this.style.transform='';this.style.boxShadow='0 1px 4px rgba(0,0,0,0.04)'">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+          <code class="cmd">9</code>
+          <div style="font-size:14px;font-weight:800;color:var(--navy);">重載規則</div>
+        </div>
+        <p style="font-size:13px;color:var(--slate);line-height:1.6;">感覺 AI 跑偏、忘記規則時用。重新讀取所有共用規則，馬上回到正軌。</p>
+      </div>
+
+    </div>
+
+    <!-- 收工三連擊 + 開工 -->
+    <div style="background:linear-gradient(135deg,var(--navy) 0%,#243246 100%);border-radius:18px;padding:26px 24px;margin-bottom:20px;color:white;position:relative;overflow:hidden;">
+      <div style="position:absolute;top:-30px;right:-20px;width:140px;height:140px;border-radius:50%;background:rgba(91,200,213,0.08);"></div>
+      <div style="position:relative;">
+        <div style="font-size:11px;font-weight:800;color:var(--teal);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:14px;">最強組合技</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;">
+          <div>
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+              <span style="font-size:18px;">🌅</span>
+              <div style="font-size:15px;font-weight:800;">開工：打 <code class="cmd teal" style="margin:0 4px;">9</code></div>
+            </div>
+            <p style="font-size:13px;color:#CBD5E1;line-height:1.6;">新對話第一句，重載最新規則，確保 AI 從正確狀態起跑。</p>
+          </div>
+          <div>
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+              <span style="font-size:18px;">🏁</span>
+              <div style="font-size:15px;font-weight:800;">收工：打 <code class="cmd teal" style="margin:0 4px;">3 1 4</code></div>
+            </div>
+            <p style="font-size:13px;color:#CBD5E1;line-height:1.6;">先審查修好（3）→ 存日誌（1）→ 升 Skill（4）。<strong style="color:var(--teal);">三件事一行搞定。</strong></p>
+          </div>
+        </div>
+        <div style="margin-top:18px;padding:12px 16px;background:rgba(91,200,213,0.1);border-left:3px solid var(--teal);border-radius:8px;">
+          <p style="font-size:13px;color:#E2E8F0;line-height:1.6;">
+            <strong style="color:var(--teal);">為什麼有效？</strong>多個數字空格隔開（例：<code class="cmd teal" style="margin:0 4px;font-size:12px;">3 1 4</code>），AI 會依序執行三件事——你只打 5 個字元，啟動完整收工流程。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="tip">
+      <div class="tip-icon">💎</div>
+      <div><strong>笙闆親自驗證：</strong>這套指令系統是實戰中一條條磨出來的，<strong>用熟之後每次任務省 70% 解釋時間</strong>。剛開始記不住，貼便利貼在電腦旁邊。一週後就會變肌肉記憶。</div>
+    </div>
+  </section>
+
+  <!-- Ch.3 -->
+  <section id="ch3">
+    <div class="ch-num">Ch.3</div>
+    <div class="section-label">架構</div>
+    <h2>Agent — 有角色的 AI</h2>
+    <div class="section-divider"></div>
+    <p class="section-sub">Agent 不是一個更聰明的機器人，而是一個有職稱、有職責、有工作規則的 AI 員工。</p>
+
+    <div class="card card-teal" style="margin-bottom:24px;">
+      <h3>一般 AI vs Agent 的差別</h3>
+      <p>一般 AI = 任何人問什麼，它答什麼，沒有立場<br>
+      Agent = 有角色設定、知道自己的職責範圍、照著公司規則做事<br><br>
+      就像「一個路人」vs「一個你公司的員工」——員工知道公司文化、知道自己負責什麼、知道什麼事要回報給誰。</p>
+    </div>
+
+    <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin-bottom:16px;">AI 七員</h3>
+
+    <div class="card" style="padding:8px 16px;">
+      <div class="agent-row">
+        <div class="agent-emoji">⚔️</div>
+        <div class="agent-name">韓信（將軍）</div>
+        <div class="agent-role">PM / 統帥</div>
+        <div class="agent-desc">統籌全軍，代理笙闆決策，主要對話窗口。任何任務先通過韓信。</div>
+      </div>
+      <div class="agent-row">
+        <div class="agent-emoji">🧠</div>
+        <div class="agent-name">郭嘉（軍師）</div>
+        <div class="agent-role">策略 / 人資</div>
+        <div class="agent-desc">策略謀略、流程優化、人事判斷、數字分析。你現在在看的這份文件就是郭嘉做的。</div>
+      </div>
+      <div class="agent-row">
+        <div class="agent-emoji">🔧</div>
+        <div class="agent-name">墨子（工程）</div>
+        <div class="agent-role">前端開發</div>
+        <div class="agent-desc">打造工具網站、UI 介面、所有看得到的頁面。淨淨總站的前端都是墨子負責。</div>
+      </div>
+      <div class="agent-row">
+        <div class="agent-emoji">🏗️</div>
+        <div class="agent-name">蕭何（架構）</div>
+        <div class="agent-role">後端 / 資料庫</div>
+        <div class="agent-desc">後台伺服器、資料庫、各平台串接（Meta / 蝦皮 / momo）。</div>
+      </div>
+      <div class="agent-row">
+        <div class="agent-emoji">🎨</div>
+        <div class="agent-name">小喬（美術）</div>
+        <div class="agent-role">設計 / 視覺</div>
+        <div class="agent-desc">品牌視覺、素材設計、像素圖製作。</div>
+      </div>
+      <div class="agent-row">
+        <div class="agent-emoji">📣</div>
+        <div class="agent-name">周瑜（行銷）</div>
+        <div class="agent-role">行銷 / 廣告</div>
+        <div class="agent-desc">行銷策略、廣告投放、文案企劃、社群內容。電商數據站的行銷主導。</div>
+      </div>
+      <div class="agent-row">
+        <div class="agent-emoji">📨</div>
+        <div class="agent-name">傳令</div>
+        <div class="agent-role">LINE 值班</div>
+        <div class="agent-desc">24 小時 LINE 回覆、客服轉接、緊急通知。</div>
+      </div>
+    </div>
+
+    <!-- 笙闆使用範例 -->
+    <div style="background:linear-gradient(135deg,var(--navy) 0%,#2D3F55 100%);border-radius:16px;padding:24px 24px 20px;margin:20px 0 24px;position:relative;overflow:hidden;">
+      <div style="position:absolute;top:-20px;right:-20px;width:100px;height:100px;border-radius:50%;background:rgba(91,200,213,0.08);"></div>
+      <div style="position:absolute;bottom:-30px;left:-10px;width:140px;height:140px;border-radius:50%;background:rgba(91,200,213,0.05);"></div>
+      <div style="font-size:11px;font-weight:800;color:var(--teal);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:10px;">笙闆日常對話範例</div>
+      <div style="display:flex;flex-direction:column;gap:10px;position:relative;">
+        <div style="display:flex;gap:10px;align-items:flex-start;">
+          <div style="background:rgba(91,200,213,0.15);border:1px solid rgba(91,200,213,0.3);border-radius:20px 20px 20px 4px;padding:9px 14px;font-size:13px;color:#E2E8F0;line-height:1.5;max-width:80%;">
+            幫我把本週廣告數據整理成一頁週報，順便給我三個優化建議，用冠達可以直接貼給主管看的格式
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start;justify-content:flex-end;">
+          <div style="background:rgba(91,200,213,0.22);border:1px solid rgba(91,200,213,0.4);border-radius:20px 20px 4px 20px;padding:9px 14px;font-size:13px;color:#E2E8F0;line-height:1.5;max-width:80%;text-align:right;">
+            好，載入廣告分析 Skill 中⋯ 完成。以下是本週週報＋三個優化建議 👇
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start;">
+          <div style="background:rgba(91,200,213,0.15);border:1px solid rgba(91,200,213,0.3);border-radius:20px 20px 20px 4px;padding:9px 14px;font-size:13px;color:#E2E8F0;line-height:1.5;max-width:80%;">
+            這個版本不錯，但建議二改成更具體一點，加上這週的實際數字
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start;justify-content:flex-end;">
+          <div style="background:rgba(91,200,213,0.22);border:1px solid rgba(91,200,213,0.4);border-radius:20px 20px 4px 20px;padding:9px 14px;font-size:13px;color:#E2E8F0;line-height:1.5;max-width:80%;text-align:right;">
+            已更新，冷受眾 ROAS 本週 1.2，建議把 30% 預算移到溫受眾，預計可提升至 1.8
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:14px;font-size:12px;color:rgba(91,200,213,0.7);text-align:center;">這一段對話，以前要花一個下午的人工整理</div>
+    </div>
+
+    <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:28px 0 16px;">指揮鏈 — 誰找誰說話</h3>
+
+    <div class="highlight">
+      <p><strong>笙闆只跟韓信、郭嘉、周瑜說話。</strong>墨子、蕭何、小喬的工作由韓信發包，笙闆不直接派工給他們。<br><br>
+      這就像你不會直接叫工廠員工做事，你說給你的助理，助理再去協調——這樣才不會亂。</p>
+    </div>
+
+    <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:28px 0 16px;">一個任務怎麼跑完的</h3>
+
+    <div class="card" style="background:var(--bg-soft);">
+      <p style="font-size:14px;color:var(--slate);line-height:2;">
+        笙闆說：「做一個廣告投放分析工具」<br>
+        ↓ 韓信接收，拆解任務，派工給周瑜（行銷規格）+ 墨子（前端 UI）+ 蕭何（Meta API 串接）<br>
+        ↓ 三人各自去做，完成後回報韓信<br>
+        ↓ <strong style="color:var(--teal);">韓信驗收（重點）</strong>，挑問題請對方修，過關才整合成品<br>
+        ↓ 韓信回報笙闆，笙闆說「好」或「調一下這裡」<br>
+        ↓ 完成，結果存進 Memory
+      </p>
+    </div>
+
+    <!-- ========== 完善 Agent Team：用 AI 寫提示詞 + PM 驗收 ========== -->
+    <h3 style="font-size:18px;font-weight:800;color:var(--navy);margin:44px 0 8px;">🧬 進階心法：用 AI 寫提示詞給 AI</h3>
+    <p style="font-size:14px;color:var(--slate);margin-bottom:18px;line-height:1.7;">
+      這是把 Agent Team 玩到極致的關鍵——<strong style="color:var(--navy);">最好的提示詞，不是你寫的，是 AI 寫的</strong>。<br>
+      因為人腦寫提示詞容易抽象、漏細節；AI 寫提示詞會非常精準、完整、可執行。
+    </p>
+
+    <!-- 對比卡 -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px;">
+      <div style="background:#FFF5F5;border:1.5px solid #FECACA;border-radius:14px;padding:18px;">
+        <div style="font-size:11px;font-weight:800;color:#B91C1C;letter-spacing:0.08em;margin-bottom:10px;text-transform:uppercase;">❌ 自己寫提示詞</div>
+        <p style="font-size:13px;color:#7F1D1D;line-height:1.7;margin-bottom:8px;"><strong>「幫我做一個廣告分析工具」</strong></p>
+        <ul style="font-size:12px;color:#991B1B;padding-left:18px;line-height:1.7;">
+          <li>太抽象、AI 自己腦補</li>
+          <li>漏掉重要細節（資料來源、欄位、格式）</li>
+          <li>來回修改 5-6 次才對</li>
+        </ul>
+      </div>
+      <div style="background:linear-gradient(135deg,var(--teal-light) 0%,#F0FDF4 100%);border:1.5px solid var(--teal);border-radius:14px;padding:18px;">
+        <div style="font-size:11px;font-weight:800;color:var(--teal);letter-spacing:0.08em;margin-bottom:10px;text-transform:uppercase;">✅ AI 寫提示詞</div>
+        <p style="font-size:13px;color:#14532D;line-height:1.7;margin-bottom:8px;"><strong>先跟 AI 討論需求，請它產出完整提示詞</strong>，再貼到新對話。</p>
+        <ul style="font-size:12px;color:#15803D;padding-left:18px;line-height:1.7;">
+          <li>提示詞涵蓋所有細節</li>
+          <li>新對話一啟動就精準動作</li>
+          <li>一次到位，不用反覆修</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 三步驟流程 -->
+    <h4 style="font-size:14px;font-weight:800;color:var(--teal);margin:18px 0 12px;letter-spacing:0.05em;">▸ 笙闆的標準操作流程</h4>
+    <div style="background:linear-gradient(135deg,var(--bg-soft) 0%,rgba(232,248,250,0.5) 100%);border:1.5px solid var(--teal-mid);border-radius:16px;padding:24px;margin-bottom:20px;">
+      <div style="display:flex;flex-direction:column;gap:14px;">
+
+        <div style="display:flex;gap:14px;align-items:flex-start;background:white;border:1px solid var(--teal-mid);border-radius:12px;padding:16px;">
+          <div style="background:var(--teal);color:white;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;flex-shrink:0;">1</div>
+          <div>
+            <div style="font-size:14px;font-weight:800;color:var(--navy);margin-bottom:4px;">開「綜合對話」</div>
+            <p style="font-size:13px;color:var(--slate);line-height:1.7;">這是你的<strong>總指揮所</strong>。所有新任務都先在這個對話裡跟 AI 討論，把需求講清楚。</p>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:14px;align-items:flex-start;background:white;border:1px solid var(--teal-mid);border-radius:12px;padding:16px;">
+          <div style="background:var(--teal);color:white;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;flex-shrink:0;">2</div>
+          <div style="flex:1;">
+            <div style="font-size:14px;font-weight:800;color:var(--navy);margin-bottom:4px;">請 AI「產出一個完整的提示詞」</div>
+            <p style="font-size:13px;color:var(--slate);line-height:1.7;margin-bottom:10px;">討論完之後，跟 AI 說：</p>
+            <div style="background:var(--bg-soft);border-left:3px solid var(--teal);border-radius:6px;padding:10px 14px;font-size:13px;color:var(--navy);font-family:'SF Mono',monospace;line-height:1.6;">
+              「請根據剛剛討論，幫我寫一個<strong style="color:var(--teal);">完整的提示詞</strong>，<br>包含背景、目標、步驟、產出格式、注意事項，<br>讓另一個 AI 看到就能直接動手。」
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:14px;align-items:flex-start;background:white;border:1px solid var(--teal-mid);border-radius:12px;padding:16px;">
+          <div style="background:var(--teal);color:white;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;flex-shrink:0;">3</div>
+          <div>
+            <div style="font-size:14px;font-weight:800;color:var(--navy);margin-bottom:4px;">開新對話，貼上提示詞執行</div>
+            <p style="font-size:13px;color:var(--slate);line-height:1.7;">把 AI 寫好的提示詞複製，貼到一個新對話視窗。<strong style="color:var(--teal);">這個新對話會一啟動就精準動作</strong>，不用浪費時間互相摸索。</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 為什麼要這樣？ -->
+    <div style="background:linear-gradient(135deg,var(--navy) 0%,#243246 100%);border-radius:16px;padding:24px;color:white;margin-bottom:20px;position:relative;overflow:hidden;">
+      <div style="position:absolute;top:-30px;right:-20px;width:140px;height:140px;border-radius:50%;background:rgba(91,200,213,0.07);"></div>
+      <div style="position:relative;">
+        <div style="font-size:11px;font-weight:800;color:var(--teal);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:14px;">為什麼這就是「Agent 派工 Agent」的核心</div>
+        <p style="font-size:14px;color:#E2E8F0;line-height:1.8;margin-bottom:14px;">
+          這個流程的本質是：<strong style="color:var(--teal);">綜合對話的 AI = PM</strong>，<strong style="color:var(--teal);">新對話的 AI = 執行員</strong>。
+        </p>
+        <p style="font-size:13px;color:#CBD5E1;line-height:1.8;margin-bottom:14px;">
+          PM 比較懂全局、會問對的問題、會把需求拆得清楚——所以由 PM AI 寫提示詞，給執行員 AI 執行。<br>
+          這就跟真實公司一樣：<strong style="color:#fff;">老闆不會直接寫 SOP 給工程師，老闆告訴 PM，PM 把規格寫清楚再給工程師</strong>。
+        </p>
+        <div style="background:rgba(91,200,213,0.12);border-left:3px solid var(--teal);border-radius:8px;padding:12px 16px;">
+          <p style="font-size:13px;line-height:1.7;color:#E2E8F0;">
+            <strong style="color:var(--teal);">這就是為什麼需要 PM——</strong>不只是分配工作，更是<strong>把模糊的人類需求翻譯成精準的執行規格</strong>。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PM 驗收 環節 -->
+    <h3 style="font-size:18px;font-weight:800;color:var(--navy);margin:36px 0 8px;">🛡️ PM 驗收：減少你被打擾的次數</h3>
+    <p style="font-size:14px;color:var(--slate);margin-bottom:18px;line-height:1.7;">
+      派工出去之後，<strong style="color:var(--navy);">不要讓每個 Agent 直接交給你看</strong>——應該先回報給 PM，由 PM 驗收、挑問題、請對方修，過關之後才整合好交給你。
+    </p>
+
+    <!-- 對比視覺 -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px;">
+      <div style="background:#FFF5F5;border:1.5px solid #FECACA;border-radius:14px;padding:16px;">
+        <div style="font-size:11px;font-weight:800;color:#B91C1C;letter-spacing:0.08em;margin-bottom:10px;text-transform:uppercase;">❌ 沒有 PM 驗收</div>
+        <div style="font-size:13px;color:#7F1D1D;line-height:1.9;">
+          你 → 派 3 個 Agent<br>
+          ↓<br>
+          3 個 Agent 直接交給你<br>
+          ↓<br>
+          <strong>你要看 3 次、挑 3 次、修 3 次</strong><br>
+          <strong style="color:#B91C1C;">→ 你被打擾 3 次</strong>
+        </div>
+      </div>
+      <div style="background:linear-gradient(135deg,var(--teal-light) 0%,#F0FDF4 100%);border:1.5px solid var(--teal);border-radius:14px;padding:16px;">
+        <div style="font-size:11px;font-weight:800;color:var(--teal);letter-spacing:0.08em;margin-bottom:10px;text-transform:uppercase;">✅ PM 先驗收</div>
+        <div style="font-size:13px;color:#14532D;line-height:1.9;">
+          你 → 派 PM<br>
+          ↓<br>
+          PM → 派 3 個 Agent<br>
+          ↓<br>
+          PM 驗收 → 整合成 1 份<br>
+          <strong style="color:var(--teal);">→ 你只看 1 次</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- 完整 Agent Team 流程圖 -->
+    <h4 style="font-size:14px;font-weight:800;color:var(--teal);margin:18px 0 12px;letter-spacing:0.05em;">▸ 完整版任務流程（含 PM 驗收）</h4>
+    <div style="background:linear-gradient(135deg,#F8FDFE 0%,rgba(232,248,250,0.5) 100%);border:1.5px solid var(--teal-mid);border-radius:16px;padding:22px;margin-bottom:20px;">
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <div style="display:flex;align-items:center;gap:12px;background:white;border:1.5px solid var(--teal);border-radius:10px;padding:12px 16px;box-shadow:0 2px 8px rgba(91,200,213,0.15);">
+          <span style="font-size:18px;">👤</span>
+          <span style="font-size:13px;font-weight:700;color:var(--navy);">你（笙闆）：「做一個廣告分析工具」</span>
+        </div>
+        <div style="text-align:center;color:var(--teal);font-size:18px;line-height:1;">↓</div>
+        <div style="display:flex;align-items:center;gap:12px;background:white;border:1.5px solid var(--teal-mid);border-radius:10px;padding:12px 16px;">
+          <span style="font-size:18px;">💭</span>
+          <span style="font-size:13px;color:var(--navy);"><strong>綜合對話</strong>：你跟 AI 討論需求，AI 產出「完整提示詞」</span>
+        </div>
+        <div style="text-align:center;color:var(--teal);font-size:18px;line-height:1;">↓</div>
+        <div style="display:flex;align-items:center;gap:12px;background:white;border:1.5px solid var(--teal-mid);border-radius:10px;padding:12px 16px;">
+          <span style="font-size:18px;">⚔️</span>
+          <span style="font-size:13px;color:var(--navy);"><strong>韓信（PM）</strong>收到提示詞，拆解需求，並行派工給：</span>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:0 24px;">
+          <div style="background:var(--bg-soft);border:1px solid var(--teal-mid);border-radius:8px;padding:8px;font-size:11px;color:var(--slate);text-align:center;">📣 周瑜<br>行銷規格</div>
+          <div style="background:var(--bg-soft);border:1px solid var(--teal-mid);border-radius:8px;padding:8px;font-size:11px;color:var(--slate);text-align:center;">🔧 墨子<br>前端 UI</div>
+          <div style="background:var(--bg-soft);border:1px solid var(--teal-mid);border-radius:8px;padding:8px;font-size:11px;color:var(--slate);text-align:center;">🏗️ 蕭何<br>API 串接</div>
+        </div>
+        <div style="text-align:center;color:var(--teal);font-size:18px;line-height:1;">↓</div>
+        <div style="display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,#FEF3C7 0%,#FFFBEB 100%);border:1.5px solid #FCD34D;border-radius:10px;padding:12px 16px;">
+          <span style="font-size:18px;">🛡️</span>
+          <span style="font-size:13px;color:#92400E;"><strong>韓信驗收</strong>：三人交件給 PM，PM 挑問題請對方修，過關才放行</span>
+        </div>
+        <div style="text-align:center;color:var(--teal);font-size:18px;line-height:1;">↓</div>
+        <div style="display:flex;align-items:center;gap:12px;background:white;border:1.5px solid var(--teal-mid);border-radius:10px;padding:12px 16px;">
+          <span style="font-size:18px;">📦</span>
+          <span style="font-size:13px;color:var(--navy);">韓信整合成 1 份完整成品</span>
+        </div>
+        <div style="text-align:center;color:var(--teal);font-size:18px;line-height:1;">↓</div>
+        <div style="display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,var(--teal-light) 0%,#F0FDF4 100%);border:1.5px solid var(--teal);border-radius:10px;padding:12px 16px;box-shadow:0 4px 14px rgba(91,200,213,0.15);">
+          <span style="font-size:18px;">✅</span>
+          <span style="font-size:13px;color:var(--navy);"><strong>你看 1 次</strong>，說「好」或「這裡調一下」</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tip">
+      <div class="tip-icon">💎</div>
+      <div><strong>笙闆心得：</strong>會用 AI 的人，不是「自己直接派工 5 個 Agent」，而是「派 1 個 PM、PM 派 5 個 Agent、PM 驗收完才回給我」。<strong style="color:var(--teal);">你的注意力是公司最稀缺的資源</strong>——讓 PM 替你過濾掉 80% 的雜訊，你才能把時間花在真正的決策上。</div>
+    </div>
+  </section>
+
+  <!-- Ch.4 -->
+  <section id="ch4">
+    <div class="ch-num">Ch.4</div>
+    <div class="section-label">長期記憶</div>
+    <h2>Memory — 讓 AI 記住你</h2>
+    <div class="section-divider"></div>
+    <p class="section-sub">為什麼 ChatGPT 每次都要重新介紹自己？因為它沒有 Memory。笙闆 AI的 AI 員工，每次開工就自動讀取你留下的所有記錄。</p>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3>😵 沒有 Memory 的世界</h3>
+        <ul>
+          <li>每次開新對話，AI 都像新員工</li>
+          <li>你的偏好、決策、工作方式要重新解釋</li>
+          <li>同樣的錯誤一犯再犯</li>
+          <li>累積不了任何「公司知識」</li>
+        </ul>
+      </div>
+      <div class="card card-teal">
+        <h3>✅ 有 Memory 的世界</h3>
+        <ul>
+          <li>每次開工，AI 自動讀上次的決策記錄</li>
+          <li>知道你的工作習慣與偏好</li>
+          <li>記住公司的每條規則</li>
+          <li>你優化的結果永久保存</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:24px 0 12px;">Memory 的本質</h3>
+    <p style="font-size:14px;color:var(--slate);margin-bottom:16px;">Memory 不是什麼神奇技術，它就是放在電腦裡的 Markdown 文字檔案。AI 開工前讀這些檔案，就像員工上班前看昨天的交接記錄。你可以新增、修改任何一條。</p>
+
+    <div class="memory-tree">
+      <span class="tree-folder">memory/</span><br>
+      &nbsp;&nbsp;├── <span class="tree-folder">全員共用/</span> &nbsp;&nbsp;<span class="tree-note">← 所有 AI 員工啟動時必讀（公司鐵律）</span><br>
+      &nbsp;&nbsp;├── <span class="tree-folder">部門/</span><br>
+      &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── <span class="tree-folder">軍師/</span> &nbsp;&nbsp;<span class="tree-note">← 郭嘉的知識庫（策略/人資/財務）</span><br>
+      &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── <span class="tree-folder">工匠/</span> &nbsp;&nbsp;<span class="tree-note">← 墨子的知識庫（前端技術）</span><br>
+      &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;└── <span class="tree-folder">謀士/</span> &nbsp;&nbsp;<span class="tree-note">← 周瑜的知識庫（行銷方法論）</span><br>
+      &nbsp;&nbsp;├── <span class="tree-folder">專案/</span><br>
+      &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── <span class="tree-folder">淨淨/</span> &nbsp;&nbsp;<span class="tree-note">← 淨淨所有決策記錄</span><br>
+      &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;└── <span class="tree-folder">像素辦公室/</span><br>
+      &nbsp;&nbsp;└── <span class="tree-folder">個人日誌/</span> &nbsp;&nbsp;<span class="tree-note">← 每個 AI 員工自己維護的日誌</span>
+    </div>
+
+    <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:24px 0 12px;">什麼東西該存進 Memory？</h3>
+    <div class="grid-3">
+      <div class="card">
+        <h3>📋 決策記錄</h3>
+        <p>這次討論完的結論、定案的方向、拍板的選項。下次 AI 直接從這個結論繼續，不用重新討論。</p>
+      </div>
+      <div class="card">
+        <h3>⚙️ 工作習慣</h3>
+        <p>你喜歡報告怎麼格式、指令習慣怎麼下、哪些字眼不要用。存進去，AI 永遠記住。</p>
+      </div>
+      <div class="card">
+        <h3>🏢 公司鐵律</h3>
+        <p>不能說什麼、一定要做什麼、對外文案的標準。這些全存進全員共用資料夾，每個 AI 都知道。</p>
+      </div>
+      <div class="card">
+        <h3>✨ 最佳實踐</h3>
+        <p>某個工作流程跑得特別順？某個提示詞特別好用？存進去，下次直接複用。</p>
+      </div>
+      <div class="card">
+        <h3>🐛 踩過的坑</h3>
+        <p>某個做法行不通、某個平台有限制？記錄下來，AI 下次自動避開，不重複犯錯。</p>
+      </div>
+      <div class="card">
+        <h3>📊 品牌知識</h3>
+        <p>產品規格、受眾定位、競品分析、行銷策略。讓 AI 一開口就像品牌老手。</p>
+      </div>
+    </div>
+
+    <div class="highlight">
+      <p><strong>飛輪效應：</strong>你每次優化後把結果存進 Memory，AI 下次起點就更高。做了三個月，你的 AI 員工對淨淨的了解，會比任何一個剛到職的人類員工都要深。<strong>這就是護城河。</strong></p>
+    </div>
+  </section>
+
+  <!-- Ch.5 -->
+  <section id="ch5">
+    <div class="ch-num">Ch.5</div>
+    <div class="section-label">專業知識模組</div>
+    <h2>Skill — 讓 AI 一開口就是老手</h2>
+    <div class="section-divider"></div>
+    <p class="section-sub">Memory 是讓 AI 記住你的公司，Skill 是讓 AI 具備專業能力。兩個合在一起，才是真正的「老手 AI」。</p>
+
+    <div class="compare-wrap">
+      <div class="compare-bad">
+        <div class="compare-label">❌ 沒有 Skill 的 AI</div>
+        <p>「台灣廣告投放是什麼意思？請問 Meta 廣告的冷溫熱受眾怎麼分？ROAS 的計算公式是…」<br><br>每次都要從頭解釋基礎概念，輸出品質不穩定，像新來的實習生。</p>
+      </div>
+      <div class="compare-good">
+        <div class="compare-label">✅ 有 Skill 的 AI</div>
+        <p>「目前冷受眾 ROAS 偏低，建議把預算移到溫受眾，素材換用 UGC 風格，這是廣告三段漏斗的標準打法。」<br><br>直接從你的方法論出發，一開口就到位。</p>
+      </div>
+    </div>
+
+    <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:24px 0 12px;">目前已裝的 Skill</h3>
+
+    <div class="card" style="margin-bottom:16px;">
+      <h3>🌐 網站開發類</h3>
+      <div style="margin-top:8px;">
+        <span class="skill-tag">reyway-webbuilding</span>
+        <span class="skill-tag">reyway-webdesign</span>
+        <span class="skill-tag">reyway-ads-analytics</span>
+      </div>
+      <p style="margin-top:12px;">技術架構、部署流程、廣告數據串接。讓墨子和蕭何不用每次重新學習，一載入就懂整套系統。</p>
+    </div>
+
+    <div class="card" style="margin-bottom:16px;">
+      <h3>📣 行銷方法論類</h3>
+      <div style="margin-top:8px;">
+        <span class="skill-tag">sheng-marketing</span>
+        <span class="skill-tag">rey-ads</span>
+        <span class="skill-tag">rey-copywriting</span>
+        <span class="skill-tag">廣告投放策略</span>
+        <span class="skill-tag">文案表達</span>
+      </div>
+      <p style="margin-top:12px;">笙闆多年打磨的行銷方法論，包含冷溫熱漏斗、素材 80/20 鐵律、台灣 FB 直客經驗等。周瑜載入後直接從老手水準出發。</p>
+    </div>
+
+    <div class="card" style="margin-bottom:16px;">
+      <h3>🏷️ 品牌知識類</h3>
+      <div style="margin-top:8px;">
+        <span class="skill-tag">cleanclean-brand</span>
+        <span class="skill-tag">cleanclean-products</span>
+        <span class="skill-tag">cleanclean-marketing</span>
+        <span class="skill-tag">cleanclean-ads</span>
+      </div>
+      <p style="margin-top:12px;">淨淨品牌故事、完整產品百科、行銷策略方法論、廣告數據基準值。AI 載入後，對淨淨的了解比任何新人都深。</p>
+    </div>
+
+    <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:24px 0 12px;">如何叫出 Skill</h3>
+    <p style="font-size:14px;color:var(--slate);margin-bottom:12px;">在 對話開頭說一句話：</p>
+
+    <div class="code-block">
+<span class="comment"># 做廣告分析時</span>
+請載入 <span class="teal">cleanclean-ads</span> 和 <span class="teal">rey-ads</span> 兩個 Skill，
+然後幫我分析這週的 Meta 廣告報告。
+
+<span class="comment"># 做文案時</span>
+請載入 <span class="teal">sheng-marketing</span> 和 <span class="teal">cleanclean-brand</span> 兩個 Skill，
+幫我寫一篇淨淨洗衣精的 IG 貼文。
+    </div>
+
+    <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:24px 0 12px;">你自己也可以建 Skill</h3>
+    <p style="font-size:14px;color:var(--slate);margin-bottom:16px;">Skill 是技術和方法論層，你部門的「專屬知識」要你自己來建。對 Claude Code 說這句話，它會引導你完成：</p>
+
+    <div class="code-block">
+請幫我建立一個 <span class="teal">「淨淨行銷部廣告 SOP」</span> 的 Skill，
+問我需要的問題，我一一回答，
+你整理後存成 ~/.claude/skills/淨淨/ads-sop/SKILL.md
+    </div>
+
+    <div class="tip">
+      <div class="tip-icon">💡</div>
+      <div><strong>給 Cara 的建議：</strong>把每次廣告活動的策略、受眾邏輯、成效規律存成 Skill，下次 AI 接到新案子，直接從你累積的經驗出發，不用重新解釋。</div>
+    </div>
+
+    <!-- 進階：從網路抓 Skill -->
+    <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:28px 0 12px;">進階：從網路抓 Skill，無限延伸 AI 能力</h3>
+    <p style="font-size:14px;color:var(--slate);margin-bottom:16px;">AI 的能力不限於你自己寫的 Skill。GitHub 上有大量現成的 Agent Skill 框架、行銷方法論、產業知識——你可以直接叫 AI 去抓回來，改成適合你的版本。</p>
+
+    <div class="grid-2" style="margin-bottom:20px;">
+      <div class="card">
+        <h3 style="font-size:14px;">📦 從 GitHub 直接安裝</h3>
+        <p style="font-size:13px;">找到別人分享的 Skill 後，叫 AI 幫你裝進來：</p>
+        <div class="code-block" style="margin-top:10px;font-size:12px;padding:12px 16px;">
+請從 <span class="teal">https://github.com/xxx/skill-repo</span> 抓取這個 Skill，<br>
+讀懂它的結構，<br>
+改成適合淨淨品牌的版本，<br>
+存到 <span class="green">~/.claude/skills/淨淨/xxx/SKILL.md</span>
+        </div>
+      </div>
+      <div class="card">
+        <h3 style="font-size:14px;">🌐 叫 AI 上網自己研究</h3>
+        <p style="font-size:13px;">不知道去哪找？直接給 AI 方向，叫它自己去搜尋整理：</p>
+        <div class="code-block" style="margin-top:10px;font-size:12px;padding:12px 16px;">
+你上網研究「台灣 Instagram 廣告投放最佳實踐 2025」，<br>
+整理出前五個最重要的方法論，<br>
+加上我們目前 <span class="teal">cleanclean-ads</span> Skill 裡沒有的部分，<br>
+補進去並標記 <span class="green">[網路研究補]</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="background:linear-gradient(135deg,var(--teal-light) 0%,rgba(240,253,244,0.6) 100%);border:1.5px solid var(--teal-mid);border-radius:16px;padding:20px 22px;margin-bottom:16px;">
+      <div style="font-size:12px;font-weight:800;color:var(--teal);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:12px;">Skill 成長路徑</div>
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center;">
+        <div style="background:white;border:1px solid var(--teal-mid);border-radius:12px;padding:10px 16px;text-align:center;min-width:110px;">
+          <div style="font-size:18px;margin-bottom:4px;">✍️</div>
+          <div style="font-size:12px;font-weight:700;color:var(--navy);">自己寫</div>
+          <div style="font-size:11px;color:var(--slate);margin-top:2px;">部門 SOP 整理</div>
+        </div>
+        <div style="color:var(--teal);font-size:20px;font-weight:700;">+</div>
+        <div style="background:white;border:1px solid var(--teal-mid);border-radius:12px;padding:10px 16px;text-align:center;min-width:110px;">
+          <div style="font-size:18px;margin-bottom:4px;">🐙</div>
+          <div style="font-size:12px;font-weight:700;color:var(--navy);">GitHub 抓</div>
+          <div style="font-size:11px;color:var(--slate);margin-top:2px;">開源框架改裝</div>
+        </div>
+        <div style="color:var(--teal);font-size:20px;font-weight:700;">+</div>
+        <div style="background:white;border:1px solid var(--teal-mid);border-radius:12px;padding:10px 16px;text-align:center;min-width:110px;">
+          <div style="font-size:18px;margin-bottom:4px;">🌐</div>
+          <div style="font-size:12px;font-weight:700;color:var(--navy);">AI 上網研究</div>
+          <div style="font-size:11px;color:var(--slate);margin-top:2px;">最新趨勢補入</div>
+        </div>
+        <div style="color:var(--teal);font-size:20px;font-weight:700;">+</div>
+        <div style="background:white;border:1px solid var(--teal-mid);border-radius:12px;padding:10px 16px;text-align:center;min-width:110px;">
+          <div style="font-size:18px;margin-bottom:4px;">🔄</div>
+          <div style="font-size:12px;font-weight:700;color:var(--navy);">對話中補入</div>
+          <div style="font-size:11px;color:var(--slate);margin-top:2px;">每次用完升級</div>
+        </div>
+      </div>
+      <p style="text-align:center;font-size:12px;color:var(--teal);font-weight:700;margin-top:14px;">= 一個越來越懂你、越來越強的 AI 知識庫</p>
+    </div>
+  </section>
+
+  <!-- Ch.6 -->
+  <section id="ch6">
+    <div class="ch-num">Ch.6</div>
+    <div class="section-label">指令技巧</div>
+    <h2>如何給 AI 好的指令</h2>
+    <div class="section-divider"></div>
+    <p class="section-sub">AI 的輸出品質，80% 取決於你怎麼下指令。這章是笙闆用了兩年整理出來的心法。</p>
+
+    <div class="highlight">
+      <p><strong>核心原則：</strong>好的指令包含四個要素——<strong>目的</strong>（我要達成什麼）+ <strong>背景</strong>（現在的狀況是什麼）+ <strong>限制</strong>（有哪些條件限制）+ <strong>格式</strong>（輸出要長什麼樣子）</p>
+    </div>
+
+    <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin-bottom:16px;">壞指令 vs 好指令</h3>
+
+    <div class="compare-wrap">
+      <div class="compare-bad">
+        <div class="compare-label">❌ 模糊指令</div>
+        <p>「幫我分析廣告」</p>
+      </div>
+      <div class="compare-good">
+        <div class="compare-label">✅ 好指令</div>
+        <p>「分析這份 Meta 廣告週報（CSV 附件），找出 ROAS 最差的三組受眾，每組給我一個優化建議。輸出格式：三個重點 + 各一句建議，貼給投手看的。」</p>
+      </div>
+    </div>
+
+    <div class="compare-wrap">
+      <div class="compare-bad">
+        <div class="compare-label">❌ 模糊指令</div>
+        <p>「幫我寫文案」</p>
+      </div>
+      <div class="compare-good">
+        <div class="compare-label">✅ 好指令</div>
+        <p>「幫我寫淨淨除菌液的 IG 貼文，目標是讓第一句話就讓媽媽想停下來看。語氣輕鬆，不要用廣告腔。結尾放一個問句跟受眾互動。300字以內。」</p>
+      </div>
+    </div>
+
+    <div class="compare-wrap">
+      <div class="compare-bad">
+        <div class="compare-label">❌ 模糊指令</div>
+        <p>「整理一下我們的人事狀況」</p>
+      </div>
+      <div class="compare-good">
+        <div class="compare-label">✅ 好指令</div>
+        <p>「讀取 memory 裡的合意終止試算記錄，整理一份給依庭看的操作說明：什麼時候談、說什麼、要準備哪些文件。用條列式，語氣平靜不帶評判。」</p>
+      </div>
+    </div>
+
+    <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:28px 0 8px;">兩個常用指令範例</h3>
+    <p style="font-size:13px;color:var(--slate);margin-bottom:18px;">這裡先示範兩個——<strong>數據型</strong>（妮妮）跟<strong>方法論型</strong>（Cara）。完整各部門範例在最後 <a href="#ch8" style="color:var(--teal);font-weight:700;text-decoration:none;">部門實戰</a> 章節。</p>
+
+    <div class="person-card">
+      <div class="person-header">
+        <div class="person-avatar">妮</div>
+        <div class="person-info">
+          <h4>妮妮 — 營運部經理</h4>
+          <span>財務 / 人事 / 月報（數據分析型）</span>
+        </div>
+      </div>
+      <h5>月報分析指令</h5>
+      <div class="code-block" style="font-size:12px;">
+讀取這份損益表（[附上檔案]），
+找出本月最大的成本異常，
+跟上月比較後給我三個重點，
+用笙闆能直接看的格式。
+      </div>
+    </div>
+
+    <div class="person-card">
+      <div class="person-header">
+        <div class="person-avatar" style="background:#8B5CF6;">C</div>
+        <div class="person-info">
+          <h4>Cara — 行銷部準經理</h4>
+          <span>品牌策略 / 活動企劃 / 週報（方法論導入型）</span>
+        </div>
+      </div>
+      <h5>廣告週報生成指令</h5>
+      <div class="code-block" style="font-size:12px;">
+載入 cleanclean-ads Skill，
+讀取這週的 Meta 廣告報告，
+幫我生成週報：
+- 整體表現（好/中/差 + 原因）
+- ROAS 最佳 / 最差各一組（+建議）
+- 下週優化方向 3 點
+格式：可直接複製貼到 LINE 群組的。
+      </div>
+    </div>
+
+    <div class="tip">
+      <div class="tip-icon">📌</div>
+      <div>看出共通公式了嗎？<strong>「載入什麼 Skill」+「讀取什麼資料」+「要做什麼」+「輸出什麼格式」</strong>——這四件事講清楚，AI 一次就到位。</div>
+    </div>
+  </section>
+
+  <!-- Ch.6.5 工具調校 -->
+  <section id="ch-tools">
+    <div class="ch-num">Ch.6.5</div>
+    <div class="section-label">把工具調順</div>
+    <h2>權限 × 模型 — 讓 Claude Code 跑更順</h2>
+    <div class="section-divider"></div>
+    <p class="section-sub">下指令的方式對了，還要把工具本身調到順——<strong style="color:var(--navy);">權限模式</strong>決定 AI 多大膽，<strong style="color:var(--navy);">模型選擇</strong>決定 AI 多聰明。兩個調好，效率再 ×2。</p>
+
+    <!-- ========== 一、權限模式 ========== -->
+    <h3 style="font-size:18px;font-weight:800;color:var(--navy);margin:8px 0 8px;">🔓 一、權限模式：別讓 AI 一直問你</h3>
+    <p style="font-size:14px;color:var(--slate);margin-bottom:16px;line-height:1.7;">
+      Claude Code 預設每次要動檔案、跑指令都會問你「可以嗎？」——<strong style="color:#B91C1C;">一個任務問你 30 次，你的注意力都被切碎了</strong>。<br>
+      解法：用快捷鍵 <code style="background:var(--navy);color:white;padding:3px 8px;border-radius:5px;font-size:12px;font-family:'SF Mono',monospace;">⇧ ⌘ M</code>（Shift + Command + M）切換權限模式。
+    </p>
+
+    <!-- 四種模式對比 -->
+    <div style="background:linear-gradient(135deg,var(--bg-soft) 0%,rgba(232,248,250,0.4) 100%);border:1.5px solid var(--teal-mid);border-radius:16px;padding:22px;margin-bottom:18px;">
+      <div style="font-size:11px;font-weight:800;color:var(--teal);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:14px;">四種權限模式</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;">
+
+        <div style="background:white;border:1.5px solid var(--border);border-radius:12px;padding:14px 16px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+            <div style="font-size:13px;font-weight:800;color:var(--navy);">Ask permissions</div>
+            <code style="background:var(--bg-soft);color:var(--slate);padding:2px 8px;border-radius:5px;font-size:11px;font-weight:700;">1</code>
+          </div>
+          <p style="font-size:12px;color:var(--slate);line-height:1.6;">每件事都問你。<strong>新手安全模式</strong>，但會被打斷很多次。</p>
+        </div>
+
+        <div style="background:white;border:1.5px solid var(--border);border-radius:12px;padding:14px 16px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+            <div style="font-size:13px;font-weight:800;color:var(--navy);">Accept edits</div>
+            <code style="background:var(--bg-soft);color:var(--slate);padding:2px 8px;border-radius:5px;font-size:11px;font-weight:700;">2</code>
+          </div>
+          <p style="font-size:12px;color:var(--slate);line-height:1.6;">改檔案不問，跑指令還是會問。<strong>適合單純改檔</strong>。</p>
+        </div>
+
+        <div style="background:white;border:1.5px solid var(--border);border-radius:12px;padding:14px 16px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+            <div style="font-size:13px;font-weight:800;color:var(--navy);">Plan mode</div>
+            <code style="background:var(--bg-soft);color:var(--slate);padding:2px 8px;border-radius:5px;font-size:11px;font-weight:700;">3</code>
+          </div>
+          <p style="font-size:12px;color:var(--slate);line-height:1.6;">AI 只規劃不動手。<strong>大任務先讓它寫計畫</strong>，你看完再放行。</p>
+        </div>
+
+        <div style="background:linear-gradient(135deg,var(--teal-light) 0%,#F0FDF4 100%);border:2px solid var(--teal);border-radius:12px;padding:14px 16px;position:relative;box-shadow:0 4px 14px rgba(91,200,213,0.18);">
+          <div style="position:absolute;top:-8px;right:12px;background:var(--teal);color:white;font-size:10px;font-weight:800;padding:2px 9px;border-radius:20px;letter-spacing:0.05em;">笙闆預設</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+            <div style="font-size:13px;font-weight:800;color:var(--navy);">Bypass permissions</div>
+            <code style="background:var(--teal);color:white;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:700;">4 ✓</code>
+          </div>
+          <p style="font-size:12px;color:#14532D;line-height:1.6;">全部不問，AI 自己做主。<strong>日常主力模式</strong>，省掉 90% 打擾。</p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 推薦使用策略 -->
+    <h4 style="font-size:14px;font-weight:800;color:var(--teal);margin:18px 0 10px;letter-spacing:0.05em;">▸ 笙闆的權限策略</h4>
+    <div style="background:white;border:1.5px solid var(--teal-mid);border-radius:14px;padding:18px;margin-bottom:18px;">
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="display:flex;gap:12px;align-items:flex-start;">
+          <span style="background:var(--teal);color:white;border-radius:6px;padding:3px 8px;font-size:11px;font-weight:800;flex-shrink:0;">日常</span>
+          <p style="font-size:13px;color:var(--navy);line-height:1.6;">用 <strong>Bypass permissions</strong>（4 號）——AI 全自動跑，你看最終成品就好。</p>
+        </div>
+        <div style="display:flex;gap:12px;align-items:flex-start;">
+          <span style="background:#F59E0B;color:white;border-radius:6px;padding:3px 8px;font-size:11px;font-weight:800;flex-shrink:0;">大改</span>
+          <p style="font-size:13px;color:var(--navy);line-height:1.6;">重大架構改動先切到 <strong>Plan mode</strong>（3 號）——AI 先寫計畫給你看，確認後再動手。</p>
+        </div>
+        <div style="display:flex;gap:12px;align-items:flex-start;">
+          <span style="background:#EF4444;color:white;border-radius:6px;padding:3px 8px;font-size:11px;font-weight:800;flex-shrink:0;">敏感</span>
+          <p style="font-size:13px;color:var(--navy);line-height:1.6;">處理財務、客戶資料、上線到正式機 → 切回 <strong>Ask permissions</strong>（1 號）穩當點。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 一句話授權 -->
+    <h4 style="font-size:14px;font-weight:800;color:var(--teal);margin:24px 0 10px;letter-spacing:0.05em;">▸ 進階：一句話授權</h4>
+    <p style="font-size:13px;color:var(--slate);margin-bottom:12px;line-height:1.7;">
+      不想切換模式？對話開頭加一句話，等於臨時授權：
+    </p>
+    <div class="code-block" style="margin-bottom:14px;">
+<span class="comment"># 全任務最高授權</span><br>
+這個任務我給你<span class="teal">最高權限</span>，<br>
+不用每步問我，細節你自己決定，<br>
+有重大判斷再回報，最後給我成品就好。
+    </div>
+    <div class="code-block" style="margin-bottom:14px;">
+<span class="comment"># 局部授權</span><br>
+接下來這 30 分鐘<span class="teal">全力跑</span>，<br>
+檔案、部署、設定都自己處理，<br>
+做完打 1 給我工作日誌。
+    </div>
+    <div class="tip">
+      <div class="tip-icon">💡</div>
+      <div><strong>小技巧：</strong>數字指令「<code class="cmd teal" style="margin:0 4px;font-size:12px;">5</code>」就是濃縮版的「最高權限」——打 5 = 全力跑、細節不用問。</div>
+    </div>
+
+    <!-- ========== 二、模型選擇 ========== -->
+    <h3 style="font-size:18px;font-weight:800;color:var(--navy);margin:44px 0 8px;">🎯 二、模型選擇：Opus、Sonnet、Haiku 怎麼挑</h3>
+    <p style="font-size:14px;color:var(--slate);margin-bottom:18px;line-height:1.7;">
+      Claude 有三款模型，<strong>不是越貴越好用</strong>——選對才省錢省時間。<br>
+      在 Claude Code 對話框輸入 <code style="background:var(--navy);color:white;padding:3px 8px;border-radius:5px;font-size:12px;font-family:'SF Mono',monospace;">/model</code> 切換。
+    </p>
+
+    <!-- 三模型對比卡 -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:20px;">
+
+      <div style="background:linear-gradient(135deg,#FEF3C7 0%,#FEFCE8 100%);border:1.5px solid #F59E0B;border-radius:16px;padding:18px;position:relative;">
+        <div style="position:absolute;top:-9px;left:14px;background:#F59E0B;color:white;font-size:10px;font-weight:800;padding:3px 10px;border-radius:20px;letter-spacing:0.05em;">精品款</div>
+        <div style="font-size:22px;margin-top:6px;margin-bottom:6px;">💎</div>
+        <div style="font-size:18px;font-weight:900;color:var(--navy);margin-bottom:4px;">Opus</div>
+        <div style="font-size:11px;color:#92400E;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:10px;">最聰明 · 最慢 · 最貴</div>
+        <p style="font-size:12px;color:var(--slate);line-height:1.7;margin-bottom:10px;">複雜推理、長文寫作、深度策略、品質第一的場景。</p>
+        <div style="font-size:11px;color:var(--slate);">⏱ 慢 5 倍 &nbsp;｜&nbsp; 💰 貴 5 倍</div>
+      </div>
+
+      <div style="background:linear-gradient(135deg,var(--teal-light) 0%,#F0FDF4 100%);border:2px solid var(--teal);border-radius:16px;padding:18px;position:relative;box-shadow:0 6px 20px rgba(91,200,213,0.18);">
+        <div style="position:absolute;top:-9px;left:14px;background:var(--teal);color:white;font-size:10px;font-weight:800;padding:3px 10px;border-radius:20px;letter-spacing:0.05em;">主力款</div>
+        <div style="font-size:22px;margin-top:6px;margin-bottom:6px;">⚔️</div>
+        <div style="font-size:18px;font-weight:900;color:var(--navy);margin-bottom:4px;">Sonnet</div>
+        <div style="font-size:11px;color:var(--teal);font-weight:700;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:10px;">夠聰明 · 夠快 · CP 值最高</div>
+        <p style="font-size:12px;color:var(--slate);line-height:1.7;margin-bottom:10px;">日常主力——寫程式、改頁面、寫文案、分析資料、Sub Agent 全用它。</p>
+        <div style="font-size:11px;color:var(--slate);">⏱ 中速 &nbsp;｜&nbsp; 💰 中價 &nbsp;｜&nbsp; <strong style="color:var(--teal);">90% 任務用這個</strong></div>
+      </div>
+
+      <div style="background:linear-gradient(135deg,#F3E8FF 0%,#FAF5FF 100%);border:1.5px solid #A855F7;border-radius:16px;padding:18px;position:relative;">
+        <div style="position:absolute;top:-9px;left:14px;background:#A855F7;color:white;font-size:10px;font-weight:800;padding:3px 10px;border-radius:20px;letter-spacing:0.05em;">輕量款</div>
+        <div style="font-size:22px;margin-top:6px;margin-bottom:6px;">🦋</div>
+        <div style="font-size:18px;font-weight:900;color:var(--navy);margin-bottom:4px;">Haiku</div>
+        <div style="font-size:11px;color:#7E22CE;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:10px;">普通聰明 · 飛快 · 便宜</div>
+        <p style="font-size:12px;color:var(--slate);line-height:1.7;margin-bottom:10px;">簡單分類、格式轉換、客服問答、快速摘要。</p>
+        <div style="font-size:11px;color:var(--slate);">⏱ 飛快 &nbsp;｜&nbsp; 💰 便宜 5 倍</div>
+      </div>
+
+    </div>
+
+    <!-- 使用時機速查 -->
+    <h4 style="font-size:14px;font-weight:800;color:var(--teal);margin:22px 0 10px;letter-spacing:0.05em;">▸ 什麼時候用哪一款</h4>
+    <div class="table-wrap" style="margin-bottom:18px;">
+      <table>
+        <thead>
+          <tr><th>場景</th><th>選擇</th><th>為什麼</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>日常下指令、寫程式、改頁面</td>
+            <td><span style="background:var(--teal);color:white;font-size:11px;font-weight:800;padding:3px 10px;border-radius:6px;">Sonnet</span></td>
+            <td style="color:var(--slate);">夠用、快、CP 值最高</td>
+          </tr>
+          <tr>
+            <td>寫長文、深度策略、品牌分析</td>
+            <td><span style="background:#F59E0B;color:white;font-size:11px;font-weight:800;padding:3px 10px;border-radius:6px;">Opus</span></td>
+            <td style="color:var(--slate);">需要深度推理、長文一致性</td>
+          </tr>
+          <tr>
+            <td>批量分類、簡單問答、客服回覆</td>
+            <td><span style="background:#A855F7;color:white;font-size:11px;font-weight:800;padding:3px 10px;border-radius:6px;">Haiku</span></td>
+            <td style="color:var(--slate);">便宜 5 倍、夠用</td>
+          </tr>
+          <tr>
+            <td>Sub Agent 平行派工</td>
+            <td><span style="background:var(--teal);color:white;font-size:11px;font-weight:800;padding:3px 10px;border-radius:6px;">Sonnet</span></td>
+            <td style="color:var(--slate);">每個 Sub 都用 Opus 太燒錢</td>
+          </tr>
+          <tr>
+            <td>嚴格品質審查（打 <code class="cmd teal" style="font-size:11px;margin:0 2px;">3</code>）</td>
+            <td><span style="background:#F59E0B;color:white;font-size:11px;font-weight:800;padding:3px 10px;border-radius:6px;">Opus</span></td>
+            <td style="color:var(--slate);">挑問題要敏銳、Opus 強</td>
+          </tr>
+          <tr>
+            <td>不確定的時候</td>
+            <td><span style="background:var(--teal);color:white;font-size:11px;font-weight:800;padding:3px 10px;border-radius:6px;">Sonnet</span></td>
+            <td style="color:var(--slate);">永遠是安全選擇</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 笙闆策略總結 -->
+    <div style="background:linear-gradient(135deg,var(--navy) 0%,#243246 100%);border-radius:16px;padding:24px;color:white;position:relative;overflow:hidden;">
+      <div style="position:absolute;top:-30px;right:-20px;width:140px;height:140px;border-radius:50%;background:rgba(91,200,213,0.07);"></div>
+      <div style="position:relative;">
+        <div style="font-size:11px;font-weight:800;color:var(--teal);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:14px;">笙闆模型策略</div>
+        <p style="font-size:14px;color:#E2E8F0;line-height:1.8;margin-bottom:14px;">
+          90% 時間用 <strong style="color:var(--teal);">Sonnet</strong> 當主力——夠聰明、夠快、CP 值最高。<br>
+          需要寫深度文件、長文策略、嚴格品質審查時，臨時切到 <strong style="color:#F59E0B;">Opus</strong>。<br>
+          批量處理、簡單客服這種雜事，丟給 <strong style="color:#A855F7;">Haiku</strong> 省錢。
+        </p>
+        <div style="background:rgba(91,200,213,0.12);border-left:3px solid var(--teal);border-radius:8px;padding:12px 16px;">
+          <p style="font-size:13px;line-height:1.7;color:#E2E8F0;">
+            <strong style="color:var(--teal);">核心原則：</strong>不是「永遠用最好的」，而是「<strong style="color:white;">每個任務配對的等級</strong>」。<br>
+            就像派工——簡單事不用派 PM，重要事不能讓新人做。
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ch.7 -->
+  <section id="ch7">
+    <div class="ch-num">Ch.7</div>
+    <div class="section-label">最高效率心法</div>
+    <h2>多對話 × Sub Agent — 平行作業</h2>
+    <div class="section-divider"></div>
+    <p class="section-sub">真正會用 AI 的人，不是「跟一個 AI 聊很久」——而是<strong style="color:var(--navy);">同時開好幾個對話、每個處理不同主題、每個都是有專業的 Agent</strong>。這才是 AI 主管的工作節奏。</p>
+
+    <!-- 核心觀念 -->
+    <div style="background:linear-gradient(135deg,var(--teal-light) 0%,rgba(232,248,250,0.5) 100%);border:1.5px solid var(--teal-mid);border-radius:18px;padding:24px;margin-bottom:28px;">
+      <div style="font-size:11px;font-weight:800;color:var(--teal);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:12px;">最高效率公式</div>
+      <div style="display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;font-weight:800;color:var(--navy);">
+        <span style="font-size:14px;">每個對話 = 一個 Agent</span>
+        <span style="color:var(--teal);font-size:18px;">+</span>
+        <span style="font-size:14px;">Sub Agent 平行作業</span>
+        <span style="color:var(--teal);font-size:18px;">+</span>
+        <span style="font-size:14px;">同時推進多個專案</span>
+        <span style="color:var(--teal);font-size:18px;">=</span>
+        <span style="font-size:15px;color:var(--teal);">一個人開一間公司</span>
+      </div>
+    </div>
+
+    <!-- 一、多對話：按主題分 -->
+    <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:32px 0 12px;">一、多對話：每個對話一個主題，平行進行</h3>
+    <p style="font-size:14px;color:var(--slate);margin-bottom:18px;line-height:1.7;">
+      不要把所有事擠到同一個對話裡。<strong style="color:var(--navy);">換主題 = 換對話</strong>，這樣每個對話都很乾淨、AI 不會混亂、你也好管理。
+    </p>
+
+    <!-- 多視窗示意 -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:20px;">
+      <div style="background:white;border:1.5px solid var(--border);border-radius:14px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,0.04);">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+          <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#10B981;animation:pulse 2s infinite;"></span>
+          <div style="font-size:12px;font-weight:800;color:var(--teal);letter-spacing:0.05em;">對話 #1</div>
+        </div>
+        <div style="font-size:14px;font-weight:700;color:var(--navy);margin-bottom:6px;">📊 Cara：廣告週報</div>
+        <p style="font-size:12px;color:var(--slate);line-height:1.6;">載入 cleanclean-ads，分析本週 Meta 廣告數據。</p>
+      </div>
+      <div style="background:white;border:1.5px solid var(--border);border-radius:14px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,0.04);">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+          <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#10B981;animation:pulse 2s infinite;"></span>
+          <div style="font-size:12px;font-weight:800;color:var(--teal);letter-spacing:0.05em;">對話 #2</div>
+        </div>
+        <div style="font-size:14px;font-weight:700;color:var(--navy);margin-bottom:6px;">📝 妮妮：人事文件</div>
+        <p style="font-size:12px;color:var(--slate);line-height:1.6;">載入合意終止書範本，幫員工寫個人化版本。</p>
+      </div>
+      <div style="background:white;border:1.5px solid var(--border);border-radius:14px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,0.04);">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+          <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#10B981;animation:pulse 2s infinite;"></span>
+          <div style="font-size:12px;font-weight:800;color:var(--teal);letter-spacing:0.05em;">對話 #3</div>
+        </div>
+        <div style="font-size:14px;font-weight:700;color:var(--navy);margin-bottom:6px;">🎨 小瑄：IG 視覺</div>
+        <p style="font-size:12px;color:var(--slate);line-height:1.6;">載入品牌設計規範，產出 5 張下週貼文圖。</p>
+      </div>
+    </div>
+    <p style="font-size:13px;color:var(--slate);text-align:center;margin-bottom:24px;font-style:italic;">⏱ 三件事同時跑，不是排隊等</p>
+
+    <!-- 二、Sub Agent -->
+    <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:32px 0 12px;">二、Sub Agent：把任務「樹狀分派」</h3>
+    <p style="font-size:14px;color:var(--slate);margin-bottom:18px;line-height:1.7;">
+      Sub Agent 的概念是：<strong style="color:var(--navy);">AI 有能力同時開好幾個「分身」分頭做事</strong>。<br>
+      你叫它派 3 個 Sub，速度就 ×3；<strong style="color:var(--teal);">而每個 Sub 又可以再派出 3-5 個自己的 Sub</strong>——這就是一棵 Agent 樹，速度可以指數放大。
+    </p>
+
+    <!-- 第一層：派 3 個 Sub -->
+    <h4 style="font-size:14px;font-weight:800;color:var(--teal);margin:18px 0 10px;letter-spacing:0.05em;">▸ 第一層：你派 3 個 Sub Agent（速度 ×3）</h4>
+    <div style="background:linear-gradient(135deg,var(--bg-soft) 0%,rgba(232,248,250,0.5) 100%);border:1px solid var(--teal-mid);border-radius:16px;padding:22px;margin-bottom:18px;">
+      <div style="text-align:center;margin-bottom:14px;">
+        <div style="display:inline-flex;align-items:center;gap:10px;background:white;border:1.5px solid var(--teal);border-radius:30px;padding:10px 20px;box-shadow:0 4px 14px rgba(91,200,213,0.18);">
+          <span style="font-size:16px;">👤</span>
+          <span style="font-size:13px;font-weight:700;color:var(--navy);">你（主管）：「同時派三個 Sub 處理皮爾卡登首頁」</span>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:center;color:var(--teal);font-size:22px;margin-bottom:8px;">↓</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;">
+        <div style="background:white;border:1.5px solid var(--teal-mid);border-radius:12px;padding:14px;text-align:center;">
+          <div style="font-size:18px;margin-bottom:4px;">🎨</div>
+          <div style="font-size:13px;font-weight:800;color:var(--navy);margin-bottom:3px;">Sub A · 小喬</div>
+          <div style="font-size:11px;color:var(--slate);">設計 Hero 視覺</div>
+        </div>
+        <div style="background:white;border:1.5px solid var(--teal-mid);border-radius:12px;padding:14px;text-align:center;">
+          <div style="font-size:18px;margin-bottom:4px;">📝</div>
+          <div style="font-size:13px;font-weight:800;color:var(--navy);margin-bottom:3px;">Sub B · 周瑜</div>
+          <div style="font-size:11px;color:var(--slate);">寫品牌文案</div>
+        </div>
+        <div style="background:white;border:1.5px solid var(--teal-mid);border-radius:12px;padding:14px;text-align:center;">
+          <div style="font-size:18px;margin-bottom:4px;">🔧</div>
+          <div style="font-size:13px;font-weight:800;color:var(--navy);margin-bottom:3px;">Sub C · 墨子</div>
+          <div style="font-size:11px;color:var(--slate);">切版上 RWD</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 第二層：每個 Sub 再派 -->
+    <h4 style="font-size:14px;font-weight:800;color:var(--teal);margin:24px 0 10px;letter-spacing:0.05em;">▸ 第二層：每個 Sub 再派出自己的 3-5 個 Sub（速度 ×9 ~ ×15）</h4>
+    <p style="font-size:13px;color:var(--slate);margin-bottom:14px;line-height:1.7;">
+      重點來了——<strong style="color:var(--navy);">每個 Sub Agent 不是「一個人做一件事」，而是「一個小主管再派他的人」</strong>。整個任務拆成樹狀，葉子節點才是真正動手的人。
+    </p>
+
+    <div style="background:linear-gradient(135deg,#F8FDFE 0%,rgba(232,248,250,0.4) 100%);border:1.5px solid var(--teal-mid);border-radius:16px;padding:22px 16px;margin-bottom:18px;overflow-x:auto;">
+      <!-- 你 -->
+      <div style="text-align:center;margin-bottom:6px;">
+        <div style="display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--teal) 0%,#2ab8c8 100%);color:white;border-radius:24px;padding:8px 18px;box-shadow:0 4px 14px rgba(91,200,213,0.4);">
+          <span style="font-size:14px;">👤</span>
+          <span style="font-size:13px;font-weight:800;">你（主管）</span>
+        </div>
+      </div>
+      <div style="text-align:center;color:var(--teal);font-size:18px;line-height:1;">↓</div>
+      <!-- 第一層 3 Sub -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:8px;min-width:520px;">
+        <div style="background:white;border:1.5px solid var(--teal);border-radius:10px;padding:10px;text-align:center;box-shadow:0 2px 8px rgba(91,200,213,0.15);">
+          <div style="font-size:12px;font-weight:800;color:var(--navy);">🎨 Sub A</div>
+          <div style="font-size:10px;color:var(--slate);">小喬主管</div>
+        </div>
+        <div style="background:white;border:1.5px solid var(--teal);border-radius:10px;padding:10px;text-align:center;box-shadow:0 2px 8px rgba(91,200,213,0.15);">
+          <div style="font-size:12px;font-weight:800;color:var(--navy);">📝 Sub B</div>
+          <div style="font-size:10px;color:var(--slate);">周瑜主管</div>
+        </div>
+        <div style="background:white;border:1.5px solid var(--teal);border-radius:10px;padding:10px;text-align:center;box-shadow:0 2px 8px rgba(91,200,213,0.15);">
+          <div style="font-size:12px;font-weight:800;color:var(--navy);">🔧 Sub C</div>
+          <div style="font-size:10px;color:var(--slate);">墨子主管</div>
+        </div>
+      </div>
+      <!-- 連線 -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;text-align:center;color:var(--teal-mid);font-size:14px;line-height:1;min-width:520px;">
+        <div>↙ ↓ ↘</div>
+        <div>↙ ↓ ↘</div>
+        <div>↙ ↓ ↘</div>
+      </div>
+      <!-- 第二層：每組 3 個 -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:6px;min-width:520px;">
+        <div style="display:flex;flex-direction:column;gap:5px;">
+          <div style="background:var(--bg-soft);border:1px solid var(--teal-mid);border-radius:7px;padding:6px;font-size:10px;color:var(--slate);text-align:center;">A1 · Hero 構圖</div>
+          <div style="background:var(--bg-soft);border:1px solid var(--teal-mid);border-radius:7px;padding:6px;font-size:10px;color:var(--slate);text-align:center;">A2 · 配色方案</div>
+          <div style="background:var(--bg-soft);border:1px solid var(--teal-mid);border-radius:7px;padding:6px;font-size:10px;color:var(--slate);text-align:center;">A3 · 圖示設計</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:5px;">
+          <div style="background:var(--bg-soft);border:1px solid var(--teal-mid);border-radius:7px;padding:6px;font-size:10px;color:var(--slate);text-align:center;">B1 · 品牌標語</div>
+          <div style="background:var(--bg-soft);border:1px solid var(--teal-mid);border-radius:7px;padding:6px;font-size:10px;color:var(--slate);text-align:center;">B2 · CTA 文案</div>
+          <div style="background:var(--bg-soft);border:1px solid var(--teal-mid);border-radius:7px;padding:6px;font-size:10px;color:var(--slate);text-align:center;">B3 · 故事段落</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:5px;">
+          <div style="background:var(--bg-soft);border:1px solid var(--teal-mid);border-radius:7px;padding:6px;font-size:10px;color:var(--slate);text-align:center;">C1 · HTML 骨架</div>
+          <div style="background:var(--bg-soft);border:1px solid var(--teal-mid);border-radius:7px;padding:6px;font-size:10px;color:var(--slate);text-align:center;">C2 · CSS 樣式</div>
+          <div style="background:var(--bg-soft);border:1px solid var(--teal-mid);border-radius:7px;padding:6px;font-size:10px;color:var(--slate);text-align:center;">C3 · RWD 適配</div>
+        </div>
+      </div>
+      <p style="text-align:center;font-size:12px;color:var(--teal);font-weight:800;margin-top:14px;">⚡ 9 個葉子節點同時動工</p>
+    </div>
+
+    <!-- 速度倍數對比 -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:20px;">
+      <div style="background:#FFF5F5;border:1.5px solid #FECACA;border-radius:12px;padding:14px;text-align:center;">
+        <div style="font-size:11px;font-weight:800;color:#B91C1C;letter-spacing:0.05em;margin-bottom:4px;">傳統作法</div>
+        <div style="font-size:22px;font-weight:900;color:#B91C1C;">×1</div>
+        <div style="font-size:11px;color:#7F1D1D;">一件一件做</div>
+      </div>
+      <div style="background:var(--bg-soft);border:1.5px solid var(--teal-mid);border-radius:12px;padding:14px;text-align:center;">
+        <div style="font-size:11px;font-weight:800;color:var(--teal);letter-spacing:0.05em;margin-bottom:4px;">第一層</div>
+        <div style="font-size:22px;font-weight:900;color:var(--teal);">×3</div>
+        <div style="font-size:11px;color:var(--slate);">3 個 Sub 同時</div>
+      </div>
+      <div style="background:linear-gradient(135deg,var(--teal-light) 0%,#F0FDF4 100%);border:1.5px solid var(--teal);border-radius:12px;padding:14px;text-align:center;box-shadow:0 4px 14px rgba(91,200,213,0.2);">
+        <div style="font-size:11px;font-weight:800;color:var(--teal);letter-spacing:0.05em;margin-bottom:4px;">第二層</div>
+        <div style="font-size:22px;font-weight:900;color:var(--teal);">×9</div>
+        <div style="font-size:11px;color:var(--slate);">每個 Sub 再派 3</div>
+      </div>
+      <div style="background:linear-gradient(135deg,var(--navy) 0%,#243246 100%);border-radius:12px;padding:14px;text-align:center;color:white;">
+        <div style="font-size:11px;font-weight:800;color:var(--teal);letter-spacing:0.05em;margin-bottom:4px;">滿配</div>
+        <div style="font-size:22px;font-weight:900;color:var(--teal);">×15</div>
+        <div style="font-size:11px;color:#CBD5E1;">每個 Sub 派 5</div>
+      </div>
+    </div>
+
+    <!-- 提示詞 -->
+    <h4 style="font-size:14px;font-weight:800;color:var(--teal);margin:18px 0 10px;letter-spacing:0.05em;">▸ 你只要這樣下指令</h4>
+    <div class="code-block" style="margin-bottom:14px;">
+<span class="comment"># 第一層：派 3 個 Sub Agent</span><br>
+請<span class="teal">同時</span>派三個 Sub Agent 處理皮爾卡登首頁：<br>
+- Sub A：設計 Hero 視覺<br>
+- Sub B：寫品牌文案<br>
+- Sub C：切版上 RWD<br>
+<br>
+<span class="comment"># 第二層：給每個 Sub「再分派」的權限</span><br>
+<span class="teal">每個 Sub 都可以再派出 3 個自己的 Sub Agent 平行作業</span>，<br>
+最後由你（主 Agent）整合所有結果回報給我。
+    </div>
+
+    <div class="tip">
+      <div class="tip-icon">💡</div>
+      <div><strong>關鍵心法：</strong>你不用管每個 Sub 怎麼分工——你只要<strong>給 Sub 主管「再派人」的權限</strong>，AI 會自己決定要拆幾個。你只看最終整合結果。<strong style="color:var(--teal);">這就是「當 AI 主管」的實戰技巧</strong>。</div>
+    </div>
+
+    <!-- 三、整合公式 -->
+    <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:32px 0 12px;">三、最高效率畫面：一個人開一間公司</h3>
+    <div style="background:linear-gradient(135deg,var(--navy) 0%,#243246 100%);border-radius:18px;padding:26px 24px;color:white;position:relative;overflow:hidden;margin-bottom:18px;">
+      <div style="position:absolute;top:-30px;right:-20px;width:160px;height:160px;border-radius:50%;background:rgba(91,200,213,0.06);"></div>
+      <div style="position:relative;">
+        <p style="font-size:14px;color:#CBD5E1;line-height:1.8;margin-bottom:14px;">
+          想像你的螢幕現在開著三個對話：
+        </p>
+        <ul style="list-style:none;padding:0;margin-bottom:16px;">
+          <li style="padding:8px 0;border-bottom:1px solid rgba(91,200,213,0.15);font-size:13px;color:#E2E8F0;">📊 <strong style="color:var(--teal);">對話 1</strong>：周瑜 在跑廣告週報（同時派了 2 個 Sub Agent 抓 Meta 數據 + 寫摘要）</li>
+          <li style="padding:8px 0;border-bottom:1px solid rgba(91,200,213,0.15);font-size:13px;color:#E2E8F0;">🎨 <strong style="color:var(--teal);">對話 2</strong>：小喬 在做下週的 IG 視覺（同時派了 3 個 Sub Agent 出 3 種風格）</li>
+          <li style="padding:8px 0;font-size:13px;color:#E2E8F0;">🏗️ <strong style="color:var(--teal);">對話 3</strong>：蕭何 在串電商後台 API（同時派了 2 個 Sub Agent 寫測試 + 寫文件）</li>
+        </ul>
+        <div style="background:rgba(91,200,213,0.12);border-left:3px solid var(--teal);border-radius:8px;padding:12px 16px;">
+          <p style="font-size:13px;line-height:1.7;color:#E2E8F0;">
+            <strong style="color:var(--teal);">這個畫面的意思是：</strong>你一個人，等於同時驅動 <strong style="color:var(--teal);">3 個對話 × 平均 2.5 個 Sub Agent ≈ 7-8 個 AI 員工同時工作</strong>。<br>
+            這就是「能擔任 AI Agent 主管」的價值。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 對話太長處理 -->
+    <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:32px 0 12px;">對話太長怎麼辦？</h3>
+    <div class="grid-2" style="margin-bottom:16px;">
+      <div class="session-box">
+        <h4>📝 任務做完了 → 打 <code class="cmd teal" style="margin:0 4px;">1</code></h4>
+        <ul>
+          <li>AI 整理本次決策 + 產出</li>
+          <li>存進 Memory，下個對話接著用</li>
+          <li>關掉這個對話，開新的</li>
+        </ul>
+      </div>
+      <div class="session-box">
+        <h4>🔄 任務還沒完，但對話太長</h4>
+        <ul>
+          <li>輸入 <code style="background:var(--border);padding:2px 6px;border-radius:4px;font-size:12px;">/compact</code></li>
+          <li>AI 自動壓縮對話歷史</li>
+          <li>釋放空間，繼續在同個對話</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="tip">
+      <div class="tip-icon">💡</div>
+      <div><strong>笙闆觀察：</strong>很多人卡在「跟一個 AI 講很久」、然後抱怨 AI 變笨。真正的解法是<strong>分對話</strong>——每個對話一個目標、做完打 <code class="cmd teal" style="margin:0 4px;font-size:12px;">1</code> 收尾、下次重新開乾淨的。三個月後，你會發現自己一天的產出，是過去一週的量。</div>
+    </div>
+  </section>
+
+  <style>
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(1.3); }
+    }
+  </style>
+
+  <!-- ============ Ch.7A 帶員工用工具 ============ -->
+  <section id="ch7a">
+    <div class="ch-num">Ch.7A</div>
+    <div class="section-label">主管雙軸 · 第一軸</div>
+    <h2>帶員工用工具 — 你是教練、不是工程師</h2>
+    <div class="section-divider"></div>
+    <p class="section-sub">主管的第一個任務不是自己學 Agent / Skill，而是<strong style="color:var(--navy);">陪員工把工具用起來</strong>。員工只要會用工具產出，背後的 Agent 怎麼建是韓信的事。</p>
+
+    <div class="highlight">
+      <p><strong>三層金字塔：</strong>員工 → 用工具產出。主管 → 帶員工 + 收回報優化工具。主公／韓信 → 制定規則、開發工具。<strong style="color:var(--navy);">主管是橋，不是 AI 工程師。</strong></p>
+    </div>
+
+    <!-- 工具地圖 -->
+    <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:24px 0 14px;">🗺 淨淨四大工具地圖</h3>
+    <p style="font-size:13px;color:var(--slate);margin-bottom:14px;">先記住每個工具是給誰用、解決什麼——員工卡關時你才知道把人往哪導。</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:24px;">
+      <div style="background:white;border:1.5px solid var(--teal-mid);border-radius:14px;padding:16px;">
+        <div style="font-size:11px;font-weight:800;color:var(--teal);letter-spacing:0.05em;margin-bottom:6px;">行銷團隊</div>
+        <div style="font-size:14px;font-weight:800;color:var(--navy);margin-bottom:6px;">📣 行銷神隊友</div>
+        <p style="font-size:12px;color:var(--slate);line-height:1.6;">給 Cara、小瑄這類做內容的——產 IG / FB / Threads 貼文、KOL 雷達、企劃、月曆、廣告週報。</p>
+      </div>
+      <div style="background:white;border:1.5px solid var(--teal-mid);border-radius:14px;padding:16px;">
+        <div style="font-size:11px;font-weight:800;color:var(--teal);letter-spacing:0.05em;margin-bottom:6px;">設計團隊</div>
+        <div style="font-size:14px;font-weight:800;color:var(--navy);margin-bottom:6px;">🎨 美學工作站</div>
+        <p style="font-size:12px;color:var(--slate);line-height:1.6;">給做圖的——廣告圖、情境圖、去背、產品合成。文生圖+對話式微調。</p>
+      </div>
+      <div style="background:white;border:1.5px solid var(--teal-mid);border-radius:14px;padding:16px;">
+        <div style="font-size:11px;font-weight:800;color:var(--teal);letter-spacing:0.05em;margin-bottom:6px;">門市團隊</div>
+        <div style="font-size:14px;font-weight:800;color:var(--navy);margin-bottom:6px;">🏪 門市小幫手</div>
+        <p style="font-size:12px;color:var(--slate);line-height:1.6;">給櫃位夥伴——銷售紀錄、話術、產品 Q&A、客訴處理建議。</p>
+      </div>
+      <div style="background:white;border:1.5px solid var(--teal-mid);border-radius:14px;padding:16px;">
+        <div style="font-size:11px;font-weight:800;color:var(--teal);letter-spacing:0.05em;margin-bottom:6px;">客服團隊</div>
+        <div style="font-size:14px;font-weight:800;color:var(--navy);margin-bottom:6px;">💬 客服助手</div>
+        <p style="font-size:12px;color:var(--slate);line-height:1.6;">給回 LINE / 私訊的——草擬回覆、分類抱怨、語氣調整、轉接判斷。</p>
+      </div>
+    </div>
+
+    <!-- 員工卡關 5 大徵兆 -->
+    <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:24px 0 14px;">🚨 員工卡關 5 大徵兆</h3>
+    <p style="font-size:13px;color:var(--slate);margin-bottom:14px;">看到這些訊號，就是你該過去陪 5 分鐘的時候——員工不會主動講。</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-bottom:24px;">
+      <div style="background:#FEF3C7;border:1px solid #FCD34D;border-radius:10px;padding:12px;">
+        <div style="font-size:13px;font-weight:800;color:#92400E;">⏱ 寫太久</div>
+        <p style="font-size:12px;color:var(--slate);margin-top:4px;line-height:1.5;">本來 5 分鐘的事打了 30 分還沒送出</p>
+      </div>
+      <div style="background:#FEE2E2;border:1px solid #FCA5A5;border-radius:10px;padding:12px;">
+        <div style="font-size:13px;font-weight:800;color:#991B1B;">😠 一直罵 AI</div>
+        <p style="font-size:12px;color:var(--slate);margin-top:4px;line-height:1.5;">「AI 又錯了」「這工具有夠笨」</p>
+      </div>
+      <div style="background:#DBEAFE;border:1px solid #93C5FD;border-radius:10px;padding:12px;">
+        <div style="font-size:13px;font-weight:800;color:#1E40AF;">😶 不敢用</div>
+        <p style="font-size:12px;color:var(--slate);margin-top:4px;line-height:1.5;">寧可開 Word 慢慢打也不開工具</p>
+      </div>
+      <div style="background:#F3E8FF;border:1px solid #C4B5FD;border-radius:10px;padding:12px;">
+        <div style="font-size:13px;font-weight:800;color:#5B21B6;">🚪 用一次放棄</div>
+        <p style="font-size:12px;color:var(--slate);margin-top:4px;line-height:1.5;">第一次出來不對 → 從此不再開</p>
+      </div>
+      <div style="background:#FED7AA;border:1px solid #FB923C;border-radius:10px;padding:12px;">
+        <div style="font-size:13px;font-weight:800;color:#9A3412;">🔁 結果不對</div>
+        <p style="font-size:12px;color:var(--slate);margin-top:4px;line-height:1.5;">產出三次都不像品牌語氣</p>
+      </div>
+    </div>
+
+    <!-- 主管陪跑 5 分鐘 SOP -->
+    <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:24px 0 14px;">🤝 主管陪跑 5 分鐘 SOP</h3>
+    <div style="background:linear-gradient(135deg,var(--bg-soft) 0%,rgba(232,248,250,0.5) 100%);border:1.5px solid var(--teal-mid);border-radius:16px;padding:20px;margin-bottom:24px;">
+      <ol style="padding-left:24px;font-size:14px;color:var(--navy);line-height:2;">
+        <li><strong>站旁邊看他打什麼</strong>——不要先講話、先看 30 秒</li>
+        <li><strong>抓四要素哪卡住</strong>：載入哪個 Skill？讀哪份資料？要做什麼？要什麼格式？少哪一塊就是哪卡</li>
+        <li><strong>示範一次</strong>——用他的螢幕、他的問題，補上少的那一塊</li>
+        <li><strong>讓他重打一次</strong>——你看著、不要碰鍵盤</li>
+        <li><strong>點頭 + 鼓勵</strong>——「對，下次就這樣」，然後離開</li>
+      </ol>
+    </div>
+
+    <!-- 驗收 6 問 -->
+    <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:24px 0 14px;">✅ 驗收員工 AI 產出 6 問</h3>
+    <p style="font-size:13px;color:var(--slate);margin-bottom:14px;">員工把成果交上來，主管要過這 6 關才能放出去——AI 寫得很順 ≠ 內容是對的。</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:10px;margin-bottom:20px;">
+      <div class="card" style="padding:14px;"><strong style="color:var(--navy);">① 數字對到原始檔嗎？</strong><br><span style="font-size:12px;color:var(--slate);">AI 最會編數字。所有數字回頭比對來源</span></div>
+      <div class="card" style="padding:14px;"><strong style="color:var(--navy);">② 有沒有臆造客戶名 / 法規條文？</strong><br><span style="font-size:12px;color:var(--slate);">講不出來源的、一律砍掉重生</span></div>
+      <div class="card" style="padding:14px;"><strong style="color:var(--navy);">③ 語氣是淨淨品牌嗎？</strong><br><span style="font-size:12px;color:var(--slate);">不是廣告腔、不是教科書、是淨淨那種口氣</span></div>
+      <div class="card" style="padding:14px;"><strong style="color:var(--navy);">④ 結論 10 秒講得完嗎？</strong><br><span style="font-size:12px;color:var(--slate);">第一句要能讓笙闆秒懂，否則叫他重寫</span></div>
+      <div class="card" style="padding:14px;"><strong style="color:var(--navy);">⑤ 有沒有敏感資訊外洩？</strong><br><span style="font-size:12px;color:var(--slate);">客戶個資、員工身分證、未公開財務</span></div>
+      <div class="card" style="padding:14px;"><strong style="color:var(--navy);">⑥ 好版本有打 <code class="cmd teal" style="font-size:11px;">1</code> 存起來嗎？</strong><br><span style="font-size:12px;color:var(--slate);">沒存 = 下次又從零開始</span></div>
+    </div>
+
+    <div class="tip">
+      <div class="tip-icon">💡</div>
+      <div><strong>主管的價值不是自己用得多快，而是<span style="color:var(--navy);">讓 5 個員工每天都能用</span>。</strong>你寫得快是 1 倍效率，他們五個都會用是 5 倍。</div>
+    </div>
+
+    <!-- Mini Quiz -->
+    <div class="mini-quiz" data-q="ch7a" style="margin-top:24px;">
+      <div class="quiz-q"><strong>🎯 小測驗：</strong>員工跟你說「我用了行銷神隊友寫貼文，但出來的東西每次都不對，我寧可自己打」——你下一步該做什麼？</div>
+      <div class="quiz-options">
+        <button data-correct="0">叫他多用幾次熟練就好</button>
+        <button data-correct="0">幫他重打一次給他看</button>
+        <button data-correct="1">站旁邊看他打什麼，抓四要素哪一塊沒給</button>
+        <button data-correct="0">回報韓信說工具壞了</button>
+      </div>
+      <div class="quiz-explain">✅ 正解 3：先看他打什麼。多半不是工具壞，是少給「載入 Skill / 資料 / 任務 / 格式」其中一塊。直接重打給他看會讓他下次還是不會。</div>
+    </div>
+  </section>
+
+  <!-- ============ Ch.7B 優化工具 ============ -->
+  <section id="ch7b">
+    <div class="ch-num">Ch.7B</div>
+    <div class="section-label">主管雙軸 · 第二軸</div>
+    <h2>優化工具 — 你是使用者代表</h2>
+    <div class="section-divider"></div>
+    <p class="section-sub">主管不是只負責教，還是<strong style="color:var(--navy);">使用者跟韓信中間的橋</strong>——每一個員工卡的點，都該被你收集起來丟回給韓信改工具。</p>
+
+    <!-- 三標籤 -->
+    <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:24px 0 14px;">🏷 三標籤回報法</h3>
+    <p style="font-size:13px;color:var(--slate);margin-bottom:14px;">不要寫長報告。員工每次卡關、你每次發現問題，<strong>一行記到 usage-log</strong>，第 3 次自動排修。</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:24px;">
+      <div style="background:#FEE2E2;border:2px solid #EF4444;border-radius:14px;padding:18px;">
+        <div style="font-size:13px;font-weight:800;color:#991B1B;margin-bottom:8px;">[卡] · 工具卡住</div>
+        <p style="font-size:12px;color:var(--slate);line-height:1.7;">員工照流程做但出不來。例：「[卡] 神隊友貼文 hashtag 永遠 0 個」</p>
+      </div>
+      <div style="background:#FEF3C7;border:2px solid #F59E0B;border-radius:14px;padding:18px;">
+        <div style="font-size:13px;font-weight:800;color:#92400E;margin-bottom:8px;">[想要] · 缺功能</div>
+        <p style="font-size:12px;color:var(--slate);line-height:1.7;">員工自己加工才搞定。例：「[想要] 月曆能直接拖貼文順序」</p>
+      </div>
+      <div style="background:#FCE7F3;border:2px solid #EC4899;border-radius:14px;padding:18px;">
+        <div style="font-size:13px;font-weight:800;color:#9D174D;margin-bottom:8px;">[該死] · 設計很雷</div>
+        <p style="font-size:12px;color:var(--slate);line-height:1.7;">每次都罵的點。例：「[該死] 廣告圖按生成沒反應、要重整才知道失敗」</p>
+      </div>
+    </div>
+
+    <!-- 每週工具健檢 -->
+    <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:24px 0 14px;">🩺 每週工具健檢 5 分鐘</h3>
+    <p style="font-size:13px;color:var(--slate);margin-bottom:14px;">每週五下班前 5 分鐘，問自己這 4 題就好：</p>
+    <div class="iron-rule" style="margin-bottom:20px;">
+      <h4>每週 4 問</h4>
+      <ul>
+        <li><strong>員工這週最常用哪個工具？</strong>——熱門度有沒有變</li>
+        <li><strong>哪個工具沒人用？</strong>——是難用還是用不到？</li>
+        <li><strong>[想要] 累積夠 3 條了嗎？</strong>——可以排修了</li>
+        <li><strong>上週的 [該死] 修了嗎？</strong>——韓信回我了沒</li>
+      </ul>
+    </div>
+
+    <!-- 嗅覺 -->
+    <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:24px 0 14px;">👃 「這應該做成工具」的嗅覺</h3>
+    <div class="highlight">
+      <p><strong>判斷規則：</strong>員工每週重複做的事 <strong style="color:var(--navy);">超過 3 次</strong>，就該變工具。寫一行需求丟韓信，不要等員工繼續做手工。</p>
+    </div>
+    <p style="font-size:13px;color:var(--slate);margin:14px 0;line-height:1.8;">
+      例：小瑄每週要寫 5 篇 IG 貼文，每篇都要：開神隊友 → 選產品 → 改語氣 → 貼到 IG → 截圖回報。<br>
+      → 嗅覺啟動：「貼到 IG 跟截圖回報」這兩步是不是該整合進神隊友？<br>
+      → 一行需求：「[想要] 神隊友按一鍵能直接排程到 IG，不用手動貼」
+    </p>
+
+    <!-- 怎麼回報 -->
+    <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:24px 0 14px;">📨 跟主公 / 韓信怎麼回報</h3>
+    <div class="grid-2">
+      <div class="compare-bad">
+        <div class="compare-label">❌ 不要這樣</div>
+        <p>寫一份兩頁的 PDF：「目前神隊友的問題分析報告——根據過去兩週觀察⋯⋯」</p>
+      </div>
+      <div class="compare-good">
+        <div class="compare-label">✅ 這樣就好</div>
+        <p>LINE 一句：「[該死] 神隊友廣告圖失敗沒提示，這條我覺得排第一，這週小瑄被卡 4 次了」</p>
+      </div>
+    </div>
+
+    <div class="tip" style="margin-top:18px;">
+      <div class="tip-icon">⚡</div>
+      <div><strong>主管不寫長報告。</strong>三標籤 + 一句「這條排第幾」+ 員工被卡幾次——韓信看到就知道輕重緩急。</div>
+    </div>
+
+    <!-- Mini Quiz -->
+    <div class="mini-quiz" data-q="ch7b" style="margin-top:24px;">
+      <div class="quiz-q"><strong>🎯 小測驗：</strong>小瑄每週都要把神隊友產出貼到 IG、再截圖貼回 LINE 群——這已經做了一個月。你應該？</div>
+      <div class="quiz-options">
+        <button data-correct="0">教她更熟練的快捷鍵</button>
+        <button data-correct="0">叫她不要每週都回報</button>
+        <button data-correct="1">回報韓信「[想要] 神隊友直接排程到 IG，省下截圖回報」</button>
+        <button data-correct="0">自己寫一個 Python 腳本幫她</button>
+      </div>
+      <div class="quiz-explain">✅ 正解 3：每週重複 3 次以上的事該變工具，不是讓員工更熟練。Python 腳本是韓信的事，主管的工作是把需求講清楚。</div>
+    </div>
+  </section>
+
+  <!-- Ch.8b -->
+  <section id="ch8b">
+    <div class="ch-num">Ch.8b</div>
+    <div class="section-label">關鍵心法回顧</div>
+    <h2>實戰工作習慣總覽</h2>
+    <div class="section-divider"></div>
+    <p class="section-sub">前面講了很多——這頁是讓你帶走的<strong style="color:var(--navy);">速查卡</strong>。把這頁印下來，貼在電腦旁，兩週就會變成肌肉記憶。</p>
+
+    <!-- Memory vs Skill 速查 -->
+    <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:8px 0 14px;">🧠 Memory 與 Skill 的分工</h3>
+    <div class="grid-2" style="margin-bottom:24px;">
+      <div style="background:linear-gradient(135deg,#FEF3C7 0%,#FFFBEB 100%);border:1.5px solid #FCD34D;border-radius:14px;padding:18px;">
+        <div style="font-size:11px;font-weight:800;color:#B45309;letter-spacing:0.1em;margin-bottom:8px;">📒 MEMORY</div>
+        <div style="font-size:14px;font-weight:700;color:var(--navy);margin-bottom:6px;">工作日記</div>
+        <p style="font-size:12px;color:var(--slate);line-height:1.6;">這個專案決定了什麼、卡在哪、什麼產出 → 例：「皮爾卡登 Demo 成功，下步做 KOL 功能」</p>
+      </div>
+      <div style="background:linear-gradient(135deg,var(--teal-light) 0%,#F0FDF4 100%);border:1.5px solid var(--teal-mid);border-radius:14px;padding:18px;">
+        <div style="font-size:11px;font-weight:800;color:var(--teal);letter-spacing:0.1em;margin-bottom:8px;">📚 SKILL</div>
+        <div style="font-size:14px;font-weight:700;color:var(--navy);margin-bottom:6px;">專業教科書</div>
+        <p style="font-size:12px;color:var(--slate);line-height:1.6;">怎麼做、穩定解法、方法論 → 例：「CF Pages 部署步驟」「廣告文案公式」</p>
+      </div>
+    </div>
+
+    <!-- 完整節奏 -->
+    <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:24px 0 14px;">🌊 一個對話的完整節奏</h3>
+    <div style="background:linear-gradient(135deg,var(--bg-soft) 0%,rgba(232,248,250,0.5) 100%);border:1.5px solid var(--teal-mid);border-radius:16px;padding:22px;margin-bottom:20px;">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;align-items:stretch;">
+        <div style="background:white;border:1.5px solid var(--teal-mid);border-radius:12px;padding:14px 8px;text-align:center;">
+          <div style="font-size:11px;font-weight:800;color:var(--teal);letter-spacing:0.05em;margin-bottom:4px;">START</div>
+          <code class="cmd teal" style="margin-bottom:8px;">9</code>
+          <div style="font-size:12px;font-weight:700;color:var(--navy);margin-top:8px;">重載規則</div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:center;color:var(--teal);font-size:18px;">→</div>
+        <div style="background:white;border:1.5px solid var(--border);border-radius:12px;padding:14px 8px;text-align:center;">
+          <div style="font-size:11px;font-weight:800;color:var(--slate);letter-spacing:0.05em;margin-bottom:4px;">DO IT</div>
+          <div style="font-size:18px;margin:6px 0;">⚙️</div>
+          <div style="font-size:12px;font-weight:700;color:var(--navy);">執行任務<br>派 Sub Agent</div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:center;color:var(--teal);font-size:18px;">→</div>
+        <div style="background:white;border:1.5px solid var(--teal-mid);border-radius:12px;padding:14px 8px;text-align:center;">
+          <div style="font-size:11px;font-weight:800;color:var(--teal);letter-spacing:0.05em;margin-bottom:4px;">END</div>
+          <code class="cmd teal" style="margin-bottom:8px;">3 1 4</code>
+          <div style="font-size:12px;font-weight:700;color:var(--navy);margin-top:8px;">收工三連擊</div>
+        </div>
+      </div>
+      <p style="text-align:center;font-size:12px;color:var(--slate);margin-top:14px;line-height:1.6;">
+        <strong style="color:var(--teal);">3 = 審查修好</strong> &nbsp;|&nbsp; <strong style="color:var(--teal);">1 = 存日誌</strong> &nbsp;|&nbsp; <strong style="color:var(--teal);">4 = 升 Skill</strong>
+      </p>
+    </div>
+
+    <!-- 三句話總結 -->
+    <div style="background:linear-gradient(135deg,var(--navy) 0%,#243246 100%);border-radius:16px;padding:24px;color:white;position:relative;overflow:hidden;">
+      <div style="position:absolute;top:-30px;right:-30px;width:140px;height:140px;border-radius:50%;background:rgba(91,200,213,0.07);"></div>
+      <div style="position:relative;">
+        <div style="font-size:11px;font-weight:800;color:var(--teal);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:14px;">三句話帶走</div>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <span style="background:var(--teal);color:white;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;">1</span>
+            <p style="font-size:13px;color:#E2E8F0;line-height:1.6;"><strong style="color:white;">每個對話一個主題</strong>，做完打 <code class="cmd teal" style="margin:0 2px;font-size:11px;">1</code> 收尾，下次重新開乾淨的。</p>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <span style="background:var(--teal);color:white;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;">2</span>
+            <p style="font-size:13px;color:#E2E8F0;line-height:1.6;"><strong style="color:white;">大任務派 Sub Agent 並行</strong>，3 個 Sub 同時跑，原本 3 小時變 1 小時。</p>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <span style="background:var(--teal);color:white;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;">3</span>
+            <p style="font-size:13px;color:#E2E8F0;line-height:1.6;"><strong style="color:white;">交付前一定打 <code class="cmd teal" style="margin:0 2px;font-size:11px;">3</code></strong>，三視角審查、AI 自己抓問題、自己修。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ch.8 -->
+  <section id="ch8">
+    <div class="ch-num">Ch.8</div>
+    <div class="section-label">實戰應用</div>
+    <h2>各部門實戰工作流</h2>
+    <div class="section-divider"></div>
+    <p class="section-sub">學完理論，最重要的是：「我自己的工作，怎麼跟 AI 結合？」這章針對每個人的職位給出實際的工作流建議。</p>
+
+    <div class="highlight">
+      <p>以下每個工作流，<strong>第一步永遠是「先定目的」</strong>——不是「我想用 AI」，而是「我想解決什麼問題、節省多少時間」。</p>
+    </div>
+
+    <div class="person-card">
+      <div class="person-header">
+        <div class="person-avatar">妮</div>
+        <div class="person-info">
+          <h4>妮妮 ✦ 營運部經理</h4>
+          <span>財務 / 人事 / 月報 / 流程管理</span>
+        </div>
+      </div>
+      <h5>🎯 你可以用 AI 做的事</h5>
+      <ul>
+        <li>把每月損益表丟給 AI，10 分鐘產出分析摘要 + 異常預警</li>
+        <li>人事文件（合意終止書、職務說明書）AI 直接生成，你確認調整</li>
+        <li>公司流程 SOP 整理成文字 Skill，讓 AI 當成新人培訓手冊</li>
+        <li>跨部門協調事項，讓 AI 幫你起草清楚的說明信件</li>
+      </ul>
+      <h5>💡 第一個建議嘗試的任務</h5>
+      <p style="font-size:14px;color:var(--slate);">把上個月的損益表（Excel）丟給 Claude Code，說「分析本月三個最需要關注的成本異常，用笙闆可以直接看的格式輸出」。感受一下它的分析速度跟品質。</p>
+    </div>
+
+    <div class="person-card">
+      <div class="person-header">
+        <div class="person-avatar" style="background:#8B5CF6;">C</div>
+        <div class="person-info">
+          <h4>Cara ✦ 行銷部準經理</h4>
+          <span>品牌策略 / 活動企劃 / 廣告統籌</span>
+        </div>
+      </div>
+      <h5>🎯 你可以用 AI 做的事</h5>
+      <ul>
+        <li>載入淨淨行銷 Skill，讓 AI 幫你起草品牌活動企劃書（框架 AI 出，你填細節）</li>
+        <li>廣告投放週報自動生成，你只要驗收、補充判斷</li>
+        <li>競品分析：叫 AI 搜尋整理，你來做策略判斷</li>
+        <li>建你自己的「品牌行銷 SOP Skill」，讓你的工作方式被 AI 學習</li>
+      </ul>
+      <h5>💡 第一個建議嘗試的任務</h5>
+      <p style="font-size:14px;color:var(--slate);">叫 AI 幫你生成下個月的行銷月曆草稿（節日 + 淨淨產品 + 對應主題），感受 AI 的速度，然後把你覺得好的方向存進 Memory。</p>
+    </div>
+
+    <div class="person-card">
+      <div class="person-header">
+        <div class="person-avatar" style="background:#F59E0B;">依</div>
+        <div class="person-info">
+          <h4>依庭 ✦ 行銷部</h4>
+          <span>人事行政 / 教育訓練 / 活動執行</span>
+        </div>
+      </div>
+      <h5>🎯 你可以用 AI 做的事</h5>
+      <ul>
+        <li>人事文件生成：合意終止書、試用期考核、職位說明書一鍵生成</li>
+        <li>教育訓練教材：把課程大綱說給 AI 聽，它幫你整理成 HTML 教材</li>
+        <li>活動執行 checklist：把活動細節說清楚，AI 整理成可執行的清單</li>
+        <li>內部溝通稿：描述想傳達的事，AI 幫你寫出清楚不傷感情的版本</li>
+      </ul>
+      <h5>💡 第一個建議嘗試的任務</h5>
+      <p style="font-size:14px;color:var(--slate);">叫 AI 幫你整理一份「新人入職第一週 checklist」，把你平時都要帶新人做的事說給 AI 聽，讓它整理成文件，以後直接印出來用。</p>
+    </div>
+
+    <div class="person-card">
+      <div class="person-header">
+        <div class="person-avatar" style="background:#06B6D4;">瑄</div>
+        <div class="person-info">
+          <h4>小瑄 ✦ 行銷部</h4>
+          <span>社群內容 / 文案 / 素材</span>
+        </div>
+      </div>
+      <h5>🎯 你可以用 AI 做的事</h5>
+      <ul>
+        <li>載入淨淨品牌 Skill + 文案 Skill，生成有品牌感的 IG / Threads 貼文</li>
+        <li>短影音腳本：描述想講的產品，AI 寫出鏡頭腳本</li>
+        <li>一次生成 10 個 IG 標題，你選最好的一個</li>
+        <li>把以前成效好的貼文丟給 AI，讓它分析共同規律，存成你的文案 Skill</li>
+      </ul>
+      <h5>💡 第一個建議嘗試的任務</h5>
+      <p style="font-size:14px;color:var(--slate);">把淨淨洗衣精的產品規格告訴 AI，叫它生成五種不同角度的 IG 開頭第一句話，感受不同風格，然後告訴 AI 你喜歡哪一種，存進你的偏好 Memory。</p>
+    </div>
+
+    <div class="person-card">
+      <div class="person-header">
+        <div class="person-avatar" style="background:#10B981;">冠</div>
+        <div class="person-info">
+          <h4>冠達 ✦ 廣告投手</h4>
+          <span>Meta 廣告 / 受眾優化 / 數據分析</span>
+        </div>
+      </div>
+      <h5>🎯 你可以用 AI 做的事</h5>
+      <ul>
+        <li>廣告數據自動分析：上傳 CSV，AI 找出 ROAS 異常和素材趨勢</li>
+        <li>週報自動生成：數據進去，可以直接發給主管的報告出來</li>
+        <li>素材方向建議：告訴 AI 受眾和目前成效，它給你下支素材的建議</li>
+        <li>利用「電商數據站」（開發中）：未來廣告數據自動進來，AI 自動分析，你只要拍板</li>
+      </ul>
+      <h5>💡 第一個建議嘗試的任務</h5>
+      <p style="font-size:14px;color:var(--slate);">把上週廣告報告截圖或 CSV 丟給 Claude Code，說「找出這週表現最差的三個廣告組，給我原因分析和建議」，感受它的分析速度。</p>
+    </div>
+
+    <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:32px 0 12px;">🚀 以笙闆建電商數據站為例：你的延伸想像</h3>
+    <p style="font-size:14px;color:var(--slate);margin-bottom:16px;">笙闆是怎麼用 AI 建工具網站的？這個流程就是你能學、能複製的模式：</p>
+
+    <div class="card" style="background:var(--bg-soft);padding:20px 24px;">
+      <p style="font-size:14px;color:var(--slate);line-height:2.2;">
+        1️⃣ <strong>先定目的</strong>：「我要讓冠達不用手動整理廣告數據，10 分鐘內看到週報」<br>
+        2️⃣ <strong>盤點資源</strong>：「我們有 Meta API、Google Ads API、Claude Code、我們的技術 Skill」<br>
+        3️⃣ <strong>資料收集</strong>：「冠達說她最需要：ROAS 趨勢 + 素材成效排名 + AI 優化建議」<br>
+        4️⃣ <strong>AI 重組</strong>：「郭嘉出提示詞 → 周瑜出功能規格 → 墨子和蕭何建站」<br>
+        5️⃣ <strong>人工打磨</strong>：「笙闆看過後說調整 UI，冠達說再加一個篩選功能」<br>
+        6️⃣ <strong>存回記憶</strong>：「把這次的架構決策存進 Memory，下次建其他工具直接複用」
+      </p>
+    </div>
+
+    <div class="tip">
+      <div class="tip-icon">💡</div>
+      <div>你的工作裡，哪些事情是「重複做、費時間、有固定邏輯」的？那就是你可以用 AI 自動化的地方。把這件事想清楚，這就是你第一個工具的起點。</div>
+    </div>
+  </section>
+
+  <!-- ============ Ch.8.5 工作 AI 化 2×2 矩陣 ============ -->
+  <section id="ch85">
+    <div class="ch-num">Ch.8.5</div>
+    <div class="section-label">該不該丟給 AI</div>
+    <h2>工作 AI 化 2×2 矩陣</h2>
+    <div class="section-divider"></div>
+    <p class="section-sub">不是每件事都該丟給 AI。<strong style="color:var(--navy);">高頻 × 低風險</strong>全給 AI，<strong style="color:var(--navy);">低頻 × 高風險</strong>自己做——中間兩格各有規則。</p>
+
+    <!-- 2x2 Matrix -->
+    <div style="background:var(--bg-soft);border:1.5px solid var(--teal-mid);border-radius:16px;padding:20px;margin-bottom:24px;">
+      <div style="display:grid;grid-template-columns:80px 1fr 1fr;gap:8px;">
+        <div></div>
+        <div style="text-align:center;font-size:12px;font-weight:800;color:var(--slate);padding:6px;">低風險</div>
+        <div style="text-align:center;font-size:12px;font-weight:800;color:var(--slate);padding:6px;">高風險</div>
+
+        <div style="display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:var(--slate);writing-mode:vertical-rl;transform:rotate(180deg);">高頻</div>
+        <div style="background:linear-gradient(135deg,#D1FAE5 0%,#A7F3D0 100%);border:2px solid var(--green);border-radius:12px;padding:16px;">
+          <div style="font-size:13px;font-weight:800;color:#065F46;margin-bottom:6px;">✅ 全給 AI</div>
+          <p style="font-size:12px;color:#047857;line-height:1.6;">週報 / 貼文初稿 / 數據摘要 / 翻譯 / 月曆排程 / FAQ 整理</p>
+        </div>
+        <div style="background:linear-gradient(135deg,#FEF3C7 0%,#FDE68A 100%);border:2px solid #F59E0B;border-radius:12px;padding:16px;">
+          <div style="font-size:13px;font-weight:800;color:#92400E;margin-bottom:6px;">⚠️ AI 草擬 + 人工把關</div>
+          <p style="font-size:12px;color:#92400E;line-height:1.6;">客服回覆 / 廣告文案上線前 / 法規附近的話術 / 跟客戶報價</p>
+        </div>
+
+        <div style="display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:var(--slate);writing-mode:vertical-rl;transform:rotate(180deg);">低頻</div>
+        <div style="background:linear-gradient(135deg,#DBEAFE 0%,#BFDBFE 100%);border:2px solid #3B82F6;border-radius:12px;padding:16px;">
+          <div style="font-size:13px;font-weight:800;color:#1E40AF;margin-bottom:6px;">💡 AI 起頭、自己收尾</div>
+          <p style="font-size:12px;color:#1E40AF;line-height:1.6;">活動企劃初版 / 競品分析框架 / 員工年度目標草稿</p>
+        </div>
+        <div style="background:linear-gradient(135deg,#FEE2E2 0%,#FECACA 100%);border:2px solid var(--red);border-radius:12px;padding:16px;">
+          <div style="font-size:13px;font-weight:800;color:#991B1B;margin-bottom:6px;">🛑 自己做</div>
+          <p style="font-size:12px;color:#991B1B;line-height:1.6;">合意終止 / 客訴升級 / 年度策略 / 重大人事 / 對外法律文件</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight">
+      <p><strong>判斷直覺：</strong>會不會搞砸？搞砸有多嚴重？做這件事一個月幾次？三題答完，格子就跳出來了。</p>
+    </div>
+
+    <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:24px 0 14px;">📋 中間兩格的潛規則</h3>
+    <div class="grid-2">
+      <div class="card">
+        <h3 style="color:#92400E;">⚠️ 高頻 × 高風險</h3>
+        <p style="font-size:13px;color:var(--slate);line-height:1.7;">AI 寫初稿、<strong>主管必過目</strong>才送出。例：客服每天 50 通、AI 寫好後依庭看一輪再回。</p>
+      </div>
+      <div class="card">
+        <h3 style="color:#1E40AF;">💡 低頻 × 低風險</h3>
+        <p style="font-size:13px;color:var(--slate);line-height:1.7;">AI 給框架、<strong>你自己填細節</strong>。例：年度活動企劃、AI 出 5 種方向、你選一個自己細寫。</p>
+      </div>
+    </div>
+
+    <!-- Mini Quiz -->
+    <div class="mini-quiz" data-q="ch85" style="margin-top:24px;">
+      <div class="quiz-q"><strong>🎯 小測驗：</strong>跟員工談合意終止——這件事在矩陣的哪一格？</div>
+      <div class="quiz-options">
+        <button data-correct="0">高頻低風險 → 全給 AI</button>
+        <button data-correct="0">高頻高風險 → AI 草擬 + 人工把關</button>
+        <button data-correct="0">低頻低風險 → AI 起頭自己收尾</button>
+        <button data-correct="1">低頻高風險 → 自己做（AI 只能備查資料）</button>
+      </div>
+      <div class="quiz-explain">✅ 正解 4：合意終止一年幾次（低頻）+ 搞砸會上勞資爭議（高風險）。AI 可以幫你查法規、算金額、整理過去案例，但開口談、簽字、面對情緒，主管自己來。</div>
+    </div>
+  </section>
+
+  <!-- Ch.9 -->
+  <section id="ch9">
+    <div class="ch-num">Ch.9</div>
+    <div class="section-label">安全使用</div>
+    <h2>注意事項</h2>
+    <div class="section-divider"></div>
+    <p class="section-sub">AI 是強大的工具，但它不是萬能的，也不是絕對正確的。這幾條鐵律一定要記住。</p>
+
+    <div class="warning">
+      <div class="tip-icon">⚠️</div>
+      <div><strong>AI 會犯錯，而且它不會主動說「我不確定」。</strong>數字、日期、法規、人名——這類資訊一定要人工確認，不能直接使用。</div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3>🔒 絕對不給 AI 的資料</h3>
+        <ul>
+          <li>任何帳號密碼</li>
+          <li>信用卡號碼或銀行帳戶</li>
+          <li>員工身分證字號</li>
+          <li>客戶完整個資（含聯絡方式）</li>
+          <li>公司未公開的財務數字</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>✅ 給 AI 之前先想一下</h3>
+        <ul>
+          <li>這份資料可以讓外部人看嗎？</li>
+          <li>如果這段對話被截圖出去，有問題嗎？</li>
+          <li>AI 的輸出要對外發布之前，有沒有人工確認過？</li>
+          <li>敏感決策最終要由人來拍板，不能完全靠 AI 判斷</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="iron-rule">
+      <h4>AI 工作鐵律速查</h4>
+      <ul>
+        <li>結論先說，10 秒讓主公看懂，再說細節</li>
+        <li>不說技術術語（API / deploy / commit 一律換成白話）</li>
+        <li>AI 能做的事全部自己做，不要反覆問主公</li>
+        <li>生成類工具必須有：一鍵範例 + 微調對話框 + 意見回報按鈕</li>
+        <li>文案一律用 Claude + 行銷 Skill；圖片一律走 fal.ai</li>
+        <li>任務結束前一定打「1」存工作日誌</li>
+      </ul>
+    </div>
+
+    <!-- ========== 你的下一步 ========== -->
+    <h3 style="font-size:18px;font-weight:800;color:var(--navy);margin:44px 0 8px;">🚀 你的下一步：明天上工就做</h3>
+    <p style="font-size:14px;color:var(--slate);margin-bottom:20px;line-height:1.7;">
+      聽完這份訓練，最重要的不是「都聽懂」，而是<strong style="color:var(--navy);">明天就動手</strong>。建議三階段節奏：
+    </p>
+
+    <!-- 三階段卡片 -->
+    <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:20px;">
+
+      <div style="background:linear-gradient(135deg,#FEF3C7 0%,#FFFBEB 100%);border:1.5px solid #F59E0B;border-radius:16px;padding:20px 22px;position:relative;">
+        <div style="position:absolute;top:-9px;left:18px;background:#F59E0B;color:white;font-size:10px;font-weight:800;padding:3px 12px;border-radius:20px;letter-spacing:0.05em;">今天回家就做 · 5 分鐘</div>
+        <h4 style="font-size:15px;font-weight:800;color:var(--navy);margin:6px 0 10px;">🌅 確認 AI 認識你</h4>
+        <ol style="padding-left:22px;font-size:13px;color:#92400E;line-height:2;">
+          <li>確認電腦裝好 Claude Code（不會就找妮妮 / 韓信幫忙）</li>
+          <li>開新對話，第一句話打 <code class="cmd teal" style="margin:0 4px;font-size:11px;">9</code> → AI 重載最新規則</li>
+          <li>再打 <code class="cmd" style="margin:0 4px;font-size:11px;">0</code> → 看 AI 認不認識你、收件夾有沒有東西</li>
+        </ol>
+      </div>
+
+      <div style="background:linear-gradient(135deg,var(--teal-light) 0%,#F0FDF4 100%);border:1.5px solid var(--teal);border-radius:16px;padding:20px 22px;position:relative;">
+        <div style="position:absolute;top:-9px;left:18px;background:var(--teal);color:white;font-size:10px;font-weight:800;padding:3px 12px;border-radius:20px;letter-spacing:0.05em;">這週 · 跑你的第一個任務</div>
+        <h4 style="font-size:15px;font-weight:800;color:var(--navy);margin:6px 0 10px;">📋 找你最常做的 30 分鐘費時工作</h4>
+        <div style="font-size:13px;color:#14532D;line-height:1.8;margin-bottom:10px;">
+          每個人都有「重複做、煩、費時」的工作——那就是 AI 的最佳起點：
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-bottom:12px;">
+          <div style="background:white;border:1px solid var(--teal-mid);border-radius:8px;padding:8px 10px;font-size:12px;color:var(--navy);">📊 妮妮 → 月報分析</div>
+          <div style="background:white;border:1px solid var(--teal-mid);border-radius:8px;padding:8px 10px;font-size:12px;color:var(--navy);">📣 Cara → 廣告週報</div>
+          <div style="background:white;border:1px solid var(--teal-mid);border-radius:8px;padding:8px 10px;font-size:12px;color:var(--navy);">⚡ 冠達 → 素材分析</div>
+          <div style="background:white;border:1px solid var(--teal-mid);border-radius:8px;padding:8px 10px;font-size:12px;color:var(--navy);">📋 依庭 → 人事文件</div>
+          <div style="background:white;border:1px solid var(--teal-mid);border-radius:8px;padding:8px 10px;font-size:12px;color:var(--navy);">🎨 小瑄 → IG 文案</div>
+        </div>
+        <p style="font-size:13px;color:#14532D;line-height:1.7;">
+          下指令時記得四要素公式：<strong>「載入什麼 Skill + 讀取什麼資料 + 要做什麼 + 輸出什麼格式」</strong>。<br>
+          做完一定打 <code class="cmd teal" style="margin:0 4px;font-size:11px;">1</code> 存日誌——這是讓 AI 越來越懂你的關鍵。
+        </p>
+      </div>
+
+      <div style="background:linear-gradient(135deg,var(--bg-soft) 0%,rgba(232,248,250,0.5) 100%);border:1.5px solid var(--teal-mid);border-radius:16px;padding:20px 22px;position:relative;">
+        <div style="position:absolute;top:-9px;left:18px;background:var(--navy);color:white;font-size:10px;font-weight:800;padding:3px 12px;border-radius:20px;letter-spacing:0.05em;">第一個月 · 變肌肉記憶</div>
+        <h4 style="font-size:15px;font-weight:800;color:var(--navy);margin:6px 0 10px;">🎯 三個小目標</h4>
+        <ul style="padding-left:22px;font-size:13px;color:var(--slate);line-height:2;">
+          <li>累積 <strong style="color:var(--navy);">10 次以上「打 1 收尾」</strong>，感受 Memory 累積的效果</li>
+          <li>試一次 <strong style="color:var(--navy);">Sub Agent 派工</strong>（一個任務讓 AI 同時派 3 個 Sub）</li>
+          <li>建立你自己的<strong style="color:var(--navy);">第一個 Skill</strong>——你部門的 SOP，讓 AI 變成你的徒弟</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="tip">
+      <div class="tip-icon">⚡</div>
+      <div><strong>動起來才有用：</strong>讀完不動手 = 浪費這 2 小時。<strong>明天打開電腦，第一個動作就是開 Claude Code。</strong>有問題卡住找韓信／郭嘉。</div>
+    </div>
+
+    <!-- ========== 主管要懂 vs 丟給 AI 軍團 ========== -->
+    <h3 style="font-size:18px;font-weight:800;color:var(--navy);margin:44px 0 8px;">🎯 主管的工作邊界：你要懂的 vs 丟給 AI 軍團</h3>
+    <p style="font-size:14px;color:var(--slate);margin-bottom:20px;line-height:1.7;">
+      <strong style="color:var(--navy);">不要焦慮——你不需要學會所有技術。</strong>主管學會左邊四件就夠用，右邊八件丟給韓信跟 AI 軍團處理就好。
+    </p>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;margin-bottom:20px;">
+
+      <!-- 主管要懂 -->
+      <div style="background:linear-gradient(135deg,var(--teal-light) 0%,#F0FDF4 100%);border:2px solid var(--teal);border-radius:16px;padding:22px;">
+        <div style="font-size:11px;font-weight:800;color:var(--teal);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;">🟢 你要懂</div>
+        <h4 style="font-size:16px;font-weight:800;color:var(--navy);margin-bottom:12px;">主管核心 4 件</h4>
+        <ul style="list-style:none;padding:0;font-size:13px;color:var(--slate);line-height:1.9;">
+          <li style="padding:6px 0;border-bottom:1px dashed var(--teal-mid);">▸ <strong style="color:var(--navy);">四要素公式</strong>——Skill + 資料 + 任務 + 格式</li>
+          <li style="padding:6px 0;border-bottom:1px dashed var(--teal-mid);">▸ <strong style="color:var(--navy);">數字指令</strong>——<code class="cmd teal" style="font-size:11px;">9</code>／<code class="cmd" style="font-size:11px;">1</code>／<code class="cmd" style="font-size:11px;">3</code> 用熟</li>
+          <li style="padding:6px 0;border-bottom:1px dashed var(--teal-mid);">▸ <strong style="color:var(--navy);">三標籤回報</strong>——[卡] [想要] [該死]</li>
+          <li style="padding:6px 0;">▸ <strong style="color:var(--navy);">2×2 矩陣</strong>——什麼丟 AI、什麼自己做</li>
+        </ul>
+        <p style="font-size:12px;color:var(--teal);font-weight:700;margin-top:12px;border-top:1px solid var(--teal-mid);padding-top:10px;">這四件學會 → 帶員工 + 優化工具都能做</p>
+      </div>
+
+      <!-- 丟給 AI 軍團 -->
+      <div style="background:white;border:1.5px solid var(--border);border-radius:16px;padding:22px;">
+        <div style="font-size:11px;font-weight:800;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;">⚪ 不用學、丟給 AI 軍團</div>
+        <h4 style="font-size:16px;font-weight:800;color:var(--navy);margin-bottom:12px;">韓信的工作 8 件</h4>
+        <ul style="list-style:none;padding:0;font-size:13px;color:var(--slate);line-height:1.9;">
+          <li style="padding:4px 0;border-bottom:1px dashed var(--border);">▸ Agent / Skill / Memory 工程</li>
+          <li style="padding:4px 0;border-bottom:1px dashed var(--border);">▸ MCP / API / 後端串接</li>
+          <li style="padding:4px 0;border-bottom:1px dashed var(--border);">▸ Token 成本 / Prompt Caching</li>
+          <li style="padding:4px 0;border-bottom:1px dashed var(--border);">▸ 多模型協作（Opus / Sonnet / Haiku 怎麼分）</li>
+          <li style="padding:4px 0;border-bottom:1px dashed var(--border);">▸ 資安 / CORS / 密鑰管理</li>
+          <li style="padding:4px 0;border-bottom:1px dashed var(--border);">▸ Git / 部署 / Cloudflare Pages</li>
+          <li style="padding:4px 0;border-bottom:1px dashed var(--border);">▸ Agent Harness / Sub-agent 並行</li>
+          <li style="padding:4px 0;">▸ 工具實際開發、bug 修復</li>
+        </ul>
+        <p style="font-size:12px;color:var(--muted);font-weight:700;margin-top:12px;border-top:1px solid var(--border);padding-top:10px;">這些主管不用懂 — 看到就丟給韓信</p>
+      </div>
+
+    </div>
+
+    <div class="tip" style="margin-bottom:24px;">
+      <div class="tip-icon">🌊</div>
+      <div><strong>主公話：</strong>主管不是 AI 工程師，是<strong style="color:var(--navy);">使用者跟工具團之間的橋</strong>。你把員工帶會、把問題收齊、剩下交給韓信——就是頂尖 AI 主管。</div>
+    </div>
+
+    <div style="background:linear-gradient(135deg,var(--navy) 0%,#1a3245 100%);border-radius:20px;padding:32px 28px;margin-top:24px;position:relative;overflow:hidden;">
+      <div style="position:absolute;top:-40px;right:-40px;width:160px;height:160px;border-radius:50%;background:rgba(91,200,213,0.07);"></div>
+      <div style="position:absolute;bottom:-50px;left:-20px;width:200px;height:200px;border-radius:50%;background:rgba(91,200,213,0.04);"></div>
+      <div style="position:relative;">
+        <div style="font-size:11px;font-weight:800;color:var(--teal);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:16px;">最後一句話</div>
+        <p style="font-size:16px;color:#E2E8F0;line-height:1.8;margin-bottom:20px;">
+          「會用 AI 的人會取代不會用 AI 的人」——這句話你一定聽過。<br>
+          但大多數人說的「會用 AI」，只是<span style="color:var(--teal);font-weight:700;">把 AI 當對話工具</span>。
+        </p>
+        <div style="background:rgba(91,200,213,0.12);border:1px solid rgba(91,200,213,0.3);border-radius:14px;padding:18px 20px;margin-bottom:20px;">
+          <p style="font-size:15px;color:#fff;font-weight:700;line-height:1.7;">
+            真正的「會用 AI」，是在這個時代<br>
+            <span style="color:var(--teal);">已經擁有一整個 AI Agent 團隊的人</span>。
+          </p>
+        </div>
+        <p style="font-size:14px;color:#94A3B8;line-height:1.8;margin-bottom:20px;">
+          不是一個工具，是一支會學習、會記憶、會專業分工的隊伍。<br>
+          而你，就是這支隊伍的主管。
+        </p>
+        <div style="border-top:1px solid rgba(91,200,213,0.2);padding-top:18px;">
+          <p style="font-size:15px;color:#E2E8F0;font-weight:600;line-height:1.7;">
+            未來最有競爭力的人，不是「會下指令」的人，<br>
+            而是<span style="color:var(--teal);font-weight:800;">能夠當 AI Agent 主管的人</span>——<br>
+            懂得分工、懂得驗收、懂得讓每個 AI 員工越來越強。
+          </p>
+        </div>
+        <p style="margin-top:20px;font-size:16px;color:var(--teal);font-weight:700;letter-spacing:0.02em;">你們，已經走在這條路上了。</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  淨淨 CleanClean ✦ AI 主管教育訓練 ✦ 主管核心幹部版 ✦ 2026<br>
+  <span style="color:var(--teal);">版權所有，請勿對外轉發</span>
+</footer>
+
+<script>
+  // Progress bar
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = (scrollTop / docHeight) * 100;
+    document.getElementById('progress-bar').style.width = progress + '%';
+  });
+
+  // Nav active state
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('nav a[href^="#ch"]');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(link => {
+          link.style.background = '';
+          link.style.color = '';
+          if (link.getAttribute('href') === '#' + entry.target.id) {
+            link.style.background = 'var(--teal-light)';
+            link.style.color = 'var(--navy)';
+          }
+        });
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+
+  sections.forEach(section => observer.observe(section));
+
+  // Smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  // Section fade-in on scroll
+  const fadeObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        fadeObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('section').forEach(s => fadeObserver.observe(s));
+
+  // Nav active class
+  const sectionObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        const active = document.querySelector(`nav a[href="#${entry.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+  sections.forEach(s => sectionObs.observe(s));
+
+  // Mini Quiz interactions
+  document.querySelectorAll('.mini-quiz').forEach(quiz => {
+    const buttons = quiz.querySelectorAll('.quiz-options button');
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (quiz.classList.contains('answered')) return;
+        const correct = btn.dataset.correct === '1';
+        btn.classList.add(correct ? 'correct' : 'wrong');
+        if (!correct) {
+          buttons.forEach(b => { if (b.dataset.correct === '1') b.classList.add('correct'); });
+        }
+        quiz.classList.add('answered');
+      });
+    });
+  });
+
+  // Chapter progress checkboxes (localStorage)
+  const KEY = 'mt-progress-v1';
+  const saved = JSON.parse(localStorage.getItem(KEY) || '{}');
+  document.querySelectorAll('section[id]').forEach(sec => {
+    const h2 = sec.querySelector('h2');
+    if (!h2) return;
+    const id = sec.id;
+    const chk = document.createElement('span');
+    chk.className = 'ch-check' + (saved[id] ? ' done' : '');
+    chk.textContent = saved[id] ? '已讀' : '標記已讀';
+    chk.title = '點一下標記這章已讀（存在你的瀏覽器）';
+    chk.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const now = JSON.parse(localStorage.getItem(KEY) || '{}');
+      now[id] = !now[id];
+      localStorage.setItem(KEY, JSON.stringify(now));
+      chk.classList.toggle('done', now[id]);
+      chk.textContent = now[id] ? '已讀' : '標記已讀';
+    });
+    h2.appendChild(chk);
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 軍團｜玩家五大段位</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Noto Sans TC', 'PingFang TC', sans-serif;
+    background: #f5f5f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 40px 20px;
+  }
+  .card {
+    background: white;
+    border-radius: 24px;
+    padding: 56px 48px;
+    max-width: 720px;
+    width: 100%;
+    box-shadow: 0 4px 32px rgba(0,0,0,0.08);
+  }
+  .header-label {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    color: #888;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .main-title {
+    font-size: 42px;
+    font-weight: 800;
+    color: #111;
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+  .subtitle {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 48px;
+  }
+  .stage {
+    display: flex;
+    gap: 20px;
+    padding: 24px 0;
+    border-top: 1px solid #eee;
+    position: relative;
+  }
+  .stage:last-of-type { border-bottom: 1px solid #eee; }
+  .stage-num {
+    font-size: 13px;
+    font-weight: 700;
+    color: #bbb;
+    min-width: 24px;
+    padding-top: 3px;
+  }
+  .stage-body { flex: 1; }
+  .stage-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 6px;
+    flex-wrap: wrap;
+  }
+  .stage-name {
+    font-size: 20px;
+    font-weight: 700;
+    color: #111;
+  }
+  .stage-pct {
+    font-size: 12px;
+    font-weight: 600;
+    color: #888;
+    background: #f0f0f0;
+    padding: 3px 10px;
+    border-radius: 99px;
+  }
+  .you-badge {
+    font-size: 12px;
+    font-weight: 700;
+    color: white;
+    background: #111;
+    padding: 3px 10px;
+    border-radius: 99px;
+  }
+  .stage-desc {
+    font-size: 15px;
+    color: #444;
+    line-height: 1.7;
+  }
+  .stage-example {
+    font-size: 13px;
+    color: #999;
+    margin-top: 6px;
+  }
+  .stage.active {
+    background: #fafaf7;
+    margin: 0 -16px;
+    padding: 24px 16px;
+    border-radius: 12px;
+    border-top: none;
+    border-bottom: none;
+  }
+  .divider { height: 1px; background: #eee; margin: 0; }
+  .footer {
+    margin-top: 40px;
+    font-size: 13px;
+    color: #bbb;
+    text-align: right;
+  }
+</style>
+</head>
+<body>
+<div class="card">
+  <p class="header-label">2026 全球 AI 使用者地圖</p>
+  <h1 class="main-title">AI 軍團<br>玩家五大段位</h1>
+  <p class="subtitle">你現在在哪一層？</p>
+
+  <div class="divider"></div>
+
+  <div class="stage">
+    <div class="stage-num">①</div>
+    <div class="stage-body">
+      <div class="stage-top">
+        <span class="stage-name">一般使用者</span>
+        <span class="stage-pct">約 60% 玩家</span>
+      </div>
+      <p class="stage-desc">用 ChatGPT 問問題、找資料、寫信。AI 是工具，你給問題，它給答案。</p>
+      <p class="stage-example">代表：ChatGPT 網頁版、Claude.ai</p>
+    </div>
+  </div>
+
+  <div class="stage">
+    <div class="stage-num">②</div>
+    <div class="stage-body">
+      <div class="stage-top">
+        <span class="stage-name">效率控</span>
+        <span class="stage-pct">約 30% 玩家</span>
+      </div>
+      <p class="stage-desc">用 AI 寫 code、做文案、修圖、剪影片。比一般人快 3–10 倍，但每件事還是要自己下指令。</p>
+      <p class="stage-example">代表：Cursor、Midjourney、Jasper</p>
+    </div>
+  </div>
+
+  <div class="stage">
+    <div class="stage-num">③</div>
+    <div class="stage-body">
+      <div class="stage-top">
+        <span class="stage-name">自動化玩家</span>
+        <span class="stage-pct">約 6% 玩家</span>
+      </div>
+      <p class="stage-desc">把 AI 串上工具（日曆、Slack、搜尋），讓它自動執行任務，不只是回答問題。</p>
+      <p class="stage-example">代表：Claude Code + MCP 工具串接、Zapier + AI</p>
+    </div>
+  </div>
+
+  <div class="stage active">
+    <div class="stage-num">④</div>
+    <div class="stage-body">
+      <div class="stage-top">
+        <span class="stage-name">AI 軍團</span>
+        <span class="stage-pct">約 3% 玩家</span>
+        <span class="you-badge">📍 你在這</span>
+      </div>
+      <p class="stage-desc">多個 AI 各有職責（工程師、設計師、行銷、財務），有自己的通訊系統互相協作，有長期記憶。人只需要下大方向——軍團自己分工執行。</p>
+      <p class="stage-example">代表：Replit Agent Teams、Anthropic 內部 demo、笙力軍</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="stage">
+    <div class="stage-num">⑤</div>
+    <div class="stage-body">
+      <div class="stage-top">
+        <span class="stage-name">商品化輸出</span>
+        <span class="stage-pct">＜ 1% 玩家</span>
+      </div>
+      <p class="stage-desc">把自己的 AI 軍團系統包裝成產品，賣給客戶或授權給其他公司用。</p>
+      <p class="stage-example">代表：YC 2024 幾家 AI startup、若水共創（進行中）</p>
+    </div>
+  </div>
+
+  <p class="footer">By AI 笙力軍</p>
+</div>
+</body>
+</html>

@@ -1,0 +1,7 @@
+name = "reyway"
+compatibility_date = "2024-09-23"
+pages_build_output_dir = "."
+
+[[kv_namespaces]]
+binding = "REYWAY_AUTH"
+id = "0788385bd3e341b1a5a22bff0dbea986"

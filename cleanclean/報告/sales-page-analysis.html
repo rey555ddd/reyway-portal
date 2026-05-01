@@ -1,0 +1,1418 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>淨淨真濃縮洗衣精銷售頁分析報告</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #7AD2B9;
+            --primary-dark: #5BA699;
+            --primary-light: #A8E5DC;
+            --accent: #FF6B6B;
+            --success: #2ECC71;
+            --warning: #F39C12;
+            --danger: #E74C3C;
+            --text-dark: #2C3E50;
+            --text-light: #95A5A6;
+            --bg-light: #F8F9FA;
+            --border-color: #E0E6E9;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+            margin-bottom: 10px;
+        }
+
+        .report-meta {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+            font-size: 0.95em;
+            opacity: 0.9;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .meta-item strong {
+            font-weight: 600;
+        }
+
+        /* Content */
+        .content {
+            padding: 50px;
+        }
+
+        /* Executive Summary */
+        .section {
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            color: var(--text-dark);
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid var(--primary);
+            position: relative;
+        }
+
+        .section-title::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -3px;
+            width: 60px;
+            height: 3px;
+            background: var(--primary);
+        }
+
+        /* Scoring Card */
+        .scoring-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .score-card {
+            background: linear-gradient(135deg, var(--bg-light) 0%, white 100%);
+            border-radius: 10px;
+            padding: 25px;
+            border-left: 5px solid var(--primary);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .score-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        .score-card h3 {
+            font-size: 1em;
+            color: var(--text-dark);
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .score-value {
+            font-size: 3em;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: baseline;
+            gap: 5px;
+        }
+
+        .score-value span:last-child {
+            font-size: 0.35em;
+            color: var(--text-light);
+            font-weight: 400;
+        }
+
+        .score-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--border-color);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .score-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--primary-light));
+            border-radius: 4px;
+            transition: width 0.8s ease;
+            animation: fillBar 0.8s ease forwards;
+        }
+
+        @keyframes fillBar {
+            from { width: 0; }
+        }
+
+        .score-feedback {
+            font-size: 0.85em;
+            color: var(--text-light);
+            margin-top: 10px;
+            line-height: 1.5;
+        }
+
+        /* Summary Box */
+        .summary-box {
+            background: linear-gradient(135deg, #F0F8F7 0%, #E8F4F1 100%);
+            border-left: 5px solid var(--primary);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .summary-box h4 {
+            color: var(--primary-dark);
+            margin-bottom: 12px;
+            font-size: 1.1em;
+        }
+
+        .summary-box p {
+            color: var(--text-dark);
+            line-height: 1.8;
+            margin-bottom: 10px;
+        }
+
+        /* Zone Analysis */
+        .zones-container {
+            display: grid;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .zone-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .zone-card {
+            border-radius: 10px;
+            padding: 20px;
+            border: 2px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .zone-card.good {
+            border-left: 5px solid var(--success);
+            background: linear-gradient(135deg, #F0FFF4 0%, #E0FFF1 100%);
+        }
+
+        .zone-card.bad {
+            border-left: 5px solid var(--danger);
+            background: linear-gradient(135deg, #FFEBEE 0%, #FFCCCC 100%);
+        }
+
+        .zone-card.warning {
+            border-left: 5px solid var(--warning);
+            background: linear-gradient(135deg, #FFFBF0 0%, #FFEDE0 100%);
+        }
+
+        .zone-card h4 {
+            margin-bottom: 10px;
+            font-size: 1.05em;
+            color: var(--text-dark);
+        }
+
+        .zone-badge {
+            display: inline-block;
+            font-size: 0.75em;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 20px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .zone-badge.good {
+            background: var(--success);
+            color: white;
+        }
+
+        .zone-badge.bad {
+            background: var(--danger);
+            color: white;
+        }
+
+        .zone-badge.warning {
+            background: var(--warning);
+            color: white;
+        }
+
+        .zone-content {
+            font-size: 0.9em;
+            color: var(--text-dark);
+            line-height: 1.7;
+        }
+
+        .zone-content strong {
+            color: var(--text-dark);
+        }
+
+        .zone-content ul {
+            margin: 10px 0 0 20px;
+            padding: 0;
+        }
+
+        .zone-content li {
+            margin-bottom: 6px;
+        }
+
+        /* Issues Section */
+        .issues-container {
+            display: grid;
+            gap: 15px;
+        }
+
+        .issue-card {
+            background: linear-gradient(135deg, var(--bg-light) 0%, white 100%);
+            border-left: 5px solid var(--danger);
+            border-radius: 8px;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 15px;
+            align-items: start;
+        }
+
+        .issue-number {
+            background: var(--danger);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1em;
+            flex-shrink: 0;
+        }
+
+        .issue-content h4 {
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        .issue-content p {
+            color: var(--text-dark);
+            font-size: 0.95em;
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+
+        .impact-tag {
+            display: inline-block;
+            background: var(--danger);
+            color: white;
+            font-size: 0.75em;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+            margin-right: 5px;
+        }
+
+        /* Quick Wins */
+        .wins-container {
+            display: grid;
+            gap: 15px;
+        }
+
+        .win-card {
+            background: linear-gradient(135deg, var(--bg-light) 0%, white 100%);
+            border-left: 5px solid var(--success);
+            border-radius: 8px;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 15px;
+            align-items: start;
+        }
+
+        .win-number {
+            background: var(--success);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1em;
+            flex-shrink: 0;
+        }
+
+        .win-content h4 {
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        .win-content p {
+            color: var(--text-dark);
+            font-size: 0.95em;
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+
+        .effort-tag {
+            display: inline-block;
+            background: var(--success);
+            color: white;
+            font-size: 0.75em;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+            margin-right: 5px;
+        }
+
+        /* Recommendations */
+        .recommendation-box {
+            background: linear-gradient(135deg, #EFF5FE 0%, #E3F2FD 100%);
+            border-left: 5px solid #3498DB;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        .recommendation-box h4 {
+            color: #2C3E50;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .recommendation-box ul {
+            margin-left: 20px;
+            color: var(--text-dark);
+        }
+
+        .recommendation-box li {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        /* Code Block */
+        .code-block {
+            background: #2C3E50;
+            color: #ECF0F1;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.5;
+            margin: 15px 0;
+        }
+
+        /* Table */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .comparison-table th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .comparison-table td {
+            padding: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .comparison-table tbody tr:hover {
+            background: var(--bg-light);
+        }
+
+        .checkmark {
+            color: var(--success);
+            font-weight: 700;
+        }
+
+        .cross {
+            color: var(--danger);
+            font-weight: 700;
+        }
+
+        /* Restructure Proposal */
+        .proposal-item {
+            background: white;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .proposal-item:hover {
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(122, 210, 185, 0.1);
+        }
+
+        .proposal-item h5 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-size: 1.05em;
+        }
+
+        .proposal-item p {
+            color: var(--text-dark);
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        .footer {
+            background: linear-gradient(135deg, var(--text-dark) 0%, #34495E 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            font-size: 0.9em;
+        }
+
+        .footer p {
+            margin-bottom: 8px;
+            opacity: 0.9;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .content {
+                padding: 25px;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .report-meta {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .scoring-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .zone-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Alert Styles */
+        .alert {
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
+        }
+
+        .alert-icon {
+            font-size: 1.5em;
+            flex-shrink: 0;
+        }
+
+        .alert-critical {
+            background: linear-gradient(135deg, #FFEBEE 0%, #FFCCCC 100%);
+            border-left: 5px solid var(--danger);
+            color: var(--text-dark);
+        }
+
+        .alert-warning {
+            background: linear-gradient(135deg, #FFFBF0 0%, #FFEDE0 100%);
+            border-left: 5px solid var(--warning);
+            color: var(--text-dark);
+        }
+
+        .alert-info {
+            background: linear-gradient(135deg, #EFF5FE 0%, #E3F2FD 100%);
+            border-left: 5px solid #3498DB;
+            color: var(--text-dark);
+        }
+
+        /* Callout */
+        .callout {
+            background: linear-gradient(135deg, #FFF9E6 0%, #FFFBF0 100%);
+            border: 2px solid var(--primary);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .callout strong {
+            color: var(--primary-dark);
+        }
+
+        /* Rating Indicators */
+        .rating {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .stars {
+            display: flex;
+            gap: 3px;
+        }
+
+        .star {
+            color: var(--warning);
+            font-size: 1.2em;
+        }
+
+        .star.empty {
+            color: var(--border-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>淨淨真濃縮洗衣精 800ML</h1>
+            <p>銷售頁面分析報告</p>
+            <div class="report-meta">
+                <div class="meta-item">
+                    <strong>分析日期：</strong> 2026年3月31日
+                </div>
+                <div class="meta-item">
+                    <strong>產品：</strong> 真濃縮洗衣精 800ML
+                </div>
+                <div class="meta-item">
+                    <strong>定價：</strong> NT$550 (原 NT$670)
+                </div>
+                <div class="meta-item">
+                    <strong>URL：</strong> cleanclean.tw/products/7992658
+                </div>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="content">
+            <!-- Executive Summary -->
+            <section class="section">
+                <h2 class="section-title">執行摘要</h2>
+
+                <div class="alert alert-critical">
+                    <div class="alert-icon">⚠️</div>
+                    <div>
+                        <strong>整體評分：62/100 分（需要改進）</strong>
+                        <p>該銷售頁面展示了強大的產品基因與品牌故事，但在轉換漏斗邏輯、社會認證與行動呼籲（CTA）配置上存在關鍵缺陷，導致轉換率可能被低估。最嚴重的問題是「零顧客評價」的社會認證真空，以及缺乏策略性的中間頁面行動呼籲。</p>
+                    </div>
+                </div>
+
+                <div class="summary-box">
+                    <h4>關鍵發現</h4>
+                    <p><strong>強項：</strong>視覺流導力強（Zone 4-5的英雄形象設計出色），產品差異化說服力高（Zone 7的濃度對比視覺化），認證與安全信號完整（Zone 13-14）。</p>
+                    <p><strong>弱項：</strong>零顧客評價（轉換漏斗的致命傷），CTA配置僅在頂部sticky區域，缺乏FAQ與常見反駁應答，長頁面全為圖片內容（SEO與無障礙設計失分）。</p>
+                    <p><strong>結論：</strong>該頁面適合「已有品牌認識的訪客」，但對「冷流量」轉換率有限。建議優先補充客戶評價、增加中段CTA、優化行動裝置體驗。</p>
+                </div>
+            </section>
+
+            <!-- Scoring Overview -->
+            <section class="section">
+                <h2 class="section-title">六維度綜合評分</h2>
+
+                <div class="scoring-grid">
+                    <div class="score-card">
+                        <h3>1. 銷售漏斗邏輯</h3>
+                        <div class="score-value">
+                            68<span>/100</span>
+                        </div>
+                        <div class="score-bar">
+                            <div class="score-bar-fill" style="width: 68%;"></div>
+                        </div>
+                        <div class="score-feedback">
+                            ✓ AIDA流程完整但不均衡<br>
+                            ✗ Desire區段過長，缺乏Action連結
+                        </div>
+                    </div>
+
+                    <div class="score-card">
+                        <h3>2. 文案說服力</h3>
+                        <div class="score-value">
+                            75<span>/100</span>
+                        </div>
+                        <div class="score-bar">
+                            <div class="score-bar-fill" style="width: 75%;"></div>
+                        </div>
+                        <div class="score-feedback">
+                            ✓ FABE框架應用得宜<br>
+                            ✗ 文案密度與圖像混雜不清
+                        </div>
+                    </div>
+
+                    <div class="score-card">
+                        <h3>3. 視覺引導力</h3>
+                        <div class="score-value">
+                            78<span>/100</span>
+                        </div>
+                        <div class="score-bar">
+                            <div class="score-bar-fill" style="width: 78%;"></div>
+                        </div>
+                        <div class="score-feedback">
+                            ✓ 視覺對比與色彩應用佳<br>
+                            ✗ 圖片為主，文字引導不足
+                        </div>
+                    </div>
+
+                    <div class="score-card">
+                        <h3>4. CTA 設計與配置</h3>
+                        <div class="score-value">
+                            45<span>/100</span>
+                        </div>
+                        <div class="score-bar">
+                            <div class="score-bar-fill" style="width: 45%;"></div>
+                        </div>
+                        <div class="score-feedback">
+                            ✗ 僅有頂部sticky區域CTA<br>
+                            ✗ 缺乏段落式行動呼籲點
+                        </div>
+                    </div>
+
+                    <div class="score-card">
+                        <h3>5. 社會認證</h3>
+                        <div class="score-value">
+                            22<span>/100</span>
+                        </div>
+                        <div class="score-bar">
+                            <div class="score-bar-fill" style="width: 22%;"></div>
+                        </div>
+                        <div class="score-feedback">
+                            ✓ 認證徽章完整<br>
+                            ✗ 零顧客評價（致命傷）
+                        </div>
+                    </div>
+
+                    <div class="score-card">
+                        <h3>6. 行動裝置適配</h3>
+                        <div class="score-value">
+                            58<span>/100</span>
+                        </div>
+                        <div class="score-bar">
+                            <div class="score-bar-fill" style="width: 58%;"></div>
+                        </div>
+                        <div class="score-feedback">
+                            ⚠ 頁面過長（18+區域）<br>
+                            ✗ 滾動疲勞與加載體驗未優化
+                        </div>
+                    </div>
+                </div>
+
+                <div class="callout">
+                    <strong>平均得分：58/100</strong> — 該頁面處於「中等偏弱」水準，具有高潛力但需要系統性改進。重點不是推倒重來，而是「補缺」與「優化順序」。
+                </div>
+            </section>
+
+            <!-- Page Map -->
+            <section class="section">
+                <h2 class="section-title">18區域分析地圖與評分</h2>
+
+                <div class="zones-container">
+                    <div class="zone-row">
+                        <div class="zone-card good">
+                            <span class="zone-badge good">優秀</span>
+                            <h4>Zone 1: 產品標題頭區</h4>
+                            <div class="zone-content">
+                                <strong>評分：85/100</strong><br>
+                                ✓ 核心賣點列表清晰，emoji 使用恰當增加可讀性<br>
+                                ✓ 價格對比（NT$550 vs NT$670）清楚<br>
+                                ✗ 警告符號（⚠️）與安全認證混雜，視覺層級亂
+                            </div>
+                        </div>
+
+                        <div class="zone-card warning">
+                            <span class="zone-badge warning">待改進</span>
+                            <h4>Zone 2: YouTube 影片區</h4>
+                            <div class="zone-content">
+                                <strong>評分：62/100</strong><br>
+                                ✓ 嵌入社群內容增加互動感<br>
+                                ✗ 影片長度未標示，無縮圖預覽<br>
+                                ✗ 行動裝置上可能因iFrame加載緩慢
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="zone-row">
+                        <div class="zone-card good">
+                            <span class="zone-badge good">優秀</span>
+                            <h4>Zone 3: 痛點問題區</h4>
+                            <div class="zone-content">
+                                <strong>評分：82/100</strong><br>
+                                ✓ PAS 框架應用完美（問題→激化→解決過渡）<br>
+                                ✓ 三大痛點符合目標客群認知<br>
+                                ✗ 未提及競品為何無法解決這些痛點
+                            </div>
+                        </div>
+
+                        <div class="zone-card good">
+                            <span class="zone-badge good">優秀</span>
+                            <h4>Zone 4-5: 產品英雄形象</h4>
+                            <div class="zone-content">
+                                <strong>評分：88/100</strong><br>
+                                ✓ 「省量方便 真濃縮」視覺對比強<br>
+                                ✓ 生活化場景（懸掛衣物）增強代入感<br>
+                                ✓ 「1瓶可洗80次」有力量化賣點
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="zone-row">
+                        <div class="zone-card good">
+                            <span class="zone-badge good">優秀</span>
+                            <h4>Zone 6: 四大特色圖示</h4>
+                            <div class="zone-content">
+                                <strong>評分：80/100</strong><br>
+                                ✓ 視覺記憶點強（深層除臭、高效洗淨、衣物柔軟、低敏舒適）<br>
+                                ✓ 圖示搭配簡潔有力<br>
+                                ✗ 未與Zone 1的核心賣點清單形成呼應關係
+                            </div>
+                        </div>
+
+                        <div class="zone-card good">
+                            <span class="zone-badge good">優秀</span>
+                            <h4>Zone 7: 濃度對比區</h4>
+                            <div class="zone-content">
+                                <strong>評分：86/100</strong><br>
+                                ✓ 「比高濃縮再省80%」量化差異化清晰<br>
+                                ✓ 視覺化對比（10ml vs 更多ml）一目瞭然<br>
+                                ✓ 建立強大的「唯一性」信號
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="zone-row">
+                        <div class="zone-card good">
+                            <span class="zone-badge good">優秀</span>
+                            <h4>Zone 8: 空間便利對比</h4>
+                            <div class="zone-content">
+                                <strong>評分：79/100</strong><br>
+                                ✓ 1瓶 vs 4瓶視覺對比強<br>
+                                ✓ 「輕巧省空間、懶人洗衣術」觸發生活共鳴<br>
+                                ✗ 未提供具體家庭儲存空間數據
+                            </div>
+                        </div>
+
+                        <div class="zone-card good">
+                            <span class="zone-badge good">優秀</span>
+                            <h4>Zone 9: 清潔力示範</h4>
+                            <div class="zone-content">
+                                <strong>評分：81/100</strong><br>
+                                ✓ Before/After 衣物對比證明效果<br>
+                                ✓ 螢光筆、泥土、醬油污漬涵蓋常見場景<br>
+                                ✗ 缺乏「測試條件」說明（溫度、洗滌時間等）
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="zone-row">
+                        <div class="zone-card good">
+                            <span class="zone-badge good">優秀</span>
+                            <h4>Zone 10: 抗菌功能</h4>
+                            <div class="zone-content">
+                                <strong>評分：84/100</strong><br>
+                                ✓ 奈米化、BKC抗菌因子科技感強<br>
+                                ✓ 「99.99%抗菌率」數據可信<br>
+                                ✓ 適用場景清晰（汗衫、貼身衣物、室內陰曬）
+                            </div>
+                        </div>
+
+                        <div class="zone-card good">
+                            <span class="zone-badge good">優秀</span>
+                            <h4>Zone 11: 護纖科技</h4>
+                            <div class="zone-content">
+                                <strong>評分：76/100</strong><br>
+                                ✓ 「柔軟護纖、好沖不殘留」直指使用者反駁點<br>
+                                ✓ 植萃護纖與低泡訴求符合環保意識<br>
+                                ✗ 缺乏纖維傷損率的數據證明
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="zone-row">
+                        <div class="zone-card good">
+                            <span class="zone-badge good">優秀</span>
+                            <h4>Zone 12: 安全成分區</h4>
+                            <div class="zone-content">
+                                <strong>評分：87/100</strong><br>
+                                ✓ 「0增稠劑、0石化洗劑、0螢光劑」負面清單有力<br>
+                                ✓ SLS/SLES 等爭議成分明確列舉<br>
+                                ✓ 「安全×環保×抗菌×親膚」四度承諾清晰
+                            </div>
+                        </div>
+
+                        <div class="zone-card good">
+                            <span class="zone-badge good">優秀</span>
+                            <h4>Zone 13: 認證徽章區</h4>
+                            <div class="zone-content">
+                                <strong>評分：83/100</strong><br>
+                                ✓ Ellead 皮膚貼布試驗認證權威<br>
+                                ✓ 台美抗菌證書雙認證增強信任度<br>
+                                ✗ 認證機構LINK不清楚（可點擊驗證嗎？）
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="zone-row">
+                        <div class="zone-card good">
+                            <span class="zone-badge good">優秀</span>
+                            <h4>Zone 14: 香氛訴求</h4>
+                            <div class="zone-content">
+                                <strong>評分：74/100</strong><br>
+                                ✓ 「嬰兒保養品級」香氛背書專業<br>
+                                ✓ 「淡淡的、清新味道」情感表達到位<br>
+                                ✗ 未提及香氛強度等級（長效 vs 淡香）
+                            </div>
+                        </div>
+
+                        <div class="zone-card good">
+                            <span class="zone-badge good">優秀</span>
+                            <h4>Zone 15: 便利設計</h4>
+                            <div class="zone-content">
+                                <strong>評分：77/100</strong><br>
+                                ✓ 按壓式設計解決「量錯」與「髒手」痛點<br>
+                                ✓ vs 膠囊的對比論述有效<br>
+                                ✗ 未提及壓頭耐用性與更換說明
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="zone-row">
+                        <div class="zone-card warning">
+                            <span class="zone-badge warning">待改進</span>
+                            <h4>Zone 16: 用量指南表</h4>
+                            <div class="zone-content">
+                                <strong>評分：71/100</strong><br>
+                                ✓ 表格清晰（衣物重量 / 水位 / 用量）<br>
+                                ✓ 手洗與低泡說明實用<br>
+                                ✗ 表格在長頁面中容易被忽視，應置頂
+                            </div>
+                        </div>
+
+                        <div class="zone-card warning">
+                            <span class="zone-badge warning">待改進</span>
+                            <h4>Zone 17: 產品資訊文本</h4>
+                            <div class="zone-content">
+                                <strong>評分：65/100</strong><br>
+                                ✓ 法規資訊完整（成分、酸鹼值等）<br>
+                                ✗ 排版過於密集，閱讀疲勞<br>
+                                ✗ 注意事項與警告混雜不清
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="zone-row">
+                        <div class="zone-card bad">
+                            <span class="zone-badge bad">需要修改</span>
+                            <h4>Zone 18: 顧客評價區</h4>
+                            <div class="zone-content">
+                                <strong>評分：15/100</strong><br>
+                                ✗ 「尚未有任何評價」 — 轉換漏斗的致命傷<br>
+                                ✗ 對於聲稱20萬+銷量的產品，零評價破壞信任<br>
+                                ✗ 應該顯示星評、客戶頭像、真實評論
+                            </div>
+                        </div>
+
+                        <div class="zone-card warning">
+                            <span class="zone-badge warning">待改進</span>
+                            <h4>Zone 19: 相關產品推薦</h4>
+                            <div class="zone-content">
+                                <strong>評分：68/100</strong><br>
+                                ✓ 補充瓶、組合包推薦邏輯清晰<br>
+                                ✓ 展示bundle 與upsell 機會<br>
+                                ✗ 缺乏「為什麼選擇補充瓶」的導購文案
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Critical Issues -->
+            <section class="section">
+                <h2 class="section-title">五大關鍵問題（轉換率殺手）</h2>
+
+                <div class="issues-container">
+                    <div class="issue-card">
+                        <div class="issue-number">1</div>
+                        <div class="issue-content">
+                            <h4>致命傷：零顧客評價</h4>
+                            <p>顧客評價區顯示「尚未有任何評價」。對於聲稱的暢銷品，這個空白會嚴重傷害信任度。新訪客無法看到真實使用者的背書，轉換率可能降低30-50%。</p>
+                            <p><span class="impact-tag">HIGH IMPACT</span>社會認證真空</p>
+                        </div>
+                    </div>
+
+                    <div class="issue-card">
+                        <div class="issue-number">2</div>
+                        <div class="issue-content">
+                            <h4>CTA配置單一化</h4>
+                            <p>僅有頂部sticky區域的「加入購物車」與「立即購買」按鈕。訪客在Zone 3-Zone 17之間的長頁面滾動中，如無轉換衝動點，將直接離場。缺乏「了解更多」、「索取樣品」、「諮詢專家」等中段CTA。</p>
+                            <p><span class="impact-tag">HIGH IMPACT</span>流量漏斗斷裂</p>
+                        </div>
+                    </div>
+
+                    <div class="issue-card">
+                        <div class="issue-number">3</div>
+                        <div class="issue-content">
+                            <h4>頁面過長且全為圖片內容</h4>
+                            <p>18+區域的超長頁面，且大量圖片內容導致：(1) SEO差（圖片alt文本無法被搜索引擎索引），(2) 無障礙設計差（視覺障礙用戶無法閱讀），(3) 行動裝置加載慢，(4) 用戶滾動疲勞。建議拆分為「核心訊息頁面」+「詳細說明頁面」。</p>
+                            <p><span class="impact-tag">MEDIUM IMPACT</span>SEO與體驗</p>
+                        </div>
+                    </div>
+
+                    <div class="issue-card">
+                        <div class="issue-number">4</div>
+                        <div class="issue-content">
+                            <h4>缺乏FAQ與反駁應答</h4>
+                            <p>頁面中未見「常見問題」、「為什麼消費者選擇淨淨」、「vs 競品對比」等常見買家異議的應答區段。冷流量訪客的潛在質疑（「這麼濃真的可以洗乾淨嗎？」「成分真的安全嗎？」）未被預先化解。</p>
+                            <p><span class="impact-tag">MEDIUM IMPACT</span>漏斗中期轉換</p>
+                        </div>
+                    </div>
+
+                    <div class="issue-card">
+                        <div class="issue-number">5</div>
+                        <div class="issue-content">
+                            <h4>行動裝置體驗欠優化</h4>
+                            <p>超長頁面在手機上的滾動負擔大，sticky CTA可能遮擋內容，「了解更多」外連可能導致訪客流失。Zone 16的用量指南表在小屏幕上可能無法良好展現。未見行動版專用的優化（如折疊區段、快速跳轉導航）。</p>
+                            <p><span class="impact-tag">MEDIUM IMPACT</span>移動端轉換</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quick Wins -->
+            <section class="section">
+                <h2 class="section-title">五大快速勝利（1-2週內可完成）</h2>
+
+                <div class="wins-container">
+                    <div class="win-card">
+                        <div class="win-number">1</div>
+                        <div class="win-content">
+                            <h4>導入客戶評價區塊</h4>
+                            <p>立即收集已購客戶評論（至少5-10則星評與短評），顯示在「顧客評價」區。或者從其他銷售通路（PChome、momo等）遷移已有評論。這是轉換率的最大槓桿。</p>
+                            <p><span class="effort-tag">低難度</span>高ROI</p>
+                        </div>
+                    </div>
+
+                    <div class="win-card">
+                        <div class="win-number">2</div>
+                        <div class="win-content">
+                            <h4>在Zone 9後增加「為什麼選擇淨淨」CTA</h4>
+                            <p>於清潔力示範後，插入一個「立即購買」或「加入購物車」的按鈕，以及「查看其他用戶評分」連結。此時訪客的購買衝動最強。</p>
+                            <p><span class="effort-tag">低難度</span>中ROI</p>
+                        </div>
+                    </div>
+
+                    <div class="win-card">
+                        <div class="win-number">3</div>
+                        <div class="win-content">
+                            <h4>新增「常見Q&A」折疊區段</h4>
+                            <p>在Zone 17前插入4-6個常見問題：「10ML真的夠洗整籃嗎？」「與膠囊洗衣球相比？」「敏感肌可以用嗎？」「補充瓶與原瓶差異？」以簡潔答案化解買家異議。</p>
+                            <p><span class="effort-tag">低難度</span>中ROI</p>
+                        </div>
+                    </div>
+
+                    <div class="win-card">
+                        <div class="win-number">4</div>
+                        <div class="win-content">
+                            <h4>優化Zone 1的視覺層級</h4>
+                            <p>將警告符號（⚠️）與安全認證分開排列。核心賣點用粗體/彩色突出，價格對比用更大的字體，確保訪客在3秒內理解核心價值主張。</p>
+                            <p><span class="effort-tag">低難度</span>中ROI</p>
+                        </div>
+                    </div>
+
+                    <div class="win-card">
+                        <div class="win-number">5</div>
+                        <div class="win-content">
+                            <h4>新增「購買前知識」導航欄</h4>
+                            <p>在Zone 3前增加粘性導航欄，包含「產品規格」「用法指南」「客戶評價」「常見問題」等快速跳轉連結。幫助訪客快速找到所需信息，減少滾動疲勞。</p>
+                            <p><span class="effort-tag">中難度</span>高ROI</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Issues Breakdown -->
+            <section class="section">
+                <h2 class="section-title">區域別改進建議</h2>
+
+                <div class="recommendation-box">
+                    <h4>Zone 1: 產品標題頭區 — 視覺層級分離</h4>
+                    <ul>
+                        <li><strong>現況：</strong>emoji、警告符號、核心賣點混在一起，視覺層級不清。</li>
+                        <li><strong>建議：</strong>
+                            <ul style="margin-top: 8px;">
+                                <li>將核心賣點（安全認證、濃縮力、效果）放在上半部，用3欄簡潔布局</li>
+                                <li>將警告符號與注意事項（瓶身分離式包裝）下移至「產品規格」區</li>
+                                <li>價格對比用更大字體（原價20px，現價24px）與配色對比（灰色 vs 紅色）</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="recommendation-box">
+                    <h4>Zone 16: 用量指南表 — 位置前移與互動化</h4>
+                    <ul>
+                        <li><strong>現況：</strong>表格埋在Zone 17後，許多訪客不會看到；在行動裝置上表格可能超寬。</li>
+                        <li><strong>建議：</strong>
+                            <ul style="margin-top: 8px;">
+                                <li>將用量指南表前移至Zone 5之後（視覺英雄區之後），訪客此時最想知道用法</li>
+                                <li>改為互動式計算機：輸入衣物重量 → 自動計算所需用量</li>
+                                <li>行動版改為「縱向卡片」而非「橫向表格」</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="recommendation-box">
+                    <h4>Zone 18: 顧客評價區 — 社會認證填充方案</h4>
+                    <ul>
+                        <li><strong>現況：</strong>「尚未有任何評價」，致命傷。</li>
+                        <li><strong>建議（優先級）：</strong>
+                            <ul style="margin-top: 8px;">
+                                <li><strong>立即行動（1週內）：</strong>從淨淨的PChome/momo官方旗艦店匯入已有的星評與評論（最少顯示5則、平均4.8★）</li>
+                                <li><strong>短期（2-4週）：</strong>於官網設置「評價表單」，邀請已購客戶上傳使用心得與照片，設置積分誘因</li>
+                                <li><strong>長期：</strong>整合評價聚合平台（如Trustpilot、Google Reviews），自動回拉評論</li>
+                                <li><strong>備選方案：</strong>若無法短期累積評價，改為「熱銷徽章」（「20萬人信賴」）、「媒體報導」、「KOL推薦」等替代社證</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="recommendation-box">
+                    <h4>新增Zone: 常見Q&A（Zone 17.5）</h4>
+                    <ul>
+                        <li><strong>建議位置：</strong>Zone 15（便利設計）與Zone 16（用量指南）之間</li>
+                        <li><strong>核心問題（6個）：</strong>
+                            <ul style="margin-top: 8px;">
+                                <li>Q: 「10ML 真的可以洗 5KG 衣物嗎？」→ A: 實驗證明 + 短影片示範</li>
+                                <li>Q: 「與坊間高濃縮洗衣精差在哪？」→ A: 對比表格</li>
+                                <li>Q: 「敏感肌寶寶可以使用嗎？」→ A: Ellead認證 + 成分說明</li>
+                                <li>Q: 「補充瓶和原瓶的差異？」→ A: 規格對比</li>
+                                <li>Q: 「在哪些通路可以購買？」→ A: 銷售通路列表</li>
+                                <li>Q: 「購買後如何退貨？」→ A: 退貨政策連結</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="recommendation-box">
+                    <h4>新增Zone: 中段CTA區域（Zone 9.5 之後）</h4>
+                    <ul>
+                        <li><strong>時機：</strong>在清潔力示範（before/after）之後，購買衝動最強時刻</li>
+                        <li><strong>內容：</strong>
+                            <ul style="margin-top: 8px;">
+                                <li>主CTA 按鈕：「立即購買」或「加入購物車」（按鈕顏色突出）</li>
+                                <li>副CTA 連結：「查看客戶評分與評論」（引導至Zone 18）</li>
+                                <li>社證補充：「已有 XX 萬人使用」或「平均評分 4.9/5 星」</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Current State vs Ideal State -->
+            <section class="section">
+                <h2 class="section-title">當前狀態 vs 理想狀態對比</h2>
+
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>評估維度</th>
+                            <th>當前狀態</th>
+                            <th>理想狀態</th>
+                            <th>優先級</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>顧客評價數量</strong></td>
+                            <td><span class="cross">0 則</span></td>
+                            <td><span class="checkmark">10+ 則星評</span></td>
+                            <td>P0 - 立即</td>
+                        </tr>
+                        <tr>
+                            <td><strong>CTA 數量</strong></td>
+                            <td><span class="cross">2 個（頂部sticky）</span></td>
+                            <td><span class="checkmark">4-6 個（分佈全頁）</span></td>
+                            <td>P0 - 立即</td>
+                        </tr>
+                        <tr>
+                            <td><strong>FAQ 區塊</strong></td>
+                            <td><span class="cross">無</span></td>
+                            <td><span class="checkmark">6 個常見問題</span></td>
+                            <td>P1 - 1-2週</td>
+                        </tr>
+                        <tr>
+                            <td><strong>頁面長度</strong></td>
+                            <td>18+ 區域（超長）</td>
+                            <td>8-10 個關鍵區域 + 摺疊詳情</td>
+                            <td>P1 - 2-4週</td>
+                        </tr>
+                        <tr>
+                            <td><strong>文本 vs 圖像比例</strong></td>
+                            <td>80% 圖像，20% 文本</td>
+                            <td>50% 圖像，50% 文本</td>
+                            <td>P2 - 1月內</td>
+                        </tr>
+                        <tr>
+                            <td><strong>行動裝置最佳化</strong></td>
+                            <td>基礎適配，未優化</td>
+                            <td>全面優化（自適應表格、快速跳轉）</td>
+                            <td>P2 - 1月內</td>
+                        </tr>
+                        <tr>
+                            <td><strong>VS 競品對比</strong></td>
+                            <td>無直接對比</td>
+                            <td>「vs 膠囊洗衣球」「vs 一般洗衣精」對比表</td>
+                            <td>P2 - 1月內</td>
+                        </tr>
+                        <tr>
+                            <td><strong>SEO友善度</strong></td>
+                            <td>圖片占比高，alt文本缺</td>
+                            <td>文本結構化 + 完整alt文本 + schema markup</td>
+                            <td>P3 - 長期</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Complete Restructure Proposal -->
+            <section class="section">
+                <h2 class="section-title">完整重構提案（打造高轉換漏斗）</h2>
+
+                <div class="alert alert-info">
+                    <div class="alert-icon">💡</div>
+                    <div>
+                        <strong>核心策略：</strong>不是推倒重來，而是「分層展示」。將目前的18+區域優化為「核心主線」+「詳細說明」兩層結構，主線聚焦AIDA漏斗，詳說供有深度需求的訪客。
+                    </div>
+                </div>
+
+                <h3 style="color: var(--primary); margin-top: 30px; margin-bottom: 20px;">推薦新頁面結構（重點區域順序）</h3>
+
+                <div class="proposal-item">
+                    <h5>1. 標題區（5秒內建立信任）</h5>
+                    <p>✓ 產品名 + 核心賣點（3行以內）+ 價格對比 + 評分（4.9★）+ 主CTA 按鈕</p>
+                    <p>優化：移除警告符號，強化「已有XX萬人信賴」的社證。</p>
+                </div>
+
+                <div class="proposal-item">
+                    <h5>2. 痛點區（引發共鳴）</h5>
+                    <p>✓ 三大痛點 + 過渡文案「我們有更好的解決方案」</p>
+                    <p>保持現況，無需改動。</p>
+                </div>
+
+                <div class="proposal-item">
+                    <h5>3. 英雄區（產品展示）</h5>
+                    <p>✓ 大型產品形象 + 「1瓶可洗80次」量化賣點 + 四大特色圖示</p>
+                    <p>合併Zone 4-5-6，縮短版面。</p>
+                </div>
+
+                <div class="proposal-item">
+                    <h5>4. 用量指南（降低使用門檻）</h5>
+                    <p>✓ 「只需10ML」互動式計算機 + Before/After 清潔示範</p>
+                    <p>前移此區段，解決購買前的「我擔心不夠洗」異議。</p>
+                </div>
+
+                <div class="proposal-item">
+                    <h5>5. 差異化證明（建立競爭優勢）</h5>
+                    <p>✓ 濃度對比（vs 高濃縮）+ 空間對比（1瓶 vs 4瓶）+ 成本對比（NT$550 vs 競品價格）</p>
+                    <p>合併Zone 7-8，用圖表快速展示優勢。</p>
+                </div>
+
+                <div class="proposal-item">
+                    <h5>6. 科技亮點（背書信任）</h5>
+                    <p>✓ 抗菌技術（奈米化 + 99.99%）+ 護纖科技 + 安全成分清單（0增稠劑等）</p>
+                    <p>高度濃縮Zone 10-11-12，用標籤卡片展現。</p>
+                </div>
+
+                <div class="proposal-item">
+                    <h5>7. 認證與榮譽（權威背書）</h5>
+                    <p>✓ Ellead + 台美抗菌證書 + 媒體報導 / KOL推薦</p>
+                    <p>展示認證LOGO，加上可點擊驗證連結。</p>
+                </div>
+
+                <div class="proposal-item">
+                    <h5>8. 顧客聲音（社會認證，最重要）</h5>
+                    <p>✓ 5-8 則精選評論（星評 + 用戶頭像 + 簡短推薦語）+ 「查看全部評論」連結</p>
+                    <p>此區段移至中段（Zone 8後），不要埋在底部。</p>
+                </div>
+
+                <div class="proposal-item">
+                    <h5>9. 常見Q&A（化解異議）</h5>
+                    <p>✓ 摺疊式6個常見問題 + 1對1 對話連結</p>
+                    <p>新增區段，放在Zone 8後。</p>
+                </div>
+
+                <div class="proposal-item">
+                    <h5>10. 最終CTA + 相關產品推薦</h5>
+                    <p>✓ 大型「立即購買」按鈕 + 補充瓶/組合包快速購買 + 運費說明</p>
+                    <p>保持Zone 19，但加強導購文案。</p>
+                </div>
+
+                <div class="proposal-item">
+                    <h5>11. 詳細資訊（折疊區段）</h5>
+                    <p>✓ 「展開詳細規格」區塊，包含現有Zone 13-16的所有詳細信息</p>
+                    <p>幫助有深度需求的訪客查閱，但不佔據主線空間。</p>
+                </div>
+            </section>
+
+            <!-- Recommended Next Steps -->
+            <section class="section">
+                <h2 class="section-title">行動方案與優先級矩陣</h2>
+
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>行動項目</th>
+                            <th>工作量</th>
+                            <th>ROI</th>
+                            <th>時間框架</th>
+                            <th>擁有者</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>導入客戶評價（匯入或新收集）</strong></td>
+                            <td>中</td>
+                            <td><span class="checkmark">極高</span></td>
+                            <td>1-2週</td>
+                            <td>客服 + 行銷</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Zone 9.5 新增中段CTA</strong></td>
+                            <td>低</td>
+                            <td><span class="checkmark">高</span></td>
+                            <td>3-5天</td>
+                            <td>UI/UX 設計</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Zone 1 視覺層級重構</strong></td>
+                            <td>低</td>
+                            <td>中</td>
+                            <td>3-5天</td>
+                            <td>設計</td>
+                        </tr>
+                        <tr>
+                            <td><strong>新增 FAQ 區段</strong></td>
+                            <td>中</td>
+                            <td>中</td>
+                            <td>1週</td>
+                            <td>文案 + 設計</td>
+                        </tr>
+                        <tr>
+                            <td><strong>用量指南表前移與互動化</strong></td>
+                            <td>中</td>
+                            <td>中</td>
+                            <td>1-2週</td>
+                            <td>開發 + 設計</td>
+                        </tr>
+                        <tr>
+                            <td><strong>頁面結構優化（Zone 合併）</strong></td>
+                            <td>高</td>
+                            <td>中</td>
+                            <td>2-3週</td>
+                            <td>開發 + 設計 + 文案</td>
+                        </tr>
+                        <tr>
+                            <td><strong>新增 vs 競品對比表</strong></td>
+                            <td>中</td>
+                            <td>中</td>
+                            <td>1週</td>
+                            <td>文案 + 設計</td>
+                        </tr>
+                        <tr>
+                            <td><strong>行動裝置體驗全面優化</strong></td>
+                            <td>高</td>
+                            <td>中</td>
+                            <td>2-4週</td>
+                            <td>開發 + 設計</td>
+                        </tr>
+                        <tr>
+                            <td><strong>SEO 優化（alt文本、schema）</strong></td>
+                            <td>中</td>
+                            <td>中</td>
+                            <td>1-2週</td>
+                            <td>開發 + SEO專員</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Conclusion -->
+            <section class="section">
+                <h2 class="section-title">結論與建議</h2>
+
+                <div class="summary-box">
+                    <h4>整體評估</h4>
+                    <p>淨淨真濃縮洗衣精的銷售頁面具有「強內核、弱轉換」的特徵。產品差異化清晰、安全認證完整、視覺設計出色，但在「社會認證」和「CTA配置」上存在致命漏洞。這些漏洞直接傷害冷流量轉換率。</p>
+                    <p><strong>好消息是：</strong>上述問題都可以在1-4週內逐項修復，無需大規模改版。關鍵在於「優先順序」：先補社會認證（評價），再增中段CTA，最後再進行頁面結構優化。</p>
+                    <p><strong>預期改進幅度：</strong>若完整執行上述建議，估計可將頁面轉換率提升 25-40%，主要驅動力來自「顧客評價導入」（+15-20%）和「中段CTA配置」（+10-15%）。</p>
+                </div>
+
+                <div class="callout">
+                    <strong>下一步行動（優先級排序）：</strong><br>
+                    1️⃣ 本週：收集 5-10 則顧客評價，上傳至評價區<br>
+                    2️⃣ 下週：增加Zone 9.5 的中段CTA + 新增FAQ區塊<br>
+                    3️⃣ 2-3週內：重構Zone 1的視覺層級 + 前移用量指南<br>
+                    4️⃣ 4週內：進行行動裝置體驗優化 + SEO改進<br>
+                    5️⃣ 持續優化：監測轉換率數據，A/B測試CTA文案與位置
+                </div>
+            </section>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p><strong>淨淨真濃縮洗衣精銷售頁分析報告</strong></p>
+            <p>分析範圍：18個頁面區域 | 評分方法論：AIDA漏斗、PAS框架、FABE模型、行銷4有</p>
+            <p>報告生成於：2026年3月31日</p>
+            <p style="margin-top: 15px; opacity: 0.7;">本報告基於頁面結構、文案、視覺設計與轉換漏斗邏輯的深度分析，旨在提供可行的改進建議。所有建議均以提升轉換率為目標。</p>
+        </div>
+    </div>
+</body>
+</html>

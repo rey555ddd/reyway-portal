@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>淨淨 AI 行銷神隊友 — 全員教育訓練</title>
+<style>
+  :root {
+    --primary: #5BC8D5;
+    --primary-light: #E8F7FA;
+    --primary-mid: #A8E4EB;
+    --primary-dark: #2FA8B8;
+    --text: #1A2E35;
+    --text-muted: #5A7A85;
+    --bg: #FFFFFF;
+    --bg-soft: #F7FBFC;
+    --border: #DFF0F3;
+    --radius: 16px;
+    --shadow: 0 4px 24px rgba(91, 200, 213, 0.12);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'PingFang TC', 'Noto Sans TC', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 16px;
+  }
+
+  /* ─── TOP NAV ─── */
+  .topnav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    overflow-x: auto;
+  }
+
+  .topnav .logo {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--primary-dark);
+    white-space: nowrap;
+    margin-right: 16px;
+    letter-spacing: 0.02em;
+  }
+
+  .topnav a {
+    text-decoration: none;
+    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 20px;
+    white-space: nowrap;
+    transition: all 0.2s;
+  }
+
+  .topnav a:hover {
+    background: var(--primary-light);
+    color: var(--primary-dark);
+  }
+
+  /* ─── MAIN ─── */
+  main { padding-top: 56px; }
+
+  /* ─── HERO ─── */
+  .hero {
+    background: linear-gradient(160deg, var(--primary-light) 0%, #fff 60%);
+    padding: 80px 24px 72px;
+    text-align: center;
+  }
+
+  .hero .badge {
+    display: inline-block;
+    background: var(--primary);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 14px;
+    border-radius: 20px;
+    letter-spacing: 0.08em;
+    margin-bottom: 20px;
+  }
+
+  .hero h1 {
+    font-size: clamp(28px, 5vw, 48px);
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1.25;
+    margin-bottom: 16px;
+    letter-spacing: -0.02em;
+  }
+
+  .hero h1 span { color: var(--primary-dark); }
+
+  .hero p {
+    font-size: 18px;
+    color: var(--text-muted);
+    max-width: 520px;
+    margin: 0 auto 32px;
+  }
+
+  .hero-meta {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    font-size: 14px;
+    color: var(--text-muted);
+  }
+
+  .hero-meta span { display: flex; align-items: center; gap: 6px; }
+
+  /* ─── SECTION WRAPPER ─── */
+  .section {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 64px 24px;
+  }
+
+  .section + .section { padding-top: 0; }
+
+  .section-label {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--primary);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .section h2 {
+    font-size: clamp(22px, 3vw, 32px);
+    font-weight: 800;
+    margin-bottom: 8px;
+    letter-spacing: -0.02em;
+  }
+
+  .section .subtitle {
+    color: var(--text-muted);
+    font-size: 16px;
+    margin-bottom: 40px;
+  }
+
+  /* ─── PRINCIPLE CARDS ─── */
+  .principle-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+
+  .principle-card {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px 24px;
+  }
+
+  .principle-card .icon { font-size: 28px; margin-bottom: 12px; }
+  .principle-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+  .principle-card p { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+
+  /* ─── STEPS ─── */
+  .steps {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .step {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+  }
+
+  .step-num {
+    width: 32px; height: 32px;
+    background: var(--primary);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .step-content h4 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+  .step-content p { font-size: 14px; color: var(--text-muted); }
+
+  /* ─── DIVIDER ─── */
+  .divider {
+    height: 1px;
+    background: var(--border);
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  /* ─── DEPT SECTION ─── */
+  .dept-section {
+    scroll-margin-top: 72px;
+  }
+
+  .dept-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .dept-icon {
+    width: 56px; height: 56px;
+    background: var(--primary-light);
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26px;
+    flex-shrink: 0;
+  }
+
+  .dept-header-text h2 {
+    font-size: 24px;
+    font-weight: 800;
+    margin-bottom: 2px;
+  }
+
+  .dept-header-text p { font-size: 14px; color: var(--text-muted); }
+
+  /* ─── TOOL CARDS ─── */
+  .tool-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+
+  .tool-card {
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px 20px;
+    background: #fff;
+    transition: box-shadow 0.2s, border-color 0.2s;
+  }
+
+  .tool-card:hover {
+    box-shadow: var(--shadow);
+    border-color: var(--primary-mid);
+  }
+
+  .tool-card .tool-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin-bottom: 6px;
+  }
+
+  .tool-card .tool-desc {
+    font-size: 13.5px;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 10px;
+  }
+
+  .tool-card .tool-use {
+    font-size: 13px;
+    color: var(--text);
+    background: var(--primary-light);
+    border-radius: 8px;
+    padding: 8px 12px;
+    line-height: 1.5;
+  }
+
+  .tool-card .tool-use::before {
+    content: '✦ ';
+    color: var(--primary);
+    font-size: 11px;
+  }
+
+  /* ─── PRACTICE BOX ─── */
+  .practice-box {
+    background: linear-gradient(135deg, var(--primary-light), #fff);
+    border: 1.5px solid var(--primary-mid);
+    border-radius: var(--radius);
+    padding: 24px 28px;
+    margin-top: 4px;
+  }
+
+  .practice-box .practice-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--primary-dark);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .practice-box h4 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .practice-box p {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.65;
+  }
+
+  /* ─── REMINDER BOX ─── */
+  .reminder-box {
+    background: #FFF8E6;
+    border: 1.5px solid #F5D87A;
+    border-radius: 12px;
+    padding: 16px 20px;
+    font-size: 14px;
+    color: #7A5A10;
+    margin-top: 12px;
+    line-height: 1.6;
+  }
+
+  .reminder-box strong { color: #5A3F00; }
+
+  /* ─── CLOSING ─── */
+  .closing {
+    background: linear-gradient(160deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: #fff;
+    text-align: center;
+    padding: 80px 24px;
+  }
+
+  .closing h2 {
+    font-size: clamp(24px, 4vw, 40px);
+    font-weight: 800;
+    margin-bottom: 20px;
+    letter-spacing: -0.02em;
+  }
+
+  .closing p {
+    font-size: 18px;
+    opacity: 0.85;
+    max-width: 480px;
+    margin: 0 auto 40px;
+  }
+
+  .mantra {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .mantra-item {
+    background: rgba(255,255,255,0.2);
+    border: 1.5px solid rgba(255,255,255,0.35);
+    border-radius: 40px;
+    padding: 10px 24px;
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  /* ─── SCROLL PROGRESS ─── */
+  .progress-bar {
+    position: fixed;
+    top: 56px; left: 0;
+    height: 3px;
+    background: var(--primary);
+    z-index: 101;
+    width: 0%;
+    transition: width 0.1s;
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 600px) {
+    .tool-grid { grid-template-columns: 1fr; }
+    .principle-grid { grid-template-columns: 1fr; }
+    .hero { padding: 60px 20px 52px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="topnav">
+  <span class="logo">淨淨 AI 教育訓練</span>
+  <a href="#intro">開場</a>
+  <a href="#universal">通用操作</a>
+  <a href="#ecommerce">電商組</a>
+  <a href="#brand">品牌行銷</a>
+  <a href="#cs">客服組</a>
+  <a href="#retail">百貨專櫃</a>
+  <a href="#admin">行政管理</a>
+  <a href="#finance">財務支援</a>
+  <a href="#closing">結語</a>
+</nav>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<main>
+
+<!-- ─── HERO ─── -->
+<section class="hero">
+  <div class="badge">淨淨 CleanClean · 內部教育訓練</div>
+  <h1>AI <span>行銷神隊友</span><br>怎麼用？</h1>
+  <p>你說，AI 幫你草稿，你審核，你送出。<br>不需要懂技術，只要會用就好。</p>
+  <div class="hero-meta">
+    <span>📅 2026 年</span>
+    <span>⏱ 約 45 分鐘</span>
+    <span>🎙 主講：陳睿笙</span>
+  </div>
+</section>
+
+<!-- ─── INTRO ─── -->
+<div id="intro" class="dept-section">
+<div class="section">
+  <div class="section-label">Part 01 · 開場</div>
+  <h2>AI 是你的草稿機</h2>
+  <p class="subtitle">三個原則，今天全員帶走。</p>
+
+  <div class="principle-grid">
+    <div class="principle-card">
+      <div class="icon">🤝</div>
+      <h3>AI 是助理，你是主管</h3>
+      <p>AI 出草稿，你決定送不送出。判斷力永遠在你這裡。</p>
+    </div>
+    <div class="principle-card">
+      <div class="icon">⚡</div>
+      <h3>先用再說，不要怕</h3>
+      <p>按錯沒關係。工具不會害你，只會省你時間。</p>
+    </div>
+    <div class="principle-card">
+      <div class="icon">🔍</div>
+      <h3>看完再送出</h3>
+      <p>AI 有時候會說錯話。任何內容都要你眼睛過一遍才送出。</p>
+    </div>
+  </div>
+
+  <div class="reminder-box">
+    <strong>哪些事不能交給 AI？</strong><br>
+    金額、法律文件、客人個人資料——這三類不行。其他都可以試試看。
+  </div>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ─── UNIVERSAL ─── -->
+<div id="universal" class="dept-section">
+<div class="section">
+  <div class="section-label">Part 02 · 通用操作</div>
+  <h2>四步驟，所有工具都一樣</h2>
+  <p class="subtitle">學會這四步，什麼工具都能用。</p>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <h4>打開工具</h4>
+        <p>瀏覽器輸入 <strong>cleanclean.reyway.com</strong> → 選你要用的工具</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <h4>告訴 AI 你要什麼</h4>
+        <p>白話說就好，例如：「幫我寫蝦皮的洗碗精標題，主打天然成分」。越具體越好。</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <h4>看輸出結果</h4>
+        <p>確認：事實對不對？口氣對不對？有沒有奇怪的話？如果不滿意，直接在旁邊說「調一下」。</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <h4>你決定送不送出</h4>
+        <p>AI 永遠只出草稿。最後按下「發布」或「送出」的，是你。</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ─── 電商組 ─── -->
+<div id="ecommerce" class="dept-section">
+<div class="section">
+  <div class="section-label">Part 03 · 部門專區</div>
+
+  <div class="dept-header">
+    <div class="dept-icon">🛒</div>
+    <div class="dept-header-text">
+      <h2>電商組</h2>
+      <p>官網 · 蝦皮 · momo｜2 人</p>
+    </div>
+  </div>
+
+  <div class="tool-grid">
+    <div class="tool-card">
+      <div class="tool-name">📝 文案工作站</div>
+      <div class="tool-desc">四合一工作台：商品文案、話術、客服、審核</div>
+      <div class="tool-use">寫蝦皮標題、momo 商品描述、官網賣點文案，一次出三個版本</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-name">🎉 活動企劃</div>
+      <div class="tool-desc">大促、節慶、檔期方案一鍵生成</div>
+      <div class="tool-use">母親節、雙11、週年慶——輸入主題，AI 自動規劃整套方案</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-name">🎬 短影音企劃師</div>
+      <div class="tool-desc">Reels / TikTok / Shorts 逐秒分鏡腳本</div>
+      <div class="tool-use">商品開箱影片腳本，有幾秒說什麼、畫面怎麼拍，全部幫你規劃好</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-name">🖼 廣告圖生成</div>
+      <div class="tool-desc">一鍵出廣告主視覺，自動帶入產品庫資料</div>
+      <div class="tool-use">促銷 Banner、商品主圖，說描述就能出圖，不用等設計組</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-name">📊 素材成效</div>
+      <div class="tool-desc">看哪支素材 CTR 高、哪組 Hook 轉換好</div>
+      <div class="tool-use">上傳廣告報表，AI 幫你分析哪個文案最有效，下次直接複製</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-name">🔗 短連結產生器</div>
+      <div class="tool-desc">Lihi 短網址 + UTM 一鍵產出</div>
+      <div class="tool-use">LINE 推播連結、蝦皮商品連結加上追蹤碼，知道誰從哪裡來的</div>
+    </div>
+  </div>
+
+  <div class="practice-box">
+    <div class="practice-label">現場練習</div>
+    <h4>幫「淨淨環保洗碗精 500ml」寫一條蝦皮標題</h4>
+    <p>打開文案工作站 → 貼文模式 → 輸入商品名稱和主打賣點（天然、無殘留、適合有寶寶家庭）→ 選蝦皮平台 → 看三個版本，選最喜歡的那個。</p>
+  </div>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ─── 品牌行銷 ─── -->
+<div id="brand" class="dept-section">
+<div class="section">
+  <div class="dept-header">
+    <div class="dept-icon">📣</div>
+    <div class="dept-header-text">
+      <h2>品牌行銷組</h2>
+      <p>KOL · PR · 品牌傳播｜Cara + 阿雲</p>
+    </div>
+  </div>
+
+  <div class="tool-grid">
+    <div class="tool-card">
+      <div class="tool-name">🌟 KOL 助手</div>
+      <div class="tool-desc">一鍵推薦 + 網紅雷達 + 短連結成效追蹤</div>
+      <div class="tool-use">輸入產品特性 + 預算，AI 推薦最適合的 KOL 類型，自動產出合作 Brief</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-name">📝 文案工作站</div>
+      <div class="tool-desc">品牌貼文，各平台格式一次到位</div>
+      <div class="tool-use">Threads 長文、IG 短文、LINE 推播——同一個主題，AI 幫你改成三種口氣</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-name">📅 社群排程</div>
+      <div class="tool-desc">月度內容日曆 + 平台合規檢查</div>
+      <div class="tool-use">把下個月要發的主題告訴 AI，它幫你規劃哪天發哪種內容，並檢查有沒有踩到廣告法紅線</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-name">🎬 短影音企劃師</div>
+      <div class="tool-desc">品牌 Reels 逐秒腳本</div>
+      <div class="tool-use">品牌故事影片、KOL 開箱建議腳本，讓 KOL 知道這支影片要拍什麼</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-name">🎉 活動企劃</div>
+      <div class="tool-desc">節慶行銷方案一鍵生成</div>
+      <div class="tool-use">策劃聯名活動、快閃優惠、品牌周年慶，從主題到執行項目全部規劃</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-name">💡 靈感庫</div>
+      <div class="tool-desc">行銷創意、競品參考、趨勢洞察</div>
+      <div class="tool-use">卡住想不到新點子時，來這裡翻翻競品做法跟最新趨勢</div>
+    </div>
+  </div>
+
+  <div class="practice-box">
+    <div class="practice-label">現場練習</div>
+    <h4>為新品「淨淨蔬果洗滌液」寫一份 KOL 合作 Brief</h4>
+    <p>打開 KOL 助手 → 輸入產品名稱、目標受眾（有小孩的媽媽）、預算範圍 → AI 產出 Brief 草稿 → 調整你覺得不對的地方。</p>
+  </div>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ─── 客服組 ─── -->
+<div id="cs" class="dept-section">
+<div class="section">
+  <div class="dept-header">
+    <div class="dept-icon">💬</div>
+    <div class="dept-header-text">
+      <h2>客服組</h2>
+      <p>顧客服務 · 退換貨處理｜3 人</p>
+    </div>
+  </div>
+
+  <div class="tool-grid">
+    <div class="tool-card">
+      <div class="tool-name">📝 文案工作站（客服模式）</div>
+      <div class="tool-desc">AI 起草客服回覆，你審核後送出</div>
+      <div class="tool-use">把客人的原始留言貼進去，AI 幫你起草一個有溫度、合規的回覆。你改一改，送出。</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-name">📦 產品資料庫</div>
+      <div class="tool-desc">全系列規格、成分、賣點快查</div>
+      <div class="tool-use">客人問「這個可以給孕婦用嗎？」直接查產品庫，成分一清二楚，不用再問其他同事</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-name">🔗 短連結產生器</div>
+      <div class="tool-desc">快速產出追蹤連結</div>
+      <div class="tool-use">回覆客人時附上商品連結，加上 UTM 追蹤，知道這筆有沒有成交</div>
+    </div>
+  </div>
+
+  <div class="practice-box">
+    <div class="practice-label">現場練習</div>
+    <h4>客人說：「我買了洗碗精用了之後手很乾，要退貨」</h4>
+    <p>打開文案工作站 → 客服模式 → 把這句話貼進去 → 看 AI 怎麼回 → 確認態度和內容有沒有問題 → 送出（或調整後送出）。</p>
+  </div>
+
+  <div class="reminder-box">
+    <strong>鐵律：</strong>AI 的回覆永遠是草稿。金額、退款、法律承諾這三類，一定要由你自己決定後再輸入，不能直接複製 AI 的說法。
+  </div>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ─── 百貨專櫃 ─── -->
+<div id="retail" class="dept-section">
+<div class="section">
+  <div class="dept-header">
+    <div class="dept-icon">🏬</div>
+    <div class="dept-header-text">
+      <h2>百貨專櫃</h2>
+      <p>實體通路 · 現場銷售｜2 人</p>
+    </div>
+  </div>
+
+  <p style="color: var(--text-muted); font-size: 15px; margin-bottom: 28px;">
+    你們的工具以「快速查閱」為主，不需要主動生成內容。把工具當成隨身的產品手冊就好。
+  </p>
+
+  <div class="tool-grid">
+    <div class="tool-card">
+      <div class="tool-name">📦 產品資料庫</div>
+      <div class="tool-desc">全系列規格、成分、賣點</div>
+      <div class="tool-use">客人現場問「這個和那個差在哪？」直接查，不用背，查完再說</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-name">💡 靈感庫</div>
+      <div class="tool-desc">競品參考、趨勢洞察</div>
+      <div class="tool-use">客人說「我之前用OO牌比較好用」→ 查競品比較說法，有資料底氣說話</div>
+    </div>
+  </div>
+
+  <div class="practice-box">
+    <div class="practice-label">現場練習</div>
+    <h4>客人問：「你們洗碗精跟市面上的有什麼不一樣？」</h4>
+    <p>打開產品資料庫 → 搜尋「洗碗精」→ 找到成分差異和主打賣點 → 用自己的話說出來。不用照著唸，有資料就好說話。</p>
+  </div>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ─── 行政管理 ─── -->
+<div id="admin" class="dept-section">
+<div class="section">
+  <div class="dept-header">
+    <div class="dept-icon">📋</div>
+    <div class="dept-header-text">
+      <h2>行政管理</h2>
+      <p>人資 · 行政 · 內部溝通｜依庭</p>
+    </div>
+  </div>
+
+  <div class="tool-grid">
+    <div class="tool-card">
+      <div class="tool-name">📝 文案工作站</div>
+      <div class="tool-desc">各種文字草稿一站產出</div>
+      <div class="tool-use">公司內部公告、會議通知、員工信件——說你要傳達的重點，AI 幫你寫得有條理</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-name">🎉 活動企劃</div>
+      <div class="tool-desc">活動方案一鍵生成</div>
+      <div class="tool-use">尾牙、員工聚餐、教育訓練活動規劃——給 AI 預算跟人數，它幫你出方案</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-name">⭐ 許願與改善區</div>
+      <div class="tool-desc">工具建議、回報問題</div>
+      <div class="tool-use">如果你發現工具哪裡不好用，直接在這裡回報，我們會持續改善</div>
+    </div>
+  </div>
+
+  <div class="practice-box">
+    <div class="practice-label">現場練習</div>
+    <h4>寫一封「下週四全員會議」的內部通知</h4>
+    <p>打開文案工作站 → 說清楚：時間（週四下午2點）、地點（會議室A）、主題（Q2業績回顧）→ AI 出草稿 → 調整成你習慣的語氣 → 複製到公司通訊工具。</p>
+  </div>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ─── 財務支援 ─── -->
+<div id="finance" class="dept-section">
+<div class="section">
+  <div class="dept-header">
+    <div class="dept-icon">💰</div>
+    <div class="dept-header-text">
+      <h2>財務支援</h2>
+      <p>帳務 · 財務文件｜妮妮</p>
+    </div>
+  </div>
+
+  <div class="tool-grid">
+    <div class="tool-card">
+      <div class="tool-name">📝 文案工作站</div>
+      <div class="tool-desc">財務說明文件草稿</div>
+      <div class="tool-use">費用說明信、供應商付款通知、對帳確認信——告訴 AI 要傳達什麼，它幫你寫得正式清楚</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-name">📦 產品資料庫</div>
+      <div class="tool-desc">全系列規格、售價核對</div>
+      <div class="tool-use">核對發票商品名稱和規格時，快速比對確認沒有錯誤</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-name">📁 檔案上傳區</div>
+      <div class="tool-desc">數據檔案統一管理</div>
+      <div class="tool-use">廣告報表、財務相關數據檔案上傳到這裡，統一管理不怕找不到</div>
+    </div>
+  </div>
+
+  <div class="practice-box">
+    <div class="practice-label">現場練習</div>
+    <h4>寫一封給供應商的付款延遲說明信</h4>
+    <p>打開文案工作站 → 說明情況（例如：月底資金調度，款項延後7天）→ AI 出草稿 → 確認金額和日期正確 → 用你自己的 email 送出（AI 不會幫你送）。</p>
+  </div>
+
+  <div class="reminder-box">
+    <strong>特別提醒：</strong>涉及金額的信件，AI 出的草稿中所有數字都必須你自己核對一遍。AI 不算數學，數字一定要你填。
+  </div>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ─── CLOSING ─── -->
+<div id="closing">
+<section class="closing">
+  <h2>記住這三句話</h2>
+  <p>今天學的每一樣工具，都圍繞這三件事。</p>
+  <div class="mantra">
+    <div class="mantra-item">✦ 打開工具</div>
+    <div class="mantra-item">✦ AI 出草稿</div>
+    <div class="mantra-item">✦ 你是審核長</div>
+  </div>
+  <p style="margin-top: 40px; font-size: 15px; opacity: 0.7;">
+    工具會一直更新、一直變強。<br>你的判斷力，才是最重要的那個。
+  </p>
+</section>
+</div>
+
+</main>
+
+<script>
+// Scroll progress bar
+window.addEventListener('scroll', () => {
+  const winScroll = document.documentElement.scrollTop;
+  const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  const scrolled = (winScroll / height) * 100;
+  document.getElementById('progressBar').style.width = scrolled + '%';
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>淨淨 VIP推薦制度 & 粉絲經營策略</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap');
+  :root {
+    --primary: #4ECDC4;
+    --dark: #2C3E50;
+    --accent: #FF6B6B;
+    --gold: #F0C040;
+    --light: #F8F9FA;
+    --gray: #95A5A6;
+    --success: #5CB85C;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Noto Sans TC', sans-serif; background: var(--light); color: var(--dark); line-height: 1.8; }
+
+  .hero {
+    background: linear-gradient(135deg, #1a252f 0%, var(--dark) 100%);
+    color: white; padding: 50px 40px; text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .hero::after { content: ''; position: absolute; bottom: -50px; left: 0; width: 100%; height: 100px; background: var(--light); border-radius: 50% 50% 0 0; }
+  .hero h1 { font-size: 2.2em; font-weight: 900; }
+  .hero .sub { color: var(--primary); font-size: 1em; margin-top: 8px; }
+  .hero .meta { color: var(--gray); font-size: 0.8em; margin-top: 12px; }
+
+  .container { max-width: 960px; margin: 0 auto; padding: 20px 30px; }
+
+  .section {
+    background: white; border-radius: 16px; padding: 32px 36px; margin: 22px 0;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+  }
+  .section h2 {
+    font-size: 1.4em; font-weight: 900; margin-bottom: 18px;
+    padding-bottom: 10px; border-bottom: 3px solid var(--primary);
+  }
+  .section h3 { font-size: 1.1em; font-weight: 700; color: var(--primary); margin: 20px 0 10px; }
+  .section p { margin-bottom: 10px; font-size: 0.93em; }
+
+  /* 現況數據 */
+  .data-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin: 18px 0; }
+  .data-card {
+    background: var(--light); border-radius: 12px; padding: 18px; text-align: center;
+    border: 1px solid #eee;
+  }
+  .data-card .num { font-size: 2em; font-weight: 900; color: var(--primary); }
+  .data-card .label { font-size: 0.8em; color: var(--gray); }
+  .data-card .note { font-size: 0.75em; color: var(--accent); margin-top: 4px; }
+
+  /* 2x2 矩陣 */
+  .matrix {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+    margin: 20px 0; border-radius: 16px; overflow: hidden;
+    border: 2px solid #ddd;
+  }
+  .matrix-cell {
+    padding: 24px; border: 1px solid #eee; position: relative;
+  }
+  .matrix-cell.tl { background: #f0f9ff; }
+  .matrix-cell.tr { background: linear-gradient(135deg, #fff8e0 0%, #fffef0 100%); }
+  .matrix-cell.bl { background: #fafafa; }
+  .matrix-cell.br { background: #f5fff5; }
+  .matrix-cell .cell-title { font-weight: 900; font-size: 1.05em; margin-bottom: 6px; }
+  .matrix-cell .cell-tag {
+    display: inline-block; padding: 2px 10px; border-radius: 20px;
+    font-size: 0.7em; font-weight: 700; margin-bottom: 8px;
+  }
+  .matrix-cell .cell-desc { font-size: 0.85em; color: #555; line-height: 1.7; }
+  .matrix-label {
+    text-align: center; font-size: 0.8em; color: var(--gray); font-weight: 700;
+    padding: 6px;
+  }
+
+  /* 階梯制 */
+  .ladder { display: flex; gap: 0; margin: 20px 0; align-items: stretch; }
+  .ladder-step {
+    flex: 1; padding: 20px 16px; text-align: center;
+    position: relative; border: 1px solid #eee;
+  }
+  .ladder-step:first-child { border-radius: 12px 0 0 12px; }
+  .ladder-step:last-child { border-radius: 0 12px 12px 0; }
+  .ladder-step .step-num { font-size: 0.75em; color: var(--gray); font-weight: 700; }
+  .ladder-step .step-title { font-size: 1.1em; font-weight: 900; margin: 4px 0; }
+  .ladder-step .step-req { font-size: 0.75em; color: var(--gray); margin-bottom: 8px; }
+  .ladder-step .step-reward { font-size: 0.85em; font-weight: 500; }
+  .ladder-step.l1 { background: #f5f5f5; }
+  .ladder-step.l2 { background: #e8f5e9; }
+  .ladder-step.l3 { background: #fff8e1; }
+  .ladder-step.l4 { background: linear-gradient(135deg, #fff3e0, #ffe0b2); }
+  .ladder-step .arrow {
+    position: absolute; right: -14px; top: 50%; transform: translateY(-50%);
+    z-index: 2; font-size: 1.2em; color: var(--primary);
+  }
+
+  /* 時間軸 */
+  .timeline { margin: 20px 0; }
+  .tl-item {
+    display: grid; grid-template-columns: 80px 1fr; gap: 16px;
+    padding: 14px 0; border-bottom: 1px solid #f0f0f0;
+    align-items: start;
+  }
+  .tl-item:last-child { border-bottom: none; }
+  .tl-month {
+    background: var(--dark); color: white; border-radius: 8px;
+    padding: 6px 0; text-align: center; font-size: 0.8em; font-weight: 700;
+  }
+  .tl-content { font-size: 0.9em; }
+  .tl-content strong { color: var(--primary); }
+
+  /* 比較框 */
+  .vs-box {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0;
+  }
+  .vs-card {
+    border-radius: 12px; padding: 20px; border: 2px solid;
+  }
+  .vs-card.a { border-color: var(--accent); background: #fff5f5; }
+  .vs-card.b { border-color: var(--primary); background: #f0fffe; }
+  .vs-card .vs-title { font-weight: 900; font-size: 1em; margin-bottom: 8px; }
+  .vs-card .vs-desc { font-size: 0.85em; color: #555; line-height: 1.7; }
+
+  /* Action Box */
+  .action-box {
+    background: linear-gradient(135deg, var(--primary) 0%, #3BA99C 100%);
+    color: white; border-radius: 12px; padding: 18px 22px; margin: 14px 0;
+  }
+  .action-box .label { font-size: 0.7em; font-weight: 700; opacity: 0.8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+  .action-box .content { font-size: 0.9em; line-height: 1.8; }
+
+  .highlight-box {
+    background: #fff8e1; border: 2px solid var(--gold); border-radius: 12px;
+    padding: 18px 22px; margin: 14px 0;
+  }
+  .highlight-box .hl-title { font-weight: 900; color: #e08800; margin-bottom: 6px; }
+  .highlight-box .hl-content { font-size: 0.9em; }
+
+  .dark-box {
+    background: var(--dark); color: white; border-radius: 12px;
+    padding: 22px 26px; margin: 16px 0;
+  }
+  .dark-box h4 { color: var(--primary); margin-bottom: 8px; }
+  .dark-box p { font-size: 0.9em; color: #ccc; }
+
+  table.simple {
+    width: 100%; border-collapse: separate; border-spacing: 0;
+    margin: 14px 0; font-size: 0.88em; border-radius: 10px; overflow: hidden;
+  }
+  table.simple th { background: var(--dark); color: white; padding: 10px 14px; text-align: left; font-weight: 500; }
+  table.simple td { padding: 10px 14px; border-bottom: 1px solid #eee; }
+  table.simple tr:nth-child(even) td { background: #fafafa; }
+
+  .footer { text-align: center; padding: 30px; color: var(--gray); font-size: 0.8em; }
+
+  @media (max-width: 768px) {
+    .data-row { grid-template-columns: repeat(2, 1fr); }
+    .ladder { flex-direction: column; }
+    .ladder-step { border-radius: 0 !important; }
+    .ladder-step .arrow { display: none; }
+    .matrix { grid-template-columns: 1fr; }
+    .vs-box { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>淨淨 VIP 推薦制度 & 粉絲經營策略</h1>
+  <div class="sub">從「買淨淨的人」→「推薦淨淨的人」→「代言淨淨的人」</div>
+  <div class="meta">策略提案｜2026 年度｜小小（行銷軍師）</div>
+</div>
+
+<div class="container">
+
+<!-- 現況分析 -->
+<div class="section">
+  <h2>一、現況分析：淨淨的會員結構</h2>
+
+  <div class="data-row">
+    <div class="data-card">
+      <div class="num">10萬+</div>
+      <div class="label">官網會員總數</div>
+    </div>
+    <div class="data-card">
+      <div class="num">4萬</div>
+      <div class="label">有消費紀錄</div>
+      <div class="note">轉化率 ≈ 40%</div>
+    </div>
+    <div class="data-card">
+      <div class="num">6萬+</div>
+      <div class="label">沉睡會員</div>
+      <div class="note">註冊未消費</div>
+    </div>
+    <div class="data-card">
+      <div class="num">?</div>
+      <div class="label">自然推薦率</div>
+      <div class="note">目前無追蹤機制</div>
+    </div>
+  </div>
+
+  <p>目前淨淨的營收引擎是「數位廣告 → 官網 → 結帳」，這是<strong>拉力模型</strong>：花廣告費把人拉進來。笙闆想做的推薦制度，本質是建立<strong>推力模型</strong>：讓已經愛用的客戶主動把人推進來。</p>
+
+  <div class="highlight-box">
+    <div class="hl-title">為什麼現在是做推薦制度的最佳時機？</div>
+    <div class="hl-content">
+      淨淨有 4 萬個消費過的會員，這批人已經用過產品、體驗過品質。他們不推薦不是因為產品不好，而是因為<strong>沒有一個簡單的理由和方式去推薦</strong>。推薦碼就是那個「推一把」的工具。
+    </div>
+  </div>
+</div>
+
+<!-- 核心策略 -->
+<div class="section">
+  <h2>二、核心策略：「雙軌制」粉絲分層</h2>
+
+  <p>笙闆提到要經營「高消費客戶」和「高推薦客戶」兩種，我建議做成 <strong>2×2 矩陣</strong>，這樣每一群人的經營方式都不同：</p>
+
+  <div style="text-align: center; margin: 10px 0;">
+    <span style="font-size: 0.8em; color: var(--gray);">← 低推薦量 ｜ 高推薦量 →</span>
+  </div>
+  <div class="matrix">
+    <div class="matrix-cell tl">
+      <span class="cell-tag" style="background: #90caf9; color: white;">高消費 × 低推薦</span>
+      <div class="cell-title">💎 沉默鐵粉</div>
+      <div class="cell-desc">
+        自己很愛買，但不主動分享。<br>
+        <strong>策略：</strong>激活他的推薦意願！<br>
+        → 主動給推薦碼 + 提醒「你的好友也能享優惠」<br>
+        → 購買後自動跳出「分享給好友」<br>
+        → 年度回饋：「感謝你今年的支持，分享專屬折扣給家人」
+      </div>
+    </div>
+    <div class="matrix-cell tr">
+      <span class="cell-tag" style="background: var(--gold); color: white;">高消費 × 高推薦</span>
+      <div class="cell-title">👑 超級 VIP（淨淨大使）</div>
+      <div class="cell-desc">
+        自己買很多，還一直帶朋友來。<br>
+        <strong>策略：</strong>最高規格經營！<br>
+        → 專屬大使身份 + 升級分潤比例<br>
+        → 笙闆親自感謝訊息<br>
+        → 新品優先體驗 + 年度大使聚會<br>
+        → 淨淨社群「共創者」角色
+      </div>
+    </div>
+    <div class="matrix-cell bl">
+      <span class="cell-tag" style="background: #ccc; color: white;">低消費 × 低推薦</span>
+      <div class="cell-title">😴 沉睡會員</div>
+      <div class="cell-desc">
+        註冊了但沒什麼互動。<br>
+        <strong>策略：</strong>喚醒 + 首購轉化<br>
+        → 限時首購優惠推播<br>
+        → 「你還沒試過淨淨？」教育內容<br>
+        → 體驗組低門檻入手
+      </div>
+    </div>
+    <div class="matrix-cell br">
+      <span class="cell-tag" style="background: var(--success); color: white;">低消費 × 高推薦</span>
+      <div class="cell-title">📢 口碑種子（淨淨媽媽）</div>
+      <div class="cell-desc">
+        自己買不多，但很愛推薦。<br>
+        <strong>策略：</strong>提升推薦價值感！<br>
+        → 「淨淨媽媽」身份認同<br>
+        → 推薦獎勵升級（讓她推薦更有動力）<br>
+        → 提供素材包讓她更容易分享<br>
+        → 社群中公開感謝和表揚
+      </div>
+    </div>
+  </div>
+  <div style="text-align: center; font-size: 0.8em; color: var(--gray); margin-bottom: 10px;">
+    ↑ 高消費 ｜ 低消費 ↓
+  </div>
+</div>
+
+<!-- 推薦碼制度 -->
+<div class="section">
+  <h2>三、推薦碼制度設計：階梯式獎勵</h2>
+
+  <h3>基礎架構</h3>
+  <div class="vs-box">
+    <div class="vs-card a">
+      <div class="vs-title">被推薦者（新朋友）</div>
+      <div class="vs-desc">
+        ✦ 首購享 <strong>89折</strong>（全站適用）<br>
+        ✦ 不限金額、不限品項<br>
+        ✦ 一碼一用，綁定推薦人
+      </div>
+    </div>
+    <div class="vs-card b">
+      <div class="vs-title">推薦者（現有客戶）</div>
+      <div class="vs-desc">
+        ✦ 朋友成功下單 → 獲得<strong>紅利金回饋</strong><br>
+        ✦ 推薦越多，回饋比例越高<br>
+        ✦ 紅利金可折抵下次消費
+      </div>
+    </div>
+  </div>
+
+  <h3>階梯式分潤（核心差異化）</h3>
+  <p>為什麼要做階梯制？因為固定3%的回饋太平，推薦1個人和推薦10個人獎勵感一樣。階梯制才能創造「越推薦越有成就感」的加速循環。</p>
+
+  <div class="ladder">
+    <div class="ladder-step l1">
+      <div class="step-num">LEVEL 1</div>
+      <div class="step-title">初心推薦</div>
+      <div class="step-req">推薦 1-2 人</div>
+      <div class="step-reward">回饋 <strong style="color: var(--primary); font-size: 1.3em;">3%</strong> 紅利金</div>
+      <div class="arrow">→</div>
+    </div>
+    <div class="ladder-step l2">
+      <div class="step-num">LEVEL 2</div>
+      <div class="step-title">好友圈推手</div>
+      <div class="step-req">累計推薦 3-9 人</div>
+      <div class="step-reward">回饋 <strong style="color: var(--success); font-size: 1.3em;">5%</strong> 紅利金</div>
+      <div class="arrow">→</div>
+    </div>
+    <div class="ladder-step l3">
+      <div class="step-num">LEVEL 3</div>
+      <div class="step-title">淨淨媽媽</div>
+      <div class="step-req">累計推薦 10-29 人</div>
+      <div class="step-reward">回饋 <strong style="color: #e08800; font-size: 1.3em;">8%</strong> + 專屬身份</div>
+      <div class="arrow">→</div>
+    </div>
+    <div class="ladder-step l4">
+      <div class="step-num">LEVEL 4</div>
+      <div class="step-title">淨淨大使</div>
+      <div class="step-req">累計推薦 30人+ 或年消費 $30,000+</div>
+      <div class="step-reward">回饋 <strong style="color: var(--accent); font-size: 1.3em;">10%</strong> + VIP全福利</div>
+    </div>
+  </div>
+
+  <div class="highlight-box">
+    <div class="hl-title">成本試算（以平均客單 $550 估算）</div>
+    <div class="hl-content">
+      假設一位「淨淨媽媽」累計推薦 15 位朋友：<br>
+      → 新客消費：15人 × $550 = <strong>$8,250 營收</strong><br>
+      → 給新客的 89折折扣成本：15人 × $60 ≈ $900<br>
+      → 給推薦者的 8% 紅利金：$8,250 × 8% = $660<br>
+      → <strong>實際獲客成本：每位新客約 $104</strong>（遠低於數位廣告的CPA）<br>
+      → 而且這些是「帶著信任來的客人」，回購率會顯著高於廣告導入
+    </div>
+  </div>
+</div>
+
+<!-- 淨淨媽媽 vs 淨淨大使 -->
+<div class="section">
+  <h2>四、「淨淨媽媽」vs「淨淨大使」定位拆解</h2>
+
+  <table class="simple">
+    <thead>
+      <tr>
+        <th style="width: 140px;">項目</th>
+        <th>淨淨媽媽</th>
+        <th>淨淨大使</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>本質</strong></td>
+        <td>情感身份認同</td>
+        <td>榮譽合作夥伴</td>
+      </tr>
+      <tr>
+        <td><strong>門檻</strong></td>
+        <td>累計推薦 10 人</td>
+        <td>累計推薦 30 人+<br>或年消費 $30,000+</td>
+      </tr>
+      <tr>
+        <td><strong>核心價值</strong></td>
+        <td>「我是用淨淨的媽媽，這是我的選擇」</td>
+        <td>「我不只用淨淨，我代表淨淨」</td>
+      </tr>
+      <tr>
+        <td><strong>分潤比例</strong></td>
+        <td>8% 紅利金</td>
+        <td>10% 紅利金</td>
+      </tr>
+      <tr>
+        <td><strong>專屬福利</strong></td>
+        <td>• 淨淨媽媽專屬社群<br>• 新品優先體驗<br>• 生日禮加碼</td>
+        <td>• 笙闆親簽感謝卡<br>• 新品免費體驗<br>• 年度大使聚會<br>• 社群共創者角色<br>• 專屬商品折扣（85折常態）</td>
+      </tr>
+      <tr>
+        <td><strong>社群經營</strong></td>
+        <td>LINE 社群或 IG 專區<br>分享使用心得、育兒交流</td>
+        <td>封閉式 VIP 群組<br>品牌方向討論、新品意見回饋</td>
+      </tr>
+      <tr>
+        <td><strong>推薦工具</strong></td>
+        <td>推薦碼 + 分享圖卡</td>
+        <td>推薦碼 + 專屬連結<br>+ 品牌素材包 + 個人化頁面</td>
+      </tr>
+      <tr>
+        <td><strong>情感連結</strong></td>
+        <td>「淨淨是我家的日常」</td>
+        <td>「我和淨淨一起守護更多家庭」</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="dark-box">
+    <h4>笙闆，關鍵心法</h4>
+    <p>「淨淨媽媽」不需要申請、不需要審核 — 推薦滿 10 人自動解鎖，系統發通知「恭喜你成為淨淨媽媽！」。這個身份要讓她<strong>驕傲到想發限動</strong>。所以需要一個好看的「淨淨媽媽認證圖」讓她截圖分享。</p>
+    <p style="margin-top: 10px;">「淨淨大使」則是真正的 VIP 經營 — 數量少（可能全台就 50-100 位），但每一位都是品牌的核心推動力。這些人值得你親自寫訊息感謝。</p>
+  </div>
+</div>
+
+<!-- 推薦觸發點 -->
+<div class="section">
+  <h2>五、讓推薦自然發生的「觸發點」設計</h2>
+
+  <p>推薦碼做好了只是「基礎建設」。真正的關鍵是：<strong>在什麼時候、用什麼方式提醒客戶去推薦？</strong></p>
+
+  <h3>7 個黃金觸發時機</h3>
+  <table class="simple">
+    <thead>
+      <tr>
+        <th>時機</th>
+        <th>方式</th>
+        <th>文案方向</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>下單完成後</strong></td>
+        <td>感謝頁 + Email</td>
+        <td>「分享你的推薦碼，好友首購享 89 折！」</td>
+      </tr>
+      <tr>
+        <td><strong>收到貨後 3 天</strong></td>
+        <td>LINE 推播</td>
+        <td>「用了覺得不錯嗎？分享給家人也試試 ☺」</td>
+      </tr>
+      <tr>
+        <td><strong>回購第 2 次時</strong></td>
+        <td>結帳頁提醒</td>
+        <td>「你已經是老朋友了！你的專屬推薦碼：____」</td>
+      </tr>
+      <tr>
+        <td><strong>留下好評後</strong></td>
+        <td>即時彈窗</td>
+        <td>「謝謝你的好評！想讓更多人知道嗎？分享推薦碼 →」</td>
+      </tr>
+      <tr>
+        <td><strong>升級淨淨媽媽時</strong></td>
+        <td>專屬通知 + 認證圖</td>
+        <td>「恭喜！你已成為淨淨媽媽 🎉 你的推薦力量太強了！」</td>
+      </tr>
+      <tr>
+        <td><strong>節日/換季</strong></td>
+        <td>限時活動</td>
+        <td>「母親節期間推薦加碼！朋友享 85 折、你得雙倍紅利」</td>
+      </tr>
+      <tr>
+        <td><strong>紅利金到期前</strong></td>
+        <td>提醒推播</td>
+        <td>「你有 $xxx 紅利金即將到期，再推薦 1 位就能解鎖更多！」</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="action-box">
+    <div class="label">關鍵觀念</div>
+    <div class="content">
+      推薦不是「一次性活動」，是要埋進整個客戶旅程裡的。每一個客戶和淨淨互動的「高情緒點」，都是推薦的黃金時刻。
+    </div>
+  </div>
+</div>
+
+<!-- 推薦素材 -->
+<div class="section">
+  <h2>六、推薦「彈藥庫」— 讓客戶一鍵分享</h2>
+
+  <p>很多人想推薦但不知道「怎麼講」。我們要準備好他能直接轉發的內容：</p>
+
+  <h3>需要準備的推薦素材</h3>
+  <table class="simple">
+    <thead>
+      <tr>
+        <th>素材類型</th>
+        <th>內容</th>
+        <th>用途</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>分享圖卡（3-5款）</td>
+        <td>淨淨產品美照 + 推薦碼 + 89折資訊</td>
+        <td>LINE/IG限動分享</td>
+      </tr>
+      <tr>
+        <td>推薦短文模板（3款）</td>
+        <td>「我家用了2年的洗衣精推薦給你...」</td>
+        <td>直接複製貼給朋友</td>
+      </tr>
+      <tr>
+        <td>淨淨媽媽認證圖</td>
+        <td>精美的認證徽章 + 個人推薦碼</td>
+        <td>IG限動/FB發文炫耀</td>
+      </tr>
+      <tr>
+        <td>推薦成績單</td>
+        <td>「你已推薦 X 位好友，累積 $XXX 紅利」</td>
+        <td>定期推播給推薦者</td>
+      </tr>
+      <tr>
+        <td>實測對比影片</td>
+        <td>30秒短影片：淨淨 vs 一般洗劑</td>
+        <td>幫助推薦者「有內容可分享」</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Shopline 可行性 -->
+<div class="section">
+  <h2>七、Shopline 技術可行性評估</h2>
+
+  <p>笙闆說明天要跟同仁確認 Shopline 能不能做，以下是我先整理的評估，可以帶著這些問題去問：</p>
+
+  <table class="simple">
+    <thead>
+      <tr>
+        <th>功能需求</th>
+        <th>Shopline 原生支援</th>
+        <th>替代方案</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>推薦碼系統</td>
+        <td>✅ 有「推薦計劃」功能<br>（Referral Program）</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td>推薦人折扣（89折）</td>
+        <td>✅ 可設定推薦碼折扣</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td>紅利金回饋</td>
+        <td>✅ 有「會員點數」系統<br>可搭配推薦獎勵</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td>階梯式分潤比例</td>
+        <td>⚠️ 原生可能不支援<br>自動階梯升級</td>
+        <td>手動分層 + 定期更新<br>或串接第三方（如 ReferralCandy）</td>
+      </tr>
+      <tr>
+        <td>推薦數據追蹤</td>
+        <td>✅ 基本追蹤（誰推薦誰）</td>
+        <td>進階分析可能需要匯出報表</td>
+      </tr>
+      <tr>
+        <td>自動升級通知</td>
+        <td>⚠️ 可能需要搭配<br>LINE OA 或 Email 自動化</td>
+        <td>LINE OA + 條件觸發推播</td>
+      </tr>
+      <tr>
+        <td>VIP 會員分層</td>
+        <td>✅ 有「會員等級」功能</td>
+        <td>—</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="highlight-box">
+    <div class="hl-title">明天問同仁的 5 個關鍵問題</div>
+    <div class="hl-content">
+      ① Shopline 的推薦計劃功能，能不能設定「被推薦人享 89 折」+「推薦人得紅利金」？<br>
+      ② 紅利金的比例能不能依「推薦人數」自動調整（階梯式）？<br>
+      ③ 會員等級能不能加入「推薦人數」作為升級條件（不只看消費金額）？<br>
+      ④ 推薦成功後，能不能自動觸發 LINE 通知給推薦者？<br>
+      ⑤ 如果原生做不到，串接 ReferralCandy 或類似工具的可行性？
+    </div>
+  </div>
+</div>
+
+<!-- 執行時程 -->
+<div class="section">
+  <h2>八、建議執行時程</h2>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-month">4月</div>
+      <div class="tl-content">
+        <strong>Phase 1：基礎建設</strong><br>
+        • 確認 Shopline 技術可行性<br>
+        • 設定推薦碼系統（先用固定 3% 測試）<br>
+        • 設計推薦分享圖卡（3款）<br>
+        • 推薦碼頁面上線
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-month">5月</div>
+      <div class="tl-content">
+        <strong>Phase 2：種子啟動</strong><br>
+        • 從「年消費 TOP 500」客戶開始發送專屬推薦碼<br>
+        • LINE OA 推播：「你的專屬推薦碼來了」<br>
+        • 母親節限時加碼活動（推薦送雙倍紅利）<br>
+        • 收集數據：誰在推薦？推薦轉化率？
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-month">6-7月</div>
+      <div class="tl-content">
+        <strong>Phase 3：階梯上線</strong><br>
+        • 根據 Phase 2 數據調整分潤比例<br>
+        • 上線階梯式獎勵制度（3% → 5% → 8% → 10%）<br>
+        • 第一批「淨淨媽媽」授證<br>
+        • 淨淨媽媽專屬社群開設
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-month">8-9月</div>
+      <div class="tl-content">
+        <strong>Phase 4：規模放大</strong><br>
+        • 全會員開放推薦碼<br>
+        • 推薦素材庫擴充（影片、圖卡、文案模板）<br>
+        • 月度推薦排行榜（社群內公開）<br>
+        • 第一批「淨淨大使」授證
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-month">10-12月</div>
+      <div class="tl-content">
+        <strong>Phase 5：年度收穫</strong><br>
+        • 雙11 / 聖誕節推薦加碼活動<br>
+        • 年度大使聚會（笙闆親自出席）<br>
+        • 全年推薦數據回顧 + 2027年策略調整<br>
+        • 推薦制度2.0規劃
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 成本效益 -->
+<div class="section">
+  <h2>九、預估成本效益分析</h2>
+
+  <table class="simple">
+    <thead>
+      <tr>
+        <th>項目</th>
+        <th>保守估計</th>
+        <th>樂觀估計</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>年度新增推薦客戶</td>
+        <td>2,000 人</td>
+        <td>5,000 人</td>
+      </tr>
+      <tr>
+        <td>推薦客戶平均客單</td>
+        <td>$500</td>
+        <td>$600</td>
+      </tr>
+      <tr>
+        <td>新增營收</td>
+        <td>$1,000,000</td>
+        <td>$3,000,000</td>
+      </tr>
+      <tr>
+        <td>折扣成本（89折）</td>
+        <td>$110,000</td>
+        <td>$330,000</td>
+      </tr>
+      <tr>
+        <td>紅利金成本（平均5%）</td>
+        <td>$50,000</td>
+        <td>$150,000</td>
+      </tr>
+      <tr>
+        <td><strong>實際獲客成本/人</strong></td>
+        <td><strong>$80</strong></td>
+        <td><strong>$96</strong></td>
+      </tr>
+      <tr>
+        <td><strong>vs 數位廣告 CPA</strong></td>
+        <td colspan="2" style="color: var(--success); font-weight: 700;">推薦獲客成本預估為廣告 CPA 的 1/3 ~ 1/5，且回購率更高</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="dark-box">
+    <h4>最關鍵的一句話</h4>
+    <p>推薦來的客人不是「被廣告打到」的，而是「帶著信任進來」的。他們的首購轉化率、回購率、客單價都會比廣告流量高。這不只是省廣告費，而是在建立一個<strong>自我驅動的成長飛輪</strong>。</p>
+  </div>
+</div>
+
+<div class="footer">
+  淨淨 VIP 推薦制度 & 粉絲經營策略｜小小（行銷軍師）｜2026/03/30<br>
+  本提案為策略方向建議，實際執行需配合 Shopline 技術確認及團隊資源評估
+</div>
+
+</div>
+</body>
+</html>

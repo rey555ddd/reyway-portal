@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>淨淨 CleanClean｜Y26 年度目標</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans TC', sans-serif;
+    background: #f8f9fa;
+    color: #1a1a1a;
+    line-height: 1.8;
+  }
+
+  /* Hero */
+  .hero {
+    background: linear-gradient(135deg, #0f4c3a 0%, #1a7a5c 50%, #2d9b6e 100%);
+    color: white;
+    padding: 80px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, #e8c547, #f0d668, #e8c547);
+  }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    padding: 6px 20px;
+    border-radius: 20px;
+    font-size: 14px;
+    letter-spacing: 2px;
+    margin-bottom: 24px;
+  }
+  .hero h1 {
+    font-size: 42px;
+    font-weight: 900;
+    margin-bottom: 16px;
+    letter-spacing: 3px;
+  }
+  .hero .vision {
+    font-size: 18px;
+    font-weight: 300;
+    opacity: 0.9;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  /* Container */
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* Four Pillars Overview */
+  .pillars-overview {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    margin: -40px auto 60px;
+    max-width: 1100px;
+    padding: 0 24px;
+    position: relative;
+    z-index: 2;
+  }
+  .pillar-card {
+    background: white;
+    padding: 32px 24px;
+    text-align: center;
+    border-right: 1px solid #e8e8e8;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  }
+  .pillar-card:first-child { border-radius: 12px 0 0 12px; }
+  .pillar-card:last-child { border-radius: 0 12px 12px 0; border-right: none; }
+  .pillar-card .number {
+    font-size: 48px;
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .pillar-card:nth-child(1) .number { color: #0f4c3a; }
+  .pillar-card:nth-child(2) .number { color: #c0392b; }
+  .pillar-card:nth-child(3) .number { color: #2c3e50; }
+  .pillar-card:nth-child(4) .number { color: #e67e22; }
+  .pillar-card .label {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .pillar-card .desc {
+    font-size: 13px;
+    color: #666;
+    line-height: 1.6;
+  }
+
+  /* Section */
+  .section {
+    margin-bottom: 64px;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 12px;
+    padding-bottom: 16px;
+    border-bottom: 3px solid;
+  }
+  .section-header .icon {
+    font-size: 36px;
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    color: white;
+    font-weight: 900;
+  }
+  .section-header h2 {
+    font-size: 28px;
+    font-weight: 900;
+  }
+  .section-header .subtitle {
+    font-size: 15px;
+    color: #666;
+    margin-left: auto;
+  }
+
+  .s1 .section-header { border-color: #0f4c3a; }
+  .s1 .icon { background: #0f4c3a; }
+  .s2 .section-header { border-color: #c0392b; }
+  .s2 .icon { background: #c0392b; }
+  .s3 .section-header { border-color: #2c3e50; }
+  .s3 .icon { background: #2c3e50; }
+  .s4 .section-header { border-color: #e67e22; }
+  .s4 .icon { background: #e67e22; }
+
+  .section-body {
+    background: white;
+    border-radius: 12px;
+    padding: 32px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    margin-top: 20px;
+  }
+
+  .section-intro {
+    font-size: 16px;
+    color: #444;
+    margin-bottom: 28px;
+    padding: 20px 24px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid;
+  }
+  .s1 .section-intro { border-left-color: #0f4c3a; }
+  .s2 .section-intro { border-left-color: #c0392b; }
+  .s3 .section-intro { border-left-color: #2c3e50; }
+  .s4 .section-intro { border-left-color: #e67e22; }
+
+  /* Highlight numbers */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .kpi-item {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+  }
+  .kpi-item .value {
+    font-size: 28px;
+    font-weight: 900;
+    margin-bottom: 4px;
+  }
+  .kpi-item .kpi-label {
+    font-size: 13px;
+    color: #666;
+  }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+  th {
+    background: #f0f0f0;
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 700;
+    font-size: 13px;
+    color: #555;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #eee;
+  }
+  tr:last-child td { border-bottom: none; }
+  .status-done { color: #27ae60; font-weight: 700; }
+  .status-new { color: #c0392b; font-weight: 700; }
+  .status-wip { color: #e67e22; font-weight: 700; }
+
+  /* Sub-sections */
+  h3 {
+    font-size: 18px;
+    font-weight: 700;
+    margin: 32px 0 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #eee;
+  }
+
+  /* Timeline */
+  .timeline {
+    position: relative;
+    padding-left: 28px;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #ddd;
+  }
+  .timeline-item {
+    position: relative;
+    margin-bottom: 20px;
+  }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -24px;
+    top: 6px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #0f4c3a;
+    border: 2px solid white;
+    box-shadow: 0 0 0 2px #0f4c3a;
+  }
+  .timeline-item .t-month {
+    font-weight: 700;
+    color: #0f4c3a;
+    margin-bottom: 2px;
+  }
+  .timeline-item .t-content {
+    font-size: 14px;
+    color: #555;
+  }
+
+  /* Ambassador funnel */
+  .funnel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin: 24px 0;
+    flex-wrap: wrap;
+  }
+  .funnel-step {
+    padding: 12px 20px;
+    border-radius: 8px;
+    text-align: center;
+    color: white;
+    font-weight: 700;
+    font-size: 14px;
+    min-width: 140px;
+  }
+  .funnel-arrow {
+    font-size: 24px;
+    color: #999;
+  }
+  .f1 { background: #bdc3c7; color: #2c3e50; }
+  .f2 { background: #e67e22; }
+  .f3 { background: #c0392b; }
+  .f4 { background: #8e44ad; }
+
+  /* Risk callout */
+  .risk-box {
+    background: #fff3cd;
+    border: 1px solid #ffc107;
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin: 24px 0;
+  }
+  .risk-box h4 {
+    font-size: 16px;
+    margin-bottom: 8px;
+    color: #856404;
+  }
+  .risk-box p {
+    font-size: 14px;
+    color: #856404;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 40px;
+    color: #999;
+    font-size: 13px;
+    border-top: 1px solid #eee;
+    margin-top: 40px;
+  }
+
+  /* Print */
+  @media print {
+    .hero { padding: 40px 20px; }
+    .section-body { box-shadow: none; border: 1px solid #ddd; }
+    .pillar-card { box-shadow: none; border: 1px solid #ddd; }
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .pillars-overview { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .pillar-card { border-radius: 12px !important; border-right: none; }
+    .kpi-grid { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 28px; }
+    .funnel { flex-direction: column; }
+    .funnel-arrow { transform: rotate(90deg); }
+  }
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-badge">2026 ANNUAL GOALS</div>
+  <h1>賺錢、留客、制度、人才</h1>
+  <p class="vision">用家人標準，讓乾淨簡單療癒——一次交易，到一生滿意</p>
+</div>
+
+<!-- Four Pillars -->
+<div class="pillars-overview">
+  <div class="pillar-card">
+    <div class="number">賺</div>
+    <div class="label">賺錢</div>
+    <div class="desc">穩定營收、提升淨利<br>新品上市、全員銷售</div>
+  </div>
+  <div class="pillar-card">
+    <div class="number">留</div>
+    <div class="label">留客</div>
+    <div class="desc">一次交易到超值滿意<br>淨淨大使團</div>
+  </div>
+  <div class="pillar-card">
+    <div class="number">建</div>
+    <div class="label">制度</div>
+    <div class="desc">組織優化、標準訂定<br>考核落實</div>
+  </div>
+  <div class="pillar-card">
+    <div class="number">人</div>
+    <div class="label">人才</div>
+    <div class="desc">AI 武裝、人資 5 大模組<br>招募、教育、協作、考核、PIP</div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- 1. 賺錢 -->
+  <div class="section s1">
+    <div class="section-header">
+      <div class="icon">1</div>
+      <div>
+        <h2>賺錢</h2>
+      </div>
+      <div class="subtitle">穩定營收、提升淨利、新品上市、全員銷售</div>
+    </div>
+    <div class="section-body">
+      <div class="section-intro">
+        年營收 2.24 億不是在追爆發，是在穩住底盤的同時健康成長。廣告費砍兩成，省下來的錢靠經銷、團購和新品補回來。阿清不再列入目標，有進帳算 Bonus。
+      </div>
+
+      <div class="kpi-grid">
+        <div class="kpi-item">
+          <div class="value" style="color:#0f4c3a">2.24 億</div>
+          <div class="kpi-label">品牌年營收（+22%）</div>
+        </div>
+        <div class="kpi-item">
+          <div class="value" style="color:#0f4c3a">50%+</div>
+          <div class="kpi-label">綜合毛利率</div>
+        </div>
+        <div class="kpi-item">
+          <div class="value" style="color:#0f4c3a">5,500 萬</div>
+          <div class="kpi-label">經銷＋團購（+82%）</div>
+        </div>
+      </div>
+
+      <table>
+        <tr><th>指標</th><th>Y25 實際</th><th>Y26 目標</th><th>負責</th></tr>
+        <tr><td>品牌 GMV（不含阿清）</td><td>1.84 億</td><td>2.24 億（+22%）</td><td>全公司</td></tr>
+        <tr><td>綜合毛利率</td><td>—</td><td>50%+</td><td>財務/電商</td></tr>
+        <tr><td>行銷費用佔營收比</td><td>—</td><td>下修 10%</td><td>行銷部</td></tr>
+        <tr><td>數位廣告費用</td><td>—</td><td>下修 20%</td><td>行銷部</td></tr>
+        <tr><td>阿清佔營收比</td><td>12.5%</td><td>0%（Bonus）</td><td>電商/經銷</td></tr>
+        <tr><td>經銷＋團購營收</td><td>3,019 萬</td><td>5,500 萬（+82%）</td><td>小瑄/Cara/阿芸</td></tr>
+      </table>
+
+      <h3>季度營收節奏</h3>
+      <table>
+        <tr><th>季度</th><th>目標</th><th>重點</th></tr>
+        <tr><td>Q1</td><td>4,700 萬</td><td>農曆年後回溫</td></tr>
+        <tr><td>Q2</td><td>5,200 萬</td><td>母親節主力檔</td></tr>
+        <tr><td>Q3</td><td>5,800 萬</td><td>暑假＋周年慶備戰</td></tr>
+        <tr><td>Q4</td><td>6,700 萬</td><td>雙11＋年末衝刺＋新品加持</td></tr>
+      </table>
+
+      <h3>新品上市時程</h3>
+      <table>
+        <tr><th>時程</th><th>品項</th><th>狀態</th><th>負責</th></tr>
+        <tr><td>Q3</td><td>洗衣精 2 款新味道</td><td class="status-wip">開發中</td><td>闆娘/白白</td></tr>
+        <tr><td>Q3</td><td>Home Salon 配方定案（洗髮精、護髮精華、頭皮水）</td><td class="status-wip">開發中</td><td>闆娘/白白</td></tr>
+        <tr><td>Q4</td><td>衣物淨味粉上市</td><td class="status-wip">規劃中</td><td>產品部/行銷</td></tr>
+        <tr><td>Q4/明年</td><td>貼身衣物手洗精</td><td class="status-new">待排程</td><td>產品部</td></tr>
+      </table>
+
+      <h3>社群流量引擎</h3>
+      <table>
+        <tr><th>指標</th><th>Y26 目標</th><th>負責</th></tr>
+        <tr><td>品牌短影音平均播放</td><td>2 萬+</td><td>社群組</td></tr>
+        <tr><td>Threads</td><td>每週至少 3 則、季度互動 +100%</td><td>社群組</td></tr>
+        <tr><td>IG 新增追蹤</td><td>累計 +5,000</td><td>社群組</td></tr>
+        <tr><td>母親節檔期</td><td>社群導流較去年 +15%</td><td>行銷/電商</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 2. 留客 -->
+  <div class="section s2">
+    <div class="section-header">
+      <div class="icon">2</div>
+      <div>
+        <h2>留客</h2>
+      </div>
+      <div class="subtitle">一次交易到超值滿意、淨淨大使團</div>
+    </div>
+    <div class="section-body">
+      <div class="section-intro">
+        從「買淨淨的人」到「推薦淨淨的人」再到「代言淨淨的人」。今年的主力是建立淨淨大使團推薦裂變系統，同時把客戶數據的追蹤標準建起來。
+      </div>
+
+      <h3>淨淨大使團｜階梯式推薦裂變系統</h3>
+      <div class="funnel">
+        <div class="funnel-step f1">初心推薦<br><small>推薦 1-2 人｜3%</small></div>
+        <div class="funnel-arrow">&rarr;</div>
+        <div class="funnel-step f2">好友推手<br><small>推薦 3-9 人｜5%</small></div>
+        <div class="funnel-arrow">&rarr;</div>
+        <div class="funnel-step f3">淨淨媽媽<br><small>推薦 10-29 人｜8%</small></div>
+        <div class="funnel-arrow">&rarr;</div>
+        <div class="funnel-step f4">淨淨大使<br><small>推薦 30+ 人｜10%</small></div>
+      </div>
+      <p style="text-align:center;color:#888;font-size:13px;margin-bottom:24px;">推薦獲客成本約 $80-$96/人，是廣告 CPA 的 1/3 ~ 1/5</p>
+
+      <h3>大使團執行時程</h3>
+      <table>
+        <tr><th>時間</th><th>階段</th><th>重點</th></tr>
+        <tr><td>4 月</td><td>Phase 1：基礎建設</td><td>確認 Shopline 技術可行性、設定推薦碼、設計分享圖卡</td></tr>
+        <tr><td>5 月</td><td>Phase 2：種子啟動</td><td>年消費 TOP 500 客戶發送專屬推薦碼、母親節限時加碼</td></tr>
+        <tr><td>6-7 月</td><td>Phase 3：階梯上線</td><td>階梯式獎勵上線、第一批「淨淨媽媽」授證、專屬社群開設</td></tr>
+        <tr><td>8-9 月</td><td>Phase 4：規模放大</td><td>全會員開放推薦碼、素材庫擴充、第一批「淨淨大使」授證</td></tr>
+        <tr><td>10-12 月</td><td>Phase 5：年度收穫</td><td>雙11/聖誕推薦加碼、年度大使聚會、全年數據回顧</td></tr>
+      </table>
+
+      <h3>品牌白皮書</h3>
+      <p style="color:#555;margin-bottom:16px;">H2 完成。送給 VIP、經銷商和大使的推薦彈藥——讓別人能替你說淨淨的故事。</p>
+
+      <h3>客戶數據標準建立</h3>
+      <p style="color:#555;margin-bottom:16px;">Q2 訂定標準、Q3 首測出基準值。電商組負責追蹤數據並提出改善建議。</p>
+      <table>
+        <tr><th>指標</th><th>說明</th><th>追蹤難度</th></tr>
+        <tr><td>NPS</td><td>Q2 設計問卷和施測 SOP、Q3 首次施測</td><td>中（需建機制）</td></tr>
+        <tr><td>LTV</td><td>Q2 定義計算方式（時間範圍）、Q3 算出基準</td><td>中（需定義）</td></tr>
+        <tr><td>回購率</td><td>統一定義（時間窗口、品項範圍）</td><td>低（Shopline 有）</td></tr>
+        <tr><td>客單價（AOV）</td><td>直接影響營收，搭配 VIP 分級可主動拉高</td><td>低（Shopline 直接看）</td></tr>
+        <tr><td>回購週期</td><td>客人平均多久買一次，決定推播提醒時機</td><td>低（Shopline 可算）</td></tr>
+        <tr><td>會員活躍率</td><td>10 萬會員中 6 萬沉睡，喚醒率是大使團的前置指標</td><td>中（需定義「活躍」）</td></tr>
+        <tr><td>推薦轉化率</td><td>大使團上線後核心指標：發碼數 → 使用數 → 成交數</td><td>低（大使團上線自動有）</td></tr>
+        <tr><td>客訴率/處理時效</td><td>NPS 的領先指標</td><td>低（Emily 有數據）</td></tr>
+      </table>
+
+      <h3>VIP 寵粉計畫</h3>
+      <p style="color:#555;">H1 完成會員分級＋首波權益上線。H2 追蹤 VIP 回購率 vs 一般客。</p>
+    </div>
+  </div>
+
+  <!-- 3. 制度 -->
+  <div class="section s3">
+    <div class="section-header">
+      <div class="icon">3</div>
+      <div>
+        <h2>制度</h2>
+      </div>
+      <div class="subtitle">組織優化、標準訂定、考核落實</div>
+    </div>
+    <div class="section-body">
+      <div class="section-intro">
+        今年是建地基的一年。淨淨走了五年，很多事靠人、靠默契在跑。今年要把「靠人」的東西變成「靠制度」，這樣公司才能從 27 人長到 50 人而不崩。
+      </div>
+
+      <table>
+        <tr><th>策略主題</th><th>現況</th><th>Y26 目標</th><th>負責</th></tr>
+        <tr><td>官網數據追蹤</td><td class="status-done">GA4 已修復</td><td>H2 SEO 自然流量穩定水位</td><td>電商/工程</td></tr>
+        <tr><td>工具整合</td><td class="status-done">Notion/Slack 全員上線</td><td>持續優化使用規範、流程自動化</td><td>依庭</td></tr>
+        <tr><td>人資系統 2.0</td><td class="status-new">從零開始</td><td>Q2 試行 → H2 輕考核</td><td>依庭/HR</td></tr>
+        <tr><td>SOP 文件化</td><td class="status-wip">進行中</td><td>完成率 80%+</td><td>依庭/各組長</td></tr>
+        <tr><td>組織優化</td><td class="status-wip">進行中</td><td>Q2 職等職級定案</td><td>依庭/笙闆</td></tr>
+      </table>
+
+      <h3>人資系統 2.0｜五大模組</h3>
+      <table>
+        <tr><th>模組</th><th>Q2（4-6月）試行</th><th>H2（7-12月）正式運作</th></tr>
+        <tr><td>招募</td><td>招聘流程 SOP + Notion 看板上線</td><td>累積數據，優化招聘漏斗</td></tr>
+        <tr><td>教育</td><td>新人 onboarding checklist + 每人 6hr/季排程</td><td>追蹤完成率，連結考核</td></tr>
+        <tr><td>協作</td><td>週會/月會/1-on-1 模板上線，紀錄標準化</td><td>回顧品質，淘汰無效會議</td></tr>
+        <tr><td>考核</td><td>主管 1-on-1 全員完成、考核表模板定案</td><td>H2 首次輕考核（重回饋、輕打分）</td></tr>
+        <tr><td>PIP</td><td>定義觸發條件與流程草案</td><td>有需要時啟動，搭配考核結果</td></tr>
+      </table>
+
+      <h3>依庭月度里程碑</h3>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="t-month">4 月</div>
+          <div class="t-content">全員 1-on-1 完成現況了解、Notion/Slack 使用規範定版</div>
+        </div>
+        <div class="timeline-item">
+          <div class="t-month">5 月</div>
+          <div class="t-content">招聘 SOP 上線、協作模板上線、教育訓練排程確認</div>
+        </div>
+        <div class="timeline-item">
+          <div class="t-month">6 月</div>
+          <div class="t-content">Q2 回顧、考核表模板定案、職等職級草案提交笙闆</div>
+        </div>
+        <div class="timeline-item">
+          <div class="t-month">7 月</div>
+          <div class="t-content">H2 考核正式啟動、PIP 流程定版</div>
+        </div>
+        <div class="timeline-item">
+          <div class="t-month">8 月</div>
+          <div class="t-content">首次輕考核執行</div>
+        </div>
+        <div class="timeline-item">
+          <div class="t-month">9 月</div>
+          <div class="t-content">Q3 回顧、考核結果彙整、調薪/晉升建議</div>
+        </div>
+        <div class="timeline-item">
+          <div class="t-month">10-12 月</div>
+          <div class="t-content">第二次考核、年度總檢討、明年制度規劃</div>
+        </div>
+      </div>
+
+      <h3>Q2-Q3 標準建立清單</h3>
+      <table>
+        <tr><th>標準</th><th>時程</th><th>初版</th><th>落地</th></tr>
+        <tr><td>NPS 調查 SOP</td><td>Q2</td><td>AI 出模板</td><td>依庭/客服</td></tr>
+        <tr><td>LTV 計算公式</td><td>Q2</td><td>AI 出模板</td><td>依庭/電商</td></tr>
+        <tr><td>回購率定義</td><td>Q2</td><td>AI 出模板</td><td>依庭/電商</td></tr>
+        <tr><td>各通路毛利月報模板</td><td>Q2</td><td>AI 出模板</td><td>財務/電商</td></tr>
+        <tr><td>招聘流程 SOP</td><td>Q2</td><td>AI 出模板</td><td>依庭</td></tr>
+        <tr><td>會議規範＋紀錄模板</td><td>Q2</td><td>AI 出模板</td><td>依庭</td></tr>
+        <tr><td>新品開發 SOP</td><td>Q3</td><td>AI 出模板</td><td>闆娘/白白</td></tr>
+        <tr><td>考核表模板</td><td>Q2</td><td>AI 出模板</td><td>依庭/笙闆</td></tr>
+        <tr><td>PIP 觸發條件與流程</td><td>Q3</td><td>AI 出模板</td><td>依庭/笙闆</td></tr>
+        <tr><td>SOP 總清單盤點</td><td>Q2</td><td>各組長列出</td><td>依庭彙整</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 4. 人才 -->
+  <div class="section s4">
+    <div class="section-header">
+      <div class="icon">4</div>
+      <div>
+        <h2>人才</h2>
+      </div>
+      <div class="subtitle">AI 武裝、人資系統 5 大模組</div>
+    </div>
+    <div class="section-body">
+      <div class="section-intro">
+        團隊升級跟營收一樣重要。今年要做的不只是讓大家學 AI，而是整個團隊的質量都要往上拉——能力不夠的培訓、不適任的處理、關鍵位子缺人的補上。
+      </div>
+
+      <div class="kpi-grid">
+        <div class="kpi-item">
+          <div class="value" style="color:#e67e22">100%</div>
+          <div class="kpi-label">AI 工具導入率</div>
+        </div>
+        <div class="kpi-item">
+          <div class="value" style="color:#e67e22">24hr</div>
+          <div class="kpi-label">每人每年內訓時數</div>
+        </div>
+        <div class="kpi-item">
+          <div class="value" style="color:#e67e22">4+</div>
+          <div class="kpi-label">H2 智慧行動考核均分</div>
+        </div>
+      </div>
+
+      <h3>AI 武裝</h3>
+      <table>
+        <tr><th>指標</th><th>Y26 目標</th><th>負責</th></tr>
+        <tr><td>全員標配工具</td><td>Gemini + NotebookLM + Google AI Studio</td><td>IT</td></tr>
+        <tr><td>AI 夥伴體系</td><td>各部門 AI 助手穩定運作、追蹤使用頻率</td><td>笙闆</td></tr>
+        <tr><td>內訓完成時數</td><td>每人 24hr/年（6hr/季）</td><td>依庭</td></tr>
+        <tr><td>智慧行動考核</td><td>H2 正式計分，季度平均 4+</td><td>依庭/HR</td></tr>
+      </table>
+
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  淨淨 CleanClean｜2026 年度目標｜v3 定稿｜2026/04/08<br>
+  執行長室內部討論用｜笙闆 × 妮妮 × 小瑄 × 依庭
+</div>
+
+</body>
+</html>

@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>全球競選標語邏輯分析 — 從歷任勝選 slogan 抽出的方法論</title>
+<meta name="description" content="從美國總統、日本首相、歐洲領袖的勝選 slogan 抽出 6 大類別 + 9 條黃金規律 + 連任候選人的特殊邏輯。提供分析框架、不給最終答案。">
+<meta name="robots" content="noindex,nofollow">
+<meta http-equiv="Cache-Control" content="no-cache">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@400;500;600;700;900&family=Klee+One:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1A2238;
+    --ink-2: #4A5567;
+    --ink-3: #8794A8;
+    --paper: #FAF7F2;
+    --paper-2: #F2EDE4;
+    --surface: #FFFFFF;
+    --accent: #B8442B;
+    --accent-light: #F4E4DD;
+    --line: #E5DCD0;
+    --shadow: 0 2px 12px rgba(26,34,56,0.06);
+    --shadow-hover: 0 8px 28px rgba(26,34,56,0.12);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "Inter", "Noto Sans TC", -apple-system, sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.85;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 24px; }
+
+  /* Hero */
+  .hero {
+    text-align: center;
+    padding: 80px 24px 48px;
+    border-bottom: 1px solid var(--line);
+  }
+  .hero .kicker {
+    font-family: "Klee One", serif;
+    font-size: 14px; color: var(--accent);
+    letter-spacing: 0.15em;
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-family: "Noto Serif TC", serif;
+    font-size: clamp(30px, 5.5vw, 52px);
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 18px;
+    letter-spacing: -0.01em;
+  }
+  .hero .lead {
+    font-family: "Noto Serif TC", serif;
+    font-size: clamp(16px, 2.2vw, 19px);
+    color: var(--ink-2);
+    max-width: 620px;
+    margin: 0 auto;
+    line-height: 1.85;
+  }
+  .hero-meta {
+    display: flex; justify-content: center; gap: 24px; flex-wrap: wrap;
+    margin-top: 36px;
+    font-size: 13px; color: var(--ink-3);
+    letter-spacing: 0.05em;
+  }
+
+  /* Section */
+  section {
+    padding: 64px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  section:last-of-type { border-bottom: none; }
+
+  .section-tag {
+    display: inline-block;
+    font-family: "Klee One", serif;
+    font-size: 13px; color: var(--accent);
+    letter-spacing: 0.2em;
+    margin-bottom: 14px;
+  }
+  section h2 {
+    font-family: "Noto Serif TC", serif;
+    font-size: clamp(24px, 3.5vw, 36px);
+    font-weight: 700;
+    line-height: 1.4;
+    margin-bottom: 14px;
+    letter-spacing: -0.005em;
+  }
+  section .lead-p {
+    font-size: 16px; color: var(--ink-2);
+    max-width: 680px; line-height: 1.85;
+    margin-bottom: 36px;
+  }
+
+  /* 6 大類別卡片 */
+  .types {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .type-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 28px 30px;
+    box-shadow: var(--shadow);
+    transition: box-shadow .25s, transform .25s;
+  }
+  .type-card:hover { box-shadow: var(--shadow-hover); transform: translateY(-2px); }
+  .type-head {
+    display: flex; align-items: baseline; gap: 14px;
+    margin-bottom: 14px; flex-wrap: wrap;
+  }
+  .type-letter {
+    font-family: "Noto Serif TC", serif;
+    font-size: 38px; font-weight: 900;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .type-name {
+    font-family: "Noto Serif TC", serif;
+    font-size: 22px; font-weight: 700;
+    color: var(--ink);
+  }
+  .type-en {
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+    color: var(--ink-3);
+    letter-spacing: 0.08em;
+  }
+  .type-cases {
+    display: grid; gap: 10px;
+    margin: 16px 0 18px;
+    padding: 16px 20px;
+    background: var(--paper-2);
+    border-radius: 10px;
+  }
+  .case-line {
+    font-size: 14px; line-height: 1.7;
+    color: var(--ink-2);
+  }
+  .case-line .quote {
+    font-family: "Noto Serif TC", serif;
+    font-weight: 700;
+    color: var(--ink);
+    margin-right: 8px;
+  }
+  .case-line .who {
+    font-size: 12px;
+    color: var(--ink-3);
+    margin-left: 6px;
+  }
+  .type-mech {
+    font-size: 14px; color: var(--ink-2);
+    line-height: 1.85;
+    margin-bottom: 8px;
+  }
+  .type-mech strong { color: var(--ink); }
+  .type-fit {
+    font-size: 13px; color: var(--ink-3);
+    font-style: italic;
+    border-left: 2px solid var(--accent);
+    padding-left: 12px;
+    margin-top: 10px;
+  }
+
+  /* 9 條規律 */
+  .rules {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    gap: 16px;
+  }
+  .rule {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 22px 24px;
+    box-shadow: var(--shadow);
+    display: flex; gap: 16px; align-items: flex-start;
+  }
+  .rule-num {
+    flex-shrink: 0;
+    width: 36px; height: 36px;
+    background: var(--ink);
+    color: var(--surface);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: "Noto Serif TC", serif;
+    font-weight: 700; font-size: 16px;
+  }
+  .rule-body strong {
+    display: block; font-size: 15px;
+    color: var(--ink); margin-bottom: 4px;
+  }
+  .rule-body span {
+    font-size: 13px; color: var(--ink-2);
+    line-height: 1.7;
+  }
+
+  /* Reagan 對照表 */
+  .reagan-box {
+    background: linear-gradient(135deg, var(--accent-light) 0%, var(--surface) 100%);
+    border: 2px solid var(--accent);
+    border-radius: 18px;
+    padding: 32px 30px;
+    margin: 24px 0;
+  }
+  .reagan-box h3 {
+    font-family: "Noto Serif TC", serif;
+    font-size: 22px; color: var(--accent);
+    margin-bottom: 14px;
+  }
+  .reagan-table {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0 14px;
+  }
+  .reagan-cell {
+    background: var(--surface);
+    border-radius: 12px;
+    padding: 18px 20px;
+    border-left: 3px solid var(--accent);
+  }
+  .reagan-cell .year {
+    font-family: "Klee One", serif;
+    font-size: 14px;
+    color: var(--accent);
+    margin-bottom: 8px;
+    letter-spacing: 0.1em;
+  }
+  .reagan-cell .slogan {
+    font-family: "Noto Serif TC", serif;
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .reagan-cell .meaning {
+    font-size: 13px;
+    color: var(--ink-2);
+    line-height: 1.7;
+  }
+  .reagan-conclusion {
+    font-family: "Noto Serif TC", serif;
+    font-size: 15px;
+    color: var(--ink);
+    line-height: 1.85;
+    padding-top: 14px;
+    border-top: 1px dashed var(--line);
+  }
+  @media (max-width: 600px) {
+    .reagan-table { grid-template-columns: 1fr; }
+  }
+
+  /* 雅倫處境 */
+  .situation {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 32px 30px;
+    margin-bottom: 18px;
+  }
+  .situation h3 {
+    font-family: "Noto Serif TC", serif;
+    font-size: 18px;
+    color: var(--ink);
+    margin-bottom: 16px;
+  }
+  .observation {
+    margin-bottom: 16px;
+    padding: 14px 18px;
+    background: var(--paper-2);
+    border-radius: 10px;
+    border-left: 3px solid var(--accent);
+  }
+  .observation .label {
+    font-family: "Klee One", serif;
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    margin-bottom: 6px;
+  }
+  .observation .text {
+    font-size: 14px; color: var(--ink);
+    line-height: 1.75;
+  }
+
+  /* 思考框架（不給答案、給問題） */
+  .questions {
+    background: var(--surface);
+    border: 1.5px dashed var(--accent);
+    border-radius: 16px;
+    padding: 32px 30px;
+    margin-top: 20px;
+  }
+  .questions h3 {
+    font-family: "Noto Serif TC", serif;
+    font-size: 20px;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .questions .sub {
+    font-size: 13px;
+    color: var(--ink-3);
+    margin-bottom: 22px;
+    font-style: italic;
+  }
+  .question-item {
+    margin-bottom: 18px;
+    padding-left: 28px;
+    position: relative;
+  }
+  .question-item::before {
+    content: "?";
+    position: absolute;
+    left: 0; top: -2px;
+    width: 22px; height: 22px;
+    background: var(--accent);
+    color: var(--surface);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px;
+    font-family: "Inter", sans-serif;
+  }
+  .question-item strong {
+    display: block;
+    font-size: 15px; color: var(--ink);
+    margin-bottom: 4px;
+    line-height: 1.6;
+  }
+  .question-item span {
+    font-size: 13px; color: var(--ink-2);
+    line-height: 1.75;
+  }
+
+  /* footer */
+  footer {
+    padding: 60px 24px 80px;
+    text-align: center;
+    background: var(--paper-2);
+  }
+  footer .sources {
+    font-size: 12px; color: var(--ink-3);
+    line-height: 1.85;
+    max-width: 640px;
+    margin: 0 auto 24px;
+    text-align: left;
+  }
+  footer .sources strong {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--ink-2);
+    text-align: center;
+  }
+  footer .sources a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+  footer .sources a:hover { text-decoration: underline; }
+  footer .signature {
+    font-family: "Klee One", serif;
+    color: var(--ink-3);
+    font-size: 13px;
+    margin-top: 30px;
+  }
+
+  @media (max-width: 600px) {
+    .hero { padding: 60px 20px 40px; }
+    section { padding: 48px 0; }
+    .type-card { padding: 22px 22px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="kicker">— 政治傳播研究 —</div>
+  <h1>全球競選標語的<br>勝選邏輯</h1>
+  <p class="lead">
+    從美國總統、日本首相、歐洲領袖的勝選 slogan、<br>
+    抽出 6 大邏輯類別 + 9 條黃金規律。<br>
+    本文僅提供分析框架、不給最終答案。
+  </p>
+  <div class="hero-meta">
+    <span>研究分析</span>
+    <span>2026-04-30</span>
+    <span>閱讀約 12 分鐘</span>
+  </div>
+</section>
+
+<!-- Part 1: 6 大類別 -->
+<section>
+  <div class="wrap">
+    <div class="section-tag">PART 1</div>
+    <h2>6 大邏輯類別</h2>
+    <p class="lead-p">
+      把全球勝選標語按「**訴求心理**」分類、可以歸納成 6 個原型。每個類別有不同的時代背景跟適用情境。
+    </p>
+
+    <div class="types">
+
+      <!-- A 類 -->
+      <div class="type-card">
+        <div class="type-head">
+          <div class="type-letter">A</div>
+          <div>
+            <div class="type-name">回到過去型</div>
+            <div class="type-en">RESTORE</div>
+          </div>
+        </div>
+        <div class="type-cases">
+          <div class="case-line"><span class="quote">"Make America Great Again"</span><span class="who">Reagan 1980 / Trump 2016, 2024</span></div>
+          <div class="case-line"><span class="quote">「日本を、取り戻す。」</span><span class="who">安倍晉三 2012</span></div>
+        </div>
+        <div class="type-mech">
+          <strong>心理機制</strong>：「過去黃金 → 現在墮落 → 我帶你回去」。利用懷舊情緒做槓桿、把現況落差感轉成投票動能。
+        </div>
+        <div class="type-fit">適用：選民有「黃金過去」共識、對現況強烈不滿。</div>
+      </div>
+
+      <!-- B 類 -->
+      <div class="type-card">
+        <div class="type-head">
+          <div class="type-letter">B</div>
+          <div>
+            <div class="type-name">希望未來型</div>
+            <div class="type-en">FORWARD / HOPE</div>
+          </div>
+        </div>
+        <div class="type-cases">
+          <div class="case-line"><span class="quote">"Hope"</span><span class="who">Obama 2008</span></div>
+          <div class="case-line"><span class="quote">"Forward"</span><span class="who">Obama 2012</span></div>
+          <div class="case-line"><span class="quote">"Build Back Better"</span><span class="who">Biden 2020</span></div>
+          <div class="case-line"><span class="quote">"Things Can Only Get Better"</span><span class="who">Tony Blair 1997</span></div>
+        </div>
+        <div class="type-mech">
+          <strong>心理機制</strong>：「現在低點 → 未來會好 → 跟我向前」。給願景、不挑釁、抒情。
+        </div>
+        <div class="type-fit">適用：選民疲倦低迷、需要新希望、不想再吵架。</div>
+      </div>
+
+      <!-- C 類 -->
+      <div class="type-card">
+        <div class="type-head">
+          <div class="type-letter">C</div>
+          <div>
+            <div class="type-name">行動指令型</div>
+            <div class="type-en">JUST DO IT</div>
+          </div>
+        </div>
+        <div class="type-cases">
+          <div class="case-line"><span class="quote">"Get Brexit Done"</span><span class="who">Boris Johnson 2019</span></div>
+          <div class="case-line"><span class="quote">「聖域なき構造改革」</span><span class="who">小泉純一郎 2001</span></div>
+        </div>
+        <div class="type-mech">
+          <strong>心理機制</strong>：選民厭倦辯論、要的是「**閉嘴去做**」的決斷感。
+        </div>
+        <div class="type-fit">適用：議題已僵持多年、對手都在打嘴砲、選民只想要事情結束。</div>
+      </div>
+
+      <!-- D 類 -->
+      <div class="type-card">
+        <div class="type-head">
+          <div class="type-letter">D</div>
+          <div>
+            <div class="type-name">集體認同型</div>
+            <div class="type-en">WE TOGETHER</div>
+          </div>
+        </div>
+        <div class="type-cases">
+          <div class="case-line"><span class="quote">"Yes We Can"</span><span class="who">Obama 2008</span></div>
+          <div class="case-line"><span class="quote">"En Marche"（前進）</span><span class="who">Macron 2017</span></div>
+          <div class="case-line"><span class="quote">"Wir schaffen das"（我們可以）</span><span class="who">Merkel 2015</span></div>
+        </div>
+        <div class="type-mech">
+          <strong>心理機制</strong>：把選民從「被動接受」翻成「主動參與」、用「我們」邀請他們成為主體。
+        </div>
+        <div class="type-fit">適用：要動員年輕族群、要做世代轉型、要打破舊政治。</div>
+      </div>
+
+      <!-- E 類 -->
+      <div class="type-card">
+        <div class="type-head">
+          <div class="type-letter">E</div>
+          <div>
+            <div class="type-name">抒情畫面型</div>
+            <div class="type-en">POETIC</div>
+          </div>
+        </div>
+        <div class="type-cases">
+          <div class="case-line"><span class="quote">"Morning in America"（美國的早晨）</span><span class="who">Reagan 1984 連任</span></div>
+          <div class="case-line"><span class="quote">"Hope"</span><span class="who">Obama 2008（一個字打天下）</span></div>
+        </div>
+        <div class="type-mech">
+          <strong>心理機制</strong>：不講政策、講感覺。用畫面 / 詩意 / 一個字、讓選民「**用情緒投票**」。
+        </div>
+        <div class="type-fit">適用：連任候選人、選民已熟悉政績、不需再喊改革。</div>
+      </div>
+
+      <!-- F 類 -->
+      <div class="type-card">
+        <div class="type-head">
+          <div class="type-letter">F</div>
+          <div>
+            <div class="type-name">候選人型</div>
+            <div class="type-en">PERSONA</div>
+          </div>
+        </div>
+        <div class="type-cases">
+          <div class="case-line"><span class="quote">"I Like Ike"</span><span class="who">艾森豪 1952</span></div>
+          <div class="case-line"><span class="quote">"Nixon's the One"</span><span class="who">Nixon 1968</span></div>
+        </div>
+        <div class="type-mech">
+          <strong>心理機制</strong>：候選人本身就是賣點、不需要訴求政策、用「就是這個人」打。
+        </div>
+        <div class="type-fit">適用：人格魅力極強的候選人、或品牌已經建立到無需多言。</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Part 2: 9 條黃金規律 -->
+<section>
+  <div class="wrap">
+    <div class="section-tag">PART 2</div>
+    <h2>9 條黃金規律</h2>
+    <p class="lead-p">
+      不論哪個類別、勝選標語在「**寫法**」上都遵守某些通則。
+    </p>
+
+    <div class="rules">
+      <div class="rule"><div class="rule-num">1</div><div class="rule-body"><strong>3 詞以內最強</strong><span>Hope / Forward / En Marche——一字、兩字、三字、刀刀見骨</span></div></div>
+      <div class="rule"><div class="rule-num">2</div><div class="rule-body"><strong>動詞開頭</strong><span>Make / Get / Build / Take Back——動作勝過形容詞</span></div></div>
+      <div class="rule"><div class="rule-num">3</div><div class="rule-body"><strong>可重複喊</strong><span>Make America Great Again 4 詞節奏完美、適合大型集會喊三遍</span></div></div>
+      <div class="rule"><div class="rule-num">4</div><div class="rule-body"><strong>不指名敵人</strong><span>「Again」暗示現在不偉大、但不點名是誰造成——讓選民自己腦補</span></div></div>
+      <div class="rule"><div class="rule-num">5</div><div class="rule-body"><strong>用「我們」非「我」</strong><span>Yes WE Can（不是 I Can）——把選民拉成主體</span></div></div>
+      <div class="rule"><div class="rule-num">6</div><div class="rule-body"><strong>隱含畫面</strong><span>Morning（早晨）/ Hope（光）/ Forward（方向）——讓選民腦中有畫面</span></div></div>
+      <div class="rule"><div class="rule-num">7</div><div class="rule-body"><strong>頭韻或押韻</strong><span>Build Back Better（B/B/B 頭韻）——好念好記、副歌效應</span></div></div>
+      <div class="rule"><div class="rule-num">8</div><div class="rule-body"><strong>可變副歌</strong><span>Yes We Can ↔ Sí, Se Puede（雙語）——讓不同族群都覺得是自己人</span></div></div>
+      <div class="rule"><div class="rule-num">9</div><div class="rule-body"><strong>對應時代焦慮</strong><span>每個勝選 slogan 都打中當下集體情緒——衰落、疲倦、分裂、希望</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- Part 3: Reagan 1984 連任案例 -->
+<section>
+  <div class="wrap">
+    <div class="section-tag">PART 3</div>
+    <h2>連任候選人的特殊邏輯</h2>
+    <p class="lead-p">
+      第一任跟連任、訴求邏輯**完全不同**。最經典的對照是 Reagan 1980 vs 1984。
+    </p>
+
+    <div class="reagan-box">
+      <h3>Reagan：同一個人、兩次選舉、兩種訴求</h3>
+
+      <div class="reagan-table">
+        <div class="reagan-cell">
+          <div class="year">1980 第一任</div>
+          <div class="slogan">"Let's Make America Great Again"</div>
+          <div class="meaning">改革型訴求。打的是現任 Carter 不行、需要換人帶國家走出衰退。屬於 <strong>A 類（回到過去型）</strong>。</div>
+        </div>
+        <div class="reagan-cell">
+          <div class="year">1984 連任</div>
+          <div class="slogan">"Morning in America"</div>
+          <div class="meaning">抒情型訴求。已經做事 4 年、選民相信、不需再喊改革。改用畫面、用感覺。屬於 <strong>E 類（抒情畫面型）</strong>。</div>
+        </div>
+      </div>
+
+      <div class="reagan-conclusion">
+        <strong>關鍵發現</strong>：連任候選人不該繼續喊改革——選民會問「你 4 年前就喊改革、改革到哪了？」改用**確認感 + 美好畫面**才是連任的標準打法。
+      </div>
+    </div>
+
+    <p style="font-size:14px;color:var(--ink-2);line-height:1.85;margin-top:20px">
+      其他連任成功案例也驗證這條規律：
+      Obama 2012「<strong>Forward</strong>」（不再是 2008 的 Hope 改革）、Bush 2004「<strong>Yes, America Can</strong>」（連任後改抒情）。
+    </p>
+
+    <div style="background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:24px 26px;margin-top:24px;border-left:4px solid var(--accent)">
+      <h3 style="font-family:'Noto Serif TC',serif;font-size:18px;color:var(--accent);margin-bottom:10px">第二次連任的特殊挑戰</h3>
+      <p style="font-size:14px;color:var(--ink-2);line-height:1.85">
+        Reagan、Obama、Bush 對照的是「第一次連任」。但**第二次連任**（=第三任）更難——選民會問：
+      </p>
+      <ul style="font-size:14px;color:var(--ink-2);line-height:1.95;padding-left:24px;margin-top:10px">
+        <li>「你做了 8 年、是不是該換人試試？」</li>
+        <li>「你還有沒有新東西可以做？」</li>
+        <li>「你會不會只是想保住位子？」</li>
+      </ul>
+      <p style="font-size:14px;color:var(--ink-2);line-height:1.85;margin-top:10px">
+        所以第二次連任的標語、不能只是「**確認感**」、要加上**「下一個任期我要做什麼新事**」的承諾。光抒情可能不夠、要在抒情裡藏改革種子。
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- Part 4: 給雅倫第三任的分析方向 -->
+<section>
+  <div class="wrap">
+    <div class="section-tag">PART 4</div>
+    <h2>給雅倫第三任的分析方向</h2>
+    <p class="lead-p">
+      以下提供的不是答案、是**思考框架**。最後要選哪個方向、由團隊自己決定。
+    </p>
+
+    <div class="situation">
+      <h3>四個關鍵事實</h3>
+      <div class="observation">
+        <div class="label">事實 1 · 屆別</div>
+        <div class="text">
+          <strong>陳雅倫現任第 3 屆桃園市議員</strong>（任期 2022-2026）。<br>
+          • 第 2 屆（2018-2022）：首次當選<br>
+          • 第 3 屆（2022-2026 現任）：連任成功<br>
+          • <strong>第 4 屆（2026 即將選）：將爭取第三任</strong>——「兩次連任」在政治上比第一次連任更稀缺、需要說服選民「<strong>為什麼還要做</strong>」的論述。
+        </div>
+      </div>
+      <div class="observation">
+        <div class="label">事實 2 · 兩代真實</div>
+        <div class="text"><strong>父親陳志謀曾任「桃園市議員 + 龜山鄉鄉長」雙職位</strong>。雅倫大學畢業後擔任父親助理、再自己當選議員、是真實的「兩代深耕」、不是話術。父親說「大方面指導、放手讓她做」——兼具家族傳承與獨立性。</div>
+      </div>
+      <div class="observation">
+        <div class="label">事實 3 · 對手</div>
+        <div class="text"><strong>對手是年輕、高學歷新人</strong>——對手能打的角度幾乎只有「改革 / 創新 / 換新人」。</div>
+      </div>
+      <div class="observation">
+        <div class="label">事實 4 · 區域</div>
+        <div class="text"><strong>龜山近年大量外來人口</strong>——新移居者比例高、對候選人沒有認知基礎、需要被「教育 + 介紹」。 </div>
+      </div>
+    </div>
+
+    <div class="questions">
+      <h3>5 個給團隊的思考題（可直接填寫）</h3>
+      <p class="sub">填完按下「送出」、答案會自動進後台、軍師會看到。不寫也能單純看。</p>
+
+      <form id="thinkingForm" style="margin-top:14px">
+
+        <div style="background:var(--paper-2);padding:14px 18px;border-radius:10px;margin-bottom:24px">
+          <label style="display:block;font-size:13px;color:var(--ink-2);margin-bottom:6px">📝 填表人（怎麼稱呼你？）</label>
+          <input type="text" name="who" required placeholder="例：雅倫、阿凱、競選團隊..."
+            style="width:100%;padding:10px 14px;background:var(--surface);border:1.5px solid var(--line);border-radius:8px;font-size:14px;font-family:inherit;color:var(--ink)">
+        </div>
+
+        <div class="question-item">
+          <strong>1. 你們認為龜山現在最強的集體情緒是什麼？</strong>
+          <span>是「想回到過去的安靜」（A 類）、是「想要更好的未來」（B 類）、是「不要再吵了快做事」（C 類）、還是「我們一起把家做好」（D 類）？這個問題的答案、決定標語類別。</span>
+          <textarea name="q1" placeholder="你們的觀察..." style="width:100%;margin-top:10px;padding:12px 14px;background:var(--surface);border:1.5px solid var(--line);border-radius:8px;font-size:14px;font-family:inherit;line-height:1.75;min-height:80px;resize:vertical;color:var(--ink)"></textarea>
+        </div>
+
+        <div class="question-item">
+          <strong>2. 對手既然只能打「改革」、雅倫該繼續講改革創新、還是改打抒情確認？</strong>
+          <span>Reagan 1984 連任時放棄改革口號、改打 Morning in America、是因為他相信「實績已建立、不需再喊改革」。雅倫第三任是不是同樣處境？</span>
+          <textarea name="q2" placeholder="你們的判斷..." style="width:100%;margin-top:10px;padding:12px 14px;background:var(--surface);border:1.5px solid var(--line);border-radius:8px;font-size:14px;font-family:inherit;line-height:1.75;min-height:80px;resize:vertical;color:var(--ink)"></textarea>
+        </div>
+
+        <div class="question-item">
+          <strong>3. 主 TA 是新移居者、還是老選民、還是雙打？</strong>
+          <span>新移居者需要「被介紹是誰」（適合 D / F 類、強調人）、老選民需要「被提醒做了什麼」（適合 E 類、抒情確認）。雙打可能要主標+副標分流。</span>
+          <textarea name="q3" placeholder="你們的策略..." style="width:100%;margin-top:10px;padding:12px 14px;background:var(--surface);border:1.5px solid var(--line);border-radius:8px;font-size:14px;font-family:inherit;line-height:1.75;min-height:80px;resize:vertical;color:var(--ink)"></textarea>
+        </div>
+
+        <div class="question-item">
+          <strong>4. 對手會搶哪些詞？哪些詞雅倫獨占？</strong>
+          <span>「改革 / 創新 / 年輕 / 未來」對手會搶——這些詞陷入軍備競賽、雅倫贏不了。<br>
+          「深耕 / 兩代 / 陳志謀的女兒 / 在地 / 認識龜山」對手不能搶——這些是雅倫的家族與時間獨占資產、要當主視覺核心。</span>
+          <textarea name="q4" placeholder="你們覺得獨占詞還有哪些？對手會搶的還有哪些？" style="width:100%;margin-top:10px;padding:12px 14px;background:var(--surface);border:1.5px solid var(--line);border-radius:8px;font-size:14px;font-family:inherit;line-height:1.75;min-height:80px;resize:vertical;color:var(--ink)"></textarea>
+        </div>
+
+        <div class="question-item">
+          <strong>5. 第二次連任要有新東西、要藏什麼新承諾？</strong>
+          <span>第三任如果只喊「繼續服務」、選民會疲倦。標語裡要不要藏「下一個 4 年我要做這件新事」？例如新桃林線通車、公兒六公園落成、新區教育配套——把抒情包起改革種子。</span>
+          <textarea name="q5" placeholder="第三任最想做的新事..." style="width:100%;margin-top:10px;padding:12px 14px;background:var(--surface);border:1.5px solid var(--line);border-radius:8px;font-size:14px;font-family:inherit;line-height:1.75;min-height:80px;resize:vertical;color:var(--ink)"></textarea>
+        </div>
+
+        <div style="text-align:center;margin-top:30px">
+          <button type="submit" id="submitBtn"
+            style="background:var(--accent);color:var(--surface);border:none;padding:14px 40px;font-size:16px;font-weight:600;font-family:inherit;border-radius:100px;cursor:pointer;box-shadow:0 4px 14px rgba(184,68,43,0.3);transition:all .25s cubic-bezier(0.34,1.56,0.64,1)">
+            送出答案、軍師會看到
+          </button>
+          <p style="font-size:12px;color:var(--ink-3);margin-top:14px;font-style:italic">不寫也行、可以單純當思考框架看</p>
+        </div>
+
+      </form>
+
+      <div id="thankYou" style="display:none;background:var(--accent-light);border:2px solid var(--accent);border-radius:14px;padding:24px;text-align:center;margin-top:20px">
+        <div style="font-family:'Noto Serif TC',serif;font-size:20px;color:var(--accent);margin-bottom:8px">✓ 已收到</div>
+        <p style="font-size:14px;color:var(--ink-2);line-height:1.85">答案已自動進後台、軍師之後過來看。<br>歡迎多人填、團隊不同視角都收得到。</p>
+      </div>
+    </div>
+
+    <p style="font-size:14px;color:var(--ink-3);line-height:1.85;margin-top:24px;font-style:italic">
+      最終標語不該由外部分析決定、應由候選人團隊與選民共同感受出。本文僅提供結構公式、讓討論有依據、不憑感覺。
+    </p>
+  </div>
+</section>
+
+<script>
+  document.getElementById('thinkingForm')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const f = e.target;
+    const data = new FormData(f);
+    const who = (data.get('who') || '').trim() || '未填';
+    const answers = {
+      q1_集體情緒: (data.get('q1') || '').trim(),
+      q2_改革或抒情: (data.get('q2') || '').trim(),
+      q3_主TA: (data.get('q3') || '').trim(),
+      q4_獨占詞: (data.get('q4') || '').trim(),
+      q5_新承諾: (data.get('q5') || '').trim()
+    };
+
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.textContent = '送出中…';
+
+    try {
+      const res = await fetch('/api/survey?action=submit&id=campaign-slogan-questions-2026', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ who, answers, title: '雅倫競選標語 · 思考題回覆' })
+      });
+      if (res.ok) {
+        document.getElementById('thinkingForm').style.display = 'none';
+        document.getElementById('thankYou').style.display = 'block';
+        document.getElementById('thankYou').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } else {
+        btn.disabled = false;
+        btn.textContent = '送出失敗、再試一次';
+      }
+    } catch (err) {
+      btn.disabled = false;
+      btn.textContent = '網路錯誤、再試一次';
+    }
+  });
+</script>
+
+<!-- Footer -->
+<footer>
+  <div class="sources">
+    <strong>主要資料來源</strong>
+    • <a href="https://en.wikipedia.org/wiki/List_of_United_States_presidential_campaign_slogans" target="_blank">List of US Presidential Campaign Slogans (Wikipedia)</a><br>
+    • <a href="https://en.wikipedia.org/wiki/Make_America_Great_Again" target="_blank">Make America Great Again (Wikipedia)</a><br>
+    • <a href="https://onlinegrad.syracuse.edu/blog/presidential-campaign-slogans-accessible/" target="_blank">175 Years of Winning Slogans (Syracuse U)</a><br>
+    • <a href="https://ja.wikipedia.org/wiki/%E6%97%A5%E6%9C%AC%E3%82%92%E3%80%81%E5%8F%96%E3%82%8A%E6%88%BB%E3%81%99%E3%80%82" target="_blank">日本を、取り戻す。(Wikipedia)</a><br>
+    • <a href="https://www.auckland.ac.nz/en/news/2025/07/29/catchphrase-politics-in-japan.html" target="_blank">Catchphrase Politics in Japan (U Auckland)</a><br>
+    • <a href="https://en.wikipedia.org/wiki/Get_Brexit_Done" target="_blank">Get Brexit Done (Wikipedia)</a><br>
+    • <a href="https://en.wikipedia.org/wiki/List_of_U.K._political_slogans" target="_blank">UK Political Slogans (Wikipedia)</a>
+  </div>
+  <div class="signature">— 政治傳播研究 · 2026-04-30 —</div>
+</footer>
+
+</body>
+</html>

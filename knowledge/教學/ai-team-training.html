@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 軍團完整建構教學｜若水聯盟</title>
+<style>
+  :root {
+    --ink: #0F172A;
+    --ink-soft: #475569;
+    --ink-muted: #94A3B8;
+    --blue: #2563EB;
+    --blue-light: #EFF6FF;
+    --blue-mid: #BFDBFE;
+    --teal: #0EA5E9;
+    --green: #059669;
+    --green-light: #ECFDF5;
+    --amber: #D97706;
+    --amber-light: #FFFBEB;
+    --red: #DC2626;
+    --red-light: #FEF2F2;
+    --border: #E2E8F0;
+    --bg: #FFFFFF;
+    --bg-soft: #F8FAFC;
+    --radius: 14px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'PingFang TC', 'Noto Sans TC', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.7;
+    font-size: 16px;
+  }
+
+  /* ─── NAV ─── */
+  .nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 200;
+    background: rgba(255,255,255,0.94);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    height: 52px;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    gap: 6px;
+    overflow-x: auto;
+  }
+
+  .nav-brand {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--blue);
+    white-space: nowrap;
+    margin-right: 12px;
+    letter-spacing: 0.04em;
+  }
+
+  .nav a {
+    text-decoration: none;
+    color: var(--ink-soft);
+    font-size: 12.5px;
+    font-weight: 500;
+    padding: 5px 12px;
+    border-radius: 20px;
+    white-space: nowrap;
+    transition: all 0.15s;
+  }
+
+  .nav a:hover { background: var(--blue-light); color: var(--blue); }
+
+  .progress {
+    position: fixed;
+    top: 52px; left: 0;
+    height: 2px;
+    background: var(--blue);
+    z-index: 201;
+    transition: width 0.1s;
+  }
+
+  /* ─── LAYOUT ─── */
+  main { padding-top: 52px; }
+
+  .wrap {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 64px 24px;
+  }
+
+  .wrap + .wrap { padding-top: 0; }
+
+  /* ─── HERO ─── */
+  .hero {
+    background: linear-gradient(150deg, #0F172A 0%, #1E3A5F 100%);
+    color: #fff;
+    padding: 80px 24px 72px;
+    text-align: center;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 30px;
+    padding: 5px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    margin-bottom: 24px;
+  }
+
+  .hero h1 {
+    font-size: clamp(30px, 6vw, 56px);
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: 20px;
+  }
+
+  .hero h1 span { color: #60A5FA; }
+
+  .hero p {
+    font-size: 18px;
+    color: rgba(255,255,255,0.72);
+    max-width: 520px;
+    margin: 0 auto 36px;
+    line-height: 1.65;
+  }
+
+  .hero-pills {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .hero-pill {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 30px;
+    padding: 7px 18px;
+    font-size: 13.5px;
+    font-weight: 500;
+  }
+
+  /* ─── SECTION LABELS ─── */
+  .label {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 10px;
+  }
+
+  .section-h {
+    font-size: clamp(22px, 3.5vw, 34px);
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    margin-bottom: 8px;
+    line-height: 1.25;
+  }
+
+  .section-sub {
+    color: var(--ink-soft);
+    font-size: 16px;
+    margin-bottom: 36px;
+    max-width: 560px;
+  }
+
+  .divider {
+    height: 1px;
+    background: var(--border);
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* ─── ANALOGY BLOCK ─── */
+  .analogy {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 36px;
+  }
+
+  .analogy-card {
+    border-radius: var(--radius);
+    padding: 24px 22px;
+    border: 1.5px solid var(--border);
+  }
+
+  .analogy-card.dim { background: var(--bg-soft); }
+  .analogy-card.lit { background: var(--blue-light); border-color: var(--blue-mid); }
+
+  .analogy-tag {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .analogy-card.dim .analogy-tag { color: var(--ink-muted); }
+  .analogy-card.lit .analogy-tag { color: var(--blue); }
+
+  .analogy-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 10px; }
+  .analogy-card ul { padding-left: 16px; }
+  .analogy-card li { font-size: 14px; color: var(--ink-soft); padding: 4px 0; }
+  .analogy-card.lit li { color: var(--ink); }
+
+  /* ─── PILLAR CARDS ─── */
+  .pillars {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 36px;
+  }
+
+  .pillar {
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 26px 20px;
+  }
+
+  .pillar-num {
+    width: 28px; height: 28px;
+    background: var(--ink);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 800;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 14px;
+  }
+
+  .pillar-icon { font-size: 28px; margin-bottom: 10px; }
+  .pillar h3 { font-size: 16px; font-weight: 800; margin-bottom: 8px; }
+  .pillar p { font-size: 13.5px; color: var(--ink-soft); line-height: 1.6; }
+
+  .pillar-tip {
+    background: var(--blue-light);
+    border-radius: 8px;
+    padding: 9px 12px;
+    font-size: 12.5px;
+    color: var(--blue);
+    margin-top: 12px;
+    line-height: 1.5;
+  }
+
+  /* ─── STEP CARDS ─── */
+  .steps { display: flex; flex-direction: column; gap: 0; }
+
+  .step {
+    display: flex;
+    gap: 20px;
+    padding: 24px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .step:last-child { border-bottom: none; }
+
+  .step-left {
+    width: 44px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .step-badge {
+    width: 36px; height: 36px;
+    background: var(--blue);
+    color: #fff;
+    font-size: 15px;
+    font-weight: 700;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .step-line {
+    flex: 1;
+    width: 2px;
+    background: var(--border);
+    min-height: 20px;
+  }
+
+  .step:last-child .step-line { display: none; }
+
+  .step-content { flex: 1; padding-top: 4px; }
+  .step-content h4 { font-size: 17px; font-weight: 700; margin-bottom: 8px; }
+  .step-content p { font-size: 14.5px; color: var(--ink-soft); margin-bottom: 10px; }
+
+  .step-content code {
+    display: block;
+    background: #0F172A;
+    color: #7DD3FC;
+    font-size: 13px;
+    padding: 14px 16px;
+    border-radius: 10px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    white-space: pre-wrap;
+    line-height: 1.7;
+    margin-top: 8px;
+  }
+
+  .step-content .hint {
+    font-size: 13px;
+    color: var(--ink-muted);
+    font-style: italic;
+    margin-top: 6px;
+  }
+
+  /* ─── CALLOUT BOXES ─── */
+  .callout {
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin: 20px 0;
+    font-size: 14.5px;
+    line-height: 1.65;
+  }
+
+  .callout.info { background: var(--blue-light); border-left: 3px solid var(--blue); }
+  .callout.warn { background: var(--amber-light); border-left: 3px solid var(--amber); }
+  .callout.good { background: var(--green-light); border-left: 3px solid var(--green); }
+  .callout.bad  { background: var(--red-light); border-left: 3px solid var(--red); }
+
+  .callout strong { display: block; margin-bottom: 4px; }
+  .callout.info strong { color: var(--blue); }
+  .callout.warn strong { color: var(--amber); }
+  .callout.good strong { color: var(--green); }
+  .callout.bad  strong { color: var(--red); }
+
+  /* ─── MEMORY TREE ─── */
+  .tree {
+    background: #0F172A;
+    color: #E2E8F0;
+    border-radius: 12px;
+    padding: 20px 24px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 13.5px;
+    line-height: 1.9;
+  }
+
+  .tree .c-blue { color: #60A5FA; }
+  .tree .c-green { color: #34D399; }
+  .tree .c-gray { color: #64748B; }
+
+  /* ─── WEEK TIMELINE ─── */
+  .timeline { display: flex; flex-direction: column; gap: 14px; }
+
+  .tl-item {
+    display: flex;
+    gap: 16px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 22px;
+    align-items: flex-start;
+  }
+
+  .tl-badge {
+    background: var(--ink);
+    color: #fff;
+    border-radius: 8px;
+    padding: 4px 12px;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .tl-content h4 { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+  .tl-content p { font-size: 13.5px; color: var(--ink-soft); line-height: 1.6; }
+  .tl-content ul { padding-left: 16px; margin-top: 6px; }
+  .tl-content li { font-size: 13.5px; color: var(--ink-soft); padding: 2px 0; }
+
+  /* ─── MISTAKE GRID ─── */
+  .mistake-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+  .mistake-card {
+    border-radius: var(--radius);
+    padding: 22px 20px;
+  }
+
+  .mistake-card.bad { background: var(--red-light); border: 1.5px solid #FECACA; }
+  .mistake-card.good { background: var(--green-light); border: 1.5px solid #A7F3D0; }
+
+  .mistake-title {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    margin-bottom: 12px;
+  }
+
+  .mistake-card.bad .mistake-title { color: var(--red); }
+  .mistake-card.good .mistake-title { color: var(--green); }
+
+  .mistake-item {
+    font-size: 14px;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+    line-height: 1.55;
+    color: var(--ink);
+  }
+
+  .mistake-item:last-child { border-bottom: none; }
+
+  /* ─── PROMPT BOX ─── */
+  .prompt-box {
+    background: #0F172A;
+    border-radius: var(--radius);
+    padding: 24px;
+    margin: 16px 0;
+  }
+
+  .prompt-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: #64748B;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .prompt-text {
+    color: #E2E8F0;
+    font-size: 14px;
+    line-height: 1.75;
+    white-space: pre-wrap;
+  }
+
+  .prompt-text .hi { color: #60A5FA; }
+  .prompt-text .hi2 { color: #34D399; }
+
+  /* ─── FAQ ─── */
+  .faq { display: flex; flex-direction: column; gap: 12px; }
+
+  .faq-item {
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 20px;
+  }
+
+  .faq-q { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+  .faq-a { font-size: 14px; color: var(--ink-soft); line-height: 1.65; }
+
+  /* ─── CLOSING ─── */
+  .closing {
+    background: linear-gradient(150deg, #0F172A 0%, #1E3A5F 100%);
+    color: #fff;
+    text-align: center;
+    padding: 80px 24px;
+  }
+
+  .closing h2 {
+    font-size: clamp(26px, 4vw, 42px);
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    margin-bottom: 16px;
+  }
+
+  .closing p {
+    font-size: 17px;
+    color: rgba(255,255,255,0.72);
+    max-width: 460px;
+    margin: 0 auto 36px;
+  }
+
+  .closing-pills {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .closing-pill {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 30px;
+    padding: 9px 20px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .source {
+    margin-top: 32px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.4);
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 600px) {
+    .analogy { grid-template-columns: 1fr; }
+    .pillars { grid-template-columns: 1fr; }
+    .mistake-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <span class="nav-brand">若水聯盟 × AI 軍團教學</span>
+  <a href="#why">為什麼</a>
+  <a href="#pillars">三大支柱</a>
+  <a href="#setup">環境設定</a>
+  <a href="#memory">建立記憶</a>
+  <a href="#agent">第一個 Agent</a>
+  <a href="#skill">建自己的 Skill</a>
+  <a href="#roadmap">第一個月</a>
+  <a href="#faq">常見問題</a>
+</nav>
+<div class="progress" id="progress"></div>
+
+<main>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">若水聯盟 · 內部教學 2026</div>
+  <h1>打造你的<br><span>AI 工作軍團</span></h1>
+  <p>從零開始建立屬於你品牌的 AI Agent 系統。<br>讀完這份教學，你就能開始動手。</p>
+  <div class="hero-pills">
+    <span class="hero-pill">⏱ 閱讀約 20 分鐘</span>
+    <span class="hero-pill">🛠 動手約 2 小時</span>
+    <span class="hero-pill">📈 效果持續累積</span>
+  </div>
+</section>
+
+<!-- WHY -->
+<div id="why" style="scroll-margin-top:60px">
+<div class="wrap">
+  <div class="label">Part 01 · 為什麼需要 Agent</div>
+  <h2 class="section-h">普通聊天 vs. AI 軍團<br>差距比你想的大</h2>
+  <p class="section-sub">大多數人把 AI 當 Google 在用。那些建了軍團的人，正在用十分之一的人力，做出同樣的產出。</p>
+
+  <div class="analogy">
+    <div class="analogy-card dim">
+      <div class="analogy-tag">❌ 普通聊天模式</div>
+      <h3>每次從零開始</h3>
+      <ul>
+        <li>AI 每次對話結束就完全忘記你</li>
+        <li>每次都要重新介紹：我是誰、我賣什麼</li>
+        <li>一個 AI 被要求做所有事</li>
+        <li>結果參差不齊，品質飄忽</li>
+        <li>老闆一直在旁邊盯，省不了多少時間</li>
+      </ul>
+    </div>
+    <div class="analogy-card lit">
+      <div class="analogy-tag">✅ AI 軍團模式</div>
+      <h3>越用越聰明</h3>
+      <ul>
+        <li>記憶跨 session 保留，AI 永遠認識你</li>
+        <li>品牌知識、決策記錄全部沉澱在記憶庫</li>
+        <li>每個 AI 有專職，品質穩定且高</li>
+        <li>老闆只做「要不要」的決定</li>
+        <li>系統越跑越順，越來越自動</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout info">
+    <strong>💡 一個直白的比喻</strong>
+    普通聊天 = 每天換一個新實習生，每天從頭教。<br>
+    AI 軍團 = 一個做了三年的老手，你說方向他就去做。
+  </div>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- PILLARS -->
+<div id="pillars" style="scroll-margin-top:60px">
+<div class="wrap">
+  <div class="label">Part 02 · 三大支柱</div>
+  <h2 class="section-h">系統由三個東西組成</h2>
+  <p class="section-sub">少了任何一個，整個系統就會失靈。三個都到位，才叫做真正的 AI 軍團。</p>
+
+  <div class="pillars">
+    <div class="pillar">
+      <div class="pillar-num">1</div>
+      <div class="pillar-icon">🧠</div>
+      <h3>記憶（Memory）</h3>
+      <p>AI 的長期記憶庫。品牌故事、客群描述、過去的決策、踩過的坑——全部存進去，下次開口就還在。</p>
+      <div class="pillar-tip">沒有它：每次對話都要重新說「我是賣二手機車的…」</div>
+    </div>
+    <div class="pillar">
+      <div class="pillar-num">2</div>
+      <div class="pillar-icon">🎭</div>
+      <h3>角色（Agent）</h3>
+      <p>每個 AI 有固定的職責和個性。將軍統籌全局、小編專注文案、客服專注回覆——術業有專攻，品質才穩。</p>
+      <div class="pillar-tip">沒有它：一個 AI 又寫文案又管帳，樣樣都普通</div>
+    </div>
+    <div class="pillar">
+      <div class="pillar-num">3</div>
+      <div class="pillar-icon">⚡</div>
+      <h3>授權規則（Rule）</h3>
+      <p>明確定義 AI 的行動邊界：什麼事自己決定，什麼事才來找老闆。老闆只做最終裁決，不盯細節。</p>
+      <div class="pillar-tip">沒有它：AI 每個字都問你，比你自己做還累</div>
+    </div>
+  </div>
+
+  <div class="callout warn">
+    <strong>⚠️ 最常見的誤區</strong>
+    很多人先建 Agent，卻沒有 Memory。Agent 沒有記憶就像一個老是忘事的員工——每次都要從頭教，累死老闆。<br><br>
+    <strong>正確順序：先建 Memory → 再建 Agent → 最後設授權規則</strong>
+  </div>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- SETUP -->
+<div id="setup" style="scroll-margin-top:60px">
+<div class="wrap">
+  <div class="label">Part 03 · 環境設定</div>
+  <h2 class="section-h">安裝你的指揮中心</h2>
+  <p class="section-sub">只需要裝一個工具：Claude Code。這是讓 AI 能記住你、能讀取你的品牌資料的核心程式。</p>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-left">
+        <div class="step-badge">1</div>
+        <div class="step-line"></div>
+      </div>
+      <div class="step-content">
+        <h4>安裝 Node.js（如果沒有的話）</h4>
+        <p>去 <strong>nodejs.org</strong> 下載 LTS 版本，安裝完成後繼續下一步。</p>
+        <p class="hint">驗證：打開終端機輸入 <code style="background:#f1f5f9;color:#334155;padding:2px 8px;border-radius:4px;font-family:monospace">node -v</code>，看到版本號就成功了。</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-left">
+        <div class="step-badge">2</div>
+        <div class="step-line"></div>
+      </div>
+      <div class="step-content">
+        <h4>安裝 Claude Code</h4>
+        <p>在終端機（Mac 叫「終端機」，Windows 叫「命令提示字元」）輸入：</p>
+        <code>npm install -g @anthropic-ai/claude-code</code>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-left">
+        <div class="step-badge">3</div>
+        <div class="step-line"></div>
+      </div>
+      <div class="step-content">
+        <h4>申請 Anthropic API Key</h4>
+        <p>去 <strong>console.anthropic.com</strong> 申請帳號，進去後點「API Keys」→「Create Key」，複製那串數字。</p>
+        <div class="callout warn" style="margin-top:10px; margin-bottom:0">
+          <strong>⚠️ 費用說明</strong>
+          Claude 是按用量計費，不是月費制。一般對話每次台幣 1-5 元，一個月下來幾百元以內，非常划算。先儲值 $5 美金就夠用一個月了。
+        </div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-left">
+        <div class="step-badge">4</div>
+        <div class="step-line"></div>
+      </div>
+      <div class="step-content">
+        <h4>建立工作資料夾</h4>
+        <p>在桌面建一個叫「AI總部」的資料夾，以後所有品牌資料和記憶庫都放這裡。</p>
+        <code>mkdir -p ~/Desktop/AI總部</code>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-left">
+        <div class="step-badge">5</div>
+      </div>
+      <div class="step-content">
+        <h4>第一次啟動</h4>
+        <p>在 AI總部 資料夾裡啟動 Claude Code：</p>
+        <code>cd ~/Desktop/AI總部
+claude</code>
+        <p class="hint">第一次會要求你登入或輸入 API Key，貼上剛才複製的 Key 就好。</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- MEMORY -->
+<div id="memory" style="scroll-margin-top:60px">
+<div class="wrap">
+  <div class="label">Part 04 · 建立記憶庫</div>
+  <h2 class="section-h">讓 AI 永遠記得你是誰</h2>
+  <p class="section-sub">Memory 是整個系統的地基。先把地基打好，Agent 站上去才穩。</p>
+
+  <h3 style="font-size:17px; font-weight:700; margin-bottom:14px;">建立資料夾結構</h3>
+  <div class="tree">
+    <span class="c-blue">AI總部/</span><br>
+    ├── <span class="c-blue">memory/</span>　　　　　　<span class="c-gray">← 所有記憶放這裡</span><br>
+    │&nbsp;&nbsp;&nbsp;├── <span class="c-green">全員共用/</span>　　　<span class="c-gray">← 所有 Agent 啟動必讀</span><br>
+    │&nbsp;&nbsp;&nbsp;├── <span class="c-green">品牌知識/</span>　　　<span class="c-gray">← 你的品牌資料</span><br>
+    │&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── 品牌A/<br>
+    │&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;└── 品牌B/<br>
+    │&nbsp;&nbsp;&nbsp;├── <span class="c-green">專案/</span>　　　　　　<span class="c-gray">← 按案子放</span><br>
+    │&nbsp;&nbsp;&nbsp;└── <span class="c-green">個人日誌/</span>　　　<span class="c-gray">← 各 Agent 自己的筆記</span><br>
+    └── <span class="c-blue">CLAUDE.md</span>　　　　　<span class="c-gray">← AI 的全域守則</span>
+  </div>
+
+  <div style="margin-top: 28px;">
+    <h3 style="font-size:17px; font-weight:700; margin-bottom:14px;">CLAUDE.md — AI 的行為守則</h3>
+    <p style="color:var(--ink-soft); font-size:14.5px; margin-bottom:14px;">這是最重要的一份檔案。AI 每次啟動都會先讀這份，決定「我是誰、我在服務誰、我怎麼說話」。</p>
+
+    <div class="prompt-box">
+      <div class="prompt-label">CLAUDE.md 基本範本</div>
+      <div class="prompt-text"><span class="hi"># [你的品牌名] AI 工作守則</span>
+
+<span class="hi2">## 一、你是誰</span>
+你是[老闆名字]的 AI 工作夥伴，服務旗下品牌：[品牌名稱與一句話介紹]
+
+<span class="hi2">## 二、最大授權鐵律</span>
+- AI 能做的事，全部自己做，不要問老闆
+- 老闆只看最終成品，說「好」或「調一下」
+- 只有以下才找老闆：
+  1. 需要帳號密碼
+  2. 要對外正式發布
+  3. 刪除重要資料
+  4. 兩個方向差很大，需要老闆拍板
+
+<span class="hi2">## 三、說話規定</span>
+- 結論先說，細節後說
+- 10 秒讓老闆看懂現況
+- 白話說，不說技術術語
+
+<span class="hi2">## 四、Memory 路徑</span>
+每次啟動，先讀 memory/全員共用/ 所有檔案
+
+<span class="hi2">## 五、快捷指令</span>
+0 = 快速回報現況
+1 = 存工作日誌
+5 = 全力執行，細節不問</div>
+    </div>
+  </div>
+
+  <div style="margin-top: 28px;">
+    <h3 style="font-size:17px; font-weight:700; margin-bottom:14px;">讓 AI 幫你建品牌知識庫</h3>
+    <p style="color:var(--ink-soft); font-size:14.5px; margin-bottom:14px;">不用自己寫。啟動後貼這段，AI 會問你問題，你回答，它整理存檔。</p>
+
+    <div class="prompt-box">
+      <div class="prompt-label">第一次對話，貼這段進去</div>
+      <div class="prompt-text">請幫我建立「<span class="hi">[你的品牌名]</span>」的品牌知識庫，
+問我以下六個問題，我一一回答，
+你把答案整理成 markdown 存到
+memory/品牌知識/<span class="hi">[品牌名]</span>/品牌基本資料.md：
+
+1. 品牌故事與創立背景
+2. 主要服務/產品內容
+3. 主要客群是誰（年齡、痛點、購買動機）
+4. 和競爭對手最大的差異
+5. 最常被客人問的問題（前三名）
+6. 品牌想給人的感覺（語氣風格）</div>
+    </div>
+
+    <div class="callout good" style="margin-top:14px">
+      <strong>✅ 做完這步，你就完成最重要的事了</strong>
+      品牌知識一旦存進 Memory，之後每次對話 AI 都自動讀取。你再也不用重新介紹自己的品牌。
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- AGENT -->
+<div id="agent" style="scroll-margin-top:60px">
+<div class="wrap">
+  <div class="label">Part 05 · 建立第一個 Agent</div>
+  <h2 class="section-h">從「將軍」開始<br>不要一次建太多</h2>
+  <p class="section-sub">第一週只建「將軍」一個 Agent。熟了再加小編、客服。貪多嚼不爛。</p>
+
+  <div class="callout info">
+    <strong>💡 什麼是 Agent？</strong>
+    Agent 就是「開一個 Claude 對話視窗，給它一個身份和職責」。你跟將軍說話，將軍統籌所有事。之後的小編、客服 Agent，是另外開的視窗，由將軍負責指派工作。
+  </div>
+
+  <div style="margin-top: 28px;">
+    <h3 style="font-size:17px; font-weight:700; margin-bottom:14px;">建立你的「將軍」</h3>
+    <p style="color:var(--ink-soft); font-size:14.5px; margin-bottom:14px;">把你的工作資料夾設為 Project（在 Claude 桌面版的左側點「New Project」），然後在 Project 說明裡貼這段：</p>
+
+    <div class="prompt-box">
+      <div class="prompt-label">將軍的 System Prompt</div>
+      <div class="prompt-text">你是我的 AI 將軍，負責統籌我的品牌「<span class="hi">[品牌名]</span>」。
+
+你每次啟動時，請先讀取 memory/全員共用/ 所有檔案，
+再讀取 memory/品牌知識/<span class="hi">[品牌名]</span>/ 所有檔案。
+
+你的職責：
+- 接收老闆指令，拆解成具體任務
+- 自己能做的直接做，不確定的才問老闆
+- 結論先說，10 秒讓老闆看懂
+
+讀完所有 memory 後，告訴我「準備好了」。</div>
+    </div>
+  </div>
+
+  <div style="margin-top: 28px;">
+    <h3 style="font-size:17px; font-weight:700; margin-bottom:14px;">第一週建議怎麼用</h3>
+
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-badge">Day 1-2</div>
+        <div class="tl-content">
+          <h4>讓將軍認識你的品牌</h4>
+          <p>跑完品牌知識建立流程，把六個問題都回答完。確認 memory 裡有資料了。</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-badge">Day 3-4</div>
+        <div class="tl-content">
+          <h4>用將軍做第一件真實任務</h4>
+          <p>試著叫它做一件你平常要花 30 分鐘的事，例如：寫本週三篇 IG 貼文。感受一下差異。</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-badge">Day 5-7</div>
+        <div class="tl-content">
+          <h4>打指令 1，存第一份工作日誌</h4>
+          <p>每次對話結束打 <strong>1</strong>，將軍會把這次的決策和學到的東西存進 memory。這是讓系統越來越聰明的關鍵動作。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- SKILL -->
+<div id="skill" style="scroll-margin-top:60px">
+<div class="wrap">
+  <div class="label">Part 06 · 建立你的 Skill</div>
+  <h2 class="section-h">讓 AI 成為你產業的專家</h2>
+  <p class="section-sub">Skill 是你的專業知識模組。把你的行業邏輯、文案風格、客戶心理「安裝」進去，AI 才能真的用你的思維說話。</p>
+
+  <div class="callout info">
+    <strong>💡 Memory vs Skill 的差別</strong>
+    Memory = 事實（我是誰、我做什麼、過去發生了什麼）<br>
+    Skill = 方法論（怎麼寫好文案、怎麼分析廣告、怎麼和客戶溝通）
+  </div>
+
+  <div style="margin-top: 28px;">
+    <h3 style="font-size:17px; font-weight:700; margin-bottom:14px;">如何建立你的第一個 Skill</h3>
+    <p style="color:var(--ink-soft); font-size:14.5px; margin-bottom:14px;">建立一個資料夾 <code style="background:#f1f5f9;color:#334155;padding:2px 8px;border-radius:4px;font-family:monospace">~/.claude/skills/[你的品牌]/文案風格/SKILL.md</code>，裡面寫上：</p>
+
+    <div class="prompt-box">
+      <div class="prompt-label">SKILL.md 基本範本</div>
+      <div class="prompt-text"><span class="hi">---
+name: [品牌名]-文案風格
+description: [品牌名]的文案規範與語氣指南
+---</span>
+
+<span class="hi2">## 品牌語氣</span>
+[描述你的品牌說話方式，例如：親切接地氣、不裝專業、像朋友在聊天]
+
+<span class="hi2">## 文案禁忌</span>
+- 不說 [哪些詞你覺得很爛]
+- 不要太正式、像公文
+- 不要用太多驚嘆號
+
+<span class="hi2">## 常用句型</span>
+[列出你覺得好用的開頭方式、結尾方式]
+
+<span class="hi2">## 範例對比</span>
+❌ 不好：[一個你不喜歡的文案範例]
+✅ 好：[一個你喜歡的文案範例]</div>
+    </div>
+
+    <div class="callout good" style="margin-top: 14px">
+      <strong>✅ 讓 AI 幫你建 Skill</strong>
+      你也可以直接對 Claude 說：「請幫我建立一份文案風格 Skill，問我需要的問題，我回答後你整理成 SKILL.md 存起來。」它會引導你完成。
+    </div>
+  </div>
+
+  <div style="margin-top: 28px;">
+    <h3 style="font-size:17px; font-weight:700; margin-bottom:14px;">建議先建哪些 Skill？</h3>
+
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-badge">必建</div>
+        <div class="tl-content">
+          <h4>文案風格 Skill</h4>
+          <p>你品牌說話的方式。建完後，AI 寫出來的東西才有你的個性，不像機器人。</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-badge">第二建</div>
+        <div class="tl-content">
+          <h4>客服回覆 Skill</h4>
+          <p>常見問題的回答方式、處理投訴的語氣、哪些話不能說。建完後客服效率至少快三倍。</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-badge">之後</div>
+        <div class="tl-content">
+          <h4>廣告文案 Skill / 產品說明 Skill</h4>
+          <p>有需求再建。Skill 是用到才有價值，不要為了「有」而建。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- MISTAKES -->
+<div style="scroll-margin-top:60px">
+<div class="wrap">
+  <div class="label">Part 07 · 常見誤區</div>
+  <h2 class="section-h">這些坑不用自己踩</h2>
+  <p class="section-sub">大多數人第一次建系統都會在這幾個地方卡住或放棄。提前知道，提前避開。</p>
+
+  <div class="mistake-grid">
+    <div class="mistake-card bad">
+      <div class="mistake-title">❌ 失敗路徑</div>
+      <div class="mistake-item">先建了很複雜的 Agent，沒有 Memory</div>
+      <div class="mistake-item">第一週就想建 5 個 Agent，搞混搞亂</div>
+      <div class="mistake-item">AI 出草稿後不看，直接複製發布</div>
+      <div class="mistake-item">叫 Agent 去做簡單的一次性問題（比直接問還慢）</div>
+      <div class="mistake-item">沒有存工作日誌，每次對話的知識都流失了</div>
+      <div class="mistake-item">期待 AI 第一次就出完美成品</div>
+    </div>
+    <div class="mistake-card good">
+      <div class="mistake-title">✅ 成功路徑</div>
+      <div class="mistake-item">第一週只建將軍，先把品牌知識存進 Memory</div>
+      <div class="mistake-item">熟了再一個一個加 Agent，不急</div>
+      <div class="mistake-item">每次看完草稿再送出，你是審核長</div>
+      <div class="mistake-item">持續性任務（每天發文、每天回客人）才用 Agent</div>
+      <div class="mistake-item">每次對話結束打 1，存工作日誌</div>
+      <div class="mistake-item">AI 出草稿，你改到滿意再送出，三次後就越來越準</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ROADMAP -->
+<div id="roadmap" style="scroll-margin-top:60px">
+<div class="wrap">
+  <div class="label">Part 08 · 第一個月怎麼走</div>
+  <h2 class="section-h">不用急，一步一步來</h2>
+  <p class="section-sub">這是一個月的建議節奏。按這個走，一個月後你的系統就會開始真正省你時間。</p>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-badge">Week 1</div>
+      <div class="tl-content">
+        <h4>打地基</h4>
+        <ul>
+          <li>安裝 Claude Code + 申請 API Key</li>
+          <li>建好 Memory 資料夾結構</li>
+          <li>寫好 CLAUDE.md 守則</li>
+          <li>讓 AI 問你品牌故事，存進記憶庫</li>
+          <li>建立將軍 Agent</li>
+        </ul>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-badge">Week 2</div>
+      <div class="tl-content">
+        <h4>試跑第一個真實任務</h4>
+        <ul>
+          <li>用將軍完成一件你平常要做的事（寫貼文、回客人、規劃活動）</li>
+          <li>感受哪裡不滿意，調整 CLAUDE.md</li>
+          <li>開始每次對話結束打 1 存日誌</li>
+          <li>建第一個 Skill（文案風格）</li>
+        </ul>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-badge">Week 3</div>
+      <div class="tl-content">
+        <h4>加入第二個 Agent</h4>
+        <ul>
+          <li>加「小編」Agent（專門負責文案輸出）</li>
+          <li>建客服回覆 Skill</li>
+          <li>試著讓系統每天自動產出內容草稿</li>
+        </ul>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-badge">Week 4</div>
+      <div class="tl-content">
+        <h4>優化 + 固化習慣</h4>
+        <ul>
+          <li>整理 Memory，把重複的資訊精簡</li>
+          <li>評估哪些任務可以完全交給 AI，哪些還需要你審核</li>
+          <li>建立固定的每日 / 每週 AI 使用流程</li>
+          <li>計算這個月到底省了多少時間</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- FAQ -->
+<div id="faq" style="scroll-margin-top:60px">
+<div class="wrap">
+  <div class="label">Part 09 · 常見問題</div>
+  <h2 class="section-h">你可能想問的事</h2>
+
+  <div class="faq">
+    <div class="faq-item">
+      <div class="faq-q">Q：這樣要花多少錢？</div>
+      <div class="faq-a">Claude API 是按用量計費。一般使用（每天幾十次對話）一個月大概台幣 300-800 元之間。比任何一個 SaaS 工具都便宜，而且是你自己的系統。</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Q：需要會寫程式嗎？</div>
+      <div class="faq-a">不需要。Memory 和 Skill 都是純文字的 markdown 檔案，就像在記事本裡打字。CLAUDE.md 也是，照著範本改就好。</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Q：我的資料安全嗎？</div>
+      <div class="faq-a">Memory 檔案都存在你自己的電腦上，不在任何雲端服務裡。你對話的內容會傳給 Anthropic 的 API，和你直接用 Claude.ai 一樣。敏感的商業機密（財務數字、客戶個資）建議不要放進系統。</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Q：Agent 會不會自己亂做事？</div>
+      <div class="faq-a">不會。CLAUDE.md 裡的授權規則決定了 AI 的行動範圍。設定好「只有這四種情況才問老闆」，AI 就不會越線。最終發布、送出的動作，永遠是你按的。</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Q：一個人可以同時跑幾個 Agent？</div>
+      <div class="faq-a">技術上沒有限制。實務上建議從 1 個開始，習慣了再加到 2-3 個。超過 5 個反而難管理，除非你有專人負責。</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Q：跟直接用 ChatGPT 有什麼差別？</div>
+      <div class="faq-a">ChatGPT 也可以建類似的系統，差別在於 Claude Code 對長文件、複雜任務的處理明顯更強，而且 Claude 的 system prompt（CLAUDE.md）能做到更精細的行為控制。另外，Claude Code 的 Skill 系統讓知識模組化更方便管理。</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- CLOSING -->
+<section class="closing">
+  <h2>開始比完美更重要</h2>
+  <p>Memory 不完整沒關係。Skill 只有一個也沒關係。<br>開始跑，系統就會越來越強。</p>
+  <div class="closing-pills">
+    <div class="closing-pill">🧠 先建 Memory</div>
+    <div class="closing-pill">🎭 從將軍開始</div>
+    <div class="closing-pill">⚡ 每次打 1 存日誌</div>
+    <div class="closing-pill">👑 你只做決定</div>
+  </div>
+  <div class="source">若水聯盟內部教學 · 2026 · 版權所有，請勿轉發</div>
+</section>
+
+</main>
+
+<script>
+window.addEventListener('scroll', () => {
+  const s = document.documentElement.scrollTop;
+  const h = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  document.getElementById('progress').style.width = (s / h * 100) + '%';
+});
+</script>
+</body>
+</html>

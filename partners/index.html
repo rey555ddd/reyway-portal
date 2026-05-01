@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>若水共創 · REYWAY</title>
+<meta name="description" content="若水共創合作品牌工具站集合">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#0fa882">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="REYWAY">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<script src="https://accounts.google.com/gsi/client" async></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css">
+</head>
+<body>
+
+<div id="site-gate">
+  <div class="gate-card">
+    <div class="gate-logo"><i class="ph ph-lock-key"></i></div>
+    <div class="gate-title">阿笙的 AI 總站</div>
+    <div class="gate-desc">本站為私人網站，請登入 Google 帳號才能開始</div>
+    <div class="gate-divider"></div>
+    <div id="g_signin_btn"></div>
+    <div class="gate-note">登入後 3 天內免登入</div>
+  </div>
+</div>
+
+<div id="link-modal" class="hidden">
+  <div class="modal-box">
+    <h3 id="link-modal-title">確認身份</h3>
+    <p>請輸入工具站密碼</p>
+    <input id="link-modal-input" type="password" placeholder="••••" onkeydown="if(event.key==='Enter')checkLinkGate()">
+    <div id="link-modal-error"></div>
+    <div class="modal-row">
+      <button class="btn-cancel" onclick="closeLinkModal()">取消</button>
+      <button class="btn-ok" onclick="checkLinkGate()">進入</button>
+    </div>
+  </div>
+</div>
+
+<div id="pending-gate" class="hidden">
+  <div class="pending-card">
+    <div class="icon"><i class="ph ph-hourglass-medium"></i></div>
+    <h2>申請已送出</h2>
+    <p>你的登入申請已送達，<br>等待主人審核通過後即可進入。</p>
+    <div class="hint">通常在數小時內處理，請稍後再試</div>
+  </div>
+</div>
+
+<div id="approve-modal" class="hidden">
+  <div class="approve-box">
+    <button class="approve-close" onclick="closeApproveModal()">✕</button>
+    <h3>登入審核</h3>
+    <div class="sub">以下帳號申請進入 reyway.com</div>
+    <div class="approve-list" id="approve-list">
+      <div class="approve-empty">載入中…</div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <nav class="subpage-nav">
+    <a class="back-home" href="/">← 回首頁</a>
+    <span class="subpage-title">若水共創</span>
+  </nav>
+
+  <div class="subpage-header">
+    <h1>若水共創</h1>
+    <p>合作品牌工具站集合・10 個品牌共創夥伴<br>從伊果集團到精品鐘錶、保健食品、寢具等多元品類。</p>
+  </div>
+
+  <div id="notify-bar" onclick="openApproveModal()">
+    <div class="notify-dot"></div>
+    <div class="notify-text">有新的登入申請等待審核</div>
+    <div class="notify-badge" id="notify-count">0</div>
+  </div>
+
+  <section>
+    <div class="grid">
+
+      <a class="card" href="https://bombboss.reyway.com" target="_blank" rel="noopener">
+        <div class="card-icon ic-purple">
+          <img src="/icon-eagle-group.jpg" alt="伊果" onerror="this.outerHTML='伊'">
+        </div>
+        <h3>伊果國際集團</h3>
+        <p>服飾・餐飲・飲料<br>小吃・鐘錶五大事業</p>
+        <span class="card-tag tag-live">已上線</span>
+      </a>
+
+      <a class="card" href="https://suan7.reyway.com" target="_blank" rel="noopener">
+        <div class="card-icon" style="background:rgba(255,107,53,0.15);color:#FF6B35">酸</div>
+        <h3>酸小七</h3>
+        <p>酸湯魚・酸菜魚<br>餐飲品牌工具站</p>
+        <span class="card-tag tag-live">已上線</span>
+      </a>
+
+      <a class="card" href="https://club.reyway.com" target="_blank" rel="noopener">
+        <div class="card-icon" style="background:rgba(196,162,79,0.15);color:#A07A2C">中</div>
+        <h3>中國城酒店</h3>
+        <p>帝豪 China Town<br>酒店行銷工具站</p>
+        <span class="card-tag tag-live">已上線</span>
+      </a>
+
+      <a class="card" href="https://eagle.reyway.com" target="_blank" rel="noopener">
+        <div class="card-icon" style="background:rgba(139,95,168,0.15);color:#6B3FA0">精</div>
+        <h3>蹦闆精品</h3>
+        <p>EAGLE 精品鐘錶<br>品牌行銷工具站</p>
+        <span class="card-tag tag-live">已上線</span>
+      </a>
+
+      <a class="card" href="https://pc.reyway.com" target="_blank" rel="noopener">
+        <div class="card-icon ic-gold">皮</div>
+        <h3>皮爾卡登寢具</h3>
+        <p>PIERRE CARDIN<br>品牌行銷工具站</p>
+        <span class="card-tag tag-live">已上線</span>
+      </a>
+
+      <a class="card" href="https://dadali.reyway.com" target="_blank" rel="noopener">
+        <div class="card-icon ic-blue">力</div>
+        <h3>大大力鍍膜</h3>
+        <p>汽車鍍膜・防護服務<br>品牌行銷工具站</p>
+        <span class="card-tag tag-live">已上線</span>
+      </a>
+
+      <a class="card" href="https://yalun.reyway.com" target="_blank" rel="noopener">
+        <div class="card-icon" style="background:rgba(0,107,62,0.1);color:#006B3E">雅</div>
+        <h3>陳雅倫議員工具站</h3>
+        <p>議員辦公室文案生成<br>周邊設計・海報製作</p>
+        <span class="card-tag tag-live">已上線</span>
+      </a>
+
+      <a class="card" href="https://mori.reyway.com" target="_blank" rel="noopener">
+        <div class="card-icon ic-orange">森</div>
+        <h3>森築居家鍍膜</h3>
+        <p>居家空間防護<br>品牌工具站</p>
+        <span class="card-tag tag-live">已上線</span>
+      </a>
+
+      <a class="card" href="https://lf.reyway.com" target="_blank" rel="noopener">
+        <div class="card-icon" style="background:rgba(204,153,204,0.2);color:#8B5FA8">戀</div>
+        <h3>戀家小舖</h3>
+        <p>Lovingfamily · MIT 寢具<br>品牌行銷工具站</p>
+        <span class="card-tag tag-live">已上線</span>
+      </a>
+
+      <a class="card" href="https://bhks.reyway.com" target="_blank" rel="noopener">
+        <div class="card-icon" style="background:rgba(76,175,80,0.15);color:#388E3C">健</div>
+        <h3>BHK's 保健食品</h3>
+        <p>專業保健品牌<br>品牌行銷工具站</p>
+        <span class="card-tag tag-live">已上線</span>
+      </a>
+
+      <a class="card" href="https://leopard.reyway.com" target="_blank" rel="noopener">
+        <div class="card-icon" style="background:rgba(255,193,7,0.15);color:#B8860B">豹</div>
+        <h3>豹子腿</h3>
+        <p>合作品牌工具站</p>
+        <span class="card-tag tag-live">已上線</span>
+      </a>
+
+      <div class="card inactive">
+        <div class="card-icon ic-neutral">水</div>
+        <h3>若水共創</h3>
+        <p>品牌共創夥伴平台<br>招商・CRM</p>
+        <span class="card-tag tag-dev">建置中</span>
+      </div>
+
+    </div>
+  </section>
+
+  <footer>© 2026 REYWAY · 陳睿笙 · Built with AI</footer>
+
+</div>
+
+<script src="/auth.js"></script>
+</body>
+</html>

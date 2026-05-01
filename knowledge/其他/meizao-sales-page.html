@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<title>銷售頁渲染工具</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Noto Sans TC', sans-serif; background: #111; color: white; }
+
+  #controls {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 9999;
+    background: rgba(0,0,0,0.95); padding: 15px 30px;
+    display: flex; align-items: center; gap: 15px;
+    border-bottom: 2px solid #4dc791;
+  }
+  #controls button {
+    background: #4dc791; color: #0a2e1f; border: none; padding: 10px 25px;
+    border-radius: 8px; font-size: 16px; font-weight: 700; cursor: pointer;
+    font-family: 'Noto Sans TC', sans-serif;
+  }
+  #controls button:hover { background: #3ab37d; }
+  #controls span { font-size: 14px; color: #888; }
+  #status { color: #4dc791; font-weight: 500; }
+
+  .pages-container { padding-top: 70px; }
+
+  .page-wrapper {
+    margin: 30px auto;
+    width: 750px;
+    position: relative;
+  }
+  .page-label {
+    text-align: center; font-size: 13px; color: #666;
+    margin-bottom: 8px; letter-spacing: 1px;
+  }
+
+  /* ============ SHARED STYLES ============ */
+  .page {
+    width: 750px;
+    min-height: 1000px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* ============ PAGE 01: HERO ============ */
+  .p01 {
+    background: linear-gradient(160deg, #0a2e1f 0%, #0d4a2f 30%, #116b44 60%, #0d4a2f 100%);
+    color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 60px 50px;
+  }
+  .p01 .dc { position: absolute; border-radius: 50%; border: 1px solid rgba(77,199,145,.15); }
+  .p01 .c1 { width: 500px; height: 500px; top: -150px; right: -200px; }
+  .p01 .c2 { width: 350px; height: 350px; bottom: -100px; left: -150px; }
+  .p01 .brand-tag { display: inline-block; border: 1.5px solid rgba(77,199,145,.6); border-radius: 30px; padding: 8px 28px; font-size: 14px; letter-spacing: 3px; color: #4dc791; margin-bottom: 30px; position: relative; z-index: 1; }
+  .p01 .product-name { font-size: 58px; font-weight: 900; letter-spacing: 6px; margin-bottom: 20px; line-height: 1.3; color: white; position: relative; z-index: 1; }
+  .p01 .tagline { font-size: 22px; font-weight: 300; color: rgba(255,255,255,.85); margin-bottom: 12px; letter-spacing: 2px; position: relative; z-index: 1; }
+  .p01 .sub-tagline { font-size: 17px; color: #4dc791; font-weight: 500; letter-spacing: 4px; margin-bottom: 50px; position: relative; z-index: 1; }
+  .p01 .patents { display: flex; gap: 20px; justify-content: center; margin-bottom: 50px; position: relative; z-index: 1; }
+  .p01 .pb { background: rgba(255,255,255,.08); border: 1px solid rgba(77,199,145,.3); border-radius: 16px; padding: 18px 24px; text-align: center; min-width: 180px; }
+  .p01 .pb .nm { font-size: 18px; font-weight: 700; color: #4dc791; margin-bottom: 4px; }
+  .p01 .pb .ds { font-size: 12px; color: rgba(255,255,255,.6); letter-spacing: 1px; }
+  .p01 .divider { width: 60px; height: 2px; background: linear-gradient(90deg, transparent, #4dc791, transparent); margin: 35px auto; position: relative; z-index: 1; }
+  .p01 .funcs { display: flex; gap: 30px; justify-content: center; margin-top: 10px; position: relative; z-index: 1; }
+  .p01 .fi { text-align: center; }
+  .p01 .fn { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #4dc791, #2a9d6e); display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; margin: 0 auto 10px; }
+  .p01 .fl { font-size: 15px; font-weight: 500; color: rgba(255,255,255,.9); letter-spacing: 2px; }
+  .p01 .bottom-text { font-size: 13px; color: rgba(255,255,255,.4); letter-spacing: 2px; margin-top: 30px; position: relative; z-index: 1; }
+
+  /* ============ PAGE 02: PAIN POINTS ============ */
+  .p02 { background: #f8f9f5; color: #1a1a1a; padding: 0; }
+  .p02 .top-accent { height: 6px; background: linear-gradient(90deg, #0d4a2f, #4dc791, #0d4a2f); }
+  .p02 .inner { padding: 55px 50px; }
+  .p02 .title { font-size: 42px; font-weight: 900; text-align: center; margin-bottom: 15px; line-height: 1.4; }
+  .p02 .title span { color: #0d6b3f; }
+  .p02 .subtitle { text-align: center; font-size: 16px; color: #888; margin-bottom: 45px; letter-spacing: 1px; }
+  .p02 .pain-card { background: white; border-radius: 20px; padding: 28px 32px; margin-bottom: 18px; display: flex; align-items: center; gap: 22px; box-shadow: 0 4px 20px rgba(0,0,0,.05); border-left: 5px solid #e74c3c; }
+  .p02 .pain-icon { width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, #ffe0e0, #ffcccc); display: flex; align-items: center; justify-content: center; font-size: 26px; flex-shrink: 0; }
+  .p02 .pain-card h3 { font-size: 19px; font-weight: 700; color: #333; margin-bottom: 4px; }
+  .p02 .pain-card p { font-size: 13px; color: #888; line-height: 1.6; }
+  .p02 .highlight-box { margin-top: 40px; background: linear-gradient(135deg, #0d4a2f, #116b44); border-radius: 20px; padding: 32px 40px; text-align: center; position: relative; overflow: hidden; }
+  .p02 .highlight-box h2 { font-size: 28px; font-weight: 900; color: white; letter-spacing: 2px; line-height: 1.5; position: relative; z-index: 1; }
+  .p02 .highlight-box h2 span { color: #4dc791; }
+  .p02 .arrow-down { text-align: center; color: #4dc791; font-size: 18px; margin-bottom: 10px; }
+
+  /* ============ PAGE 03: MECHANISM ============ */
+  .p03 { background: linear-gradient(180deg, #0a2e1f, #0d4a2f); color: white; padding: 55px 40px; }
+  .p03 .grid-bg { position: absolute; inset: 0; background-image: linear-gradient(rgba(77,199,145,.03) 1px, transparent 1px), linear-gradient(90deg, rgba(77,199,145,.03) 1px, transparent 1px); background-size: 40px 40px; }
+  .p03 .inner { position: relative; z-index: 2; }
+  .p03 .label { text-align: center; font-size: 14px; color: #4dc791; letter-spacing: 4px; margin-bottom: 15px; }
+  .p03 .title { text-align: center; font-size: 36px; font-weight: 900; margin-bottom: 10px; letter-spacing: 3px; }
+  .p03 .subtitle { text-align: center; font-size: 16px; color: rgba(255,255,255,.5); margin-bottom: 50px; }
+  .p03 .step-card { background: rgba(255,255,255,.05); border: 1px solid rgba(77,199,145,.2); border-radius: 20px; padding: 28px 32px; display: flex; align-items: flex-start; gap: 22px; margin-bottom: 15px; border-left: 4px solid #4dc791; }
+  .p03 .step-num { width: 52px; height: 52px; border-radius: 14px; background: linear-gradient(135deg, #4dc791, #2a9d6e); display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 900; flex-shrink: 0; box-shadow: 0 4px 15px rgba(77,199,145,.3); }
+  .p03 .step-content h3 { font-size: 20px; font-weight: 700; color: #4dc791; margin-bottom: 6px; }
+  .p03 .step-content .ing { font-size: 15px; font-weight: 500; color: rgba(255,255,255,.9); margin-bottom: 6px; }
+  .p03 .step-content p { font-size: 13px; color: rgba(255,255,255,.5); line-height: 1.7; }
+  .p03 .arrow-con { text-align: center; color: rgba(77,199,145,.4); font-size: 18px; margin: 5px 0; }
+  .p03 .bottom-note { margin-top: 40px; text-align: center; padding: 22px; border: 1px dashed rgba(77,199,145,.3); border-radius: 16px; }
+  .p03 .bottom-note p { font-size: 15px; color: rgba(255,255,255,.7); letter-spacing: 1px; line-height: 1.8; }
+  .p03 .bottom-note strong { color: #4dc791; }
+
+  /* ============ PAGE 04: PPK ============ */
+  .p04 { background: #ffffff; color: #1a1a1a; padding: 0; }
+  .p04 .green-bar { height: 6px; background: linear-gradient(90deg, #0d4a2f, #4dc791); }
+  .p04 .inner { padding: 50px 45px; }
+  .p04 .ing-label { display: inline-block; background: #0d4a2f; color: #4dc791; padding: 6px 20px; border-radius: 20px; font-size: 13px; letter-spacing: 3px; margin-bottom: 18px; }
+  .p04 .ing-name { font-size: 36px; font-weight: 900; color: #0d4a2f; margin-bottom: 5px; line-height: 1.3; }
+  .p04 .ing-sub { font-size: 17px; color: #666; margin-bottom: 8px; font-weight: 400; }
+  .p04 .ing-desc { font-size: 15px; color: #888; margin-bottom: 35px; line-height: 1.6; }
+  .p04 .ing-desc strong { color: #0d6b3f; }
+  .p04 .feat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 35px; }
+  .p04 .feat-card { background: #f4f9f6; border-radius: 16px; padding: 26px 22px; text-align: center; border: 1px solid #e0efe8; }
+  .p04 .feat-card .big { font-size: 40px; font-weight: 900; color: #0d6b3f; line-height: 1; margin-bottom: 4px; }
+  .p04 .feat-card .big small { font-size: 16px; font-weight: 500; }
+  .p04 .feat-card .lbl { font-size: 13px; color: #666; letter-spacing: 1px; }
+  .p04 .extract-box { background: linear-gradient(135deg, #0d4a2f, #116b44); border-radius: 20px; padding: 32px; color: white; text-align: center; margin-bottom: 30px; }
+  .p04 .ratio { display: flex; align-items: center; justify-content: center; gap: 25px; }
+  .p04 .amt .num { font-size: 46px; font-weight: 900; color: #4dc791; line-height: 1; }
+  .p04 .amt .unit { font-size: 13px; color: rgba(255,255,255,.7); margin-top: 4px; }
+  .p04 .arrow-r { font-size: 26px; color: rgba(255,255,255,.4); }
+  .p04 .extract-note { font-size: 13px; color: rgba(255,255,255,.5); margin-top: 12px; }
+  .p04 .certs { display: flex; gap: 12px; }
+  .p04 .cert { flex: 1; background: #fafafa; border: 1px solid #eee; border-radius: 12px; padding: 16px; text-align: center; }
+  .p04 .cert .icon { font-size: 26px; margin-bottom: 6px; }
+  .p04 .cert .txt { font-size: 11px; color: #666; line-height: 1.5; }
+  .p04 .cert .txt strong { display: block; font-size: 12px; color: #333; }
+
+  /* ============ PAGE 05: CINNULIN ============ */
+  .p05 { background: #faf6f0; color: #1a1a1a; padding: 0; }
+  .p05 .top-bar { height: 6px; background: linear-gradient(90deg, #8B4513, #D2691E, #CD853F); }
+  .p05 .inner { padding: 50px 45px; }
+  .p05 .ing-label { display: inline-block; background: #5C3317; color: #F5DEB3; padding: 6px 20px; border-radius: 20px; font-size: 13px; letter-spacing: 3px; margin-bottom: 18px; }
+  .p05 .ing-name { font-size: 36px; font-weight: 900; color: #5C3317; margin-bottom: 5px; line-height: 1.3; }
+  .p05 .ing-en { font-size: 16px; color: #999; margin-bottom: 28px; font-weight: 300; }
+  .p05 .cppt-box { background: white; border: 2px solid #D2691E; border-radius: 20px; padding: 28px; margin-bottom: 30px; text-align: center; }
+  .p05 .cppt-box h3 { font-size: 20px; color: #5C3317; margin-bottom: 6px; }
+  .p05 .cppt-box h3 span { color: #D2691E; font-size: 24px; }
+  .p05 .cppt-box p { font-size: 13px; color: #888; line-height: 1.7; }
+  .p05 .stats-row { display: flex; gap: 14px; margin-bottom: 30px; }
+  .p05 .stat-block { flex: 1; background: linear-gradient(135deg, #5C3317, #8B4513); border-radius: 16px; padding: 26px 18px; text-align: center; color: white; }
+  .p05 .stat-block .num { font-size: 36px; font-weight: 900; color: #F5DEB3; line-height: 1; }
+  .p05 .stat-block .num small { font-size: 15px; }
+  .p05 .stat-block .lbl { font-size: 12px; color: rgba(255,255,255,.7); margin-top: 4px; }
+  .p05 .comp { background: white; border-radius: 20px; overflow: hidden; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,.05); }
+  .p05 .comp-head { display: grid; grid-template-columns: 1fr 1fr; text-align: center; }
+  .p05 .comp-head .good { background: #0d6b3f; color: white; padding: 16px; font-weight: 700; font-size: 15px; }
+  .p05 .comp-head .bad { background: #dc3545; color: white; padding: 16px; font-weight: 700; font-size: 15px; }
+  .p05 .comp-row { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid #f0f0f0; }
+  .p05 .comp-row div { padding: 14px 18px; font-size: 13px; line-height: 1.6; }
+  .p05 .comp-row .gc { background: #f4f9f6; color: #0d6b3f; }
+  .p05 .comp-row .bc { background: #fff5f5; color: #dc3545; }
+  .p05 .endorsements { display: flex; gap: 14px; }
+  .p05 .endorse { flex: 1; background: white; border-radius: 12px; padding: 18px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,.05); }
+  .p05 .endorse .org { font-size: 11px; color: #999; margin-bottom: 4px; }
+  .p05 .endorse .name { font-size: 13px; font-weight: 700; color: #5C3317; line-height: 1.5; }
+
+  /* ============ PAGE 06: CHROMAX ============ */
+  .p06 { background: linear-gradient(180deg, #0c1a3a, #152852); color: white; padding: 50px 45px; }
+  .p06 .ing-label { display: inline-block; background: rgba(255,165,0,.15); color: #FFA500; padding: 6px 20px; border-radius: 20px; font-size: 13px; letter-spacing: 3px; margin-bottom: 18px; border: 1px solid rgba(255,165,0,.3); }
+  .p06 .ing-name { font-size: 32px; font-weight: 900; margin-bottom: 5px; line-height: 1.3; }
+  .p06 .ing-sub { font-size: 15px; color: rgba(255,255,255,.5); margin-bottom: 35px; }
+  .p06 .big-row { display: flex; align-items: center; gap: 28px; margin-bottom: 35px; }
+  .p06 .big-num-box { text-align: center; flex-shrink: 0; }
+  .p06 .big-num-box .number { font-size: 96px; font-weight: 900; color: #FFA500; line-height: 1; }
+  .p06 .big-num-box .unit-text { font-size: 26px; font-weight: 700; color: #FFA500; }
+  .p06 .big-num-box .sub-lbl { font-size: 13px; color: rgba(255,255,255,.5); margin-top: 4px; }
+  .p06 .absorb-chart { flex: 1; background: rgba(255,255,255,.05); border: 1px solid rgba(255,165,0,.2); border-radius: 16px; padding: 22px; }
+  .p06 .bar-group { margin-bottom: 16px; }
+  .p06 .bar-group:last-child { margin-bottom: 0; }
+  .p06 .bar-label { font-size: 12px; color: rgba(255,255,255,.6); margin-bottom: 5px; }
+  .p06 .bar-track { height: 26px; background: rgba(255,255,255,.05); border-radius: 13px; overflow: hidden; }
+  .p06 .bar-fill { height: 100%; border-radius: 13px; display: flex; align-items: center; padding: 0 12px; font-size: 12px; font-weight: 700; }
+  .p06 .bar-fill.good { background: linear-gradient(90deg, #FFA500, #FFD700); color: #333; width: 95%; }
+  .p06 .bar-fill.poor { background: rgba(255,255,255,.15); color: rgba(255,255,255,.5); width: 20%; }
+  .p06 .patents-title { font-size: 18px; font-weight: 700; color: #FFA500; margin-bottom: 16px; }
+  .p06 .patent-item { background: rgba(255,165,0,.08); border: 1px solid rgba(255,165,0,.2); border-radius: 14px; padding: 18px 22px; display: flex; align-items: center; gap: 18px; margin-bottom: 12px; }
+  .p06 .patent-item .icon { width: 42px; height: 42px; background: rgba(255,165,0,.15); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+  .p06 .patent-item h4 { font-size: 15px; font-weight: 700; color: #FFD700; margin-bottom: 2px; }
+  .p06 .patent-item p { font-size: 13px; color: rgba(255,255,255,.5); }
+
+  /* ============ PAGE 07: UWK + GREEN COFFEE ============ */
+  .p07 { background: #f8f9f5; color: #1a1a1a; padding: 0; }
+  .p07 .top-bar { height: 6px; background: linear-gradient(90deg, #2c5f2d, #4dc791, #6b8e23); }
+  .p07 .inner { padding: 45px 45px; }
+  .p07 .section { margin-bottom: 30px; }
+  .p07 .ing-label { display: inline-block; padding: 6px 18px; border-radius: 20px; font-size: 13px; letter-spacing: 2px; margin-bottom: 15px; }
+  .p07 .label-blue { background: #1a3a5c; color: #88c0f0; }
+  .p07 .label-green { background: #2c5f2d; color: #a8e6a3; }
+  .p07 h2 { font-size: 30px; font-weight: 900; margin-bottom: 5px; line-height: 1.3; }
+  .p07 h2.blue { color: #1a3a5c; }
+  .p07 h2.green { color: #2c5f2d; }
+  .p07 .sub { font-size: 13px; color: #888; margin-bottom: 18px; }
+  .p07 .mech-card { background: white; border-radius: 18px; padding: 26px; box-shadow: 0 4px 20px rgba(0,0,0,.05); display: flex; align-items: center; gap: 22px; }
+  .p07 .shield { width: 72px; height: 72px; background: linear-gradient(135deg, #1a3a5c, #2c6fbb); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; flex-shrink: 0; color: white; }
+  .p07 .mech-text h3 { font-size: 17px; font-weight: 700; color: #1a3a5c; margin-bottom: 4px; }
+  .p07 .mech-text p { font-size: 13px; color: #666; line-height: 1.7; }
+  .p07 .mech-text strong { color: #2c6fbb; }
+  .p07 .tech-badges { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
+  .p07 .tech-badge { background: #eef3ff; border: 1px solid #d0e0ff; border-radius: 8px; padding: 6px 12px; font-size: 11px; color: #1a3a5c; font-weight: 600; }
+  .p07 .divider { height: 1px; background: linear-gradient(90deg, transparent, #ccc, transparent); margin: 25px 0; }
+  .p07 .green-stats { display: flex; gap: 14px; margin-bottom: 18px; }
+  .p07 .gs-card { flex: 1; background: linear-gradient(135deg, #2c5f2d, #3a7d3b); border-radius: 16px; padding: 22px 16px; text-align: center; color: white; }
+  .p07 .gs-card .num { font-size: 30px; font-weight: 900; color: #a8e6a3; line-height: 1; }
+  .p07 .gs-card .num small { font-size: 13px; }
+  .p07 .gs-card .lbl { font-size: 11px; color: rgba(255,255,255,.7); margin-top: 4px; }
+  .p07 .benefits { background: white; border-radius: 14px; padding: 20px 26px; box-shadow: 0 2px 12px rgba(0,0,0,.04); }
+  .p07 .ben-item { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 1px solid #f5f5f5; }
+  .p07 .ben-item:last-child { border-bottom: none; }
+  .p07 .ben-check { width: 22px; height: 22px; background: #e8f5e9; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #2c5f2d; flex-shrink: 0; }
+  .p07 .ben-item span { font-size: 13px; color: #444; }
+
+  /* ============ PAGE 08: COMPARISON TABLE ============ */
+  .p08 { background: linear-gradient(180deg, #0c1e33, #152a45); color: white; padding: 50px 35px; }
+  .p08 .title { text-align: center; font-size: 32px; font-weight: 900; margin-bottom: 8px; }
+  .p08 .subtitle { text-align: center; font-size: 14px; color: rgba(255,255,255,.5); margin-bottom: 35px; }
+  .p08 table { width: 100%; border-collapse: separate; border-spacing: 0; border-radius: 16px; overflow: hidden; }
+  .p08 thead th { padding: 18px 14px; font-size: 14px; font-weight: 700; text-align: center; }
+  .p08 .col-cat { width: 75px; background: rgba(255,255,255,.05); color: rgba(255,255,255,.4); }
+  .p08 .col-ours { background: rgba(77,199,145,.15); color: #4dc791; }
+  .p08 .col-theirs { background: rgba(220,53,69,.1); color: #ff6b6b; }
+  .p08 tbody td { padding: 16px 14px; font-size: 12px; line-height: 1.7; vertical-align: top; border-bottom: 1px solid rgba(255,255,255,.05); }
+  .p08 tbody tr:last-child td { border-bottom: none; }
+  .p08 .td-cat { background: rgba(255,255,255,.03); text-align: center; font-weight: 700; font-size: 13px; color: rgba(255,255,255,.6); }
+  .p08 .td-ours { background: rgba(77,199,145,.05); color: rgba(255,255,255,.85); }
+  .p08 .td-ours strong { color: #4dc791; }
+  .p08 .td-theirs { background: rgba(220,53,69,.03); color: rgba(255,255,255,.5); }
+  .p08 .tag-g { display: inline-block; background: rgba(77,199,145,.2); color: #4dc791; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; margin-bottom: 4px; }
+  .p08 .tag-b { display: inline-block; background: rgba(220,53,69,.15); color: #ff6b6b; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; margin-bottom: 4px; }
+  .p08 .bottom-badge { margin-top: 28px; text-align: center; padding: 18px; border: 1px solid rgba(77,199,145,.3); border-radius: 14px; background: rgba(77,199,145,.05); }
+  .p08 .bottom-badge p { font-size: 15px; color: rgba(255,255,255,.8); letter-spacing: 2px; }
+  .p08 .bottom-badge strong { color: #4dc791; font-size: 18px; }
+
+  /* ============ PAGE 09: AUDIENCE ============ */
+  .p09 { background: linear-gradient(180deg, #0a2e1f, #0d4a2f 50%, #0a2e1f); color: white; padding: 50px 40px; }
+  .p09 .glow { position: absolute; width: 400px; height: 400px; background: radial-gradient(circle, rgba(77,199,145,.08), transparent 70%); top: 50%; left: 50%; transform: translate(-50%,-50%); }
+  .p09 .inner { position: relative; z-index: 2; }
+  .p09 .label { text-align: center; font-size: 14px; color: #4dc791; letter-spacing: 4px; margin-bottom: 12px; }
+  .p09 .title { text-align: center; font-size: 34px; font-weight: 900; margin-bottom: 8px; }
+  .p09 .subtitle { text-align: center; font-size: 16px; color: #4dc791; margin-bottom: 45px; letter-spacing: 3px; }
+  .p09 .aud-card { background: rgba(255,255,255,.04); border: 1px solid rgba(77,199,145,.2); border-radius: 22px; padding: 30px 28px; display: flex; align-items: flex-start; gap: 20px; margin-bottom: 20px; }
+  .p09 .aud-icon { width: 60px; height: 60px; border-radius: 50%; background: rgba(77,199,145,.12); display: flex; align-items: center; justify-content: center; font-size: 28px; flex-shrink: 0; }
+  .p09 .aud-text h3 { font-size: 19px; font-weight: 700; color: #4dc791; margin-bottom: 6px; }
+  .p09 .aud-text p { font-size: 13px; color: rgba(255,255,255,.6); line-height: 1.8; }
+  .p09 .cta-note { margin-top: 35px; text-align: center; padding: 24px; border: 1px dashed rgba(77,199,145,.3); border-radius: 16px; background: rgba(77,199,145,.03); }
+  .p09 .cta-note p { font-size: 14px; color: rgba(255,255,255,.6); line-height: 1.8; }
+  .p09 .cta-note strong { color: #4dc791; font-size: 16px; }
+
+  /* ============ PAGE 10: CTA ============ */
+  .p10 { background: linear-gradient(160deg, #0a2e1f 0%, #0d4a2f 40%, #116b44 70%, #0d4a2f 100%); color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 80px 50px; }
+  .p10 .ring { position: absolute; border-radius: 50%; border: 1px solid rgba(77,199,145,.1); }
+  .p10 .r1 { width: 600px; height: 600px; top: -200px; left: -200px; }
+  .p10 .r2 { width: 400px; height: 400px; bottom: -150px; right: -150px; }
+  .p10 .inner { position: relative; z-index: 2; }
+  .p10 .qm { font-size: 60px; color: rgba(77,199,145,.3); line-height: 1; margin-bottom: 10px; }
+  .p10 .main-q { font-size: 36px; font-weight: 900; line-height: 1.6; margin-bottom: 15px; letter-spacing: 2px; }
+  .p10 .sub-q { font-size: 17px; color: rgba(255,255,255,.5); margin-bottom: 45px; }
+  .p10 .brand-line { display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 12px; }
+  .p10 .brand-div { width: 40px; height: 1px; background: rgba(77,199,145,.4); }
+  .p10 .brand-nm { font-size: 14px; color: #4dc791; letter-spacing: 4px; }
+  .p10 .prod-name { font-size: 42px; font-weight: 900; color: white; letter-spacing: 5px; margin-bottom: 12px; }
+  .p10 .final-tag { font-size: 15px; color: #4dc791; letter-spacing: 4px; margin-bottom: 45px; }
+  .p10 .cta-btn { display: inline-block; background: linear-gradient(135deg, #4dc791, #2a9d6e); color: white; padding: 18px 55px; border-radius: 50px; font-size: 20px; font-weight: 700; letter-spacing: 3px; box-shadow: 0 8px 30px rgba(77,199,145,.3); margin-bottom: 12px; }
+  .p10 .cta-sub { font-size: 13px; color: rgba(255,255,255,.3); }
+  .p10 .patents-footer { margin-top: 45px; display: flex; gap: 22px; }
+  .p10 .pm { text-align: center; color: rgba(255,255,255,.3); font-size: 11px; }
+  .p10 .pm .pnm { font-size: 13px; color: rgba(77,199,145,.5); font-weight: 600; }
+</style>
+</head>
+<body>
+
+<div id="controls">
+  <button onclick="renderAll()">一鍵匯出全部 10 張 PNG</button>
+  <span id="status">準備就緒</span>
+</div>
+
+<div class="pages-container">
+
+<!-- PAGE 01 -->
+<div class="page-wrapper"><div class="page-label">第 1 張：首圖 Hero</div>
+<div class="page p01" id="page01">
+  <div class="dc c1"></div><div class="dc c2"></div>
+  <div class="brand-tag">美兆生活 MJ LIFE</div>
+  <h1 class="product-name">極萃苦瓜胜肽</h1>
+  <p class="tagline">吃不忌口，也能減少負擔</p>
+  <p class="sub-tagline">三重控醣機制｜打造不囤積體質</p>
+  <div class="patents">
+    <div class="pb"><div class="nm">PPK™</div><div class="ds">專利苦瓜多肽</div></div>
+    <div class="pb"><div class="nm">Cinnulin PF®</div><div class="ds">專利唐寧肉桂</div></div>
+    <div class="pb"><div class="nm">UWK-20</div><div class="ds">專利白腎豆</div></div>
+  </div>
+  <div class="divider"></div>
+  <div class="funcs">
+    <div class="fi"><div class="fn">1</div><div class="fl">穩定控制</div></div>
+    <div class="fi"><div class="fn">2</div><div class="fl">代謝調理</div></div>
+    <div class="fi"><div class="fn">3</div><div class="fl">輕鬆助攻</div></div>
+  </div>
+  <div class="bottom-text">三大專利穩控配方 ─ 全方位代謝管理</div>
+</div></div>
+
+<!-- PAGE 02 -->
+<div class="page-wrapper"><div class="page-label">第 2 張：痛點共鳴</div>
+<div class="page p02" id="page02">
+  <div class="top-accent"></div>
+  <div class="inner">
+    <h1 class="title">你是不是<span>也這樣</span>？</h1>
+    <p class="subtitle">這些困擾，你並不孤單</p>
+    <div class="pain-card"><div class="pain-icon">🍚</div><div><h3>吃一點澱粉就容易囤積</h3><p>明明吃得不多，身體卻越來越沉重</p></div></div>
+    <div class="pain-card"><div class="pain-icon">🍱</div><div><h3>外食族，糖分攝取難控制</h3><p>三餐在外，隱藏糖分無處不在</p></div></div>
+    <div class="pain-card"><div class="pain-icon">⏳</div><div><h3>年紀增加後，代謝明顯變慢</h3><p>過了30歲，明顯感覺身體不一樣了</p></div></div>
+    <div class="pain-card"><div class="pain-icon">😰</div><div><h3>想忌口，但真的做不到</h3><p>每次下定決心，但美食當前就破功</p></div></div>
+    <div class="highlight-box">
+      <div class="arrow-down">▼</div>
+      <h2>問題不是吃太多<br>是<span>代謝跟不上</span></h2>
+    </div>
+  </div>
+</div></div>
+
+<!-- PAGE 03 -->
+<div class="page-wrapper"><div class="page-label">第 3 張：三段式管理</div>
+<div class="page p03" id="page03">
+  <div class="grid-bg"></div>
+  <div class="inner">
+    <div class="label">破局之道</div>
+    <h1 class="title">三段式管理，從源頭開始</h1>
+    <p class="subtitle">不是單一成分，是完整機制設計</p>
+    <div class="step-card"><div class="step-num">①</div><div class="step-content"><h3>減少負擔</h3><div class="ing">白腎豆 (UWK-20)</div><p>抑制 α-amylase 澱粉分解<br>從源頭減少醣類吸收負擔</p></div></div>
+    <div class="arrow-con">⬇</div>
+    <div class="step-card"><div class="step-num">②</div><div class="step-content"><h3>調節代謝</h3><div class="ing">Chromax® 鉻 + 肉桂</div><p>提升醣類利用與代謝效率<br>維持正常生理機能運作</p></div></div>
+    <div class="arrow-con">⬇</div>
+    <div class="step-card"><div class="step-num">③</div><div class="step-content"><h3>減少囤積</h3><div class="ing">綠咖啡 + 苦瓜胜肽</div><p>幫助調整體質與代謝循環<br>維持輕盈</p></div></div>
+    <div class="bottom-note"><p>吃進去 → 吸收時 → 代謝後<br><strong>每一步，都幫你照顧好</strong></p></div>
+  </div>
+</div></div>
+
+<!-- PAGE 04 -->
+<div class="page-wrapper"><div class="page-label">第 4 張：PPK™ 專利苦瓜多肽</div>
+<div class="page p04" id="page04">
+  <div class="green-bar"></div>
+  <div class="inner">
+    <div class="ing-label">核心成分 ①</div>
+    <h1 class="ing-name">PPK™ 專利苦瓜多肽</h1>
+    <p class="ing-sub">世界第一支植物活性胰島素</p>
+    <p class="ing-desc">只採用苦瓜<strong>籽</strong>萃取，成本高昂，產量稀少<br>經<strong>耶魯大學</strong>定序分析驗證活性結構</p>
+    <div class="feat-grid">
+      <div class="feat-card"><div class="big">153<small>國</small></div><div class="lbl">PCT 國際專利</div></div>
+      <div class="feat-card"><div class="big">605<small>人</small></div><div class="lbl">大型臨床實證</div></div>
+      <div class="feat-card"><div class="big">No.1</div><div class="lbl">世界第一支植物胰島素</div></div>
+      <div class="feat-card"><div class="big">Yale</div><div class="lbl">耶魯大學定序分析</div></div>
+    </div>
+    <div class="extract-box">
+      <div class="ratio">
+        <div class="amt"><div class="num">1000</div><div class="unit">公斤苦瓜</div></div>
+        <div class="arrow-r">→</div>
+        <div class="amt"><div class="num">1</div><div class="unit">公斤 PPK 原料</div></div>
+      </div>
+      <div class="extract-note">萃取比例 1000:1，珍貴稀有</div>
+    </div>
+    <div class="certs">
+      <div class="cert"><div class="icon">🏛️</div><div class="txt"><strong>世界智慧財產權組織</strong>PCT 153國專利</div></div>
+      <div class="cert"><div class="icon">🏆</div><div class="txt"><strong>英國劍橋世界名人錄</strong>卓越成就獎</div></div>
+      <div class="cert"><div class="icon">🎓</div><div class="txt"><strong>美國名人機構</strong>天才菁英獎</div></div>
+    </div>
+  </div>
+</div></div>
+
+<!-- PAGE 05 -->
+<div class="page-wrapper"><div class="page-label">第 5 張：Cinnulin PF® 專利唐寧肉桂</div>
+<div class="page p05" id="page05">
+  <div class="top-bar"></div>
+  <div class="inner">
+    <div class="ing-label">核心成分 ②</div>
+    <h1 class="ing-name">Cinnulin PF®<br>專利．唐寧肉桂</h1>
+    <p class="ing-en">獨家 CPPT™ 香豆素去除技術</p>
+    <div class="cppt-box"><h3>獨家 <span>CPPT™</span> 技術</h3><p>大幅度去除有毒香豆素，將香豆素控制在 0.7% 以下<br>萃取有效 DL Type A Polymer，安心安全無疑慮</p></div>
+    <div class="stats-row">
+      <div class="stat-block"><div class="num">&gt;10<small>項</small></div><div class="lbl">國際專利</div></div>
+      <div class="stat-block"><div class="num">&gt;20<small>篇</small></div><div class="lbl">科學文獻</div></div>
+      <div class="stat-block"><div class="num">&gt;10<small>項</small></div><div class="lbl">人體臨床</div></div>
+    </div>
+    <div class="comp">
+      <div class="comp-head"><div class="good">✅ Cinnulin PF®</div><div class="bad">❌ 一般肉桂抽出物</div></div>
+      <div class="comp-row"><div class="gc">大幅度去除有毒香豆素</div><div class="bc">內含肉桂萃取物含有香豆素</div></div>
+      <div class="comp-row"><div class="gc">將香豆素控制在 0.7% 以下</div><div class="bc">含有香豆素 (Coumarin)</div></div>
+      <div class="comp-row"><div class="gc">萃取安全無疑慮</div><div class="bc">攝取過量對健康有害</div></div>
+    </div>
+    <div class="endorsements">
+      <div class="endorse"><div class="org">USDA 美國農業部</div><div class="name">人類營養中心<br>唯一指定合作</div></div>
+      <div class="endorse"><div class="org">NIH 美國國衛院</div><div class="name">收錄多篇<br>臨床報告</div></div>
+    </div>
+  </div>
+</div></div>
+
+<!-- PAGE 06 -->
+<div class="page-wrapper"><div class="page-label">第 6 張：Chromax® 吡啶甲酸鉻</div>
+<div class="page p06" id="page06">
+  <div class="ing-label">調節代謝 Part A</div>
+  <h1 class="ing-name">國際大廠御用<br>Chromax® 吡啶甲酸鉻</h1>
+  <p class="ing-sub">高達 3~16 倍的超高吸收率</p>
+  <div class="big-row">
+    <div class="big-num-box"><div class="number">16</div><div class="unit-text">倍</div><div class="sub-lbl">超高吸收率</div></div>
+    <div class="absorb-chart">
+      <div class="bar-group"><div class="bar-label">Chromax® 有機鉻</div><div class="bar-track"><div class="bar-fill good">吸收率極高</div></div></div>
+      <div class="bar-group"><div class="bar-label">普通無機鉻</div><div class="bar-track"><div class="bar-fill poor">低</div></div></div>
+    </div>
+  </div>
+  <div class="patents-title">三項美國功效專利</div>
+  <div class="patent-item"><div class="icon">📋</div><div><h4>US 5,087,623</h4><p>調節血糖</p></div></div>
+  <div class="patent-item"><div class="icon">📋</div><div><h4>US 5,087,624</h4><p>增加瘦體組織</p></div></div>
+  <div class="patent-item"><div class="icon">📋</div><div><h4>US 5,175,156</h4><p>改善血脂</p></div></div>
+</div></div>
+
+<!-- PAGE 07 -->
+<div class="page-wrapper"><div class="page-label">第 7 張：UWK-20 白腎豆 + 綠咖啡</div>
+<div class="page p07" id="page07">
+  <div class="top-bar"></div>
+  <div class="inner">
+    <div class="section">
+      <div class="ing-label label-blue">核心成分 ③</div>
+      <h2 class="blue">UWK-20 專利白腎豆</h2>
+      <p class="sub">富含 α-澱粉酶抑制劑 Phaseolamin</p>
+      <div class="mech-card"><div class="shield">🛡️</div><div class="mech-text"><h3>從源頭阻斷澱粉吸收</h3><p>抑制 <strong>α-amylase</strong> 澱粉分解酶<br>減少醣類被身體吸收的負擔</p></div></div>
+      <div class="tech-badges"><div class="tech-badge">專利 SUX-MAX 超音波萃取</div><div class="tech-badge">專利 PFD-X 凍晶乾燥</div><div class="tech-badge">專利 LTG-X 低溫研磨</div></div>
+    </div>
+    <div class="divider"></div>
+    <div class="section">
+      <div class="ing-label label-green">核心成分 ④</div>
+      <h2 class="green">Grecobe® 綠咖啡萃取物</h2>
+      <p class="sub">冠軍中的冠軍 — 印度羅布斯塔咖啡豆</p>
+      <div class="green-stats">
+        <div class="gs-card"><div class="num">≥20<small>%</small></div><div class="lbl">5-CQA 含量</div></div>
+        <div class="gs-card"><div class="num">≥45<small>%</small></div><div class="lbl">綠原酸含量</div></div>
+        <div class="gs-card"><div class="num">No.1</div><div class="lbl">市售最高</div></div>
+      </div>
+      <div class="benefits">
+        <div class="ben-item"><div class="ben-check">✓</div><span>獨特「5-CQA 咖啡奎寧酸」促進代謝關鍵成分</span></div>
+        <div class="ben-item"><div class="ben-check">✓</div><span>去咖啡因，安心好選擇</span></div>
+        <div class="ben-item"><div class="ben-check">✓</div><span>無重金屬以及農藥殘留</span></div>
+      </div>
+    </div>
+  </div>
+</div></div>
+
+<!-- PAGE 08 -->
+<div class="page-wrapper"><div class="page-label">第 8 張：原料比較表</div>
+<div class="page p08" id="page08">
+  <h1 class="title">原料比較，一目瞭然</h1>
+  <p class="subtitle">專利頂規原料 vs 市售普通原料</p>
+  <table>
+    <thead><tr><th class="col-cat">成分</th><th class="col-ours">✅ 本產品（專利頂規）</th><th class="col-theirs">❌ 市售普通原料</th></tr></thead>
+    <tbody>
+      <tr><td class="td-cat">肉桂</td><td class="td-ours"><span class="tag-g">Cinnulin PF</span><br>USDA/NIH 背書<br><strong>CPPT 純水萃取</strong><br>DL Type A Polymer</td><td class="td-theirs"><span class="tag-b">普通肉桂</span><br>無文獻證明<br>一般熱水煮沸<br>無臨床劑量</td></tr>
+      <tr><td class="td-cat">苦瓜<br>多肽</td><td class="td-ours"><span class="tag-g">PPK 極萃多肽</span><br><strong>605人臨床</strong><br>植物胰島素結構<br>153國 PCT 專利</td><td class="td-theirs"><span class="tag-b">台灣一般胜肽</span><br>僅動物實驗<br>無明確立體結構<br>與劑量</td></tr>
+      <tr><td class="td-cat">鉻</td><td class="td-ours"><span class="tag-g">Chromax 有機鉻</span><br>3項美國功效專利<br><strong>16倍超高吸收率</strong></td><td class="td-theirs"><span class="tag-b">一般無機鉻</span><br>吸收率極低<br>潛在重金屬殘留風險</td></tr>
+      <tr><td class="td-cat">白腎豆</td><td class="td-ours"><span class="tag-g">UWK-20</span><br><strong>專利 SUX-MAX</strong><br>超音波低溫萃取<br>完整保留活性</td><td class="td-theirs"><span class="tag-b">一般白腎豆</span><br>高溫破壞活性成分<br>單一水煮萃取</td></tr>
+    </tbody>
+  </table>
+  <div class="bottom-badge"><p>每一種成分，都選用<strong>全球頂規專利原料</strong></p></div>
+</div></div>
+
+<!-- PAGE 09 -->
+<div class="page-wrapper"><div class="page-label">第 9 張：適用族群</div>
+<div class="page p09" id="page09">
+  <div class="glow"></div>
+  <div class="inner">
+    <div class="label">誰適合</div>
+    <h1 class="title">不是不吃，是更聰明吃</h1>
+    <p class="subtitle">「讓每一餐，都少一點負擔」</p>
+    <div class="aud-card"><div class="aud-icon">🍽️</div><div class="aud-text"><h3>外食族 / 甜食控</h3><p>幫助減少過多醣類攝取造成的生理負擔<br>三餐在外也能安心享受美食</p></div></div>
+    <div class="aud-card"><div class="aud-icon">⚙️</div><div class="aud-text"><h3>熟齡族 / 代謝下降者</h3><p>幫助維持正常的代謝運作，活力不中斷<br>補充身體流失的代謝能量</p></div></div>
+    <div class="aud-card"><div class="aud-icon">💪</div><div class="aud-text"><h3>體態管理者</h3><p>幫助調整體質與機能平衡，維持輕盈狀態<br>搭配運動飲食，效果加乘</p></div></div>
+    <div class="cta-note"><p>建議：<strong>正常保養餐前食用</strong><br>打造不囤積體質</p></div>
+  </div>
+</div></div>
+
+<!-- PAGE 10 -->
+<div class="page-wrapper"><div class="page-label">第 10 張：結尾 CTA</div>
+<div class="page p10" id="page10">
+  <div class="ring r1"></div><div class="ring r2"></div>
+  <div class="inner">
+    <div class="qm">"</div>
+    <h1 class="main-q">吃進去到代謝出去<br>都幫你照顧好</h1>
+    <p class="sub-q">從源頭管理，到代謝調節，全方位守護</p>
+    <div class="brand-line"><div class="brand-div"></div><div class="brand-nm">美兆生活 MJ LIFE</div><div class="brand-div"></div></div>
+    <h2 class="prod-name">極萃苦瓜胜肽</h2>
+    <p class="final-tag">拒絕慌糖人生，啟動代謝</p>
+    <div class="cta-btn">立即了解更多</div>
+    <p class="cta-sub">三大專利穩控配方｜全方位代謝管理</p>
+    <div class="patents-footer">
+      <div class="pm"><div class="pnm">PPK™</div>專利苦瓜多肽</div>
+      <div class="pm"><div class="pnm">Cinnulin PF®</div>專利唐寧肉桂</div>
+      <div class="pm"><div class="pnm">Chromax®</div>專利吡啶甲酸鉻</div>
+      <div class="pm"><div class="pnm">UWK-20</div>專利白腎豆</div>
+    </div>
+  </div>
+</div></div>
+
+</div><!-- end pages-container -->
+
+<script>
+async function renderAll() {
+  const status = document.getElementById('status');
+  const pages = ['page01','page02','page03','page04','page05','page06','page07','page08','page09','page10'];
+  const names = ['01_首圖Hero','02_痛點共鳴','03_三段式管理','04_PPK專利苦瓜多肽','05_Cinnulin專利肉桂','06_Chromax吡啶甲酸鉻','07_UWK白腎豆與綠咖啡','08_原料比較表','09_適用族群','10_結尾CTA'];
+
+  for (let i = 0; i < pages.length; i++) {
+    status.textContent = '正在渲染第 ' + (i+1) + '/10 張：' + names[i] + '...';
+    const el = document.getElementById(pages[i]);
+
+    try {
+      const canvas = await html2canvas(el, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: null,
+        width: 750,
+        height: 1000,
+        windowWidth: 750,
+        windowHeight: 1000
+      });
+
+      const link = document.createElement('a');
+      link.download = '極萃苦瓜胜肽_' + names[i] + '.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+
+      await new Promise(r => setTimeout(r, 800));
+    } catch(e) {
+      status.textContent = '第 ' + (i+1) + ' 張渲染失敗: ' + e.message;
+      await new Promise(r => setTimeout(r, 2000));
+    }
+  }
+
+  status.textContent = '✅ 全部 10 張 PNG 匯出完成！請檢查下載資料夾';
+}
+</script>
+
+</body>
+</html>
