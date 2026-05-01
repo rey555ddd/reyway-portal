@@ -61,13 +61,25 @@ body{font-family:"Inter","Noto Sans TC",sans-serif;background:var(--bg);color:va
 <div class="wrap">
   <div class="hero">
     <h2>網頁知識庫</h2>
-    <p>教學頁面・工具文件・品牌報告<br>所有重要 HTML 都在這裡</p>
+    <p>內部教學・品牌資料・對外心得<br>所有重要文件都在這裡</p>
   </div>
 
-  <div class="section-label">分類瀏覽</div>
+  <!-- 外部知識站 banner -->
+  <a href="https://rsway.net" target="_blank" style="display:block;background:linear-gradient(135deg,#1A2238 0%,#2A3556 100%);border-radius:18px;padding:28px 32px;color:#fff;margin-bottom:36px;box-shadow:0 4px 20px rgba(26,34,56,0.15);text-decoration:none;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 28px rgba(26,34,56,0.25)'" onmouseout="this.style.transform='';this.style.boxShadow='0 4px 20px rgba(26,34,56,0.15)'">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
+      <div style="flex:1;min-width:240px">
+        <div style="font-size:0.72rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:#B8442B;margin-bottom:6px">外部知識站</div>
+        <div style="font-family:'Noto Serif TC',serif;font-size:1.35rem;font-weight:700;margin-bottom:6px">笙之道｜AI 心得總站</div>
+        <div style="font-size:0.85rem;color:rgba(255,255,255,0.75);line-height:1.55">笙闆對外分享的 AI 工作方法論<br>朋友與網路讀者都看得到</div>
+      </div>
+      <div style="font-size:1.4rem;color:#B8442B">rsway.net →</div>
+    </div>
+  </a>
+
+  <div class="section-label">📚 內部知識（員工專用）</div>
   <div class="cat-grid">
     <a class="cat-card" href="/knowledge/教學/">
-      <div class="cat-icon">📖</div>
+      <div class="cat-icon"><i class="ph ph-book-open"></i></div>
       <div class="cat-name">教學</div>
       <div class="cat-desc">AI 使用教學、主管培訓<br>工具操作指南</div>
       <div class="cat-count">4 個頁面</div>
@@ -90,6 +102,16 @@ body{font-family:"Inter","Noto Sans TC",sans-serif;background:var(--bg);color:va
       <div class="cat-desc">內部調查・課前問卷<br>活動回饋</div>
       <div class="cat-count">1 個頁面</div>
     </a>
+  </div>
+
+  <div class="section-label" style="margin-top:36px">🌐 外部分享（公開・rsway.net 同步副本）</div>
+  <div class="cat-grid">
+    <a class="cat-card" href="/knowledge/心得/19天用AI蓋系統.html">
+      <div class="cat-icon"><i class="ph ph-lightbulb"></i></div>
+      <div class="cat-name">心得</div>
+      <div class="cat-desc">AI 工作方法論<br>笙之道對外文章副本</div>
+      <div class="cat-count">1 個頁面</div>
+    </a>
     <a class="cat-card" href="/knowledge/分析/競選標語邏輯.html">
       <div class="cat-icon"><i class="ph ph-magnifying-glass"></i></div>
       <div class="cat-name">分析</div>
@@ -98,8 +120,17 @@ body{font-family:"Inter","Noto Sans TC",sans-serif;background:var(--bg);color:va
     </a>
   </div>
 
-  <div class="section-label">近期更新</div>
+  <div class="section-label" style="margin-top:36px">近期更新</div>
   <div class="recent-list">
+
+    <a class="kb-card" href="/knowledge/心得/19天用AI蓋系統.html" target="_blank">
+      <div class="kb-icon" style="color:#B8442B"><i class="ph ph-lightbulb"></i></div>
+      <div class="kb-body">
+        <div class="kb-title">19 天，我用 AI 從零蓋了一整套系統</div>
+        <div class="kb-meta"><span class="kb-tag" style="background:rgba(184,68,43,0.12);color:#B8442B">心得・對外</span><span class="kb-date">2026-05-02 · 笙之道首篇</span></div>
+      </div>
+      <div class="kb-arrow">→</div>
+    </a>
 
     <a class="kb-card" href="/knowledge/問卷/manager-ai-survey.html" target="_blank">
       <div class="kb-icon" style="color:#C6613F"><i class="ph ph-clipboard-text"></i></div>
