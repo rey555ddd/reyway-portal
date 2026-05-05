@@ -1,0 +1,1791 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Code AI Agent 教育訓練 ｜ 主管核心幹部版</title>
+<style>
+  :root {
+    --teal: #5BC8D5;
+    --teal-light: #E8F8FA;
+    --teal-mid: #C5EDF1;
+    --teal-dark: #2AABBBC;
+    --navy: #1E293B;
+    --slate: #475569;
+    --muted: #94A3B8;
+    --border: #E2E8F0;
+    --bg: #FFFFFF;
+    --bg-soft: #F8FDFE;
+    --green: #10B981;
+    --orange: #F59E0B;
+    --red: #EF4444;
+    --purple: #8B5CF6;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'PingFang TC', 'Noto Sans TC', sans-serif;
+    background: var(--bg);
+    color: var(--navy);
+    line-height: 1.7;
+  }
+
+  /* Progress Bar */
+  #progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    background: var(--teal);
+    z-index: 9999;
+    transition: width 0.1s;
+    width: 0%;
+  }
+
+  /* Top Nav */
+  nav {
+    position: fixed;
+    top: 3px;
+    left: 0;
+    right: 0;
+    background: rgba(255,255,255,0.96);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    z-index: 100;
+    padding: 0 24px;
+  }
+
+  .nav-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 10px 0;
+  }
+
+  .nav-inner::-webkit-scrollbar { display: none; }
+
+  .nav-inner a {
+    white-space: nowrap;
+    text-decoration: none;
+    font-size: 12px;
+    color: var(--slate);
+    padding: 4px 10px;
+    border-radius: 20px;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+
+  .nav-inner a:hover {
+    background: var(--teal-light);
+    color: var(--navy);
+  }
+
+  .nav-logo {
+    font-weight: 700;
+    color: var(--teal) !important;
+    margin-right: 8px;
+    font-size: 13px !important;
+  }
+
+  /* Main */
+  main {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 80px 24px 100px;
+  }
+
+  /* Hero */
+  .hero {
+    text-align: center;
+    padding: 60px 0 50px;
+    border-bottom: 2px solid var(--teal-light);
+    margin-bottom: 70px;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    background: var(--teal-light);
+    color: var(--teal);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    letter-spacing: 0.05em;
+  }
+
+  .hero h1 {
+    font-size: clamp(26px, 5vw, 40px);
+    font-weight: 800;
+    color: var(--navy);
+    line-height: 1.3;
+    margin-bottom: 16px;
+  }
+
+  .hero h1 span { color: var(--teal); }
+
+  .hero p {
+    font-size: 16px;
+    color: var(--slate);
+    max-width: 580px;
+    margin: 0 auto 28px;
+  }
+
+  .hero-meta {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .hero-meta span {
+    font-size: 13px;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  /* Section */
+  section {
+    margin-bottom: 80px;
+    scroll-margin-top: 70px;
+  }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--teal);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  section h2 {
+    font-size: clamp(22px, 4vw, 30px);
+    font-weight: 800;
+    color: var(--navy);
+    margin-bottom: 10px;
+    line-height: 1.3;
+  }
+
+  .section-sub {
+    font-size: 15px;
+    color: var(--slate);
+    margin-bottom: 32px;
+    line-height: 1.6;
+  }
+
+  /* Divider */
+  .section-divider {
+    width: 48px;
+    height: 3px;
+    background: var(--teal);
+    border-radius: 2px;
+    margin-bottom: 28px;
+  }
+
+  /* Cards */
+  .card {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+  }
+
+  .card-teal {
+    background: var(--teal-light);
+    border-color: var(--teal-mid);
+  }
+
+  .card h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 10px;
+  }
+
+  .card p, .card li {
+    font-size: 14px;
+    color: var(--slate);
+    line-height: 1.7;
+  }
+
+  .card ul { padding-left: 20px; }
+  .card li { margin-bottom: 6px; }
+
+  /* Grid */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  /* Table */
+  .table-wrap { overflow-x: auto; margin-bottom: 24px; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+
+  thead th {
+    background: var(--navy);
+    color: #fff;
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 13px;
+  }
+
+  thead th:first-child { border-radius: 8px 0 0 0; }
+  thead th:last-child { border-radius: 0 8px 0 0; }
+
+  tbody tr { border-bottom: 1px solid var(--border); }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:nth-child(even) { background: var(--bg-soft); }
+
+  tbody td {
+    padding: 12px 16px;
+    color: var(--slate);
+    vertical-align: top;
+  }
+
+  tbody td:first-child { font-weight: 600; color: var(--navy); }
+
+  .tag-green { color: var(--green); font-weight: 700; }
+  .tag-red { color: var(--red); font-weight: 700; }
+  .tag-orange { color: var(--orange); font-weight: 700; }
+  .tag-teal { color: var(--teal); font-weight: 700; }
+
+  /* Highlight Box */
+  .highlight {
+    background: var(--teal-light);
+    border-left: 4px solid var(--teal);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+  }
+
+  .highlight p {
+    font-size: 14px;
+    color: var(--navy);
+    line-height: 1.7;
+  }
+
+  .highlight strong { color: var(--teal); }
+
+  /* Quote */
+  .quote {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 20px;
+    font-size: 15px;
+    color: var(--navy);
+    font-style: italic;
+    line-height: 1.8;
+  }
+
+  .quote cite {
+    display: block;
+    margin-top: 10px;
+    font-size: 13px;
+    color: var(--muted);
+    font-style: normal;
+    font-weight: 600;
+  }
+
+  /* Flywheel */
+  .flywheel {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px 24px;
+    margin-bottom: 24px;
+  }
+
+  .flywheel-steps {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .fw-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 110px;
+  }
+
+  .fw-circle {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--teal);
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 8px;
+    line-height: 1.3;
+    margin-bottom: 8px;
+  }
+
+  .fw-step span {
+    font-size: 11px;
+    color: var(--slate);
+    font-weight: 600;
+  }
+
+  .fw-arrow {
+    font-size: 20px;
+    color: var(--teal);
+    margin: 0 -4px;
+    padding-bottom: 20px;
+  }
+
+  /* Person card */
+  .person-card {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+
+  .person-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .person-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--teal);
+    color: white;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .person-info h4 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--navy);
+  }
+
+  .person-info span {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .person-card h5 {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--teal);
+    margin-bottom: 8px;
+  }
+
+  .person-card ul {
+    padding-left: 18px;
+    margin-bottom: 12px;
+  }
+
+  .person-card li {
+    font-size: 14px;
+    color: var(--slate);
+    margin-bottom: 5px;
+  }
+
+  /* Code block */
+  .code-block {
+    background: var(--navy);
+    color: #E2E8F0;
+    border-radius: 10px;
+    padding: 16px 20px;
+    font-family: 'SF Mono', 'Consolas', monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    margin-bottom: 16px;
+    overflow-x: auto;
+  }
+
+  .code-block .comment { color: #64748B; }
+  .code-block .teal { color: #5BC8D5; }
+  .code-block .green { color: #86EFAC; }
+
+  /* Bad/Good compare */
+  .compare-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  @media (max-width: 600px) {
+    .compare-wrap { grid-template-columns: 1fr; }
+  }
+
+  .compare-bad {
+    background: #FFF5F5;
+    border: 1px solid #FCA5A5;
+    border-radius: 10px;
+    padding: 16px;
+  }
+
+  .compare-good {
+    background: #F0FDF4;
+    border: 1px solid #86EFAC;
+    border-radius: 10px;
+    padding: 16px;
+  }
+
+  .compare-label {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .compare-bad .compare-label { color: var(--red); }
+  .compare-good .compare-label { color: var(--green); }
+
+  .compare-bad p, .compare-good p {
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  .compare-bad p { color: #991B1B; }
+  .compare-good p { color: #14532D; }
+
+  /* Agent row */
+  .agent-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .agent-row:last-child { border-bottom: none; }
+
+  .agent-emoji {
+    font-size: 22px;
+    width: 36px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  .agent-name {
+    font-weight: 700;
+    color: var(--navy);
+    font-size: 14px;
+    width: 100px;
+    flex-shrink: 0;
+  }
+
+  .agent-role {
+    font-size: 12px;
+    color: var(--muted);
+    width: 80px;
+    flex-shrink: 0;
+  }
+
+  .agent-desc {
+    font-size: 13px;
+    color: var(--slate);
+    flex: 1;
+  }
+
+  /* Tip box */
+  .tip {
+    background: #FFFBEB;
+    border: 1px solid #FCD34D;
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 16px;
+    font-size: 14px;
+    color: #92400E;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .tip-icon { font-size: 18px; flex-shrink: 0; }
+
+  /* Warning */
+  .warning {
+    background: #FFF5F5;
+    border: 1px solid #FCA5A5;
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 16px;
+    font-size: 14px;
+    color: #991B1B;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  /* Memory layers */
+  .memory-tree {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 20px;
+    font-family: 'SF Mono', 'Consolas', monospace;
+    font-size: 13px;
+    line-height: 2;
+    color: var(--slate);
+  }
+
+  .memory-tree .tree-folder { color: var(--teal); font-weight: 700; }
+  .memory-tree .tree-note { color: var(--muted); font-size: 11px; }
+
+  /* Session indicator */
+  .session-box {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+
+  .session-box h4 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .session-box ul {
+    padding-left: 18px;
+  }
+
+  .session-box li {
+    font-size: 13px;
+    color: var(--slate);
+    margin-bottom: 5px;
+  }
+
+  /* Iron rule */
+  .iron-rule {
+    background: var(--navy);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+    color: white;
+  }
+
+  .iron-rule h4 {
+    color: var(--teal);
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+
+  .iron-rule li {
+    font-size: 13px;
+    color: #CBD5E1;
+    margin-bottom: 6px;
+  }
+
+  .iron-rule ul { padding-left: 18px; }
+
+  /* Skill tag */
+  .skill-tag {
+    display: inline-block;
+    background: var(--teal-light);
+    color: var(--teal);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 12px;
+    margin: 3px;
+    font-family: 'SF Mono', monospace;
+  }
+
+  /* Chapter number */
+  .ch-num {
+    display: inline-block;
+    background: var(--teal);
+    color: white;
+    font-size: 11px;
+    font-weight: 800;
+    padding: 2px 10px;
+    border-radius: 12px;
+    margin-bottom: 8px;
+    letter-spacing: 0.05em;
+  }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 40px 24px;
+    font-size: 12px;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+  }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    main { padding: 70px 16px 60px; }
+    .flywheel-steps { gap: 4px; }
+    .fw-step { width: 80px; }
+    .fw-circle { width: 52px; height: 52px; font-size: 10px; }
+    .fw-arrow { font-size: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="#top">淨淨 AI</a>
+    <a href="#ch0">為什麼 Agent</a>
+    <a href="#ch1">Claude Code</a>
+    <a href="#ch2">底層邏輯</a>
+    <a href="#ch3">Agent</a>
+    <a href="#ch4">Memory</a>
+    <a href="#ch5">Skill</a>
+    <a href="#ch6">下指令</a>
+    <a href="#ch7">Session 管理</a>
+    <a href="#ch8b">實戰習慣</a>
+    <a href="#ch8">部門實戰</a>
+    <a href="#ch9">注意事項</a>
+  </div>
+</nav>
+
+<main id="top">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-badge">主管 · 核心幹部版</div>
+    <h1>用 <span>AI Agent</span> 打造<br>屬於你的智能工作夥伴</h1>
+    <p>這不是給一般員工看的教學。這是給工具創造者的課程——讓你也能像笙哥一樣，用 AI 從頭打造任何工具。</p>
+    <div class="hero-meta">
+      <span>🎯 對象：妮妮 · 依庭 · 小瑄 · Cara · 冠達</span>
+      <span>⏱ 預計 1.5–2 小時</span>
+      <span>📅 若水聯盟 · 2026</span>
+    </div>
+  </div>
+
+  <!-- Ch.0 -->
+  <section id="ch0">
+    <div class="ch-num">Ch.0</div>
+    <div class="section-label">開場</div>
+    <h2>為什麼要用 AI Agent？</h2>
+    <div class="section-divider"></div>
+    <p class="section-sub">在學怎麼用之前，先搞清楚「為什麼這套系統跟你以前用過的完全不一樣」。</p>
+
+    <div class="quote">
+      「我對未來公司的願景：假設我們有十個人，其中就有六個核心幹部是工具的創造者與修改者。他們待在前線最了解需求，能做出各種工具並整合在淨淨總站裡。」
+      <cite>— 笙哥</cite>
+    </div>
+
+    <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin-bottom:16px;">四個層次的對比</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>工具</th>
+            <th>怎麼用</th>
+            <th>記得你嗎</th>
+            <th>能主動行動</th>
+            <th>懂你的品牌</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Gemini / ChatGPT</td>
+            <td>問問題，拿答案</td>
+            <td class="tag-red">❌ 每次重來</td>
+            <td class="tag-red">❌ 只說不做</td>
+            <td class="tag-red">❌ 不認識你</td>
+          </tr>
+          <tr>
+            <td>Claude（一般對話）</td>
+            <td>更聰明的問答</td>
+            <td class="tag-red">❌ 關掉就忘</td>
+            <td class="tag-red">❌ 還是只說</td>
+            <td class="tag-red">❌ 陌生人</td>
+          </tr>
+          <tr>
+            <td>Claude Code（有手有腳）</td>
+            <td>能寫程式、操作電腦</td>
+            <td class="tag-orange">⚠️ 單次記得</td>
+            <td class="tag-green">✅ 可以動手</td>
+            <td class="tag-red">❌ 還是不認識</td>
+          </tr>
+          <tr>
+            <td style="color:var(--teal)">AI Agent 若水聯盟模式</td>
+            <td>有角色、有記憶、有知識庫</td>
+            <td class="tag-green">✅ 永久記得</td>
+            <td class="tag-green">✅ 判斷＋行動</td>
+            <td class="tag-green">✅ 深度認識</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:28px 0 16px;">跟 Manus AI 比較</h3>
+    <p style="font-size:14px;color:var(--slate);margin-bottom:16px;">Manus 是 2026 年最紅的「全自動 Agent」，你丟個任務它自己跑完。聽起來很厲害，但有幾個根本差異：</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>項目</th>
+            <th>Manus AI</th>
+            <th>若水聯盟模式</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>自主程度</td>
+            <td>高，自己決定怎麼做</td>
+            <td class="tag-green">高，但你掌控規則</td>
+          </tr>
+          <tr>
+            <td>品牌知識</td>
+            <td class="tag-red">❌ 不認識你的品牌</td>
+            <td class="tag-green">✅ Skill 裝進去，等級老手</td>
+          </tr>
+          <tr>
+            <td>記憶</td>
+            <td class="tag-red">❌ 任務做完就忘</td>
+            <td class="tag-green">✅ Memory 永久累積</td>
+          </tr>
+          <tr>
+            <td>透明度</td>
+            <td>黑盒子，不知道它在幹嘛</td>
+            <td class="tag-green">每步驟都看得到</td>
+          </tr>
+          <tr>
+            <td>越用越聰明</td>
+            <td class="tag-red">❌ 每次重置</td>
+            <td class="tag-green">✅ 優化後存回 Memory</td>
+          </tr>
+          <tr>
+            <td>成本</td>
+            <td class="tag-orange">高（按任務計費）</td>
+            <td class="tag-green">低（自己控制）</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="highlight">
+      <p><strong>一句話結論：</strong>Manus 像請外包，做完就走。若水聯盟模式像養一個懂你的團隊，越用越值錢，越用越聰明。</p>
+    </div>
+  </section>
+
+  <!-- Ch.1 -->
+  <section id="ch1">
+    <div class="ch-num">Ch.1</div>
+    <div class="section-label">基礎概念</div>
+    <h2>Claude Code 是什麼？</h2>
+    <div class="section-divider"></div>
+    <p class="section-sub">很多人把 Claude Code 當成「更聰明的 ChatGPT」，這是最大的誤解。</p>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3>💬 一般 Claude（對話版）</h3>
+        <ul>
+          <li>你問，它答，僅此而已</li>
+          <li>不能操作你的電腦</li>
+          <li>不能讀寫你的檔案</li>
+          <li>關掉視窗就完全忘記</li>
+          <li>每次都要重新介紹自己</li>
+        </ul>
+      </div>
+      <div class="card card-teal">
+        <h3>⚡ Claude Code（有手有腳）</h3>
+        <ul>
+          <li>可以寫程式並直接跑起來</li>
+          <li>可以讀寫你電腦上的任何檔案</li>
+          <li>可以搜尋網路、查資料</li>
+          <li>可以幫你操作瀏覽器</li>
+          <li>透過 Memory 永久記住你</li>
+          <li>透過 Skill 具備專業知識</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="highlight">
+      <p>重要觀念：Claude Code 不是「聊天工具」，它是<strong>可以接受派工、自主完成任務的 AI 員工</strong>。你說「幫我分析這份廣告數據並寫成週報」，它就真的去做完，而不是只告訴你「你可以這樣做」。</p>
+    </div>
+
+    <h3 style="font-size:16px;font-weight:700;color:var(--navy);margin:24px 0 12px;">它能做到的事（實際例子）</h3>
+    <div class="grid-3">
+      <div class="card">
+        <h3>📊 數據分析</h3>
+        <p>讀取廣告報表 CSV，自動分析 ROAS 趨勢，輸出圖表與建議</p>
+      </div>
+      <div class="card">
+        <h3>🌐 建工具網站</h3>
+        <p>從零打造電商數據站、廣告分析儀表板，部署到網路上</p>
+      </div>
+      <div class="card">
+        <h3>📝 生成文件</h3>
+        <p>自動產出會議記錄、週報、合意終止書、企劃書</p>
+      </div>
+      <div class="card">
+        <h3>🤖 自動化流程</h3>
+        <p>定期跑廣告報告、自動整理數據、發送摘要</p>
+      </div>
+      <div class="card">
+        <h3>🔍 研究調查</h3>
+        <p>搜尋競品、整理市場資料、分析消費者評論</p>
+      </div>
+      <div class="card">
+        <h3>🎨 素材生成</h3>
+        <p>AI 生圖、寫文案、製作廣告素材，整合品牌知識</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ch.2 -->
+  <section id="ch2">
+    <div class="ch-num">Ch.2</div>
+    <div class="section-label">核心思維</div>
+    <h2>AI 工作的底層邏輯</h2>
+    <div class="section-divider"></div>
+    <p class="section-sub">這是笙哥使用 AI 的核心思維，也是讓 AI 越用越強的根本原理。</p>
+
+    <div class="flywheel">
+      <p style="text-align:center;font-size:13px;color:var(--muted);margin-bottom:24px;font-weight:600;">若水聯盟 AI 飛輪</p>
+      <div class="flywheel-steps">
+        <div class="fw-step">
+          <div class="fw-circle">先定<br>目的</div>
+          <span>目標是什麼</span>
+        </div>
+        <div class="fw-arrow">→</div>
+        <div class="fw-step">
+          <div class="fw-circle">盤點<br>資源</div>
+          <span>手邊有什麼</span>
+        </div>
+        <div class="fw-arrow">→</div>
+        <div class="fw-step">
+          <div class="fw-circle">收集<br>資料</div>
+          <span>缺什麼補什麼</span>
+        </div>
+        <div class="fw-arrow">→</div>
+        <div class="fw-step">
+          <div class="fw-circle">AI<br>重組</div>
+          <span>讓AI分析整合</span>
+        </div>
+        <div class="fw-arrow">→</div>
+        <div class="fw-step">
+          <div class="fw-circle">人工<br>打磨</div>
+          <span>你來拍板調整</span>
+        </div>
+        <div class="fw-arrow">→</div>
+        <div class="fw-step">
+          <div class="fw-circle">存回<br>記憶</div>
+          <span>優化結果回存</span>
+        </div>
+      </div>
+      <p style="text-align:center;margin-top:20px;font-size:13px;color:var(--teal);font-weight:700;">↻ 每一圈，AI 都比上一次更懂你</p>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3>🎯 第一步：先知道目的</h3>
+        <p>在使用 AI 之前，最重要的事是<strong>釐清最終目標</strong>。不是「我想用 AI 做廣告」，而是「我想讓廣告週報從手動 4 小時變成自動 10 分鐘」。目的越清楚，AI 的輸出越精準。</p>
+      </div>
+      <div class="card">
+        <h3>🔄 最後一步：存回記憶</h3>
+        <p>每次你覺得某個指令特別好用、某個工作流程跑得很順——把它存進 Memory。下一次 AI 就從這個優化後的版本出發，而不是從零開始。<strong>這就是「越用越聰明」的秘密。</strong></p>
+      </div>
+    </div>
+
+    <div class="highlight">
+      <p><strong>實際例子（冠達）：</strong>第一次叫 AI 分析廣告，花了很多時間調整格式。把這個好版本存進 Memory 後，下一次 AI 一開口就用對格式，一次到位。三個月後，冠達的廣告分析 SOP 全都住在 AI 的 Memory 裡。</p>
+    </div>
+  </section>
+
+  <!-- Ch.3 -->
+  <section id="ch3">
+    <div class="ch-num">Ch.3</div>
+    <div class="section-label">架構</div>
+    <h2>Agent — 有角色的 AI</h2>
+    <div class="section-divider"></div>
+    <p class="section-sub">Agent 不是一個更聰明的機器人，而是一個有職稱、有職責、有工作規則的 AI 員工。</p>
+
+    <div class="card card-teal" style="margin-bottom:24px;">
+      <h3>一般 AI vs Agent 的差別</h3>
+      <p>一般 AI = 任何人問什麼，它答什麼，沒有立場<br>
+      Agent = 有角色設定、知道自己的職責範圍、照著公司規則做事<br><br>
+      就像「一個路人」vs「一個你公司的員工」——員工知道公司文化、知道自己負責什麼、知道什麼事要回報給誰。</p>
+    </div>
+
+    <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin-bottom:16px;">若水聯盟七員</h3>
+
+    <div class="card" style="padding:8px 16px;">
+      <div class="agent-row">
+        <div class="agent-emoji">⚔️</div>
+        <div class="agent-name">韓信（將軍）</div>
+        <div class="agent-role">PM / 統帥</div>
+        <div class="agent-desc">統籌全軍，代理笙哥決策，主要對話窗口。任何任務先通過韓信。</div>
+      </div>
+      <div class="agent-row">
+        <div class="agent-emoji">🧠</div>
+        <div class="agent-name">郭嘉（軍師）</div>
+        <div class="agent-role">策略 / 人資</div>
+        <div class="agent-desc">策略謀略、流程優化、人事判斷、數字分析。你現在在看的這份文件就是郭嘉做的。</div>
+      </div>
+      <div class="agent-row">
+        <div class="agent-emoji">🔧</div>
+        <div class="agent-name">墨子（工程）</div>
+        <div class="agent-role">前端開發</div>
+        <div class="agent-desc">打造工具網站、UI 介面、所有看得到的頁面。淨淨總站的前端都是墨子負責。</div>
+      </div>
+      <div class="agent-row">
+        <div class="agent-emoji">🏗️</div>
+        <div class="agent-name">蕭何（架構）</div>
+        <div class="agent-role">後端 / 資料庫</div>
+        <div class="agent-desc">後台伺服器、資料庫、各平台串接（Meta / 蝦皮 / momo）。</div>
+      </div>
+      <div class="agent-row">
+        <div class="agent-emoji">🎨</div>
+        <div class="agent-name">小喬（美術）</div>
+        <div class="agent-role">設計 / 視覺</div>
+        <div class="agent-desc">品牌視覺、素材設計、像素圖製作。</div>
+      </div>
+      <div class="agent-row">
+        <div class="agent-emoji">📣</div>
+        <div class="agent-name">周瑜（行銷）</div>
+        <div class="agent-role">行銷 / 廣告</div>
+        <div class="agent-desc">行銷策略、廣告投放、文案企劃、社群內容。電商數據站的行銷主導。</div>
+      </div>
+      <div class="agent-row">
+        <div class="agent-emoji">📨</div>
+        <div class="agent-name">傳令</div>
+        <div class="agent-role">LINE 值班</div>
+        <div class="agent-desc">24 小時 LINE 回覆、客服轉接、緊急通知。</div>
+      </div>
+    </div>
+
+    <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:28px 0 16px;">指揮鏈 — 誰找誰說話</h3>
+
+    <div class="highlight">
+      <p><strong>笙哥只跟韓信、郭嘉、周瑜說話。</strong>墨子、蕭何、小喬的工作由韓信發包，笙哥不直接派工給他們。<br><br>
+      這就像你不會直接叫工廠員工做事，你說給你的助理，助理再去協調——這樣才不會亂。</p>
+    </div>
+
+    <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:28px 0 16px;">一個任務怎麼跑完的</h3>
+
+    <div class="card" style="background:var(--bg-soft);">
+      <p style="font-size:14px;color:var(--slate);line-height:2;">
+        笙哥說：「做一個廣告投放分析工具」<br>
+        ↓ 韓信接收，拆解任務，派工給周瑜（行銷規格）+ 墨子（前端 UI）+ 蕭何（Meta API 串接）<br>
+        ↓ 三人各自去做，完成後回報韓信<br>
+        ↓ 韓信驗收，整合成品，回報笙哥<br>
+        ↓ 笙哥說「好」或「調一下這裡」<br>
+        ↓ 完成，結果存進 Memory
+      </p>
+    </div>
+
+    <div class="tip">
+      <div class="tip-icon">💡</div>
+      <div>你自己開始用 Claude Code 之後，也要給你的 AI 設定角色。告訴它「你是淨淨行銷部的分析師，專門負責廣告數據週報」，它的輸出品質會完全不一樣。</div>
+    </div>
+  </section>
+
+  <!-- Ch.4 -->
+  <section id="ch4">
+    <div class="ch-num">Ch.4</div>
+    <div class="section-label">長期記憶</div>
+    <h2>Memory — 讓 AI 記住你</h2>
+    <div class="section-divider"></div>
+    <p class="section-sub">為什麼 ChatGPT 每次都要重新介紹自己？因為它沒有 Memory。若水聯盟的 AI 員工，每次開工就自動讀取你留下的所有記錄。</p>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3>😵 沒有 Memory 的世界</h3>
+        <ul>
+          <li>每次開新對話，AI 都像新員工</li>
+          <li>你的偏好、決策、工作方式要重新解釋</li>
+          <li>同樣的錯誤一犯再犯</li>
+          <li>累積不了任何「公司知識」</li>
+        </ul>
+      </div>
+      <div class="card card-teal">
+        <h3>✅ 有 Memory 的世界</h3>
+        <ul>
+          <li>每次開工，AI 自動讀上次的決策記錄</li>
+          <li>知道你的工作習慣與偏好</li>
+          <li>記住公司的每條規則</li>
+          <li>你優化的結果永久保存</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:24px 0 12px;">Memory 的本質</h3>
+    <p style="font-size:14px;color:var(--slate);margin-bottom:16px;">Memory 不是什麼神奇技術，它就是放在電腦裡的 Markdown 文字檔案。AI 開工前讀這些檔案，就像員工上班前看昨天的交接記錄。你可以新增、修改任何一條。</p>
+
+    <div class="memory-tree">
+      <span class="tree-folder">memory/</span><br>
+      &nbsp;&nbsp;├── <span class="tree-folder">全員共用/</span> &nbsp;&nbsp;<span class="tree-note">← 所有 AI 員工啟動時必讀（公司鐵律）</span><br>
+      &nbsp;&nbsp;├── <span class="tree-folder">部門/</span><br>
+      &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── <span class="tree-folder">軍師/</span> &nbsp;&nbsp;<span class="tree-note">← 郭嘉的知識庫（策略/人資/財務）</span><br>
+      &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── <span class="tree-folder">工匠/</span> &nbsp;&nbsp;<span class="tree-note">← 墨子的知識庫（前端技術）</span><br>
+      &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;└── <span class="tree-folder">謀士/</span> &nbsp;&nbsp;<span class="tree-note">← 周瑜的知識庫（行銷方法論）</span><br>
+      &nbsp;&nbsp;├── <span class="tree-folder">專案/</span><br>
+      &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── <span class="tree-folder">淨淨/</span> &nbsp;&nbsp;<span class="tree-note">← 淨淨所有決策記錄</span><br>
+      &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;└── <span class="tree-folder">像素辦公室/</span><br>
+      &nbsp;&nbsp;└── <span class="tree-folder">個人日誌/</span> &nbsp;&nbsp;<span class="tree-note">← 每個 AI 員工自己維護的日誌</span>
+    </div>
+
+    <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:24px 0 12px;">什麼東西該存進 Memory？</h3>
+    <div class="grid-3">
+      <div class="card">
+        <h3>📋 決策記錄</h3>
+        <p>這次討論完的結論、定案的方向、拍板的選項。下次 AI 直接從這個結論繼續，不用重新討論。</p>
+      </div>
+      <div class="card">
+        <h3>⚙️ 工作習慣</h3>
+        <p>你喜歡報告怎麼格式、指令習慣怎麼下、哪些字眼不要用。存進去，AI 永遠記住。</p>
+      </div>
+      <div class="card">
+        <h3>🏢 公司鐵律</h3>
+        <p>不能說什麼、一定要做什麼、對外文案的標準。這些全存進全員共用資料夾，每個 AI 都知道。</p>
+      </div>
+      <div class="card">
+        <h3>✨ 最佳實踐</h3>
+        <p>某個工作流程跑得特別順？某個提示詞特別好用？存進去，下次直接複用。</p>
+      </div>
+      <div class="card">
+        <h3>🐛 踩過的坑</h3>
+        <p>某個做法行不通、某個平台有限制？記錄下來，AI 下次自動避開，不重複犯錯。</p>
+      </div>
+      <div class="card">
+        <h3>📊 品牌知識</h3>
+        <p>產品規格、受眾定位、競品分析、行銷策略。讓 AI 一開口就像品牌老手。</p>
+      </div>
+    </div>
+
+    <div class="highlight">
+      <p><strong>飛輪效應：</strong>你每次優化後把結果存進 Memory，AI 下次起點就更高。做了三個月，你的 AI 員工對淨淨的了解，會比任何一個剛到職的人類員工都要深。<strong>這就是護城河。</strong></p>
+    </div>
+  </section>
+
+  <!-- Ch.5 -->
+  <section id="ch5">
+    <div class="ch-num">Ch.5</div>
+    <div class="section-label">專業知識模組</div>
+    <h2>Skill — 讓 AI 一開口就是老手</h2>
+    <div class="section-divider"></div>
+    <p class="section-sub">Memory 是讓 AI 記住你的公司，Skill 是讓 AI 具備專業能力。兩個合在一起，才是真正的「老手 AI」。</p>
+
+    <div class="compare-wrap">
+      <div class="compare-bad">
+        <div class="compare-label">❌ 沒有 Skill 的 AI</div>
+        <p>「台灣廣告投放是什麼意思？請問 Meta 廣告的冷溫熱受眾怎麼分？ROAS 的計算公式是…」<br><br>每次都要從頭解釋基礎概念，輸出品質不穩定，像新來的實習生。</p>
+      </div>
+      <div class="compare-good">
+        <div class="compare-label">✅ 有 Skill 的 AI</div>
+        <p>「目前冷受眾 ROAS 偏低，建議把預算移到溫受眾，素材換用 UGC 風格，這是若水聯盟廣告三段漏斗的標準打法。」<br><br>直接從你的方法論出發，一開口就到位。</p>
+      </div>
+    </div>
+
+    <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:24px 0 12px;">若水聯盟目前的 Skill</h3>
+
+    <div class="card" style="margin-bottom:16px;">
+      <h3>🌐 網站開發類</h3>
+      <div style="margin-top:8px;">
+        <span class="skill-tag">reyway-webbuilding</span>
+        <span class="skill-tag">reyway-webdesign</span>
+        <span class="skill-tag">reyway-ads-analytics</span>
+      </div>
+      <p style="margin-top:12px;">技術架構、部署流程、廣告數據串接。讓墨子和蕭何不用每次重新學習，一載入就懂整套系統。</p>
+    </div>
+
+    <div class="card" style="margin-bottom:16px;">
+      <h3>📣 行銷方法論類</h3>
+      <div style="margin-top:8px;">
+        <span class="skill-tag">sheng-marketing</span>
+        <span class="skill-tag">rey-ads</span>
+        <span class="skill-tag">rey-copywriting</span>
+        <span class="skill-tag">廣告投放策略</span>
+        <span class="skill-tag">文案表達</span>
+      </div>
+      <p style="margin-top:12px;">笙哥多年打磨的行銷方法論，包含冷溫熱漏斗、素材 80/20 鐵律、台灣 FB 直客經驗等。周瑜載入後直接從老手水準出發。</p>
+    </div>
+
+    <div class="card" style="margin-bottom:16px;">
+      <h3>🏷️ 品牌知識類</h3>
+      <div style="margin-top:8px;">
+        <span class="skill-tag">cleanclean-brand</span>
+        <span class="skill-tag">cleanclean-products</span>
+        <span class="skill-tag">cleanclean-marketing</span>
+        <span class="skill-tag">cleanclean-ads</span>
+      </div>
+      <p style="margin-top:12px;">淨淨品牌故事、完整產品百科、行銷策略方法論、廣告數據基準值。AI 載入後，對淨淨的了解比任何新人都深。</p>
+    </div>
+
+    <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:24px 0 12px;">如何叫出 Skill</h3>
+    <p style="font-size:14px;color:var(--slate);margin-bottom:12px;">在 session 開頭說一句話：</p>
+
+    <div class="code-block">
+<span class="comment"># 做廣告分析時</span>
+請載入 <span class="teal">cleanclean-ads</span> 和 <span class="teal">rey-ads</span> 兩個 Skill，
+然後幫我分析這週的 Meta 廣告報告。
+
+<span class="comment"># 做文案時</span>
+請載入 <span class="teal">sheng-marketing</span> 和 <span class="teal">cleanclean-brand</span> 兩個 Skill，
+幫我寫一篇淨淨洗衣精的 IG 貼文。
+    </div>
+
+    <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:24px 0 12px;">你自己也可以建 Skill</h3>
+    <p style="font-size:14px;color:var(--slate);margin-bottom:16px;">若水聯盟的 Skill 是技術和方法論層，你部門的「專屬知識」要你自己來建。對 Claude Code 說這句話，它會引導你完成：</p>
+
+    <div class="code-block">
+請幫我建立一個 <span class="teal">「淨淨行銷部廣告 SOP」</span> 的 Skill，
+問我需要的問題，我一一回答，
+你整理後存成 ~/.claude/skills/淨淨/ads-sop/SKILL.md
+    </div>
+
+    <div class="tip">
+      <div class="tip-icon">💡</div>
+      <div><strong>給 Cara 的建議：</strong>把每次廣告活動的策略、受眾邏輯、成效規律存成 Skill，下次 AI 接到新案子，直接從你累積的經驗出發，不用重新解釋。</div>
+    </div>
+  </section>
+
+  <!-- Ch.6 -->
+  <section id="ch6">
+    <div class="ch-num">Ch.6</div>
+    <div class="section-label">指令技巧</div>
+    <h2>如何給 AI 好的指令</h2>
+    <div class="section-divider"></div>
+    <p class="section-sub">AI 的輸出品質，80% 取決於你怎麼下指令。這章是笙哥用了兩年整理出來的心法。</p>
+
+    <div class="highlight">
+      <p><strong>核心原則：</strong>好的指令包含四個要素——<strong>目的</strong>（我要達成什麼）+ <strong>背景</strong>（現在的狀況是什麼）+ <strong>限制</strong>（有哪些條件限制）+ <strong>格式</strong>（輸出要長什麼樣子）</p>
+    </div>
+
+    <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin-bottom:16px;">壞指令 vs 好指令</h3>
+
+    <div class="compare-wrap">
+      <div class="compare-bad">
+        <div class="compare-label">❌ 模糊指令</div>
+        <p>「幫我分析廣告」</p>
+      </div>
+      <div class="compare-good">
+        <div class="compare-label">✅ 好指令</div>
+        <p>「分析這份 Meta 廣告週報（CSV 附件），找出 ROAS 最差的三組受眾，每組給我一個優化建議。輸出格式：三個重點 + 各一句建議，貼給投手看的。」</p>
+      </div>
+    </div>
+
+    <div class="compare-wrap">
+      <div class="compare-bad">
+        <div class="compare-label">❌ 模糊指令</div>
+        <p>「幫我寫文案」</p>
+      </div>
+      <div class="compare-good">
+        <div class="compare-label">✅ 好指令</div>
+        <p>「幫我寫淨淨除菌液的 IG 貼文，目標是讓第一句話就讓媽媽想停下來看。語氣輕鬆，不要用廣告腔。結尾放一個問句跟受眾互動。300字以內。」</p>
+      </div>
+    </div>
+
+    <div class="compare-wrap">
+      <div class="compare-bad">
+        <div class="compare-label">❌ 模糊指令</div>
+        <p>「整理一下我們的人事狀況」</p>
+      </div>
+      <div class="compare-good">
+        <div class="compare-label">✅ 好指令</div>
+        <p>「讀取 memory 裡的合意終止試算記錄，整理一份給依庭看的操作說明：什麼時候談、說什麼、要準備哪些文件。用條列式，語氣平靜不帶評判。」</p>
+      </div>
+    </div>
+
+    <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:28px 0 16px;">各部門常用指令模版</h3>
+
+    <div class="person-card">
+      <div class="person-header">
+        <div class="person-avatar">妮</div>
+        <div class="person-info">
+          <h4>妮妮 — 營運部經理</h4>
+          <span>財務 / 人事 / 月報</span>
+        </div>
+      </div>
+      <h5>月報分析指令</h5>
+      <div class="code-block" style="font-size:12px;">
+讀取這份損益表（[附上檔案]），
+找出本月最大的成本異常，
+跟上月比較後給我三個重點，
+用笙哥能直接看的格式。
+      </div>
+    </div>
+
+    <div class="person-card">
+      <div class="person-header">
+        <div class="person-avatar" style="background:#8B5CF6;">C</div>
+        <div class="person-info">
+          <h4>Cara — 行銷部準經理</h4>
+          <span>品牌策略 / 活動企劃 / 週報</span>
+        </div>
+      </div>
+      <h5>廣告週報生成指令</h5>
+      <div class="code-block" style="font-size:12px;">
+載入 cleanclean-ads Skill，
+讀取這週的 Meta 廣告報告，
+幫我生成週報：
+- 整體表現（好/中/差 + 原因）
+- ROAS 最佳 / 最差各一組（+建議）
+- 下週優化方向 3 點
+格式：可直接複製貼到 LINE 群組的。
+      </div>
+    </div>
+
+    <div class="person-card">
+      <div class="person-header">
+        <div class="person-avatar" style="background:#F59E0B;">依</div>
+        <div class="person-info">
+          <h4>依庭 — 行銷部</h4>
+          <span>人事行政 / 教育訓練 / 對內溝通</span>
+        </div>
+      </div>
+      <h5>人事文件生成指令</h5>
+      <div class="code-block" style="font-size:12px;">
+讀取 memory 裡的合意終止書範本，
+幫我改成給 [員工姓名] 的版本：
+- 姓名：[xxx]
+- 年資：[xxx] 年 [xxx] 月
+- 底薪：[xxx]
+格式：正式繁體中文，可直接列印。
+      </div>
+    </div>
+
+    <div class="person-card">
+      <div class="person-header">
+        <div class="person-avatar" style="background:#10B981;">達</div>
+        <div class="person-info">
+          <h4>冠達 — 廣告投手</h4>
+          <span>Meta 廣告 / 受眾優化 / 素材分析</span>
+        </div>
+      </div>
+      <h5>廣告優化分析指令</h5>
+      <div class="code-block" style="font-size:12px;">
+載入 rey-ads 和 cleanclean-ads Skill，
+這是本週所有廣告組的數據 [附上 CSV]，
+幫我找出：
+1. 哪幾組應該加預算（ROAS 超過 3.5）
+2. 哪幾組應該關掉（ROAS 低於 1.5 超過 5 天）
+3. 素材 CTR 最高的三支，分析共同特點
+輸出成操作清單，我拿去直接執行。
+      </div>
+    </div>
+  </section>
+
+  <!-- Ch.7 -->
+  <section id="ch7">
+    <div class="ch-num">Ch.7</div>
+    <div class="section-label">進階使用</div>
+    <h2>Session 管理</h2>
+    <div class="section-divider"></div>
+    <p class="section-sub">Session 是你跟 AI 的一次對話。當對話越來越長，AI 的表現會開始下降——這時就需要做管理。</p>
+
+    <div class="highlight">
+      <p><strong>為什麼 AI 會「變笨」？</strong>Claude 每次只能記住一定量的對話（叫做「context window」）。當對話太長，早期的重要內容就會被推擠出去，AI 開始忘記之前說過的事，輸出品質下降。</p>
+    </div>
+
+    <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin-bottom:16px;">三種情況的處理方式</h3>
+
+    <div class="grid-2" style="margin-bottom:24px;">
+      <div class="session-box">
+        <h4>📝 一個任務做完了 → 打 <span style="color:var(--teal)">「1」</span></h4>
+        <ul>
+          <li>AI 自動整理這次做了什麼</li>
+          <li>決策和產出存進 Memory</li>
+          <li>下一個 session 從這裡繼續</li>
+          <li>⬅️ 這是最重要的習慣</li>
+        </ul>
+      </div>
+      <div class="session-box">
+        <h4>🔄 對話太長要 Compact</h4>
+        <ul>
+          <li>輸入 <code style="background:var(--border);padding:2px 6px;border-radius:4px;font-size:12px;">/compact</code> 指令</li>
+          <li>AI 把整段對話壓縮成摘要</li>
+          <li>釋放空間，繼續在同個 session 工作</li>
+          <li>適合：長任務中途，不想換 session</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="session-box">
+      <h4>🆕 要開新的 session 的時機</h4>
+      <ul>
+        <li>換了完全不同的主題（例如從廣告分析換到人事文件）</li>
+        <li>這個任務完全做完了，要開始新任務</li>
+        <li>AI 的回應開始出現矛盾或忘記之前說的事</li>
+        <li>想讓 AI 重新讀取最新的 Memory 設定</li>
+      </ul>
+    </div>
+
+    <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:28px 0 16px;">數字指令速查</h3>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>指令</th>
+            <th>動作</th>
+            <th>什麼時候用</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code style="font-size:15px;font-weight:800;">0</code></td>
+            <td>查收件夾 + 重載 Memory + 回報現況</td>
+            <td>每次開工，確認 AI 狀態</td>
+          </tr>
+          <tr>
+            <td><code style="font-size:15px;font-weight:800;">1</code></td>
+            <td>工作日誌：整理本次對話 → 存入 Memory</td>
+            <td>任務結束前，必打</td>
+          </tr>
+          <tr>
+            <td><code style="font-size:15px;font-weight:800;">2</code></td>
+            <td>主公那邊做完了，AI 繼續下一步</td>
+            <td>你完成你負責的部分，讓 AI 繼續</td>
+          </tr>
+          <tr>
+            <td><code style="font-size:15px;font-weight:800;">3</code></td>
+            <td>完整品質審查：主管視角 + 陌生使用者視角 + 功能全跑一遍 → 直接修</td>
+            <td>交付前，確保品質沒問題</td>
+          </tr>
+          <tr>
+            <td><code style="font-size:15px;font-weight:800;">4</code></td>
+            <td>Skill 升級：把本次新發現、踩坑解法、穩定 pattern 補進 AI 知識庫</td>
+            <td>任務結束後，讓下一個 session 的 AI 更聰明</td>
+          </tr>
+          <tr>
+            <td><code style="font-size:15px;font-weight:800;">5</code></td>
+            <td>全力跑，細節不用問主公</td>
+            <td>大任務，不想被頻繁確認打斷</td>
+          </tr>
+          <tr>
+            <td><code style="font-size:15px;font-weight:800;">9</code></td>
+            <td>重載工作習慣（重新讀取全員共用 Memory）</td>
+            <td>感覺 AI 狀態不對，重新校準</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="tip">
+      <div class="tip-icon">💡</div>
+      <div><strong>笙哥的習慣：</strong>每次任務做完，一定打 <strong>「1」</strong>，讓 AI 存好工作日誌。這樣下次開 session，AI 知道上次做到哪裡，直接接著跑，不用重頭解釋。重要任務另外加打 <strong>「4」</strong>，把新發現補進 Skill，讓整個軍團越跑越聰明。</div>
+    </div>
+  </section>
+
+  <!-- Ch.8 -->
+  <!-- Ch.8b -->
+  <section id="ch8b">
+    <div class="ch-num">Ch.8b</div>
+    <div class="section-label">進階技巧</div>
+    <h2>實戰工作習慣</h2>
+    <div class="section-divider"></div>
+    <p class="section-sub">這些是笙哥實際跑了幾百個 session 後沉澱下來的工作節奏，每一條都有省時 + 升級品質的效果。</p>
+
+    <!-- 習慣一：數字指令系統 -->
+    <div class="card card-teal" style="margin-bottom:24px;">
+      <h3>🔢 習慣一：數字指令系統</h3>
+      <p style="margin-bottom:16px;">用一個數字代替一段指令，降低打字門檻，讓 AI 工作流變成肌肉記憶。</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>指令</th><th>動作</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code style="background:var(--teal);color:#fff;padding:2px 8px;border-radius:6px;font-size:13px;">0</code></td><td>查收件夾 + 重載規則 + 回報現況</td></tr>
+            <tr><td><code style="background:var(--teal);color:#fff;padding:2px 8px;border-radius:6px;font-size:13px;">1</code></td><td>存工作日誌</td></tr>
+            <tr><td><code style="background:var(--teal);color:#fff;padding:2px 8px;border-radius:6px;font-size:13px;">2</code></td><td>我這邊做完了，AI 繼續下一步</td></tr>
+            <tr><td><code style="background:var(--teal);color:#fff;padding:2px 8px;border-radius:6px;font-size:13px;">3</code></td><td>完整品質審查（主管視角 + 陌生使用者視角 + 功能實測）→ 直接修</td></tr>
+            <tr><td><code style="background:var(--teal);color:#fff;padding:2px 8px;border-radius:6px;font-size:13px;">4</code></td><td>升級 Skill（把新發現補進知識庫）</td></tr>
+            <tr><td><code style="background:var(--teal);color:#fff;padding:2px 8px;border-radius:6px;font-size:13px;">5</code></td><td>全力跑，細節不用問</td></tr>
+            <tr><td><code style="background:var(--teal);color:#fff;padding:2px 8px;border-radius:6px;font-size:13px;">9</code></td><td>重載工作習慣（AI 跑偏時用）</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="highlight" style="margin-top:12px;margin-bottom:0;">
+        <p>💡 <strong>多數字組合</strong>：<code style="background:var(--teal);color:#fff;padding:2px 8px;border-radius:6px;font-size:13px;">3 1 4</code> = 一次審查 + 記錄 + 升級 Skill，三件事同時完成。</p>
+      </div>
+    </div>
+
+    <!-- 習慣二：收工三連擊 -->
+    <div class="card" style="margin-bottom:24px;">
+      <h3>🏁 習慣二：收工三連擊 <code style="background:var(--navy);color:#fff;padding:3px 10px;border-radius:6px;font-size:14px;">3 1 4</code></h3>
+      <p style="margin-bottom:16px;">每次任務告一段落，打這三個數字：</p>
+      <div class="grid-3" style="margin-bottom:16px;">
+        <div style="background:var(--teal-light);border:1px solid var(--teal-mid);border-radius:12px;padding:16px;text-align:center;">
+          <div style="font-size:28px;font-weight:900;color:var(--teal);margin-bottom:6px;">3</div>
+          <div style="font-size:13px;color:var(--navy);font-weight:700;">先修好</div>
+          <div style="font-size:12px;color:var(--slate);margin-top:4px;">確保交付品質</div>
+        </div>
+        <div style="background:var(--teal-light);border:1px solid var(--teal-mid);border-radius:12px;padding:16px;text-align:center;">
+          <div style="font-size:28px;font-weight:900;color:var(--teal);margin-bottom:6px;">1</div>
+          <div style="font-size:13px;color:var(--navy);font-weight:700;">記錄日誌</div>
+          <div style="font-size:12px;color:var(--slate);margin-top:4px;">這次做了什麼</div>
+        </div>
+        <div style="background:var(--teal-light);border:1px solid var(--teal-mid);border-radius:12px;padding:16px;text-align:center;">
+          <div style="font-size:28px;font-weight:900;color:var(--teal);margin-bottom:6px;">4</div>
+          <div style="font-size:13px;color:var(--navy);font-weight:700;">升級 Skill</div>
+          <div style="font-size:12px;color:var(--slate);margin-top:4px;">下次不重踩坑</div>
+        </div>
+      </div>
+      <div class="highlight" style="margin-bottom:0;">
+        <p>💡 開工時打 <strong>9</strong> 重載規則，收工時打 <strong>3 1 4</strong>，形成完整節奏。每次 session 都有頭有尾，品質自然累積。</p>
+      </div>
+    </div>
+
+    <!-- 習慣三：AI 自我審查法 -->
+    <div class="card" style="margin-bottom:24px;">
+      <h3>🔍 習慣三：AI 自我審查法</h3>
+      <p style="margin-bottom:12px;">每次產出後，在 prompt 加這句話：</p>
+      <div class="quote" style="margin-bottom:12px;">
+        「用最嚴格主管 + 第一次來的陌生使用者兩個視角，審查剛才的產出，找問題直接修掉。」
+      </div>
+      <p style="font-size:14px;color:var(--slate);">不用額外請人 review，品質自己升。對應數字指令 <strong>3</strong>。讓 AI 扮演挑剔主管，主動抓自己的問題。</p>
+    </div>
+
+    <!-- 習慣四：Sub-agent 並行派工 -->
+    <div class="card" style="margin-bottom:24px;">
+      <h3>⚡ 習慣四：Sub-agent 並行派工</h3>
+      <p style="margin-bottom:16px;">不要一件一件排隊做，直接開多個 Agent 同時跑：</p>
+      <div class="grid-2" style="margin-bottom:16px;">
+        <div style="background:var(--bg-soft);border:1px solid var(--border);border-radius:10px;padding:16px;">
+          <div style="font-size:20px;margin-bottom:8px;">🔴 排隊做（慢）</div>
+          <div style="font-size:13px;color:var(--slate);line-height:1.8;">
+            站 A 審查 → 等完 → 站 B 審查 → 等完 → 站 C...<br>
+            <strong style="color:var(--red);">6 個站 × 5 分鐘 = 30 分鐘</strong>
+          </div>
+        </div>
+        <div style="background:var(--teal-light);border:1px solid var(--teal-mid);border-radius:10px;padding:16px;">
+          <div style="font-size:20px;margin-bottom:8px;">🟢 並行跑（快）</div>
+          <div style="font-size:13px;color:var(--slate);line-height:1.8;">
+            6 個站同時審查 → 同時回報<br>
+            <strong style="color:var(--green);">6 個站 × 1 份時間 = 5 分鐘</strong>
+          </div>
+        </div>
+      </div>
+      <div class="highlight" style="margin-bottom:0;">
+        <p>⚠️ <strong>要點</strong>：每個 Agent 的 prompt 必須<strong>自給自足</strong>（包含路徑、任務、回報格式），不能依賴其他 Agent 的結果。</p>
+      </div>
+    </div>
+
+    <!-- 習慣五：Memory 與 Skill 的分工 -->
+    <div class="card" style="margin-bottom:24px;">
+      <h3>🧠 習慣五：Memory 與 Skill 的分工</h3>
+      <div class="table-wrap" style="margin-top:12px;">
+        <table>
+          <thead>
+            <tr><th>類型</th><th>存什麼</th><th>例子</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>📒 Memory</td>
+              <td>工作記憶：這個專案決定了什麼、卡在哪</td>
+              <td style="color:var(--slate);">「皮爾卡登 Demo 成功，下步做 KOL 功能」</td>
+            </tr>
+            <tr>
+              <td>📚 Skill</td>
+              <td>專業知識：怎麼做、穩定解法</td>
+              <td style="color:var(--slate);">「CF Pages 部署步驟」「廣告文案公式」</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="highlight" style="margin-bottom:0;">
+        <p>💡 <strong>Memory 是日記，Skill 是教科書。</strong>兩個不混，各司其職。每次 session 結束，新發現進 Skill，決策進 Memory。</p>
+      </div>
+    </div>
+
+    <!-- 習慣六：跨模型互審 -->
+    <div class="card card-teal" style="margin-bottom:24px;">
+      <h3>🤝 習慣六：讓 AI 用 GPT 互審（進階）</h3>
+      <p style="margin-bottom:12px;">Claude 做完 → 貼到 ChatGPT 說「幫我挑毛病」→ 把意見貼回 Claude 修。</p>
+      <p style="font-size:14px;color:var(--slate);margin-bottom:12px;">兩個模型盲點不同，品質比單一模型高一個檔次。</p>
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+        <div style="background:white;border:1px solid var(--teal-mid);border-radius:8px;padding:10px 16px;font-size:13px;font-weight:700;color:var(--teal);">Claude 產出</div>
+        <div style="color:var(--teal);font-size:18px;font-weight:700;">→</div>
+        <div style="background:white;border:1px solid var(--teal-mid);border-radius:8px;padding:10px 16px;font-size:13px;font-weight:700;color:#10a37f;">ChatGPT 挑毛病</div>
+        <div style="color:var(--teal);font-size:18px;font-weight:700;">→</div>
+        <div style="background:white;border:1px solid var(--teal-mid);border-radius:8px;padding:10px 16px;font-size:13px;font-weight:700;color:var(--teal);">Claude 修正</div>
+      </div>
+      <p style="font-size:13px;color:var(--slate);margin-top:12px;">數字指令 <strong>3</strong> 是 AI 自審版，這個是跨模型互審版，適合重要文件 / 對外發布前的最後把關。</p>
+    </div>
+
+    <div class="tip">
+      <div class="tip-icon">🎯</div>
+      <div>這六個習慣不用一次全用，先從<strong>數字指令</strong>和<strong>收工三連擊 3 1 4</strong> 開始，兩週後你的 AI 工作效率就會明顯不同。</div>
+    </div>
+  </section>
+
+  <!-- Ch.8 -->
+  <section id="ch8">
+    <div class="ch-num">Ch.8</div>
+    <div class="section-label">實戰應用</div>
+    <h2>各部門實戰工作流</h2>
+    <div class="section-divider"></div>
+    <p class="section-sub">學完理論，最重要的是：「我自己的工作，怎麼跟 AI 結合？」這章針對每個人的職位給出實際的工作流建議。</p>
+
+    <div class="highlight">
+      <p>以下每個工作流，<strong>第一步永遠是「先定目的」</strong>——不是「我想用 AI」，而是「我想解決什麼問題、節省多少時間」。</p>
+    </div>
+
+    <div class="person-card">
+      <div class="person-header">
+        <div class="person-avatar">妮</div>
+        <div class="person-info">
+          <h4>妮妮 ✦ 營運部經理</h4>
+          <span>財務 / 人事 / 月報 / 流程管理</span>
+        </div>
+      </div>
+      <h5>🎯 你可以用 AI 做的事</h5>
+      <ul>
+        <li>把每月損益表丟給 AI，10 分鐘產出分析摘要 + 異常預警</li>
+        <li>人事文件（合意終止書、職務說明書）AI 直接生成，你確認調整</li>
+        <li>公司流程 SOP 整理成文字 Skill，讓 AI 當成新人培訓手冊</li>
+        <li>跨部門協調事項，讓 AI 幫你起草清楚的說明信件</li>
+      </ul>
+      <h5>💡 第一個建議嘗試的任務</h5>
+      <p style="font-size:14px;color:var(--slate);">把上個月的損益表（Excel）丟給 Claude Code，說「分析本月三個最需要關注的成本異常，用笙哥可以直接看的格式輸出」。感受一下它的分析速度跟品質。</p>
+    </div>
+
+    <div class="person-card">
+      <div class="person-header">
+        <div class="person-avatar" style="background:#8B5CF6;">C</div>
+        <div class="person-info">
+          <h4>Cara ✦ 行銷部準經理</h4>
+          <span>品牌策略 / 活動企劃 / 廣告統籌</span>
+        </div>
+      </div>
+      <h5>🎯 你可以用 AI 做的事</h5>
+      <ul>
+        <li>載入淨淨行銷 Skill，讓 AI 幫你起草品牌活動企劃書（框架 AI 出，你填細節）</li>
+        <li>廣告投放週報自動生成，你只要驗收、補充判斷</li>
+        <li>競品分析：叫 AI 搜尋整理，你來做策略判斷</li>
+        <li>建你自己的「品牌行銷 SOP Skill」，讓你的工作方式被 AI 學習</li>
+      </ul>
+      <h5>💡 第一個建議嘗試的任務</h5>
+      <p style="font-size:14px;color:var(--slate);">叫 AI 幫你生成下個月的行銷月曆草稿（節日 + 淨淨產品 + 對應主題），感受 AI 的速度，然後把你覺得好的方向存進 Memory。</p>
+    </div>
+
+    <div class="person-card">
+      <div class="person-header">
+        <div class="person-avatar" style="background:#F59E0B;">依</div>
+        <div class="person-info">
+          <h4>依庭 ✦ 行銷部</h4>
+          <span>人事行政 / 教育訓練 / 活動執行</span>
+        </div>
+      </div>
+      <h5>🎯 你可以用 AI 做的事</h5>
+      <ul>
+        <li>人事文件生成：合意終止書、試用期考核、職位說明書一鍵生成</li>
+        <li>教育訓練教材：把課程大綱說給 AI 聽，它幫你整理成 HTML 教材</li>
+        <li>活動執行 checklist：把活動細節說清楚，AI 整理成可執行的清單</li>
+        <li>內部溝通稿：描述想傳達的事，AI 幫你寫出清楚不傷感情的版本</li>
+      </ul>
+      <h5>💡 第一個建議嘗試的任務</h5>
+      <p style="font-size:14px;color:var(--slate);">叫 AI 幫你整理一份「新人入職第一週 checklist」，把你平時都要帶新人做的事說給 AI 聽，讓它整理成文件，以後直接印出來用。</p>
+    </div>
+
+    <div class="person-card">
+      <div class="person-header">
+        <div class="person-avatar" style="background:#06B6D4;">瑄</div>
+        <div class="person-info">
+          <h4>小瑄 ✦ 行銷部</h4>
+          <span>社群內容 / 文案 / 素材</span>
+        </div>
+      </div>
+      <h5>🎯 你可以用 AI 做的事</h5>
+      <ul>
+        <li>載入淨淨品牌 Skill + 文案 Skill，生成有品牌感的 IG / Threads 貼文</li>
+        <li>短影音腳本：描述想講的產品，AI 寫出鏡頭腳本</li>
+        <li>一次生成 10 個 IG 標題，你選最好的一個</li>
+        <li>把以前成效好的貼文丟給 AI，讓它分析共同規律，存成你的文案 Skill</li>
+      </ul>
+      <h5>💡 第一個建議嘗試的任務</h5>
+      <p style="font-size:14px;color:var(--slate);">把淨淨洗衣精的產品規格告訴 AI，叫它生成五種不同角度的 IG 開頭第一句話，感受不同風格，然後告訴 AI 你喜歡哪一種，存進你的偏好 Memory。</p>
+    </div>
+
+    <div class="person-card">
+      <div class="person-header">
+        <div class="person-avatar" style="background:#10B981;">冠</div>
+        <div class="person-info">
+          <h4>冠達 ✦ 廣告投手</h4>
+          <span>Meta 廣告 / 受眾優化 / 數據分析</span>
+        </div>
+      </div>
+      <h5>🎯 你可以用 AI 做的事</h5>
+      <ul>
+        <li>廣告數據自動分析：上傳 CSV，AI 找出 ROAS 異常和素材趨勢</li>
+        <li>週報自動生成：數據進去，可以直接發給主管的報告出來</li>
+        <li>素材方向建議：告訴 AI 受眾和目前成效，它給你下支素材的建議</li>
+        <li>利用「電商數據站」（開發中）：未來廣告數據自動進來，AI 自動分析，你只要拍板</li>
+      </ul>
+      <h5>💡 第一個建議嘗試的任務</h5>
+      <p style="font-size:14px;color:var(--slate);">把上週廣告報告截圖或 CSV 丟給 Claude Code，說「找出這週表現最差的三個廣告組，給我原因分析和建議」，感受它的分析速度。</p>
+    </div>
+
+    <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:32px 0 12px;">🚀 以笙哥建電商數據站為例：你的延伸想像</h3>
+    <p style="font-size:14px;color:var(--slate);margin-bottom:16px;">笙哥是怎麼用 AI 建工具網站的？這個流程就是你能學、能複製的模式：</p>
+
+    <div class="card" style="background:var(--bg-soft);padding:20px 24px;">
+      <p style="font-size:14px;color:var(--slate);line-height:2.2;">
+        1️⃣ <strong>先定目的</strong>：「我要讓冠達不用手動整理廣告數據，10 分鐘內看到週報」<br>
+        2️⃣ <strong>盤點資源</strong>：「我們有 Meta API、Google Ads API、Claude Code、若水聯盟的技術 Skill」<br>
+        3️⃣ <strong>資料收集</strong>：「冠達說她最需要：ROAS 趨勢 + 素材成效排名 + AI 優化建議」<br>
+        4️⃣ <strong>AI 重組</strong>：「郭嘉出提示詞 → 周瑜出功能規格 → 墨子和蕭何建站」<br>
+        5️⃣ <strong>人工打磨</strong>：「笙哥看過後說調整 UI，冠達說再加一個篩選功能」<br>
+        6️⃣ <strong>存回記憶</strong>：「把這次的架構決策存進 Memory，下次建其他工具直接複用」
+      </p>
+    </div>
+
+    <div class="tip">
+      <div class="tip-icon">💡</div>
+      <div>你的工作裡，哪些事情是「重複做、費時間、有固定邏輯」的？那就是你可以用 AI 自動化的地方。把這件事想清楚，這就是你第一個工具的起點。</div>
+    </div>
+  </section>
+
+  <!-- Ch.9 -->
+  <section id="ch9">
+    <div class="ch-num">Ch.9</div>
+    <div class="section-label">安全使用</div>
+    <h2>注意事項</h2>
+    <div class="section-divider"></div>
+    <p class="section-sub">AI 是強大的工具，但它不是萬能的，也不是絕對正確的。這幾條鐵律一定要記住。</p>
+
+    <div class="warning">
+      <div class="tip-icon">⚠️</div>
+      <div><strong>AI 會犯錯，而且它不會主動說「我不確定」。</strong>數字、日期、法規、人名——這類資訊一定要人工確認，不能直接使用。</div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3>🔒 絕對不給 AI 的資料</h3>
+        <ul>
+          <li>任何帳號密碼</li>
+          <li>信用卡號碼或銀行帳戶</li>
+          <li>員工身分證字號</li>
+          <li>客戶完整個資（含聯絡方式）</li>
+          <li>公司未公開的財務數字</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>✅ 給 AI 之前先想一下</h3>
+        <ul>
+          <li>這份資料可以讓外部人看嗎？</li>
+          <li>如果這段對話被截圖出去，有問題嗎？</li>
+          <li>AI 的輸出要對外發布之前，有沒有人工確認過？</li>
+          <li>敏感決策最終要由人來拍板，不能完全靠 AI 判斷</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="iron-rule">
+      <h4>若水聯盟鐵律速查</h4>
+      <ul>
+        <li>結論先說，10 秒讓主公看懂，再說細節</li>
+        <li>不說技術術語（API / deploy / commit 一律換成白話）</li>
+        <li>AI 能做的事全部自己做，不要反覆問主公</li>
+        <li>生成類工具必須有：一鍵範例 + 微調對話框 + 意見回報按鈕</li>
+        <li>文案一律用 Claude + 行銷 Skill；圖片一律走 fal.ai</li>
+        <li>任務結束前一定打「1」存工作日誌</li>
+      </ul>
+    </div>
+
+    <div class="card card-teal" style="margin-top:24px;">
+      <h3>🎯 最後一句話</h3>
+      <p style="margin-top:8px;">AI 不會取代你的判斷力，它會放大你的判斷力。你懂的越多，指令越清楚，AI 就越強。<br><br>
+      <strong>未來最有價值的人，不是「會用 AI」的人，而是「知道要讓 AI 做什麼」的人。</strong><br><br>
+      你們，就是這樣的人。</p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  淨淨 CleanClean ✦ 若水聯盟內部教育訓練 ✦ 主管核心幹部版 ✦ 2026<br>
+  <span style="color:var(--teal);">版權所有，請勿對外轉發</span>
+</footer>
+
+<script>
+  // Progress bar
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = (scrollTop / docHeight) * 100;
+    document.getElementById('progress-bar').style.width = progress + '%';
+  });
+
+  // Nav active state
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('nav a[href^="#ch"]');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(link => {
+          link.style.background = '';
+          link.style.color = '';
+          if (link.getAttribute('href') === '#' + entry.target.id) {
+            link.style.background = 'var(--teal-light)';
+            link.style.color = 'var(--navy)';
+          }
+        });
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+
+  sections.forEach(section => observer.observe(section));
+
+  // Smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+</script>
+</body>
+</html>

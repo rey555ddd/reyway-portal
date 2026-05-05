@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>伊果國際集團 — 品牌工具總覽</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #c9a84c;
+    --gold-light: #e8d48b;
+    --gold-dark: #a07c2a;
+    --black: #0a0a0a;
+    --black-card: #141414;
+    --black-hover: #1a1a1a;
+    --border: rgba(201,168,76,0.2);
+    --border-hover: rgba(201,168,76,0.5);
+    --text-primary: #f0ead6;
+    --text-secondary: rgba(240,234,214,0.6);
+    --green: #4ade80;
+    --yellow: #facc15;
+    --blue: #60a5fa;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans TC', 'Inter', sans-serif;
+    background: var(--black);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* === Background Effects === */
+  body::before {
+    content: '';
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(ellipse at 30% 20%, rgba(201,168,76,0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 80%, rgba(201,168,76,0.04) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 24px 60px;
+  }
+
+  /* === Header === */
+  .header {
+    text-align: center;
+    padding: 40px 0 20px;
+  }
+
+  .header-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(201,168,76,0.1);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 6px 18px;
+    font-size: 12px;
+    color: var(--gold);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  .header-icon {
+    width: 72px;
+    height: 72px;
+    margin: 0 auto 20px;
+    background: linear-gradient(135deg, var(--gold-dark), var(--gold), var(--gold-light));
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    font-weight: 900;
+    color: var(--black);
+    box-shadow: 0 8px 32px rgba(201,168,76,0.3);
+  }
+
+  h1 {
+    font-size: 40px;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-dark));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 12px;
+    letter-spacing: 2px;
+  }
+
+  .header-sub {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  .header-divider {
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 28px auto 0;
+  }
+
+  /* === Back Link === */
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 13px;
+    transition: color 0.3s;
+    margin-bottom: 8px;
+  }
+  .back-link:hover { color: var(--gold); }
+
+  /* === Section === */
+  .section {
+    margin-top: 48px;
+  }
+
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+
+  .section-label::before {
+    content: '';
+    width: 3px;
+    height: 18px;
+    background: var(--gold);
+    border-radius: 2px;
+  }
+
+  .section-title {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+
+  /* === Card Grid === */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+  }
+
+  .card {
+    background: var(--black-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+
+  .card:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(201,168,76,0.12);
+    background: var(--black-hover);
+  }
+
+  .card:hover::before { opacity: 1; }
+
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+
+  .card-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: 900;
+    flex-shrink: 0;
+  }
+
+  .card-icon.sour7 {
+    background: linear-gradient(135deg, #d4451a, #e86835);
+    color: #fff;
+  }
+  .card-icon.eagle {
+    background: linear-gradient(135deg, #6b21a8, #9333ea);
+    color: #fff;
+  }
+  .card-icon.club {
+    background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+    color: var(--black);
+  }
+  .card-icon.pl {
+    background: linear-gradient(135deg, #1e40af, #3b82f6);
+    color: #fff;
+  }
+  .card-icon.inv {
+    background: linear-gradient(135deg, #065f46, #10b981);
+    color: #fff;
+  }
+
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    padding: 4px 12px;
+    border-radius: 100px;
+    font-weight: 500;
+  }
+
+  .status-badge.online {
+    background: rgba(74,222,128,0.1);
+    color: var(--green);
+    border: 1px solid rgba(74,222,128,0.2);
+  }
+
+  .status-badge.online::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: var(--green);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  .status-badge.planning {
+    background: rgba(250,204,21,0.1);
+    color: var(--yellow);
+    border: 1px solid rgba(250,204,21,0.2);
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .card-name {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: var(--text-primary);
+  }
+
+  .card-desc {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+
+  .card-url {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--gold);
+    opacity: 0.7;
+    transition: opacity 0.3s;
+    font-family: 'Inter', monospace;
+  }
+
+  .card:hover .card-url { opacity: 1; }
+
+  .card-features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 12px;
+  }
+
+  .feature-tag {
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 6px;
+    background: rgba(255,255,255,0.05);
+    color: var(--text-secondary);
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+
+  /* === Footer === */
+  .footer {
+    margin-top: 64px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .footer-left {
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+
+  .footer-link {
+    color: var(--gold);
+    text-decoration: none;
+    font-size: 13px;
+    transition: color 0.3s;
+  }
+  .footer-link:hover { color: var(--gold-light); }
+
+  /* === Last Updated === */
+  .last-updated {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 12px;
+    color: rgba(240,234,214,0.3);
+  }
+
+  /* === Responsive === */
+  @media (max-width: 720px) {
+    .container { padding: 24px 16px 40px; }
+    h1 { font-size: 28px; }
+    .card-grid { grid-template-columns: 1fr; }
+    .footer { flex-direction: column; text-align: center; }
+  }
+
+  /* === Subtle Animation === */
+  .card {
+    animation: fadeUp 0.6s ease both;
+  }
+  .card:nth-child(1) { animation-delay: 0.05s; }
+  .card:nth-child(2) { animation-delay: 0.1s; }
+  .card:nth-child(3) { animation-delay: 0.15s; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Back Link -->
+  <a href="https://reyway.com" class="back-link" target="_blank">← 返回 REYWAY 主頁</a>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-badge">EAGLE GROUP · INTERNAL</div>
+    <div class="header-icon">伊</div>
+    <h1>伊果國際集團</h1>
+    <p class="header-sub">五大事業體 — 服飾 · 餐飲 · 飲料 · 小吃 · 鐘錶<br>品牌工具與維運狀態總覽</p>
+    <div class="header-divider"></div>
+  </header>
+
+  <!-- Brand Tool Websites -->
+  <section class="section">
+    <div class="section-label">
+      <span class="section-title">品牌工具網站</span>
+    </div>
+    <div class="card-grid">
+
+      <!-- 酸小七 -->
+      <a class="card" href="https://suan7.reyway.com" target="_blank">
+        <div class="card-header">
+          <div class="card-icon sour7">酸</div>
+          <span class="status-badge online">已上線</span>
+        </div>
+        <div class="card-name">酸小七</div>
+        <div class="card-desc">社群小編工具箱<br>圖文產生 · 貼文排程</div>
+        <div class="card-url">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          suan7.reyway.com
+        </div>
+        <div class="card-features">
+          <span class="feature-tag">貼文產生器</span>
+          <span class="feature-tag">排程行事曆</span>
+          <span class="feature-tag">發文檢查</span>
+          <span class="feature-tag">競品參考</span>
+        </div>
+      </a>
+
+      <!-- 蹦闆精品 -->
+      <a class="card" href="https://eagle.reyway.com" target="_blank">
+        <div class="card-header">
+          <div class="card-icon eagle">蹦</div>
+          <span class="status-badge online">已上線</span>
+        </div>
+        <div class="card-name">蹦闆精品</div>
+        <div class="card-desc">精品圖文產生器<br>商品上架素材</div>
+        <div class="card-url">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          eagle.reyway.com
+        </div>
+        <div class="card-features">
+          <span class="feature-tag">影片生成器</span>
+          <span class="feature-tag">文案生成器</span>
+          <span class="feature-tag">圖片處理器</span>
+        </div>
+      </a>
+
+      <!-- 帝豪中國城酒店 -->
+      <a class="card" href="https://club.reyway.com" target="_blank">
+        <div class="card-header">
+          <div class="card-icon club">帝</div>
+          <span class="status-badge online">已上線</span>
+        </div>
+        <div class="card-name">帝豪中國城酒店</div>
+        <div class="card-desc">酒店行銷工具<br>圖文產生器</div>
+        <div class="card-url">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          club.reyway.com
+        </div>
+        <div class="card-features">
+          <span class="feature-tag">文案產生器</span>
+          <span class="feature-tag">海報美編</span>
+          <span class="feature-tag">活動企劃師</span>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- Data & Analytics -->
+  <section class="section">
+    <div class="section-label">
+      <span class="section-title">數據分析</span>
+    </div>
+    <div class="card-grid">
+
+      <!-- 集團損益儀表板 -->
+      <div class="card" style="cursor: default;">
+        <div class="card-header">
+          <div class="card-icon pl">PL</div>
+          <span class="status-badge planning">規劃中</span>
+        </div>
+        <div class="card-name">集團損益儀表板</div>
+        <div class="card-desc">五大事業體營收<br>成本 · 毛利 · 淨利</div>
+        <div class="card-features">
+          <span class="feature-tag">月報追蹤</span>
+          <span class="feature-tag">KPI 儀表板</span>
+          <span class="feature-tag">趨勢分析</span>
+        </div>
+      </div>
+
+      <!-- 庫存管理 -->
+      <div class="card" style="cursor: default;">
+        <div class="card-header">
+          <div class="card-icon inv">庫</div>
+          <span class="status-badge planning">規劃中</span>
+        </div>
+        <div class="card-name">庫存管理</div>
+        <div class="card-desc">服飾庫存追蹤<br>進出貨分析</div>
+        <div class="card-features">
+          <span class="feature-tag">庫存盤點</span>
+          <span class="feature-tag">進出貨紀錄</span>
+          <span class="feature-tag">低庫存警示</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-left">伊果國際集團 · 內部工具入口</div>
+    <a href="https://reyway.com" class="footer-link" target="_blank">REYWAY AI Studio →</a>
+  </footer>
+
+  <div class="last-updated">最後更新：2026-04-13</div>
+
+</div>
+
+</body>
+</html>

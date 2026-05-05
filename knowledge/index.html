@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Web 資料庫 · REYWAY</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#F5F4F0;--surface:#FFF;--text:#1C1C1E;--text-2:#6E6E73;--text-3:#AEAEB2;--border:rgba(0,0,0,0.06);--shadow:0 2px 16px rgba(0,0,0,0.06),0 1px 4px rgba(0,0,0,0.04);--shadow-hover:0 8px 32px rgba(0,0,0,0.1),0 2px 8px rgba(0,0,0,0.06);--radius:18px;--radius-sm:12px}
+body{font-family:"Inter","Noto Sans TC",sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;min-height:100vh}
+.wrap{max-width:800px;margin:0 auto;padding:0 20px}
+
+.topbar{position:sticky;top:0;z-index:10;background:rgba(245,244,240,0.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:14px 0}
+.topbar-inner{display:flex;align-items:center;gap:12px}
+.back-btn{display:flex;align-items:center;gap:6px;font-size:0.82rem;color:var(--text-2);text-decoration:none;padding:6px 14px;border-radius:100px;background:var(--surface);box-shadow:var(--shadow);white-space:nowrap}
+.back-btn:hover{box-shadow:var(--shadow-hover)}
+.topbar h1{font-size:1rem;font-weight:700;flex:1}
+
+.hero{padding:36px 0 28px;text-align:center}
+.hero h2{font-size:1.5rem;font-weight:700;margin-bottom:8px}
+.hero p{font-size:0.88rem;color:var(--text-2);line-height:1.6}
+
+.section-label{font-size:0.72rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-3);margin-bottom:14px}
+
+/* 分類大卡 */
+.cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-bottom:40px}
+.cat-card{background:var(--surface);border-radius:var(--radius);padding:24px 20px;box-shadow:var(--shadow);text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:10px;transition:box-shadow .2s,transform .2s}
+.cat-card:hover{box-shadow:var(--shadow-hover);transform:translateY(-2px)}
+.cat-icon{font-size:1.8rem}
+.cat-name{font-size:1rem;font-weight:700}
+.cat-desc{font-size:0.78rem;color:var(--text-2);line-height:1.5}
+.cat-count{font-size:0.75rem;color:var(--text-3);margin-top:4px}
+
+/* 近期更新列表 */
+.recent-list{display:flex;flex-direction:column;gap:10px;padding-bottom:60px}
+.kb-card{background:var(--surface);border-radius:var(--radius-sm);padding:16px 18px;box-shadow:var(--shadow);display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;transition:box-shadow .2s,transform .2s}
+.kb-card:hover{box-shadow:var(--shadow-hover);transform:translateY(-1px)}
+.kb-icon{font-size:1.2rem;width:32px;text-align:center;flex-shrink:0}
+.kb-body{flex:1;min-width:0}
+.kb-title{font-size:0.88rem;font-weight:600;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kb-meta{display:flex;gap:8px}
+.kb-tag{font-size:0.68rem;font-weight:500;padding:2px 7px;border-radius:100px;background:rgba(0,0,0,0.05);color:var(--text-2)}
+.kb-date{font-size:0.72rem;color:var(--text-3)}
+.kb-arrow{font-size:0.9rem;color:var(--text-3);flex-shrink:0}
+
+#auth-gate{position:fixed;inset:0;z-index:999;background:var(--bg);display:flex;align-items:center;justify-content:center}
+#auth-gate.hidden{display:none}
+</style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css">
+</head>
+<body>
+
+<div id="auth-gate"><div style="color:#AEAEB2;font-size:.9rem">驗證中…</div></div>
+
+<div class="topbar"><div class="wrap topbar-inner">
+  <a class="back-btn" href="/">← 返回總站</a>
+  <h1><i class="ph ph-books"></i> 網頁知識庫</h1>
+</div></div>
+
+<div class="wrap">
+  <div class="hero">
+    <h2 data-edit-id="knowledge-h1">網頁知識庫</h2>
+    <p data-edit-id="knowledge-subtitle">內部教學・品牌資料・對外心得<br>所有重要文件都在這裡</p>
+  </div>
+
+  <!-- 外部知識站 banner -->
+  <a href="https://rsway.net" target="_blank" style="display:block;background:linear-gradient(135deg,#1A2238 0%,#2A3556 100%);border-radius:18px;padding:28px 32px;color:#fff;margin-bottom:36px;box-shadow:0 4px 20px rgba(26,34,56,0.15);text-decoration:none;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 28px rgba(26,34,56,0.25)'" onmouseout="this.style.transform='';this.style.boxShadow='0 4px 20px rgba(26,34,56,0.15)'">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
+      <div style="flex:1;min-width:240px">
+        <div style="font-size:0.72rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:#B8442B;margin-bottom:6px">外部知識站</div>
+        <div style="font-family:'Noto Serif TC',serif;font-size:1.35rem;font-weight:700;margin-bottom:6px">笙之道｜AI 心得總站</div>
+        <div style="font-size:0.85rem;color:rgba(255,255,255,0.75);line-height:1.55">笙闆對外分享的 AI 工作方法論<br>朋友與網路讀者都看得到</div>
+      </div>
+      <div style="font-size:1.4rem;color:#B8442B">rsway.net →</div>
+    </div>
+  </a>
+
+  <div class="section-label">📚 內部知識（員工專用）</div>
+  <div class="cat-grid">
+    <a class="cat-card" href="/knowledge/教學/">
+      <div class="cat-icon"><i class="ph ph-book-open"></i></div>
+      <div class="cat-name" data-edit-id="knowledge-cat1-name">教學</div>
+      <div class="cat-desc" data-edit-id="knowledge-cat1-desc">AI 使用教學、主管培訓<br>工具操作指南</div>
+      <div class="cat-count" data-edit-id="knowledge-cat1-count">4 個頁面</div>
+    </a>
+    <a class="cat-card" href="/knowledge/工具/">
+      <div class="cat-icon"><i class="ph ph-toolbox"></i></div>
+      <div class="cat-name" data-edit-id="knowledge-cat2-name">工具</div>
+      <div class="cat-desc" data-edit-id="knowledge-cat2-desc">臨時工具頁面<br>生成器・轉換器</div>
+      <div class="cat-count" data-edit-id="knowledge-cat2-count">6 個頁面</div>
+    </a>
+    <a class="cat-card" href="/knowledge/報告/">
+      <div class="cat-icon"><i class="ph ph-chart-bar"></i></div>
+      <div class="cat-name" data-edit-id="knowledge-cat3-name">報告</div>
+      <div class="cat-desc" data-edit-id="knowledge-cat3-desc">年度報告・數據分析<br>品牌洞察</div>
+      <div class="cat-count" data-edit-id="knowledge-cat3-count">1 個頁面</div>
+    </a>
+    <a class="cat-card" href="/knowledge/問卷/">
+      <div class="cat-icon"><i class="ph ph-clipboard-text"></i></div>
+      <div class="cat-name" data-edit-id="knowledge-cat4-name">問卷</div>
+      <div class="cat-desc" data-edit-id="knowledge-cat4-desc">內部調查・課前問卷<br>活動回饋</div>
+      <div class="cat-count" data-edit-id="knowledge-cat4-count">1 個頁面</div>
+    </a>
+  </div>
+
+  <div class="section-label" style="margin-top:36px">🌐 外部分享（公開・rsway.net 同步副本）</div>
+  <div class="cat-grid">
+    <a class="cat-card" href="/knowledge/心得/19天用AI蓋系統.html">
+      <div class="cat-icon"><i class="ph ph-lightbulb"></i></div>
+      <div class="cat-name" data-edit-id="knowledge-cat5-name">心得</div>
+      <div class="cat-desc" data-edit-id="knowledge-cat5-desc">AI 工作方法論<br>笙之道對外文章副本</div>
+      <div class="cat-count" data-edit-id="knowledge-cat5-count">2 個頁面</div>
+    </a>
+    <a class="cat-card" href="/knowledge/分析/競選標語邏輯.html">
+      <div class="cat-icon"><i class="ph ph-magnifying-glass"></i></div>
+      <div class="cat-name" data-edit-id="knowledge-cat6-name">分析</div>
+      <div class="cat-desc" data-edit-id="knowledge-cat6-desc">研究分析・方法論<br>外部可分享</div>
+      <div class="cat-count" data-edit-id="knowledge-cat6-count">1 個頁面</div>
+    </a>
+  </div>
+
+  <div class="section-label" style="margin-top:36px">近期更新</div>
+  <div class="recent-list">
+
+    <a class="kb-card" href="/knowledge/心得/AI時代最可怕的事.html" target="_blank">
+      <div class="kb-icon" style="color:#B8442B"><i class="ph ph-package"></i></div>
+      <div class="kb-body">
+        <div class="kb-title">AI 時代最可怕的事：你的知識，可以被打包複製</div>
+        <div class="kb-meta"><span class="kb-tag" style="background:rgba(184,68,43,0.12);color:#B8442B">心得・對外</span><span class="kb-date">2026-05-03 · 啟動包故事</span></div>
+      </div>
+      <div class="kb-arrow">→</div>
+    </a>
+
+    <a class="kb-card" href="/knowledge/心得/19天用AI蓋系統.html" target="_blank">
+      <div class="kb-icon" style="color:#B8442B"><i class="ph ph-lightbulb"></i></div>
+      <div class="kb-body">
+        <div class="kb-title">19 天，我用 AI 從零蓋了一整套系統</div>
+        <div class="kb-meta"><span class="kb-tag" style="background:rgba(184,68,43,0.12);color:#B8442B">心得・對外</span><span class="kb-date">2026-05-02 · 笙之道首篇</span></div>
+      </div>
+      <div class="kb-arrow">→</div>
+    </a>
+
+    <a class="kb-card" href="/knowledge/問卷/manager-ai-survey.html" target="_blank">
+      <div class="kb-icon" style="color:#C6613F"><i class="ph ph-clipboard-text"></i></div>
+      <div class="kb-body">
+        <div class="kb-title">淨淨主管 AI 課前小調查</div>
+        <div class="kb-meta"><span class="kb-tag" style="background:rgba(198,97,63,0.12);color:#A04A2D">問卷</span><span class="kb-date">2026-04-30 · 內部</span></div>
+      </div>
+      <div class="kb-arrow">→</div>
+    </a>
+
+    <a class="kb-card" href="/knowledge/教學/staff-training.html" target="_blank">
+      <div class="kb-icon"><i class="ph ph-users"></i></div>
+      <div class="kb-body">
+        <div class="kb-title">全體員工 AI 工具使用教學</div>
+        <div class="kb-meta"><span class="kb-tag">教學</span><span class="kb-date">2026-04-24</span></div>
+      </div>
+      <div class="kb-arrow">→</div>
+    </a>
+
+    <a class="kb-card" href="/knowledge/教學/manager-training.html" target="_blank">
+      <div class="kb-icon">👔</div>
+      <div class="kb-body">
+        <div class="kb-title">主管版 Claude AI Agent 教育訓練</div>
+        <div class="kb-meta"><span class="kb-tag">教學</span><span class="kb-date">2026-04-24</span></div>
+      </div>
+      <div class="kb-arrow">→</div>
+    </a>
+
+    <a class="kb-card" href="/knowledge/教學/ai-team-training.html" target="_blank">
+      <div class="kb-icon"><i class="ph ph-robot"></i></div>
+      <div class="kb-body">
+        <div class="kb-title">AI 軍團完整教學</div>
+        <div class="kb-meta"><span class="kb-tag">教學</span><span class="kb-date">2026-04-26</span></div>
+      </div>
+      <div class="kb-arrow">→</div>
+    </a>
+
+    <a class="kb-card" href="/knowledge/教學/ai-stages.html" target="_blank">
+      <div class="kb-icon"><i class="ph ph-brain"></i></div>
+      <div class="kb-body">
+        <div class="kb-title">AI 的五個發展階段</div>
+        <div class="kb-meta"><span class="kb-tag">教學</span><span class="kb-date">2026-04-24</span></div>
+      </div>
+      <div class="kb-arrow">→</div>
+    </a>
+
+    <a class="kb-card" href="/knowledge/報告/eagle-group-dashboard.html" target="_blank">
+      <div class="kb-icon"><i class="ph ph-chart-bar"></i></div>
+      <div class="kb-body">
+        <div class="kb-title">伊果集團損益分析儀表板</div>
+        <div class="kb-meta"><span class="kb-tag">報告</span><span class="kb-date">2026-04-21</span></div>
+      </div>
+      <div class="kb-arrow">→</div>
+    </a>
+
+    <a class="kb-card" href="/knowledge/工具/color-system.html" target="_blank">
+      <div class="kb-icon"><i class="ph ph-palette"></i></div>
+      <div class="kb-body">
+        <div class="kb-title">REYWAY 色彩系統</div>
+        <div class="kb-meta"><span class="kb-tag">工具</span><span class="kb-date">2026-04-24</span></div>
+      </div>
+      <div class="kb-arrow">→</div>
+    </a>
+
+  </div>
+</div>
+
+<script>
+(function(){
+  try{const s=JSON.parse(localStorage.getItem("reyway_gauth")||"null");if(s&&s.expiry>Date.now()){document.getElementById("auth-gate").classList.add("hidden");return;}}catch(e){}
+  window.location.href="/";
+})();
+</script>
+
+<!-- 編輯模式（主公專用）-->
+<button id="edit-toggle" type="button" title="編輯模式" style="position:fixed;bottom:18px;right:18px;z-index:990;display:none;align-items:center;gap:8px;padding:9px 16px 9px 13px;background:#fff;border:1px solid rgba(198,97,63,0.18);border-radius:100px;font-family:Inter,sans-serif;font-size:0.82rem;font-weight:500;color:#1A1A1A;cursor:pointer;box-shadow:0 2px 12px rgba(198,97,63,0.12);transition:all 0.2s ease;">
+  <i class="ph ph-pencil-simple-line"></i>
+  <span id="edit-toggle-text">編輯模式</span>
+</button>
+<div id="edit-toast" style="position:fixed;bottom:78px;right:18px;z-index:991;padding:9px 16px;background:#1A1A1A;color:#FAF7F0;border-radius:8px;font-size:0.82rem;font-weight:500;box-shadow:0 8px 24px rgba(0,0,0,0.2);opacity:0;transform:translateY(8px);transition:opacity 0.25s,transform 0.25s;pointer-events:none">已儲存 ✓</div>
+<style>
+#edit-toggle.show{display:inline-flex !important}
+#edit-toggle.editing{background:#C6613F;color:#fff;border-color:#C6613F}
+#edit-toast.show{opacity:1 !important;transform:translateY(0) !important}
+[data-edit-id]{transition:background 0.2s,outline 0.2s}
+body.edit-on [data-edit-id]{outline:1px dashed rgba(198,97,63,0.22);outline-offset:3px;background:rgba(198,97,63,0.04);border-radius:4px;cursor:text}
+body.edit-on [data-edit-id]:hover{outline-color:#C6613F;background:rgba(198,97,63,0.08)}
+body.edit-on [data-edit-id]:focus{outline:2px solid #C6613F;outline-offset:3px;background:rgba(255,255,255,0.85)}
+</style>
+<script src="/edit-mode.js"></script>
+</body>
+</html>

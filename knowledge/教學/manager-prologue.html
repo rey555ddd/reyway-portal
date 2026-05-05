@@ -1,0 +1,1495 @@
+<!DOCTYPE html>
+<html lang="zh-TW"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>上課之前 — 為什麼是現在 ｜ 主管暖身課</title>
+<script src="edit-mode.js?v=4" defer=""></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css">
+<style>
+  :root {
+    --teal: #5BC8D5;
+    --teal-light: #E8F8FA;
+    --teal-mid: #C5EDF1;
+    --navy: #1E293B;
+    --slate: #475569;
+    --muted: #94A3B8;
+    --border: #E2E8F0;
+    --bg: #FFFFFF;
+    --bg-soft: #F8FDFE;
+    --cream: #FBF8F1;
+    --cream-dark: #F0E9D8;
+    --green: #10B981;
+    --amber: #F59E0B;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'PingFang TC', 'Noto Sans TC', sans-serif;
+    background: var(--bg);
+    color: var(--navy);
+    line-height: 1.85;
+  }
+
+  .ph { font-style: normal; vertical-align: -0.1em; }
+
+  /* Progress bar */
+  #progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    background: var(--teal);
+    z-index: 9999;
+    transition: width 0.1s;
+    width: 0%;
+  }
+
+  /* Top mini nav */
+  nav {
+    position: fixed;
+    top: 3px;
+    left: 0;
+    right: 0;
+    background: rgba(255,255,255,0.94);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+    z-index: 100;
+    padding: 0 24px;
+  }
+  .nav-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 0;
+  }
+  .nav-logo {
+    font-weight: 700;
+    color: var(--teal);
+    font-size: 13px;
+    letter-spacing: 0.05em;
+  }
+  .nav-cta {
+    background: var(--navy);
+    color: white;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  .nav-cta:hover {
+    background: var(--teal);
+  }
+
+  main {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 80px 24px 100px;
+  }
+
+  /* Section common */
+  section {
+    padding: 80px 0;
+    border-bottom: 1px solid transparent;
+  }
+  section + section {
+    border-top: 1px solid var(--border);
+  }
+  .ch-label {
+    display: inline-block;
+    background: var(--teal-light);
+    color: var(--teal);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 18px;
+  }
+  h1 {
+    font-size: 44px;
+    font-weight: 800;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    margin-bottom: 24px;
+  }
+  h2 {
+    font-size: 32px;
+    font-weight: 800;
+    line-height: 1.4;
+    letter-spacing: -0.01em;
+    margin-bottom: 20px;
+  }
+  h3 {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.5;
+    margin: 32px 0 14px;
+    color: var(--navy);
+  }
+  p {
+    font-size: 17px;
+    line-height: 1.95;
+    color: var(--slate);
+    margin-bottom: 20px;
+  }
+  p strong {
+    color: var(--navy);
+    font-weight: 700;
+  }
+
+  /* Hero */
+  .hero {
+    padding: 120px 0 60px;
+    text-align: left;
+  }
+  .hero-img {
+    width: 100%;
+    border-radius: 20px;
+    margin: 32px 0 0;
+    background: var(--bg-soft);
+  }
+  .hero-eyebrow {
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-size: 52px;
+    line-height: 1.25;
+  }
+  .hero-sub {
+    font-size: 19px;
+    color: var(--slate);
+    line-height: 1.85;
+    margin-top: 16px;
+    max-width: 600px;
+  }
+
+  /* Letter (Ch.1) */
+  .letter {
+    background: var(--cream);
+    border-radius: 24px;
+    padding: 48px 44px;
+    margin: 40px 0;
+    box-shadow: 0 4px 30px rgba(0,0,0,0.04);
+    position: relative;
+  }
+  .letter::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 32px; right: 32px;
+    height: 1px;
+    background: var(--cream-dark);
+  }
+  .letter p {
+    font-size: 17px;
+    line-height: 2.05;
+    color: #4A3F2A;
+    margin-bottom: 18px;
+  }
+  .letter p:last-of-type { margin-bottom: 0; }
+  .letter strong {
+    color: #2D2517;
+    font-weight: 700;
+  }
+  .letter .greeting {
+    font-size: 20px;
+    font-weight: 700;
+    color: #2D2517;
+    margin-bottom: 28px;
+  }
+  .letter .signature {
+    margin-top: 40px;
+    text-align: right;
+    font-size: 16px;
+    color: #6B5A3A;
+  }
+  .letter .signature .name {
+    font-size: 28px;
+    font-weight: 800;
+    color: #2D2517;
+    letter-spacing: 0.05em;
+    margin-top: 6px;
+  }
+
+  /* Three callouts */
+  .callouts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+    margin: 28px 0;
+  }
+  .callout {
+    background: white;
+    border: 1px solid var(--cream-dark);
+    border-radius: 14px;
+    padding: 20px;
+    text-align: center;
+  }
+  .callout-icon {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 12px;
+    background: var(--teal-light);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--teal);
+    font-size: 22px;
+  }
+  .callout-title {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--navy);
+    margin-bottom: 6px;
+  }
+  .callout-desc {
+    font-size: 12px;
+    color: var(--slate);
+    line-height: 1.65;
+  }
+
+  /* Pull quote */
+  .pull-quote {
+    border-left: 3px solid var(--teal);
+    padding: 14px 0 14px 24px;
+    margin: 32px 0;
+    font-size: 22px;
+    line-height: 1.65;
+    color: var(--navy);
+    font-weight: 600;
+  }
+  .pull-quote-cite {
+    display: block;
+    margin-top: 10px;
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  /* Big stat */
+  .stat-block {
+    background: var(--bg-soft);
+    border-radius: 18px;
+    padding: 36px 28px;
+    margin: 32px 0;
+    text-align: center;
+  }
+  .stat-number {
+    font-size: 56px;
+    font-weight: 900;
+    color: var(--teal);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .stat-label {
+    font-size: 14px;
+    color: var(--slate);
+    margin-top: 12px;
+    line-height: 1.6;
+  }
+
+  /* Timeline */
+  .timeline {
+    position: relative;
+    margin: 32px 0;
+    padding-left: 32px;
+    border-left: 2px solid var(--teal-mid);
+  }
+  .timeline-item {
+    position: relative;
+    padding-bottom: 28px;
+  }
+  .timeline-item::before {
+    content: "";
+    position: absolute;
+    left: -41px;
+    top: 6px;
+    width: 14px;
+    height: 14px;
+    background: var(--teal);
+    border: 3px solid white;
+    border-radius: 50%;
+    box-shadow: 0 0 0 1px var(--teal-mid);
+  }
+  .timeline-date {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--teal);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .timeline-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 6px;
+  }
+  .timeline-desc {
+    font-size: 14px;
+    color: var(--slate);
+    line-height: 1.75;
+  }
+
+  /* Compare two columns */
+  .compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin: 28px 0;
+  }
+  @media (max-width: 600px) {
+    .compare { grid-template-columns: 1fr; }
+  }
+  .compare-col {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px 22px;
+  }
+  .compare-col.before {
+    background: #F8FAFC;
+  }
+  .compare-col.after {
+    background: linear-gradient(135deg, var(--teal-light) 0%, #F0FDF4 100%);
+    border-color: var(--teal-mid);
+  }
+  .compare-eyebrow {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+    margin-bottom: 8px;
+  }
+  .compare-col.before .compare-eyebrow { color: var(--muted); }
+  .compare-col.after .compare-eyebrow { color: var(--teal); }
+  .compare-col h4 {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--navy);
+    margin-bottom: 10px;
+  }
+  .compare-col p {
+    font-size: 14px;
+    line-height: 1.75;
+    margin: 0;
+  }
+
+  /* Section image */
+  .section-img {
+    width: 100%;
+    border-radius: 18px;
+    margin: 32px 0;
+    background: var(--bg-soft);
+    display: block;
+  }
+
+  /* Reading section divider */
+  .breath {
+    text-align: center;
+    margin: 48px 0;
+    color: var(--muted);
+    font-size: 12px;
+    letter-spacing: 0.3em;
+  }
+
+  /* CTA section */
+  .cta {
+    background: linear-gradient(135deg, var(--navy) 0%, #243246 100%);
+    border-radius: 24px;
+    padding: 56px 40px;
+    text-align: center;
+    margin: 48px 0 0;
+    color: white;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta::before {
+    content: "";
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: rgba(91,200,213,0.08);
+  }
+  .cta h2 {
+    color: white;
+    font-size: 28px;
+    margin-bottom: 14px;
+  }
+  .cta p {
+    color: #CBD5E1;
+    font-size: 16px;
+    max-width: 480px;
+    margin: 0 auto 28px;
+  }
+  .cta-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--teal);
+    color: white;
+    padding: 14px 32px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 800;
+    font-size: 15px;
+    transition: all 0.2s;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .cta-button:hover {
+    background: white;
+    color: var(--navy);
+    transform: translateY(-1px);
+  }
+  .cta-done {
+    margin-top: 20px;
+    font-size: 12px;
+    color: #94A3B8;
+    display: block;
+  }
+  .cta-done.is-done {
+    color: var(--teal);
+    font-weight: 700;
+  }
+
+  /* Chapter chip */
+  .ch-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: white;
+    border: 1.5px solid var(--border);
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 12px;
+    color: var(--slate);
+    cursor: pointer;
+    margin-left: 12px;
+    user-select: none;
+    transition: all 0.15s;
+    vertical-align: middle;
+    font-weight: 600;
+  }
+  .ch-chip:hover { border-color: var(--teal); }
+  .ch-chip.done {
+    background: var(--green);
+    border-color: var(--green);
+    color: white;
+  }
+  .ch-chip::before { content: "○"; font-size: 14px; }
+  .ch-chip.done::before { content: "✓"; }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 40px 24px 60px;
+    color: var(--muted);
+    font-size: 13px;
+    border-top: 1px solid var(--border);
+  }
+
+  /* Mobile */
+  @media (max-width: 720px) {
+    .hero h1 { font-size: 36px; }
+    h2 { font-size: 26px; }
+    main { padding: 70px 20px 80px; }
+    .letter { padding: 32px 24px; }
+  }
+</style>
+<style>
+    .em-fab {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 9998;
+      background: #1E293B;
+      color: white;
+      border: none;
+      border-radius: 30px;
+      padding: 12px 20px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.18);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+    .em-fab:hover { background: #5BC8D5; }
+    .em-fab.is-on { background: #5BC8D5; }
+    .em-toolbar {
+      position: fixed;
+      bottom: 80px;
+      right: 24px;
+      z-index: 9998;
+      background: white;
+      border-radius: 14px;
+      padding: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      display: none;
+      flex-direction: column;
+      gap: 8px;
+      min-width: 220px;
+      border: 1px solid #E2E8F0;
+    }
+    .em-toolbar.is-on { display: flex; }
+    .em-toolbar button {
+      background: white;
+      border: 1px solid #E2E8F0;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #1E293B;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.15s;
+      font-family: inherit;
+    }
+    .em-toolbar button:hover {
+      background: #F8FDFE;
+      border-color: #5BC8D5;
+    }
+    .em-toolbar button.primary {
+      background: #5BC8D5;
+      color: white;
+      border-color: #5BC8D5;
+    }
+    .em-toolbar button.primary:hover {
+      background: #2AABBB;
+    }
+    .em-toolbar button.danger {
+      color: #B91C1C;
+    }
+    .em-toolbar .em-stat {
+      font-size: 11px;
+      color: #64748B;
+      padding: 4px 4px;
+      border-bottom: 1px solid #F1F5F9;
+      margin-bottom: 4px;
+    }
+    .em-toolbar .em-stat strong {
+      color: #1E293B;
+    }
+    .em-fmt-bar {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+      padding: 6px 0;
+      border-bottom: 1px solid #F1F5F9;
+      margin-bottom: 4px;
+    }
+    .em-fmt-bar button {
+      padding: 5px 10px !important;
+      font-size: 13px !important;
+      font-weight: 700 !important;
+      min-width: 32px;
+      text-align: center !important;
+    }
+    .em-fmt-bar select {
+      border: 1px solid #E2E8F0;
+      border-radius: 8px;
+      padding: 5px 6px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #1E293B;
+      background: white;
+      cursor: pointer;
+      font-family: inherit;
+      flex: 1;
+    }
+    .em-fmt-bar select:focus {
+      outline: none;
+      border-color: #5BC8D5;
+    }
+    body.em-active .em-editable {
+      outline: 1px dashed transparent;
+      outline-offset: 2px;
+      cursor: text;
+      transition: outline 0.15s, background 0.15s;
+      border-radius: 4px;
+      caret-color: #5BC8D5;
+      padding: 2px 4px;
+      margin-left: -4px;
+      margin-right: -4px;
+      /* IME 友善：注音組字框會貼近游標 */
+      ime-mode: active;
+    }
+    body.em-active .em-editable:hover {
+      outline: 1px dashed #5BC8D5;
+      background: rgba(91,200,213,0.06);
+    }
+    body.em-active .em-editable:focus {
+      outline: 2px solid #5BC8D5;
+      background: rgba(91,200,213,0.12);
+      /* 編輯時行高與字距拉開、好讀好打 */
+      line-height: 1.95;
+      letter-spacing: 0.02em;
+    }
+    body.em-active .em-editable.is-changed {
+      background: rgba(245,158,11,0.08);
+      outline: 1px solid rgba(245,158,11,0.4);
+    }
+    body.em-active .em-editable.is-composing {
+      background: rgba(91,200,213,0.18);
+      outline: 2px solid #2AABBB;
+    }
+    .em-toast {
+      position: fixed;
+      bottom: 80px;
+      right: 24px;
+      background: #1E293B;
+      color: white;
+      padding: 14px 22px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      z-index: 9999;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      animation: em-toast-in 0.2s ease;
+    }
+    @keyframes em-toast-in {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style><style id="monica-reading-highlight-style">
+        .monica-reading-highlight {
+          animation: fadeInOut 1.5s ease-in-out;
+        }
+
+        @keyframes fadeInOut {
+          0%, 100% { background-color: transparent; }
+          30%, 70% { background-color: rgba(2, 118, 255, 0.20); }
+        }
+      </style><style>
+    .em-fab {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 9998;
+      background: #1E293B;
+      color: white;
+      border: none;
+      border-radius: 30px;
+      padding: 12px 20px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.18);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+    .em-fab:hover { background: #5BC8D5; }
+    .em-fab.is-on { background: #5BC8D5; }
+    .em-toolbar {
+      position: fixed;
+      bottom: 80px;
+      right: 24px;
+      z-index: 9998;
+      background: white;
+      border-radius: 14px;
+      padding: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      display: none;
+      flex-direction: column;
+      gap: 8px;
+      min-width: 220px;
+      border: 1px solid #E2E8F0;
+    }
+    .em-toolbar.is-on { display: flex; }
+    .em-toolbar button {
+      background: white;
+      border: 1px solid #E2E8F0;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #1E293B;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.15s;
+      font-family: inherit;
+    }
+    .em-toolbar button:hover {
+      background: #F8FDFE;
+      border-color: #5BC8D5;
+    }
+    .em-toolbar button.primary {
+      background: #5BC8D5;
+      color: white;
+      border-color: #5BC8D5;
+    }
+    .em-toolbar button.primary:hover {
+      background: #2AABBB;
+    }
+    .em-toolbar button.danger {
+      color: #B91C1C;
+    }
+    .em-toolbar .em-stat {
+      font-size: 11px;
+      color: #64748B;
+      padding: 4px 4px;
+      border-bottom: 1px solid #F1F5F9;
+      margin-bottom: 4px;
+    }
+    .em-toolbar .em-stat strong {
+      color: #1E293B;
+    }
+    .em-fmt-bar {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+      padding: 6px 0;
+      border-bottom: 1px solid #F1F5F9;
+      margin-bottom: 4px;
+    }
+    .em-fmt-bar button {
+      padding: 5px 10px !important;
+      font-size: 13px !important;
+      font-weight: 700 !important;
+      min-width: 32px;
+      text-align: center !important;
+    }
+    .em-fmt-bar select {
+      border: 1px solid #E2E8F0;
+      border-radius: 8px;
+      padding: 5px 6px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #1E293B;
+      background: white;
+      cursor: pointer;
+      font-family: inherit;
+      flex: 1;
+    }
+    .em-fmt-bar select:focus {
+      outline: none;
+      border-color: #5BC8D5;
+    }
+    body.em-active .em-editable {
+      outline: 1px dashed transparent;
+      outline-offset: 2px;
+      cursor: text;
+      transition: outline 0.15s, background 0.15s;
+      border-radius: 4px;
+      caret-color: #5BC8D5;
+      padding: 2px 4px;
+      margin-left: -4px;
+      margin-right: -4px;
+      /* IME 友善：注音組字框會貼近游標 */
+      ime-mode: active;
+    }
+    body.em-active .em-editable:hover {
+      outline: 1px dashed #5BC8D5;
+      background: rgba(91,200,213,0.06);
+    }
+    body.em-active .em-editable:focus {
+      outline: 2px solid #5BC8D5;
+      background: rgba(91,200,213,0.12);
+      /* 編輯時行高與字距拉開、好讀好打 */
+      line-height: 1.95;
+      letter-spacing: 0.02em;
+    }
+    body.em-active .em-editable.is-changed {
+      background: rgba(245,158,11,0.08);
+      outline: 1px solid rgba(245,158,11,0.4);
+    }
+    body.em-active .em-editable.is-composing {
+      background: rgba(91,200,213,0.18);
+      outline: 2px solid #2AABBB;
+    }
+    .em-toast {
+      position: fixed;
+      bottom: 80px;
+      right: 24px;
+      background: #1E293B;
+      color: white;
+      padding: 14px 22px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      z-index: 9999;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      animation: em-toast-in 0.2s ease;
+    }
+    @keyframes em-toast-in {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style></head>
+<body monica-id="ofpnmcalabcbjgholdjcjblkibolbppb" monica-version="9.0.10" class="em-active">
+
+<div id="progress-bar" style="width: 9.65602%;"></div>
+
+<nav>
+  <div class="nav-inner">
+    <span class="nav-logo">主管暖身課</span>
+    <a href="manager-training" class="nav-cta">直接進正課 →</a>
+  </div>
+</nav>
+
+<main>
+
+  <!-- ============ Hero ============ -->
+  <section class="hero" id="hero">
+    <div class="hero-eyebrow">主管暖身課 · 上課之前</div>
+    <h1 class="">為什麼現在一定要學？<br>為什麼你們學的不一樣？</h1>
+    <p class="hero-sub" data-listener-added_29ff7f95="true">
+      在我們開始談「怎麼用 AI Agent」之前——<br>
+      請先讓我跟你說一件事、為什麼是現在、為什麼是你們。
+    </p>
+    <p class="hero-sub" style="font-size:15px;color:var(--muted);margin-top:24px;">
+      這份暖身大概 7 分鐘讀完。不是教材、是寫給你們的信。
+    </p>
+    <img src="imgs/pro-hero.jpg" alt="拐點" class="hero-img" loading="lazy">
+  </section>
+
+  <!-- ============ Ch.1 信 ============ -->
+  <section id="ch1">
+    <span class="ch-label">CHAPTER 01 · 一封信</span>
+    <h2 class="">為什麼是你 — 致這 6 位<span class="ch-chip" data-ch="ch1">標記已讀</span></h2>
+
+    <img src="imgs/pro-letter.jpg" alt="一封信" class="section-img" loading="lazy">
+
+    <div class="letter">
+      <p class="greeting">各位，</p>
+
+      <p class="">
+        為什麼是你們 6 位坐在這間教室、不是全公司一起上？
+      </p>
+
+      <p class="">
+        因為我希望你們不是「<strong>被分配來上課的員工</strong>」、
+        而是「<strong>工具的創造者與監督者</strong>」。
+      </p>
+
+      <div class="callouts">
+        <div class="callout">
+          <div class="callout-icon"><i class="ph ph-wrench"></i></div>
+          <div class="callout-title">工具創造者</div>
+          <div class="callout-desc">不只用工具<br>是定義工具該長什麼樣</div>
+        </div>
+        <div class="callout">
+          <div class="callout-icon"><i class="ph ph-bridge"></i></div>
+          <div class="callout-title">前線翻譯官</div>
+          <div class="callout-desc">你們離夥伴最近<br>知道他們真的卡在哪</div>
+        </div>
+        <div class="callout">
+          <div class="callout-icon"><i class="ph ph-medal"></i></div>
+          <div class="callout-title">核心幹部</div>
+          <div class="callout-desc">這間公司未來怎麼走<br>靠你們把這套帶下去</div>
+        </div>
+      </div>
+
+      <p class="">
+        說實話、你們已經是這間公司目前最會用 AI 的幾位，其他人還茫然摸索中</p>
+
+      <p class="" data-listener-added_29ff7f95="true">
+        但<strong>我選你們、不只是因為你們現在最會用 AI</strong>。
+      </p>
+
+      <p class="" data-listener-added_29ff7f95="true">
+        是因為——<span style="letter-spacing: 0.34px; background-color: rgba(245, 158, 11, 0.08);">我</span><span style="letter-spacing: 0.34px; background-color: rgba(245, 158, 11, 0.08);">重視你們、信任你們</span><span style="letter-spacing: 0.34px; background-color: rgba(245, 158, 11, 0.08);">。</span></p>
+
+      <p class="" data-listener-added_29ff7f95="true"><br></p>
+
+      <p class="" data-listener-added_29ff7f95="true"><b>
+        你們的人格特質、做事方式、以及在你們身上看到的可能性的——
+</b><br>&nbsp;是我打從心裡相信「<strong>會讓淨淨持續變更好</strong>」的核心關鍵人物。
+      </p>
+
+      <p class="">——<strong>淨淨團隊的核心幹部</strong>。
+      </p>
+
+      <p class="" data-listener-added_29ff7f95="true">
+        這份信任不是 AI 教得出來的、
+        是過去這段時間的觀察與事件的反應而來<br>
+        AI 工具一週可以教會、而能力＆人格，卻無法複製。<br>
+        你們的後者已經讓我看到了、所以我想把前者交給你們。
+      <br>讓你們的能力、插上新科技的翅膀</p>
+
+      <p class="" data-listener-added_29ff7f95="true">
+        說清楚分工——<br><strong>主框架（軍團系統、Skill、Memory、淨淨總站）我來</strong>、&nbsp;</p><div><strong>部門工具（儀表板、內部協作、流程優化、專用工具）你們來</strong>。<br>
+        每個部門需要什麼、你們最清楚、自己動手做、最快也最對。
+      </div><p></p>
+
+      <p class="">
+        等你們把這套吃進去、再回去帶你們的夥伴、
+<br>&nbsp;整個淨淨就會變成一個<strong>會學習的全智能AI組織</strong>。</p>
+
+      <p class="">
+        這不是一堂課、是一場交棒。<br>
+        接下來這 8 章、是我給你們的工具書。<br>
+        慢慢看、不用急。
+      </p>
+
+      <div class="signature">
+        這不是一堂課、是一場心血結晶的傳承<br>更是我們要<b><font size="5">「在苗栗跟世界打仗</font>」</b>的關鍵能力<br><br>
+        接下來這 8 章、是我給你們的工具書。<br>
+        慢慢看、不用急。
+      </div>
+    </div>
+  </section>
+
+  <div class="breath">· · ·</div>
+
+  <!-- ============ Ch.2 市場的變化 ============ -->
+  <section id="ch2">
+    <span class="ch-label">CHAPTER 02 · 大環境</span>
+    <h2 class="" data-listener-added_29ff7f95="true">市場正在重組，但很多人還沒<span style="background-color: rgba(91, 200, 213, 0.18);">啟動</span><span class="ch-chip" data-ch="ch2">標記已讀</span></h2>
+
+    <p class="" data-listener-added_29ff7f95="true">
+      過去，品牌強大有很多要素——<strong>誰團隊多、通路多、口袋深、廣告大、誰就贏</strong>。
+    </p>
+
+    <p class="" data-listener-added_29ff7f95="true">
+      所以大品牌一年砸幾億、中小品牌靠殘羹剩飯，這個遊戲、我們不是玩家、是觀眾。
+    </p>
+
+    <img src="imgs/pro-market.jpg" alt="市場路徑" class="section-img" loading="lazy">
+
+    <p class="">
+      但這 2 年、有一件事悄悄變了。
+    </p>
+
+    <div class="pull-quote" data-listener-added_29ff7f95="true">
+      AI 把「請得起 100 個專家」這件事、變成 一個AI Agent 能做到<span class="pull-quote-cite">廣告腦、文案腦、設計腦、客服腦、數據腦、企劃腦——以前要養一整個團隊</span>
+    </div>
+
+    <p class="" data-listener-added_29ff7f95="true">
+      這對誰最有利？<strong>對中小品牌最有利</strong>。
+    </p>
+
+    <p class="" data-listener-added_29ff7f95="true">
+      因為大公司 船太大、轉不動。<br>
+      他們有 50 層審批、3 個法務、5 個顧問、流程要走 3 個月。<br>
+      AI 工具進到他們公司、會被改造成「跟以前一樣慢、只是換個介面」。
+    </p>
+
+    <p class="">
+      我們不一樣。<b>我們轉身只要 3 天。</b><br>
+      想到一個工具、3 天能 demo、1 週能上線、1 個月能優化 10 次。
+    </p>
+
+    <p class="" data-listener-added_29ff7f95="true">
+      <strong>這個窗口、不會永遠開著。</strong><br>跟短影音一樣，大概 6-12 個月、大公司、整個市場就會追上來。<br>
+      但這 12 個月、是我們彎道超車、跟上主流，累積籌碼的大好機會。
+    </p>
+  </section>
+
+  <div class="breath">· · ·</div>
+
+  <!-- ============ Ch.3 AI 的誕生 ============ -->
+  <section id="ch3">
+    <span class="ch-label">CHAPTER 03 · 浪潮</span>
+    <h2 class="">AI 這 3 年，比想像的更快<span class="ch-chip" data-ch="ch3">標記已讀</span></h2>
+
+    <p class="" data-listener-added_29ff7f95="true">
+      很多人以為 AI 是 ChatGPT 出來才有的——其實不是。<br>
+      ChatGPT 只是「終於做出一個人類覺得好用的版本」。
+    </p>
+
+    <img src="imgs/pro-ai.jpg" alt="AI 演進" class="section-img" loading="lazy">
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-date">2022 年底</div>
+        <div class="timeline-title">第一波 · 聊天</div>
+        <div class="timeline-desc">ChatGPT 上線、會講話、但什麼都不會做。<br>大家驚呼「天啊好厲害」、一個月後就忘了它。</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">2024 年</div>
+        <div class="timeline-title">第二波 · 多模態</div>
+        <div class="timeline-desc">會看圖、會生圖、會聽聲音。 但還是「你問它答」、不會主動做事。</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">2025-2026</div>
+        <div class="timeline-title">第三波 · Agent（我們在這）</div>
+        <div class="timeline-desc">會自己拿工具、寫程式、開瀏覽器、查資料、做完任務再回來告訴你。<br><strong>從「會說」、進化到「會做」。</strong></div>
+      </div>
+    </div>
+
+    <p class="">
+      你看出差別了嗎——<br>
+      過去 2 年我們玩的「對 AI 下指令、它回答你」、本質還是「人類在做事、AI 在輔助」。
+    </p>
+
+    <p class="">
+      Agent 不一樣。Agent 是「<strong>AI 在做事、人類在驗收</strong>」。
+    </p>
+
+    <div class="pull-quote" data-listener-added_29ff7f95="true">
+      你不是雇用了一個更聰明的 ChatGPT、<br>
+      你是雇用了一個會自己工作的神隊友。
+    </div>
+
+    <p class="" data-listener-added_29ff7f95="true">
+      這個轉變、改變的不是「工具」、是「<strong>組織該長什麼樣、流程該如何重組</strong>」。<br>
+      這就是為什麼這堂課的對象是主管、不是執行人員。
+    </p>
+  </section>
+
+  <div class="breath">· · ·</div>
+
+  <!-- ============ Ch.4 工具的演進 ============ -->
+  <section id="ch4">
+    <span class="ch-label">CHAPTER 04 · 我們走過的路</span>
+    <h2 class="">淨淨自己怎麼走到今天<span class="ch-chip" data-ch="ch4">標記已讀</span></h2>
+
+    <p class=""><strong>這套體系不是規劃出來的、是踩出來的</strong>。
+    </p>
+
+    <img src="imgs/pro-tools.jpg" alt="工具演進" class="section-img" loading="lazy">
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-date">2025 年底</div>
+        <div class="timeline-title">試水期 · 跟一個 AI 對話</div>
+        <div class="timeline-desc">那時候我自己用 ChatGPT、Claude.ai、覺得「還不錯啊」。<br>但每次開新對話都要重新介紹自己、像得了健忘症的助理。</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">2026/4 月初</div>
+        <div class="timeline-title">系統化 · Claude Code 啟動</div>
+        <div class="timeline-desc">第一次有了 Memory（會記得）、有了 Skill（會專業）。<br>那時候我才知道、原來 AI 可以變成「同事」。</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">2026/4 月中</div>
+        <div class="timeline-title">軍團體系 · 7 個 Agent</div>
+        <div class="timeline-desc">韓信、郭嘉、墨子、蕭何、小喬、周瑜、傳令——每個有職稱、有規則、有專業。<br>從「一個 AI」變成「一支隊伍」。、2周內完成 10個跨產業品牌行銷站、多種複雜工具</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">2026/5 月（現在）</div>
+        <div class="timeline-title">夥伴賦能 · 你們上場</div>
+        <div class="timeline-desc">過去 2 個月我自己當白老鼠、摸清底層邏輯、確認這套行得通、是我們必備武器<br>現在輪到你們、把這套帶到部門、讓夥伴也能用。</div>
+      </div>
+    </div>
+
+    <div class="pull-quote" data-listener-added_29ff7f95="true">
+      19 天、從零搭起一支 AI 隊伍，5分鐘1篇長文，30分鐘建一個網站<br>
+      不是因為我厲害、是因為我每天都在試錯、然後把對的東西記下來。
+    </div>
+
+    <p class="" data-listener-added_29ff7f95="true">
+      你們等下要學的、不是抽象的 AI 知識。<br>
+      <strong>是我這 19 天踩過的路、整理成 8 章。（請勿外傳，真的很機密的血淚經驗）</strong></p>
+  </section>
+
+  <div class="breath">· · ·</div>
+
+  <!-- ============ Ch.5 你的角色變了 ============ -->
+  <section id="ch5">
+    <span class="ch-label">CHAPTER 05 · 你的位置</span>
+    <h2 class="">你的角色、悄悄變了三件事<span class="ch-chip" data-ch="ch5">標記已讀</span></h2>
+
+    <img src="imgs/pro-role.jpg" alt="主管是橋" class="section-img" loading="lazy">
+
+    <p class="">
+      在 Agent 時代、你還是主管、但你管的東西變了。
+    </p>
+
+    <h3 class="" data-listener-added_29ff7f95="true">變化一：從「員工執行者 or 管理者」到「決策者、工具創造者、橋樑」</h3>
+    <div class="compare">
+      <div class="compare-col before">
+        <div class="compare-eyebrow">以前</div>
+        <h4 class="">夥伴管理者</h4>
+        <p class="">以前要執行、分配工作、追進度、考核 KPI。<br>夥伴是執行者、你是分派者。</p>
+      </div>
+      <div class="compare-col after">
+        <div class="compare-eyebrow">現在</div>
+        <h4 class="" data-listener-added_29ff7f95="true">橋樑</h4>
+        <p class="">一邊帶夥伴用工具、一邊把夥伴的需求反饋回來、改工具。你是連接兩端、讓完成度更好的人</p>
+      </div>
+    </div>
+
+    <h3 class="">變化二：從「執行者」到「使用者代表」</h3>
+    <div class="compare">
+      <div class="compare-col before">
+        <div class="compare-eyebrow">以前</div>
+        <h4 class="" data-listener-added_29ff7f95="true">執行者</h4>
+        <p class="">你做完老闆交代的事、就完成任務。</p>
+      </div>
+      <div class="compare-col after">
+        <div class="compare-eyebrow">現在</div>
+        <h4 class="" data-listener-added_29ff7f95="true">使用者代表</h4>
+        <p class="" data-listener-added_29ff7f95="true">你代表前線講話、讓工具被改成夥伴真的好用<br>並能真的讓AI賦能團隊、公司</p>
+      </div>
+    </div>
+
+    <h3 class="">變化三：從「累積經驗」到「累積 Memory」</h3>
+    <div class="compare">
+      <div class="compare-col before">
+        <div class="compare-eyebrow">以前</div>
+        <h4 class="">經驗在腦子裡</h4>
+        <p class="">你做了 5 年、學會的 know-how 留在你身上。離職就帶走。</p>
+      </div>
+      <div class="compare-col after">
+        <div class="compare-eyebrow">現在</div>
+        <h4 class="">經驗在 Memory 裡</h4>
+        <p class="">你做的決策、踩過的坑、找到的解法、都存進 AI 的長期記憶。下一個夥伴接手、不用重學一次。</p>
+      </div>
+    </div>
+
+    <h3 class="">變化四：從「使用工具」到「打造部門工具」</h3>
+    <div class="compare">
+      <div class="compare-col before">
+        <div class="compare-eyebrow">以前</div>
+        <h4 class="">等工具來</h4>
+        <p class="">需要什麼系統、提需求給 IT、找廠商<br>半年後才有、還不一定符合你想要的。</p>
+      </div>
+      <div class="compare-col after">
+        <div class="compare-eyebrow">現在</div>
+        <h4 class="">自己動手做</h4>
+        <p class="">部門需要什麼儀表板、內部協作工具——你直接用 AI Agent 自己打一個出來。3 天能 demo、1 週能上線。<strong>主框架我來、部門小工具你們來。</strong></p>
+      </div>
+    </div>
+
+    <div class="pull-quote" style="margin-top:36px;" data-listener-added_29ff7f95="true">
+      我（笙闆）負責主框架——Agent架構、Skill 體系、淨淨總站。<br>
+      你們負責部門工具——智能助手、儀表板、內部協作、流程優化。<br>
+      <span class="pull-quote-cite">不是把所有事都丟給工程部，是你們自己變成「會建工具的主管」</span>
+    </div>
+
+    <p style="margin-top:32px;" class="">
+      這四件事看起來很抽象、其實對你日常的影響很實在——<br>
+      你會發現、你的角色從「<strong>把事做完</strong>」變成「<strong>把系統建起來</strong>」。<br>
+      做完一次的事就過了、但建好的系統、會永遠運作。
+    </p>
+  </section>
+
+  <div class="breath">· · ·</div>
+
+  <!-- ============ Ch.6 今年的目標 ============ -->
+  <section id="ch6">
+    <span class="ch-label">CHAPTER 06 · 為什麼是今年</span>
+    <h2 class="">2026、是淨淨的<br>系統打底年<span class="ch-chip" data-ch="ch6">標記已讀</span></h2>
+
+    <img src="imgs/pro-year.jpg" alt="種子" class="section-img" loading="lazy">
+
+    <p class="" data-listener-added_29ff7f95="true">
+      這幾年、淨淨從一個小品牌做到 終於在台灣市場有了「一席之地」<br>
+      靠的是「最棒的產品、數位行銷的加速」——接上每一次的紅利、迎風而上</p>
+
+    <p class="" data-listener-added_29ff7f95="true">
+      但下個階段、靠努力、好產品是上不去的。<br>
+      接下來要靠「<strong>智能系統的架構＆落地</strong>」。
+    </p>
+
+    <div class="stat-block">
+      <div class="stat-number">2026</div>
+      <div class="stat-label" data-listener-added_29ff7f95="true">系統打底年<br>不是業績年、是把基礎建好的一年</div>
+    </div>
+
+    <p class="">
+      所以今年我把資源都壓在這幾件事——
+    </p>
+
+    <h3 class="" data-listener-added_29ff7f95="true">三件主框架（我來做）</h3>
+    <p style="font-size:15px;line-height:2;" class="" data-listener-added_29ff7f95="true">
+      ① <strong>淨淨總站</strong>——把所有夥伴的工作流接起來、不再 200 個 Notion 頁四散<br>
+      ② <strong>AI 系統</strong>——Agent + Memory、Claude官方架構、Harness、資安、網站架設、行銷文案Skill等<br>
+      ③ <strong>主管賦能</strong>——你們這 6 位、變成「工具建造者」&amp;「迭代負責人」</p>
+
+    <h3 style="margin-top:24px;" class="" data-listener-added_29ff7f95="true">部門AI工具（你們來做）</h3>
+    <p style="font-size:15px;line-height:2;" class="" data-listener-added_29ff7f95="true">
+      每位主管針對自己部門、視需求動手做——<br>
+      可能是<strong>銷售儀表板</strong>、<strong>話術小幫手</strong>、<strong>進度追蹤板</strong>、<strong>內部 FAQ 工具</strong>、<strong>會議記錄生成、人資考核系統</strong>……<br>
+      不需要驚天動地、能讓你們部門夥伴，提高效率、減少錯誤、好分析好追蹤就是好工具</p>
+
+    <div class="pull-quote">
+      主框架我來打、部門工具你們來造、夥伴只負責用。<br>
+      <span class="pull-quote-cite">三層各司其職、淨淨整套體系才會活起來。</span>
+    </div>
+
+    <p class="">
+      你會發現、第③件主框架（主管賦能）跟你們要做的部門工具是<strong>同一件事</strong>——<br>
+      你們不是來學 AI 的、你們是來幫我<strong>把這套變成 6 個人都能跑、不只我一個人能跑</strong>的關鍵。
+    </p>
+
+    <p class="" data-listener-added_29ff7f95="true">
+      第三件做完、明年我們才有條件談業績——<br>
+      因為基礎結實了、團隊智能化、<b>才能在苗栗跟世界打仗</b></p>
+  </section>
+
+  <div class="breath">· · ·</div>
+
+  <!-- ============ Ch.7 種樹苗 → 樹林（願景）============ -->
+  <section id="ch7">
+    <span class="ch-label">CHAPTER 07 · 願景</span>
+    <h2 class="">我們在種一棵樹苗<br>3 年後、會長成淨淨自己的樹林<span class="ch-chip" data-ch="ch7">標記已讀</span></h2>
+
+    <img src="imgs/pro-forest.jpg" alt="從樹苗到樹林" class="section-img" loading="lazy">
+
+    <p class="" data-listener-added_29ff7f95="true">
+      我想讓你們知道——<strong>我們現在做的這些事、不是為了「跟流行、會用 AI」這個技能而已</strong><br>
+      是為了種下一棵樹苗、未來 3 年慢慢養大、變成淨淨自己的一片樹林。
+    </p>
+
+    <div class="pull-quote">
+      你今天教夥伴用 5 分鐘工具——是在<strong>澆水</strong>。<br>
+      你今天記下一條 [卡] [想要]——是在<strong>施肥</strong>。<br>
+      你今天打造一個部門小儀表板——是在<strong>種一棵新苗</strong>。
+    </div>
+
+    <p class="">
+      3 個月後——樹苗活下來了。<br>
+      半年後——根開始扎深。<br>
+      1 年後——枝葉開展。<br>
+      <strong>3 年後——你回頭看、整片山都綠了</strong>。
+    </p>
+
+    <h3 style="margin-top:48px;" class="">那片樹林長什麼樣 · 6 個畫面</h3>
+    <p style="font-size:14px;color:var(--muted);margin-bottom:8px;" class="">這不是想像、是我們已經在動工的樣子。閉上眼睛、想像 1 年後的淨淨——</p>
+
+    <!-- 6 個願景卡 -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin:24px 0;">
+      <div style="background:linear-gradient(135deg,var(--cream) 0%,#FAF4E5 100%);border:1px solid var(--cream-dark);border-radius:18px;padding:22px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+          <div style="width:38px;height:38px;background:white;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#B07F2E;font-size:20px;">
+            <i class="ph ph-sun-horizon"></i>
+          </div>
+          <div style="font-size:11px;font-weight:800;color:#8B6914;letter-spacing:0.1em;">VISION 01</div>
+        </div>
+        <h4 style="font-size:16px;font-weight:800;color:#3D2D0A;margin-bottom:8px;" class="" data-listener-added_29ff7f95="true">每個夥伴一上工<br>都有專屬 AI 助理</h4>
+        <p style="font-size:13px;color:#5A4015;line-height:1.75;margin:0;" class="" data-listener-added_29ff7f95="true">早上打開電腦、AI 已經把昨天做完的事整理成日記、提醒今天 3 件事、上次踩過的坑也標好了。<strong>沒有「冷啟動」這種事</strong>。</p>
+      </div>
+
+      <div style="background:linear-gradient(135deg,var(--cream) 0%,#FAF4E5 100%);border:1px solid var(--cream-dark);border-radius:18px;padding:22px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+          <div style="width:38px;height:38px;background:white;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#B07F2E;font-size:20px;">
+            <i class="ph ph-toolbox"></i>
+          </div>
+          <div style="font-size:11px;font-weight:800;color:#8B6914;letter-spacing:0.1em;">VISION 02</div>
+        </div>
+        <h4 style="font-size:16px;font-weight:800;color:#3D2D0A;margin-bottom:8px;" class="" data-listener-added_29ff7f95="true">每個部門有<br>自己的AI工具箱</h4>
+        <p style="font-size:13px;color:#5A4015;line-height:1.75;margin:0;" class="">財務有妮妮儀表板、行銷有廣告 KPI 站、客服有話術 AI、設計有 IG 排程器——<strong>每個都是該部門主管親自打造、最懂自己部門的人最懂的工具</strong>。</p>
+      </div>
+
+      <div style="background:linear-gradient(135deg,var(--cream) 0%,#FAF4E5 100%);border:1px solid var(--cream-dark);border-radius:18px;padding:22px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+          <div style="width:38px;height:38px;background:white;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#B07F2E;font-size:20px;">
+            <i class="ph ph-graduation-cap"></i>
+          </div>
+          <div style="font-size:11px;font-weight:800;color:#8B6914;letter-spacing:0.1em;">VISION 03</div>
+        </div>
+        <h4 style="font-size:16px;font-weight:800;color:#3D2D0A;margin-bottom:8px;" class="" data-listener-added_29ff7f95="true">新人 1 週上手專案<br>不需要 1 個月+</h4>
+        <p style="font-size:13px;color:#5A4015;line-height:1.75;margin:0;" class="">第一天讀 Memory、第三天能寫像樣工作日誌、第七天能單獨跑專案。SOP 不在腦子裡、<strong>在系統裡</strong>。</p>
+      </div>
+
+      <div style="background:linear-gradient(135deg,var(--cream) 0%,#FAF4E5 100%);border:1px solid var(--cream-dark);border-radius:18px;padding:22px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+          <div style="width:38px;height:38px;background:white;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#B07F2E;font-size:20px;">
+            <i class="ph ph-archive"></i>
+          </div>
+          <div style="font-size:11px;font-weight:800;color:#8B6914;letter-spacing:0.1em;">VISION 04</div>
+        </div>
+        <h4 style="font-size:16px;font-weight:800;color:#3D2D0A;margin-bottom:8px;" class="" data-listener-added_29ff7f95="true">公司＆團隊有<br>完整的「集體記憶」</h4>
+        <p style="font-size:13px;color:#5A4015;line-height:1.75;margin:0;" class="">每個決策、每次踩坑、每個解法都在 AI 裡。<strong>離職帶不走、新人秒接上</strong>。淨淨不再是「靠某幾個強人撐」、是「系統自己會跑」。</p>
+      </div>
+
+      <div style="background:linear-gradient(135deg,var(--cream) 0%,#FAF4E5 100%);border:1px solid var(--cream-dark);border-radius:18px;padding:22px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+          <div style="width:38px;height:38px;background:white;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#B07F2E;font-size:20px;">
+            <i class="ph ph-strategy"></i>
+          </div>
+          <div style="font-size:11px;font-weight:800;color:#8B6914;letter-spacing:0.1em;">VISION 05</div>
+        </div>
+        <h4 style="font-size:16px;font-weight:800;color:#3D2D0A;margin-bottom:8px;" class="" data-listener-added_29ff7f95="true">主管的時間從<br>「救火、追蹤」變「審核、迭代」</h4>
+        <p style="font-size:13px;color:#5A4015;line-height:1.75;margin:0;" class="" data-listener-added_29ff7f95="true">每天的瑣事 AI 接走 70%、你終於有空想下一季、想新工具、想新打法。<strong>你的時間從處理問題、變成創造機會、遙望下一站</strong></p>
+      </div>
+
+      <div style="background:linear-gradient(135deg,var(--cream) 0%,#FAF4E5 100%);border:1px solid var(--cream-dark);border-radius:18px;padding:22px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+          <div style="width:38px;height:38px;background:white;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#B07F2E;font-size:20px;">
+            <i class="ph ph-rocket-launch"></i>
+          </div>
+          <div style="font-size:11px;font-weight:800;color:#8B6914;letter-spacing:0.1em;">VISION 06</div>
+        </div>
+        <h4 style="font-size:16px;font-weight:800;color:#3D2D0A;margin-bottom:8px;" class="" data-listener-added_29ff7f95="true">競品還在開會<br>我們已經做完3輪迭代</h4>
+        <p style="font-size:13px;color:#5A4015;line-height:1.75;margin:0;" class="" data-listener-added_29ff7f95="true">別人用 1 個月做的事、我們 3 天做完。<strong>機動力的差距、會越拉越大</strong>。<br>這不是更快、是要跨次元的速度。</p>
+      </div>
+    </div>
+
+    <!-- 三個時間錨點 -->
+    <h3 style="margin-top:48px;" class="">時間軸 · 從種苗到樹林</h3>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-date" data-listener-added_29ff7f95="true">3 個月內</div>
+        <div class="timeline-title">樹苗活下來</div>
+        <div class="timeline-desc" data-listener-added_29ff7f95="true">你們 6 位都能帶夥伴用工具、夥伴不再一個個問你「這要怎麼用」。第一批部門小工具上線、開始有人用。</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">半年後</div>
+        <div class="timeline-title">根開始扎</div>
+        <div class="timeline-desc" data-listener-added_29ff7f95="true">每個部門都有自己的工具箱、新來的夥伴 1 週上手、不再 1 個月。<br>Memory 累積到一定厚度、AI 開始「真的懂」我們。能穩定輸出、滿足現有需求</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">1 年後</div>
+        <div class="timeline-title">枝葉開展</div>
+        <div class="timeline-desc">淨淨變成「會學習的組織」、決策、流程、知識都在系統裡持續累積。離職不會崩盤、新人秒接上。</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">3 年後</div>
+        <div class="timeline-title">整片樹林</div>
+        <div class="timeline-desc" data-listener-added_29ff7f95="true">回頭看、不只是「會用 AI 的公司」、<br>是「<strong>精實團隊操盤、</strong><strong style="letter-spacing: 0.28px;">AI智能賦能</strong><strong>的公司</strong>」。沒有人能複製、因為這是我們一棵一棵種出來的。<br></div>
+      </div>
+    </div>
+
+    <div style="background:linear-gradient(135deg,var(--navy) 0%,#243246 100%);border-radius:20px;padding:36px 32px;margin-top:48px;color:white;text-align:center;position:relative;overflow:hidden;">
+      <div style="position:absolute;top:-30px;right:-30px;width:160px;height:160px;border-radius:50%;background:rgba(91,200,213,0.08);"></div>
+      <i class="ph ph-tree" style="font-size:42px;color:var(--teal);margin-bottom:14px;display:block;"></i>
+      <p style="font-size:20px;font-weight:700;color:white;margin:0;line-height:1.6;" class="">
+        我們現在還在種苗、還沒看到樹林。<br>
+        但每天澆一點水、每週施一次肥、每月看一次根扎深沒——
+      </p>
+      <p style="font-size:16px;color:var(--teal);font-weight:700;margin-top:18px;" class="">
+        3 年後、整片山都會綠。
+      </p>
+      <p style="font-size:13px;color:#94A3B8;margin-top:14px;line-height:1.7;" class="">
+        而你們 6 位、是<strong style="color:white;">第一批種樹苗的人</strong>。
+      </p>
+    </div>
+  </section>
+
+  <div class="breath">· · ·</div>
+
+  <!-- ============ Ch.8 窗口（節奏）============ -->
+  <section id="ch8">
+    <span class="ch-label">CHAPTER 08 · 節奏</span>
+    <h2 class="">不必趕路<br>但這扇門不會永遠開著<span class="ch-chip" data-ch="ch8">標記已讀</span></h2>
+
+    <img src="imgs/pro-window.jpg" alt="窗口" class="section-img" loading="lazy">
+
+    <p class="" data-listener-added_29ff7f95="true">
+      講完樹林的樣子、最後想跟你們聊節奏＆心態</p>
+
+    <p class="" data-listener-added_29ff7f95="true">
+      我不喜歡「彎道超車」這種詞、太用力。<br>
+      能讓我們前進的、不是急、是<strong>每天慢慢累積</strong>。
+    </p>
+
+    <div class="pull-quote" data-listener-added_29ff7f95="true">
+      飛輪不是用衝的、是用一次次推、推到後來自己會轉。<br>
+      <span class="pull-quote-cite">— 第一圈最累、第十圈很順、第一百圈停不下來</span>
+    </div>
+
+    <p class="">
+      但有一件事是真的——<strong>這扇門有時間限制</strong>。<br>
+      18-24 個月後、AI 工具會普及到所有公司、那時候大家又站在同一條線。<br>
+      那時候比的、又會回到「誰口袋深」。
+    </p>
+
+    <p class="">
+      所以這 18 個月、是我們唯一一次<strong>把樹苗養成中型樹</strong>的窗口。<br>
+      不需要拼命衝、需要的是<strong>不要停</strong>。
+    </p>
+
+    <p class="">
+      不必趕路、但不能停下來。
+    </p>
+  </section>
+
+  <div class="breath">· · ·</div>
+
+  <!-- ============ CTA ============ -->
+  <section id="cta-section">
+    <div class="cta">
+      <h2 class="">讀完了。</h2>
+      <p class="">
+        如果你看到這裡、你已經知道為什麼是現在、為什麼是你。<br>
+        接下來這 8 章、是工具書、慢慢看、用得上的時候自然就懂了。
+      </p>
+      <a href="manager-training" class="cta-button" id="cta-btn">
+        開始正課 — Claude Code AI Agent 教育訓練
+        <i class="ph ph-arrow-right"></i>
+      </a>
+      <span class="cta-done" id="cta-done">已讀 0 / 8 章 · 讀完所有章節後再進正課</span>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  淨淨 CleanClean ✦ 主管暖身課 ✦ 上課之前 — 為什麼是現在<br>
+  <span style="color:var(--teal);">寫於 2026 年春 · 笙闆 · 版權所有，請勿對外轉發</span>
+</footer>
+
+<script>
+  // Progress bar
+  window.addEventListener('scroll', () => {
+    const t = window.scrollY;
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    document.getElementById('progress-bar').style.width = (t/h*100) + '%';
+  });
+
+  // Chapter chip toggle (localStorage)
+  const KEY = 'mp-progress-v1';
+  const saved = JSON.parse(localStorage.getItem(KEY) || '{}');
+
+  function refreshDoneStatus() {
+    const cur = JSON.parse(localStorage.getItem(KEY) || '{}');
+    const total = document.querySelectorAll('.ch-chip').length;
+    const done = Object.values(cur).filter(Boolean).length;
+    const el = document.getElementById('cta-done');
+    if (done >= total && total > 0) {
+      el.textContent = '✓ 你已讀完所有章節 · 隨時可以重看';
+      el.classList.add('is-done');
+      try { localStorage.setItem('mp-finished-at', new Date().toISOString()); } catch(e){}
+    } else {
+      el.textContent = `已讀 ${done} / ${total} 章 · 讀完所有章節後再進正課`;
+      el.classList.remove('is-done');
+    }
+  }
+
+  document.querySelectorAll('.ch-chip').forEach(chip => {
+    const ch = chip.dataset.ch;
+    if (saved[ch]) { chip.classList.add('done'); chip.textContent = '已讀'; }
+    chip.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const cur = JSON.parse(localStorage.getItem(KEY) || '{}');
+      cur[ch] = !cur[ch];
+      localStorage.setItem(KEY, JSON.stringify(cur));
+      chip.classList.toggle('done', cur[ch]);
+      chip.textContent = cur[ch] ? '已讀' : '標記已讀';
+      refreshDoneStatus();
+    });
+  });
+
+  refreshDoneStatus();
+
+  // Smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const t = document.querySelector(a.getAttribute('href'));
+      if (t) t.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  // Mark "all read" timestamp when CTA clicked
+  document.getElementById('cta-btn').addEventListener('click', () => {
+    try { localStorage.setItem('mp-cta-clicked-at', new Date().toISOString()); } catch(e){}
+  });
+</script>
+<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon="{&quot;version&quot;:&quot;2024.11.0&quot;,&quot;token&quot;:&quot;d8bc16b21da44262ba681584fd47d8eb&quot;,&quot;r&quot;:1,&quot;server_timing&quot;:{&quot;name&quot;:{&quot;cfCacheStatus&quot;:true,&quot;cfEdge&quot;:true,&quot;cfExtPri&quot;:true,&quot;cfL4&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfSpeedBrain&quot;:true},&quot;location_startswith&quot;:null}}" crossorigin="anonymous"></script>
+
+
+<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon="{&quot;version&quot;:&quot;2024.11.0&quot;,&quot;token&quot;:&quot;d8bc16b21da44262ba681584fd47d8eb&quot;,&quot;r&quot;:1,&quot;server_timing&quot;:{&quot;name&quot;:{&quot;cfCacheStatus&quot;:true,&quot;cfEdge&quot;:true,&quot;cfExtPri&quot;:true,&quot;cfL4&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfSpeedBrain&quot;:true},&quot;location_startswith&quot;:null}}" crossorigin="anonymous"></script>
+<div id="monica-content-root" class="monica-widget" style="pointer-events: auto;"></div></body></html>

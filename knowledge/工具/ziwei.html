@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>紫微斗數排盤工具 | 淨淨 CleanClean</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0a0a1a 0%, #1a1a2e 100%);
+            color: #e0e0e0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans TC', sans-serif;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* 玻璃態效果 (Glassmorphism) */
+        .glassmorphism {
+            background: rgba(26, 26, 46, 0.4);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(206, 147, 216, 0.1);
+            border-radius: 8px;
+        }
+
+        .glassmorphism-hover:hover {
+            background: rgba(26, 26, 46, 0.6);
+            border-color: rgba(206, 147, 216, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        /* 宮位卡片 */
+        .palace-cell {
+            border: 1px solid rgba(206, 147, 216, 0.15);
+            border-radius: 6px;
+            padding: 16px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .palace-cell:hover {
+            background: rgba(206, 147, 216, 0.1);
+            border-color: rgba(206, 147, 216, 0.3);
+        }
+
+        .palace-highlight {
+            background: rgba(206, 147, 216, 0.15);
+            border-color: rgba(206, 147, 216, 0.5);
+        }
+
+        /* 星名樣式 */
+        .star-name {
+            color: #ce93d8;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .star-four-hua {
+            display: inline-block;
+            font-size: 0.75rem;
+            padding: 2px 6px;
+            margin: 2px;
+            border-radius: 3px;
+            margin-top: 4px;
+            font-weight: 500;
+        }
+
+        .four-hua-lu { background: rgba(76, 175, 80, 0.3); color: #4caf50; }
+        .four-hua-quan { background: rgba(33, 150, 243, 0.3); color: #2196f3; }
+        .four-hua-ke { background: rgba(255, 215, 64, 0.3); color: #ffd740; }
+        .four-hua-ji { background: rgba(244, 67, 54, 0.3); color: #f44336; }
+
+        /* 按鈕樣式 */
+        .btn-primary {
+            background: linear-gradient(135deg, #ce93d8 0%, #d946ef 100%);
+            color: white;
+            padding: 12px 32px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(206, 147, 216, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(206, 147, 216, 0.5);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        /* 輸入框樣式 */
+        input, select {
+            background: rgba(37, 37, 65, 0.8);
+            border: 1px solid rgba(206, 147, 216, 0.2);
+            color: #e0e0e0;
+            border-radius: 6px;
+            padding: 10px 12px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: rgba(206, 147, 216, 0.5);
+            background: rgba(37, 37, 65, 0.95);
+            box-shadow: 0 0 10px rgba(206, 147, 216, 0.2);
+        }
+
+        /* 標籤樣式 */
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+            color: #b0b0d0;
+            font-weight: 500;
+        }
+
+        .radio-label {
+            display: inline-flex;
+            align-items: center;
+            margin-right: 16px;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+
+        input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            margin-right: 6px;
+            cursor: pointer;
+            accent-color: #ce93d8;
+        }
+
+        /* 展開式卡片 */
+        .expandable-card {
+            border-radius: 8px;
+            margin-bottom: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .expandable-header {
+            padding: 14px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(37, 37, 65, 0.6);
+            user-select: none;
+        }
+
+        .expandable-header:hover {
+            background: rgba(37, 37, 65, 0.9);
+        }
+
+        .expandable-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            background: rgba(26, 26, 46, 0.4);
+            padding: 0 14px;
+        }
+
+        .expandable-content.open {
+            max-height: 500px;
+            padding: 14px;
+            border-top: 1px solid rgba(206, 147, 216, 0.1);
+        }
+
+        .expand-icon {
+            transition: transform 0.3s ease;
+            color: #ce93d8;
+        }
+
+        .expandable-content.open .expand-icon {
+            transform: rotate(180deg);
+        }
+
+        /* 時間軸 */
+        .timeline-item {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        .timeline-dot {
+            width: 12px;
+            height: 12px;
+            background: #ce93d8;
+            border-radius: 50%;
+            margin-top: 6px;
+            margin-right: 20px;
+            box-shadow: 0 0 10px rgba(206, 147, 216, 0.5);
+            flex-shrink: 0;
+        }
+
+        .timeline-content {
+            flex: 1;
+            padding: 12px 16px;
+            background: rgba(37, 37, 65, 0.5);
+            border-left: 2px solid #ce93d8;
+            border-radius: 4px;
+        }
+
+        /* 滾動條 */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(37, 37, 65, 0.3);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(206, 147, 216, 0.4);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(206, 147, 216, 0.6);
+        }
+
+        /* 動畫 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        /* 佈局工具類 */
+        .container {
+            max-width: 6xl;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+
+        .space-y-4 > * {
+            margin-bottom: 1rem;
+        }
+
+        .space-y-8 > * {
+            margin-bottom: 2rem;
+        }
+
+        .mb-4 { margin-bottom: 1rem; }
+        .mb-6 { margin-bottom: 1.5rem; }
+        .mb-2 { margin-bottom: 0.5rem; }
+        .mt-2 { margin-top: 0.5rem; }
+        .mt-3 { margin-top: 0.75rem; }
+        .pt-4 { padding-top: 1rem; }
+
+        .w-full { width: 100%; }
+
+        .text-center { text-align: center; }
+        .text-xs { font-size: 0.75rem; }
+        .text-sm { font-size: 0.875rem; }
+        .text-lg { font-size: 1.125rem; }
+        .text-xl { font-size: 1.25rem; }
+        .text-2xl { font-size: 1.5rem; }
+        .text-4xl { font-size: 2.25rem; }
+        .text-5xl { font-size: 3rem; }
+
+        .font-semibold { font-weight: 600; }
+        .font-bold { font-weight: 700; }
+
+        .text-gray-300 { color: #d0d0d0; }
+        .text-gray-400 { color: #a0a0a0; }
+        .text-gray-500 { color: #808080; }
+        .text-brand-purple { color: #ce93d8; }
+        .text-brand-gold { color: #ffd740; }
+
+        .bg-gradient-gold-purple {
+            background: linear-gradient(to right, #ce93d8, #ffd740);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .flex-col {
+            flex-direction: column;
+        }
+
+        .flex-between {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .gap-3 {
+            gap: 0.75rem;
+        }
+
+        .gap-4 {
+            gap: 1rem;
+        }
+
+        .gap-6 {
+            gap: 1.5rem;
+        }
+
+        .gap-1 {
+            gap: 0.25rem;
+        }
+
+        .items-center {
+            align-items: center;
+        }
+
+        .mt-4 { margin-top: 1rem; }
+        .py-4 { padding: 1rem 0; }
+        .p-4 { padding: 1rem; }
+        .p-6 { padding: 1.5rem; }
+        .p-8 { padding: 2rem; }
+
+        /* 響應式 */
+        @media (max-width: 768px) {
+            .text-4xl { font-size: 1.875rem; }
+            .text-5xl { font-size: 2.25rem; }
+            .p-8 { padding: 1rem; }
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+            .grid-4 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script>
+        // ========== 常數與資料定義 ==========
+
+        // 農曆資料 (1900-2049)
+        const lunarInfo = [
+            0x04bd8,0x04ae0,0x0a570,0x054d5,0x0d260,0x0d950,0x16554,0x056a0,0x09ad0,0x055d2,
+            0x04ae0,0x0a5b6,0x0a4d0,0x0d250,0x1d255,0x0b540,0x0d6a0,0x0ada2,0x095b0,0x14977,
+            0x04970,0x0a4b0,0x0b4b5,0x06a50,0x06d40,0x1ab54,0x02b60,0x09570,0x052f2,0x04970,
+            0x06566,0x0d4a0,0x0ea50,0x06e95,0x05ad0,0x02b60,0x186e3,0x092e0,0x1c8d7,0x0c950,
+            0x0d4a0,0x1d8a6,0x0b550,0x056a0,0x1a5b4,0x025d0,0x092d0,0x0d2b2,0x0a950,0x0b557,
+            0x06ca0,0x0b550,0x15355,0x04da0,0x0a5b0,0x14573,0x052b0,0x0a9a8,0x0e950,0x06aa0,
+            0x0aea6,0x0ab50,0x04b60,0x0aae4,0x0a570,0x05260,0x0f263,0x0d950,0x05b57,0x056a0,
+            0x096d0,0x04dd5,0x04ad0,0x0a4d0,0x0d4d4,0x0d250,0x0d558,0x0b540,0x0b6a0,0x195a6,
+            0x095b0,0x049b0,0x0a974,0x0a4b0,0x0b27a,0x06a50,0x06d40,0x0af46,0x0ab60,0x09570,
+            0x04af5,0x04970,0x064b0,0x074a3,0x0ea50,0x06b58,0x05ac0,0x0ab60,0x096d5,0x092e0,
+            0x0c960,0x0d954,0x0d4a0,0x0da50,0x07552,0x056a0,0x0abb7,0x025d0,0x092d0,0x0cab5,
+            0x0a950,0x0b4a0,0x0baa4,0x0ad50,0x055d9,0x04ba0,0x0a5b0,0x15176,0x052b0,0x0a930,
+            0x07954,0x06aa0,0x0ad50,0x05b52,0x04b60,0x0a6e6,0x0a4e0,0x0d260,0x0ea65,0x0d530,
+            0x05aa0,0x076a3,0x096d0,0x04afb,0x04ad0,0x0a4d0,0x1d0b6,0x0d250,0x0d520,0x0dd45,
+            0x0b5a0,0x056d0,0x055b2,0x049b0,0x0a577,0x0a4b0,0x0aa50,0x1b255,0x06d20,0x0ada0
+        ];
+
+        // 農曆正月初一對應西曆日期 (1900-2049)
+        const baseData = [
+            '1900/1/31','1901/2/19','1902/2/8','1903/1/29','1904/2/16','1905/2/4','1906/1/25','1907/2/13','1908/2/2','1909/1/22',
+            '1910/2/10','1911/1/30','1912/2/18','1913/2/6','1914/1/26','1915/2/14','1916/2/3','1917/1/23','1918/2/11','1919/2/1',
+            '1920/2/20','1921/2/8','1922/1/29','1923/2/16','1924/2/5','1925/1/24','1926/2/13','1927/2/2','1928/1/23','1929/2/10',
+            '1930/1/30','1931/2/17','1932/2/6','1933/1/26','1934/2/13','1935/2/3','1936/1/24','1937/2/11','1938/2/1','1939/2/19',
+            '1940/2/8','1941/1/27','1942/2/15','1943/2/5','1944/1/25','1945/2/13','1946/2/2','1947/1/22','1948/2/10','1949/1/29',
+            '1950/2/17','1951/2/6','1952/1/26','1953/2/14','1954/2/3','1955/1/24','1956/2/12','1957/2/1','1958/2/18','1959/2/8',
+            '1960/1/28','1961/2/15','1962/2/5','1963/1/25','1964/2/13','1965/2/2','1966/1/21','1967/2/9','1968/1/30','1969/2/17',
+            '1970/2/6','1971/1/27','1972/2/15','1973/2/3','1974/1/23','1975/2/11','1976/2/1','1977/2/18','1978/2/7','1979/1/27',
+            '1980/2/16','1981/2/5','1982/1/25','1983/2/13','1984/2/2','1985/2/20','1986/2/9','1987/1/29','1988/2/17','1989/2/6',
+            '1990/1/27','1991/2/15','1992/2/4','1993/1/23','1994/2/10','1995/1/31','1996/2/19','1997/2/7','1998/1/28','1999/2/16',
+            '2000/2/5','2001/1/24','2002/2/12','2003/2/1','2004/2/22','2005/2/9','2006/1/29','2007/2/18','2008/2/7','2009/1/26',
+            '2010/2/14','2011/2/3','2012/1/23','2013/2/10','2014/1/31','2015/2/19','2016/2/8','2017/1/28','2018/2/16','2019/2/5',
+            '2020/1/25','2021/2/12','2022/2/1','2023/2/21','2024/2/10','2025/1/29','2026/2/17','2027/2/6','2028/1/26','2029/2/13',
+            '2030/2/3','2031/1/23','2032/2/11','2033/2/1','2034/2/19','2035/2/8','2036/1/28','2037/2/15','2038/2/4','2039/1/24',
+            '2040/2/12','2041/2/1','2042/2/21','2043/2/9','2044/1/30','2045/2/17','2046/2/6','2047/1/26','2048/2/14','2049/2/2'
+        ];
+
+        // 天干地支常數
+        const 天干 = ['甲', '乙', '丙', '丁', '戊', '己', '庚', '辛', '壬', '癸'];
+        const 地支 = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
+        const 地支時辰 = ['子時(23-1)', '丑時(1-3)', '寅時(3-5)', '卯時(5-7)', '辰時(7-9)', '巳時(9-11)',
+                        '午時(11-13)', '未時(13-15)', '申時(15-17)', '酉時(17-19)', '戌時(19-21)', '亥時(21-23)'];
+
+        // 宮位名稱
+        const 宮位名 = ['命宮', '兄弟', '夫妻', '子女', '財帛', '疾厄', '遷移', '交友', '事業', '田宅', '福德', '父母'];
+
+        // 五行局表
+        const 五行局表 = {
+            0: { name: '水', num: 2 },
+            1: { name: '木', num: 3 },
+            2: { name: '金', num: 4 },
+            3: { name: '土', num: 5 },
+            4: { name: '火', num: 6 }
+        };
+
+        // 紫微天府對應表
+        const 紫微天府對應 = {
+            0: 0, 1: 11, 2: 10, 3: 9, 4: 8, 5: 7, 6: 6, 7: 5, 8: 4, 9: 3, 10: 2, 11: 1
+        };
+
+        // 14主星名稱
+        const 14主星名 = ['紫微', '天機', '太陽', '武曲', '天同', '廉貞', '天府', '太陰', '貪狼', '巨門', '天相', '天梁', '七殺', '破軍'];
+
+        // 星性描述 (用於展示)
+        const 星性描述 = {
+            '紫微': '天生領導者，有主見有魄力，事業心強，適合管理工作',
+            '天機': '聰明善變，喜歡動腦，反應敏捷，適合策劃創意工作',
+            '太陽': '光明正大，樂於付出，熱情開朗，適合服務公眾',
+            '武曲': '行動派，重視財務，務實進取，適合經營管理',
+            '天同': '福星，享受生活，溫和善良，人緣好',
+            '廉貞': '人際高手，桃花旺，美感強，適合公關銷售',
+            '天府': '穩重保守，有庫藏，善於管理資源，財運不錯',
+            '太陰': '內斂細膩，藝術感強，感受力強，適合文藝工作',
+            '貪狼': '多才多藝，慾望星，野心大，需要多元發展',
+            '巨門': '口才好，研究型，深思熟慮，適合分析研究',
+            '天相': '輔佐型，好人緣，誠摯可靠，是很好的夥伴',
+            '天梁': '蔭星，專業型，經驗豐富，適合授業教學',
+            '七殺': '開創型，殺伐決斷，行動力強，需要挑戰',
+            '破軍': '破壞重建，變動大，創新精神，需要自我管理'
+        };
+
+        // 四化表
+        const 四化表 = {
+            '甲': { '廉貞': '祿', '破軍': '權', '武曲': '科', '太陽': '忌' },
+            '乙': { '天機': '祿', '天梁': '權', '紫微': '科', '太陰': '忌' },
+            '丙': { '天同': '祿', '天機': '權', '文昌': '科', '廉貞': '忌' },
+            '丁': { '太陰': '祿', '天同': '權', '天機': '科', '巨門': '忌' },
+            '戊': { '貪狼': '祿', '太陰': '權', '右弼': '科', '天機': '忌' },
+            '己': { '武曲': '祿', '貪狼': '權', '天梁': '科', '文曲': '忌' },
+            '庚': { '太陽': '祿', '武曲': '權', '太陰': '科', '天同': '忌' },
+            '辛': { '巨門': '祿', '太陽': '權', '文曲': '科', '文昌': '忌' },
+            '壬': { '天梁': '祿', '紫微': '權', '左輔': '科', '武曲': '忌' },
+            '癸': { '破軍': '祿', '巨門': '權', '太陰': '科', '貪狼': '忌' }
+        };
+
+        // ========== 農曆轉換引擎 ==========
+
+        /**
+         * 判斷是否閏月
+         * @param {number} year 農曆年份
+         * @param {number} month 農曆月份
+         * @returns {boolean} 是否為閏月
+         */
+        function isLeapMonth(year, month) {
+            const info = lunarInfo[year - 1900];
+            return (info >> (month + 15)) & 1 === 1;
+        }
+
+        /**
+         * 獲取農曆月份天數
+         * @param {number} year 農曆年份
+         * @param {number} month 農曆月份
+         * @returns {number} 該月天數 (29 或 30)
+         */
+        function getMonthDays(year, month) {
+            const info = lunarInfo[year - 1900];
+            return ((info >> (16 - month)) & 1) === 1 ? 30 : 29;
+        }
+
+        /**
+         * 西曆轉農曆
+         * @param {number} solarYear 西曆年
+         * @param {number} solarMonth 西曆月
+         * @param {number} solarDay 西曆日
+         * @returns {object} 農曆資訊 {lunarYear, lunarMonth, lunarDay, isLeap}
+         */
+        function solarToLunar(solarYear, solarMonth, solarDay) {
+            const baseDataIndex = solarYear - 1900;
+            if (baseDataIndex < 0 || baseDataIndex >= baseData.length) {
+                return { lunarYear: solarYear, lunarMonth: solarMonth, lunarDay: solarDay, isLeap: false };
+            }
+
+            const baseStr = baseData[baseDataIndex];
+            const [baseY, baseM, baseD] = baseStr.split('/').map(Number);
+
+            // 計算距離正月初一的天數
+            const baseDateObj = new Date(baseY, baseM - 1, baseD);
+            const solarDateObj = new Date(solarYear, solarMonth - 1, solarDay);
+            const diffDays = Math.floor((solarDateObj - baseDateObj) / (1000 * 60 * 60 * 24));
+
+            if (diffDays < 0) {
+                return solarToLunar(solarYear - 1, 12, 29);
+            }
+
+            let lunarYear = solarYear;
+            let lunarMonth = 1;
+            let lunarDay = diffDays + 1;
+
+            // 逐月檢查農曆月份
+            while (lunarDay > getMonthDays(lunarYear, lunarMonth)) {
+                lunarDay -= getMonthDays(lunarYear, lunarMonth);
+                lunarMonth++;
+                if (lunarMonth > 13) {
+                    lunarYear++;
+                    lunarMonth = 1;
+                }
+            }
+
+            return { lunarYear, lunarMonth, lunarDay, isLeap: isLeapMonth(lunarYear, lunarMonth) };
+        }
+
+        // ========== 紫微斗數計算引擎 ==========
+
+        /**
+         * 根據年份天干獲取命宮天干 (五虎遁)
+         */
+        function get命宮天干(lunarYear) {
+            const yearStem = 天干[lunarYear % 10];
+            const 寅月天干對應 = {
+                '甲': '丙', '乙': '戊', '丙': '庚', '丁': '壬', '戊': '甲',
+                '己': '甲', '庚': '丙', '辛': '戊', '壬': '庚', '癸': '壬'
+            };
+            return 寅月天干對應[yearStem];
+        }
+
+        /**
+         * 獲取納音五行
+         */
+        function get納音五行(天干, 地支) {
+            const 納音表 = {
+                '甲子': 4, '乙丑': 4, '丙寅': 0, '丁卯': 0, '戊辰': 1, '己巳': 1,
+                '庚午': 2, '辛未': 2, '壬申': 3, '癸酉': 3, '甲戌': 3, '乙亥': 3,
+                '丙子': 2, '丁丑': 2, '戊寅': 4, '己卯': 4, '庚辰': 0, '辛巳': 0,
+                '壬午': 1, '癸未': 1, '甲申': 2, '乙酉': 2, '丙戌': 0, '丁亥': 0,
+                '戊子': 3, '己丑': 3, '庚寅': 1, '辛卯': 1, '壬辰': 4, '癸巳': 4,
+                '甲午': 2, '乙未': 2, '丙申': 0, '丁酉': 0, '戊戌': 3, '己亥': 3,
+                '庚子': 1, '辛丑': 1, '壬寅': 4, '癸卯': 4, '甲辰': 2, '乙巳': 2,
+                '丙午': 3, '丁未': 3, '戊申': 0, '己酉': 0, '庚戌': 1, '辛亥': 1,
+                '壬子': 2, '癸丑': 2, '甲寅': 3, '乙卯': 3, '丙辰': 1, '丁巳': 1,
+                '戊午': 0, '己未': 0, '庚申': 4, '辛酉': 4, '壬戌': 2, '癸亥': 2
+            };
+            return 納音表[天干 + 地支] !== undefined ? 納音表[天干 + 地支] : 4;
+        }
+
+        /**
+         * 計算命宮和身宮
+         * 命宮: 從寅(2)開始，順行到出生月，然後逆行到出生時辰
+         * 身宮: 同樣起點，但順行到出生時辰
+         */
+        function calculate命身宮(lunarMonth, birthHourIndex) {
+            const 寅Index = 2;
+            let 命宮Index = (寅Index + lunarMonth - 1) % 12;
+            命宮Index = (命宮Index - birthHourIndex % 12 + 12) % 12;
+
+            let 身宮Index = (寅Index + lunarMonth - 1) % 12;
+            身宮Index = (身宮Index + birthHourIndex % 12) % 12;
+
+            return { 命宮Index, 身宮Index };
+        }
+
+        /**
+         * 獲取紫微星位置
+         */
+        function get紫微位置(五行局Num, lunarDay) {
+            const 紫微表 = {
+                2: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0, 2, 3, 4, 5, 6, 7],
+                3: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0, 1, 3, 4, 5, 6, 7, 8],
+                4: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0, 1, 2, 4, 5, 6, 7, 8, 9],
+                5: [3, 4, 5, 6, 7, 8, 9, 10, 11, 0, 1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 0, 1, 2, 3, 5, 6, 7, 8, 9, 10],
+                6: [4, 5, 6, 7, 8, 9, 10, 11, 0, 1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11]
+            };
+            const dayIndex = Math.min(lunarDay - 1, 29);
+            return 紫微表[五行局Num][dayIndex];
+        }
+
+        /**
+         * 計算14主星位置
+         * 紫微系逆時針，天府系順時針
+         */
+        function calculate14主星位置(紫微Index, lunarYear) {
+            const stars = {};
+
+            // 紫微系 (逆時針排列)
+            stars['紫微'] = 紫微Index;
+            stars['天機'] = (紫微Index - 1 + 12) % 12;
+            stars['太陽'] = (紫微Index - 3 + 12) % 12;
+            stars['武曲'] = (紫微Index - 4 + 12) % 12;
+            stars['天同'] = (紫微Index - 5 + 12) % 12;
+            stars['廉貞'] = (紫微Index - 9 + 12) % 12;
+
+            // 天府系 (順時針排列)
+            const 天府Index = 紫微天府對應[紫微Index];
+            stars['天府'] = 天府Index;
+            stars['太陰'] = (天府Index + 1) % 12;
+            stars['貪狼'] = (天府Index + 2) % 12;
+            stars['巨門'] = (天府Index + 3) % 12;
+            stars['天相'] = (天府Index + 4) % 12;
+            stars['天梁'] = (天府Index + 5) % 12;
+            stars['七殺'] = (天府Index + 6) % 12;
+            stars['破軍'] = (紫微Index - 2 + 12) % 12;
+
+            return stars;
+        }
+
+        /**
+         * 計算四化
+         */
+        function calculate四化(lunarYear) {
+            const 年干 = 天干[lunarYear % 10];
+            return 四化表[年干] || {};
+        }
+
+        /**
+         * 計算大限
+         */
+        function calculate大限(命宮Index, 五行局Num, lunarYear, gender) {
+            const 年干 = 天干[lunarYear % 10];
+            const 陽年干 = ['甲', '丙', '戊', '庚', '壬'];
+            const isYangYear = 陽年干.includes(年干);
+            const isMale = gender === 'male';
+
+            // 判定順行/逆行: 陽男陰女順行，陰男陽女逆行
+            const isForward = (isYangYear && isMale) || (!isYangYear && !isMale);
+
+            const 大限 = [];
+            const startAge = 五行局Num;
+
+            for (let i = 0; i < 12; i++) {
+                const age = startAge + i * 10;
+                const paletIndex = isForward ? (命宮Index + i) % 12 : (命宮Index - i + 144) % 12;
+                大限.push({
+                    period: `${age}-${age + 9}歲`,
+                    age: age,
+                    paletIndex: paletIndex,
+                    paletName: 地支[paletIndex]
+                });
+            }
+
+            return 大限;
+        }
+
+        // ========== UI 控制器 ==========
+
+        class PurpleStarCalculator {
+            constructor() {
+                this.formData = {
+                    name: '',
+                    year: 1990,
+                    month: 1,
+                    day: 1,
+                    hour: 0,
+                    gender: 'male'
+                };
+                this.result = null;
+                this.expandedPalace = null;
+                this.expandedDaXian = null;
+                this.init();
+            }
+
+            init() {
+                this.render();
+                this.attachEventListeners();
+            }
+
+            attachEventListeners() {
+                // 表單輸入
+                document.addEventListener('change', (e) => {
+                    const { name, value, type } = e.target;
+                    if (type === 'radio') {
+                        this.formData.gender = value;
+                    } else if (name) {
+                        this.formData[name] = isNaN(value) ? value : parseInt(value);
+                    }
+                });
+
+                // 計算按鈕
+                const calcBtn = document.getElementById('calculate-btn');
+                if (calcBtn) {
+                    calcBtn.addEventListener('click', () => this.handleCalculate());
+                }
+            }
+
+            handleCalculate() {
+                if (!this.formData.name.trim()) {
+                    alert('請輸入名字');
+                    return;
+                }
+
+                // 轉換農曆
+                const lunar = solarToLunar(this.formData.year, this.formData.month, this.formData.day);
+
+                // 計算命宮和身宮
+                const { 命宮Index, 身宮Index } = calculate命身宮(lunar.lunarMonth, this.formData.hour);
+
+                // 計算天干地支 (命宮)
+                const 命宮天干 = get命宮天干(lunar.lunarYear);
+                const 命宮地支 = 地支[命宮Index];
+
+                // 計算五行局
+                const 納音Index = get納音五行(命宮天干, 命宮地支);
+                const 五行局 = 五行局表[納音Index];
+
+                // 計算紫微位置
+                const 紫微Index = get紫微位置(五行局.num, lunar.lunarDay);
+
+                // 計算14主星位置
+                const stars = calculate14主星位置(紫微Index, lunar.lunarYear);
+
+                // 計算四化
+                const 四化 = calculate四化(lunar.lunarYear);
+
+                // 計算大限
+                const 大限 = calculate大限(命宮Index, 五行局.num, lunar.lunarYear, this.formData.gender);
+
+                this.result = {
+                    name: this.formData.name,
+                    solarDate: `${this.formData.year}年${this.formData.month}月${this.formData.day}日`,
+                    lunarDate: `農曆 ${lunar.lunarYear}年${lunar.isLeap ? '閏' : ''}${lunar.lunarMonth}月${lunar.lunarDay}日`,
+                    birthHour: 地支時辰[this.formData.hour],
+                    gender: this.formData.gender === 'male' ? '男' : '女',
+                    命宮Index,
+                    身宮Index,
+                    命宮Star: 地支[命宮Index],
+                    身宮Star: 地支[身宮Index],
+                    命宮主星: Object.keys(stars).find(star => stars[star] === 命宮Index) || '',
+                    身宮主星: Object.keys(stars).find(star => stars[star] === 身宮Index) || '',
+                    五行局,
+                    stars,
+                    四化,
+                    大限,
+                    紫微Index
+                };
+
+                this.render();
+                setTimeout(() => {
+                    const resultSection = document.getElementById('result-section');
+                    if (resultSection) {
+                        resultSection.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }, 100);
+            }
+
+            togglePalace(index) {
+                this.expandedPalace = this.expandedPalace === index ? null : index;
+                this.renderPalaceDetails();
+            }
+
+            toggleDaXian(index) {
+                this.expandedDaXian = this.expandedDaXian === index ? null : index;
+                this.renderDaXian();
+            }
+
+            render() {
+                const root = document.getElementById('root');
+                root.innerHTML = '';
+                root.appendChild(this.createHeader());
+                root.appendChild(this.createFormSection());
+                if (this.result) {
+                    const resultSection = document.createElement('div');
+                    resultSection.id = 'result-section';
+                    resultSection.className = 'space-y-8 animate-fade-in';
+                    resultSection.style.maxWidth = '1280px';
+                    resultSection.style.margin = '0 auto';
+                    resultSection.appendChild(this.createSummaryCard());
+                    resultSection.appendChild(this.createMainStarsCard());
+                    resultSection.appendChild(this.createPalaceGridCard());
+                    resultSection.appendChild(this.createPalaceDetailsCard());
+                    resultSection.appendChild(this.createDaXianCard());
+                    resultSection.appendChild(this.createFooter());
+                    root.appendChild(resultSection);
+                }
+            }
+
+            createHeader() {
+                const header = document.createElement('div');
+                header.className = 'text-center mb-8 mt-4';
+                header.innerHTML = `
+                    <h1 class="text-4xl text-brand-gold font-bold mb-2" style="font-size: 2.25rem;">
+                        紫微斗數排盤
+                    </h1>
+                    <p class="text-sm text-gray-400">淨淨 CleanClean 命理排盤工具</p>
+                `;
+                return header;
+            }
+
+            createFormSection() {
+                const section = document.createElement('div');
+                section.style.maxWidth = '42rem';
+                section.style.margin = '0 auto 3rem';
+
+                const formDiv = document.createElement('div');
+                formDiv.className = 'glassmorphism animate-fade-in';
+                formDiv.style.padding = '1.5rem';
+                formDiv.style.space = '1.5rem';
+
+                formDiv.innerHTML = `
+                    <div style="margin-bottom: 1.5rem;">
+                        <label class="text-gray-400 text-sm font-semibold" style="display: block; margin-bottom: 0.5rem;">姓名 *</label>
+                        <input type="text" name="name" placeholder="輸入您的名字" class="w-full" style="width: 100%;" />
+                    </div>
+
+                    <div style="margin-bottom: 1.5rem;">
+                        <label class="text-gray-400 text-sm font-semibold" style="display: block; margin-bottom: 0.5rem;">出生年份 (西曆) *</label>
+                        <select name="year" class="w-full" style="width: 100%;">
+                            ${Array.from({ length: 61 }, (_, i) => 1950 + i)
+                                .map(year => `<option value="${year}" ${year === 1990 ? 'selected' : ''}>${year}</option>`)
+                                .join('')}
+                        </select>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1.5rem;">
+                        <div>
+                            <label class="text-gray-400 text-sm font-semibold" style="display: block; margin-bottom: 0.5rem;">月份 *</label>
+                            <select name="month" class="w-full" style="width: 100%;">
+                                ${Array.from({ length: 12 }, (_, i) => i + 1)
+                                    .map(month => `<option value="${month}">${month}月</option>`)
+                                    .join('')}
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-gray-400 text-sm font-semibold" style="display: block; margin-bottom: 0.5rem;">日期 *</label>
+                            <select name="day" class="w-full" style="width: 100%;">
+                                ${Array.from({ length: 31 }, (_, i) => i + 1)
+                                    .map(day => `<option value="${day}">${day}日</option>`)
+                                    .join('')}
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-gray-400 text-sm font-semibold" style="display: block; margin-bottom: 0.5rem;">時辰 *</label>
+                            <select name="hour" class="w-full" style="width: 100%;">
+                                ${地支時辰.map((time, idx) => `<option value="${idx}">${time}</option>`).join('')}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 1.5rem;">
+                        <label class="text-gray-400 text-sm font-semibold" style="display: block; margin-bottom: 0.5rem;">性別 *</label>
+                        <div style="display: flex; gap: 1rem; align-items: center;">
+                            <label class="radio-label" style="display: flex; align-items: center; gap: 0.5rem;">
+                                <input type="radio" name="gender" value="male" checked />
+                                男性
+                            </label>
+                            <label class="radio-label" style="display: flex; align-items: center; gap: 0.5rem;">
+                                <input type="radio" name="gender" value="female" />
+                                女性
+                            </label>
+                        </div>
+                    </div>
+
+                    <button id="calculate-btn" class="btn-primary w-full" style="width: 100%; padding: 0.75rem; font-size: 1rem;">
+                        排盤
+                    </button>
+                `;
+
+                section.appendChild(formDiv);
+                return section;
+            }
+
+            createSummaryCard() {
+                const card = document.createElement('div');
+                card.className = 'glassmorphism';
+                card.style.padding = '1.5rem';
+
+                card.innerHTML = `
+                    <h2 class="text-2xl text-brand-gold font-bold mb-6">排盤結果</h2>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
+                        <div>
+                            <p class="text-xs text-gray-400" style="font-size: 0.75rem; margin-bottom: 0.25rem;">姓名</p>
+                            <p class="text-lg text-brand-purple font-semibold">${this.result.name}</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-400" style="font-size: 0.75rem; margin-bottom: 0.25rem;">出生日期 (西曆)</p>
+                            <p class="text-lg text-brand-purple font-semibold">${this.result.solarDate}</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-400" style="font-size: 0.75rem; margin-bottom: 0.25rem;">出生日期 (農曆)</p>
+                            <p class="text-lg text-brand-purple font-semibold">${this.result.lunarDate}</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-400" style="font-size: 0.75rem; margin-bottom: 0.25rem;">出生時辰</p>
+                            <p class="text-lg text-brand-purple font-semibold">${this.result.birthHour}</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-400" style="font-size: 0.75rem; margin-bottom: 0.25rem;">性別</p>
+                            <p class="text-lg text-brand-purple font-semibold">${this.result.gender}</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-400" style="font-size: 0.75rem; margin-bottom: 0.25rem;">五行局</p>
+                            <p class="text-lg text-brand-gold font-semibold">${this.result.五行局.name}${this.result.五行局.num}局</p>
+                        </div>
+                    </div>
+                `;
+                return card;
+            }
+
+            createMainStarsCard() {
+                const card = document.createElement('div');
+                card.className = 'glassmorphism';
+                card.style.padding = '1.5rem';
+
+                card.innerHTML = `
+                    <h3 class="text-xl text-brand-gold font-bold mb-6">主星分析</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+                        <div class="palace-cell" style="border-left: 4px solid #ce93d8;">
+                            <h4 class="text-brand-purple font-bold mb-2">命宮</h4>
+                            <p class="text-xs text-gray-400" style="font-size: 0.875rem; margin-bottom: 0.5rem;">地支: ${地支[this.result.命宮Index]}</p>
+                            <p class="star-name mb-2">${this.result.命宮主星}</p>
+                            <p class="text-sm text-gray-300">${星性描述[this.result.命宮主星] || '無主星'}</p>
+                        </div>
+                        <div class="palace-cell" style="border-left: 4px solid #ffd740;">
+                            <h4 class="text-brand-gold font-bold mb-2">身宮</h4>
+                            <p class="text-xs text-gray-400" style="font-size: 0.875rem; margin-bottom: 0.5rem;">地支: ${地支[this.result.身宮Index]}</p>
+                            <p class="star-name mb-2">${this.result.身宮主星}</p>
+                            <p class="text-sm text-gray-300">${星性描述[this.result.身宮主星] || '無主星'}</p>
+                        </div>
+                    </div>
+                `;
+                return card;
+            }
+
+            createPalaceGridCard() {
+                const card = document.createElement('div');
+                card.className = 'glassmorphism';
+                card.style.padding = '1.5rem';
+
+                let gridHTML = '<h3 class="text-xl text-brand-gold font-bold mb-6">十二宮位盤</h3>';
+                gridHTML += '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 1rem;">';
+
+                地支.forEach((zhi, index) => {
+                    const paletName = 宮位名[index];
+                    const mainStar = Object.keys(this.result.stars).find(star => this.result.stars[star] === index);
+                    const isMainPalace = index === this.result.命宮Index || index === this.result.身宮Index;
+                    const borderColor = index === this.result.命宮Index ? '#ce93d8' : (index === this.result.身宮Index ? '#ffd740' : 'rgba(206, 147, 216, 0.15)');
+
+                    gridHTML += `
+                        <div class="palace-cell ${isMainPalace ? 'palace-highlight' : ''}" style="${isMainPalace ? `border: 2px solid ${borderColor};` : ''}">
+                            <div class="text-sm text-brand-purple font-semibold mb-1">${paletName}</div>
+                            <div class="text-xs text-gray-400 mb-2">${zhi}</div>
+                            ${mainStar ? `<div class="star-name text-sm">${mainStar}</div>` : ''}
+                            ${mainStar && this.result.四化[mainStar] ? `
+                                <div class="mt-2" style="display: flex; flex-wrap: wrap; gap: 0.25rem;">
+                                    <span class="star-four-hua four-hua-${this.result.四化[mainStar].toLowerCase()}">
+                                        ${mainStar.substring(0, 2)}${this.result.四化[mainStar]}
+                                    </span>
+                                </div>
+                            ` : ''}
+                        </div>
+                    `;
+                });
+
+                gridHTML += '</div>';
+                card.innerHTML = gridHTML;
+                return card;
+            }
+
+            createPalaceDetailsCard() {
+                const card = document.createElement('div');
+                card.className = 'glassmorphism';
+                card.style.padding = '1.5rem';
+
+                let html = '<h3 class="text-xl text-brand-gold font-bold mb-4">宮位詳情</h3>';
+                html += '<div class="space-y-2">';
+
+                地支.forEach((zhi, index) => {
+                    const paletName = 宮位名[index];
+                    const mainStar = Object.keys(this.result.stars).find(star => this.result.stars[star] === index);
+                    const isOpen = this.expandedPalace === index;
+
+                    html += `
+                        <div class="expandable-card glassmorphism-hover">
+                            <div class="expandable-header" data-palace-index="${index}">
+                                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                    <span class="font-semibold text-brand-purple">${paletName}</span>
+                                    <span class="text-xs text-gray-400">(${zhi})</span>
+                                    ${mainStar ? `<span class="text-sm text-brand-gold">${mainStar}</span>` : ''}
+                                </div>
+                                <span class="expand-icon">▼</span>
+                            </div>
+                            <div class="expandable-content ${isOpen ? 'open' : ''}">
+                                ${mainStar ? `<p class="text-sm text-gray-300">${星性描述[mainStar]}</p>` : '<p class="text-sm text-gray-400">此宮位無主星</p>'}
+                                ${mainStar && this.result.四化[mainStar] ? `
+                                    <div style="margin-top: 0.75rem;">
+                                        <p class="text-xs text-gray-400" style="margin-bottom: 0.5rem;">四化:</p>
+                                        <span class="star-four-hua four-hua-${this.result.四化[mainStar].toLowerCase()}">
+                                            ${mainStar}${this.result.四化[mainStar]}
+                                        </span>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                    `;
+                });
+
+                html += '</div>';
+                card.innerHTML = html;
+
+                // 綁定展開/收縮事件
+                card.querySelectorAll('.expandable-header').forEach(header => {
+                    header.addEventListener('click', (e) => {
+                        const index = parseInt(e.currentTarget.dataset.palaceIndex);
+                        this.togglePalace(index);
+                    });
+                });
+
+                return card;
+            }
+
+            renderPalaceDetails() {
+                const card = document.querySelector('[data-palace-details]') || this.createPalaceDetailsCard();
+                if (card.parentNode) {
+                    const newCard = this.createPalaceDetailsCard();
+                    card.parentNode.replaceChild(newCard, card);
+                }
+            }
+
+            createDaXianCard() {
+                const card = document.createElement('div');
+                card.className = 'glassmorphism';
+                card.style.padding = '1.5rem';
+                card.setAttribute('data-daxian-card', 'true');
+
+                let html = '<h3 class="text-xl text-brand-gold font-bold mb-6">大限運勢 (10年週期)</h3>';
+                html += '<div class="space-y-4">';
+
+                this.result.大限.forEach((item, index) => {
+                    const isOpen = this.expandedDaXian === index;
+                    html += `
+                        <div class="expandable-card">
+                            <div class="expandable-header" data-daxian-index="${index}">
+                                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                    <span class="font-semibold text-brand-purple">${item.period}</span>
+                                    <span class="text-sm text-gray-400">(${item.paletName}宮)</span>
+                                </div>
+                                <span class="expand-icon">▼</span>
+                            </div>
+                            <div class="expandable-content ${isOpen ? 'open' : ''}">
+                                <p class="text-sm text-gray-300">
+                                    此大限落在 <span class="text-brand-gold font-semibold">${item.paletName}</span> 宮，
+                                    主要運勢與該宮位的特性相關。
+                                </p>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                html += '</div>';
+                card.innerHTML = html;
+
+                // 綁定展開/收縮事件
+                card.querySelectorAll('.expandable-header').forEach(header => {
+                    header.addEventListener('click', (e) => {
+                        const index = parseInt(e.currentTarget.dataset.daxianIndex);
+                        this.toggleDaXian(index);
+                    });
+                });
+
+                return card;
+            }
+
+            renderDaXian() {
+                const card = document.querySelector('[data-daxian-card]');
+                if (card) {
+                    const newCard = this.createDaXianCard();
+                    card.parentNode.replaceChild(newCard, card);
+                }
+            }
+
+            createFooter() {
+                const footer = document.createElement('div');
+                footer.className = 'text-center text-xs text-gray-500';
+                footer.style.padding = '1rem 0';
+                footer.innerHTML = '<p>本排盤結果僅供參考，請咨詢專業命理師獲得更詳細的解析</p>';
+                return footer;
+            }
+        }
+
+        // ========== 應用初始化 ==========
+        document.addEventListener('DOMContentLoaded', () => {
+            new PurpleStarCalculator();
+        });
+    </script>
+</body>
+</html>

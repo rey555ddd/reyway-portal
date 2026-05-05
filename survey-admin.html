@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>問卷後台 · 主公專用 · REYWAY</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --primary:#C6613F;
+  --primary-dark:#A04A2D;
+  --primary-light:#F5E6DD;
+  --bg:#FAF7F0;
+  --surface:#FFF;
+  --text:#1A1A1A;
+  --text-2:#555;
+  --text-3:#888;
+  --border:#E8DDD2;
+  --shadow:0 2px 12px rgba(198,97,63,0.06);
+  --shadow-hover:0 8px 28px rgba(198,97,63,0.12);
+}
+body{font-family:"Inter","Noto Sans TC",sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;min-height:100vh;line-height:1.7}
+.wrap{max-width:960px;margin:0 auto;padding:0 20px}
+
+.topbar{position:sticky;top:0;z-index:10;background:rgba(250,247,240,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:14px 0}
+.topbar-inner{display:flex;align-items:center;gap:12px;max-width:960px;margin:0 auto;padding:0 20px}
+.back-btn{display:inline-flex;align-items:center;gap:6px;font-size:0.82rem;color:var(--text-2);text-decoration:none;padding:7px 14px;border-radius:100px;background:var(--surface);box-shadow:var(--shadow)}
+.back-btn:hover{box-shadow:var(--shadow-hover)}
+.topbar h1{font-family:"Noto Serif TC",serif;font-size:1rem;font-weight:600;flex:1;color:var(--primary-dark)}
+
+.hero{padding:36px 0 24px;text-align:center}
+.hero h2{font-family:"Noto Serif TC",serif;font-size:1.8rem;font-weight:700;margin-bottom:8px}
+.hero h2 .accent{color:var(--primary)}
+.hero p{font-size:0.92rem;color:var(--text-2)}
+
+.gate{background:var(--surface);border:2px dashed var(--primary);border-radius:18px;padding:32px 28px;text-align:center;margin:30px 0}
+.gate h3{font-family:"Noto Serif TC",serif;font-size:1.2rem;color:var(--primary-dark);margin-bottom:8px}
+.gate p{font-size:0.9rem;color:var(--text-2);margin-bottom:18px}
+.gate input{width:100%;max-width:320px;padding:12px 16px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;font-family:inherit;text-align:center;letter-spacing:0.05em}
+.gate input:focus{outline:none;border-color:var(--primary)}
+.gate button{margin-top:14px;padding:12px 32px;background:var(--primary);color:#fff;border:none;border-radius:100px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit}
+.gate button:hover{background:var(--primary-dark)}
+
+.surveys{padding:20px 0}
+.section-label{font-size:0.72rem;font-weight:600;letter-spacing:0.1em;color:var(--text-3);margin-bottom:14px}
+
+.survey-card{background:var(--surface);border-radius:18px;padding:24px 26px;box-shadow:var(--shadow);margin-bottom:16px;border:1px solid var(--border);transition:box-shadow .2s}
+.survey-card:hover{box-shadow:var(--shadow-hover)}
+.survey-head{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.survey-icon{width:42px;height:42px;background:var(--primary-light);color:var(--primary);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0}
+.survey-info{flex:1}
+.survey-title{font-family:"Noto Serif TC",serif;font-size:1.05rem;font-weight:700}
+.survey-meta{font-size:0.75rem;color:var(--text-3);margin-top:2px}
+.survey-stats{display:flex;gap:20px;margin-top:12px;padding-top:12px;border-top:1px solid var(--border)}
+.stat{flex:1}
+.stat-num{font-family:"Inter",sans-serif;font-size:1.6rem;font-weight:700;color:var(--primary)}
+.stat-label{font-size:0.72rem;color:var(--text-3);margin-top:2px}
+.survey-actions{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:100px;font-size:0.82rem;font-weight:600;cursor:pointer;border:none;font-family:inherit;text-decoration:none}
+.btn-view{background:var(--primary);color:#fff}
+.btn-view:hover{background:var(--primary-dark)}
+.btn-csv{background:var(--bg);color:var(--text-2);border:1.5px solid var(--border)}
+.btn-csv:hover{border-color:var(--primary);color:var(--primary)}
+
+.empty{text-align:center;padding:40px 20px;color:var(--text-3);font-size:0.9rem}
+.loading{text-align:center;padding:40px;color:var(--text-3)}
+
+/* Responses Modal */
+.modal{display:none;position:fixed;inset:0;z-index:100;background:rgba(26,26,26,0.6);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:20px}
+.modal.show{display:flex}
+.modal-box{background:var(--surface);border-radius:20px;padding:32px;max-width:760px;width:100%;max-height:85vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.2)}
+.modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--border)}
+.modal-head h2{font-family:"Noto Serif TC",serif;font-size:1.3rem;color:var(--primary-dark)}
+.modal-close{background:none;border:none;font-size:1.5rem;color:var(--text-3);cursor:pointer;padding:4px 10px;border-radius:8px}
+.modal-close:hover{background:var(--bg);color:var(--text)}
+
+.resp-item{background:var(--bg);border-radius:14px;padding:18px 20px;margin-bottom:12px;border-left:3px solid var(--primary)}
+.resp-head{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.resp-who{font-weight:700;color:var(--primary-dark);font-size:0.95rem}
+.resp-time{font-size:0.72rem;color:var(--text-3);margin-left:auto}
+.resp-q{margin-bottom:10px}
+.resp-q:last-child{margin-bottom:0}
+.resp-qkey{font-size:0.78rem;font-weight:600;color:var(--text-2);margin-bottom:3px}
+.resp-qans{font-size:0.85rem;color:var(--text);line-height:1.7;background:#fff;padding:8px 12px;border-radius:8px;border:1px solid var(--border);white-space:pre-wrap}
+.resp-qans.empty{color:var(--text-3);font-style:italic}
+
+footer{text-align:center;padding:30px 20px;font-size:0.75rem;color:var(--text-3)}
+
+@media (max-width:600px){
+  .survey-stats{gap:14px}
+  .stat-num{font-size:1.3rem}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a class="back-btn" href="/knowledge/問卷/"><i class="ph ph-arrow-left"></i> 問卷</a>
+    <h1><i class="ph ph-chart-bar"></i> 後台（主公專用）</h1>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="hero">
+    <h2>問卷 <span class="accent">後台</span></h2>
+    <p>看大家填寫狀況・回覆內容・匯出 CSV</p>
+  </div>
+
+  <div class="gate" id="gate">
+    <h3><i class="ph ph-lock-key"></i> 主公驗證</h3>
+    <p>輸入主公 email、進入後台看回覆</p>
+    <input type="email" id="emailInput" placeholder="reysionchen@gmail.com" autocomplete="email">
+    <br>
+    <button id="enterBtn">進入後台</button>
+  </div>
+
+  <div class="surveys" id="surveys" style="display:none">
+    <div class="section-label">所有問卷</div>
+    <div id="surveyList" class="loading">載入中…</div>
+  </div>
+
+</div>
+
+<!-- Responses Modal -->
+<div class="modal" id="modal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h2 id="modalTitle">回覆內容</h2>
+      <button class="modal-close" id="modalClose"><i class="ph ph-x"></i></button>
+    </div>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<footer>笙之道 · 上善若水 · 問卷後台 v1 · 2026-04-30</footer>
+
+<script>
+const TOKEN_KEY = 'reyway_admin_email';
+
+// 自動載入記住的 email
+const savedEmail = localStorage.getItem(TOKEN_KEY);
+if (savedEmail) {
+  document.getElementById('emailInput').value = savedEmail;
+}
+
+document.getElementById('enterBtn').addEventListener('click', async () => {
+  const email = document.getElementById('emailInput').value.trim();
+  if (!email) { alert('請輸入 email'); return; }
+
+  // 試呼叫 list、用 email 當 token
+  try {
+    const res = await fetch('/api/survey?action=list', {
+      headers: { 'X-Owner-Token': email }
+    });
+    if (res.status === 401) {
+      alert('驗證失敗、不是主公本人喔');
+      return;
+    }
+    if (!res.ok) {
+      alert('伺服器錯誤、請等等再試');
+      return;
+    }
+    const { list } = await res.json();
+    localStorage.setItem(TOKEN_KEY, email);
+    document.getElementById('gate').style.display = 'none';
+    document.getElementById('surveys').style.display = 'block';
+    renderSurveys(list, email);
+  } catch (e) {
+    alert('連線失敗：' + e.message);
+  }
+});
+
+function renderSurveys(list, email) {
+  const wrap = document.getElementById('surveyList');
+  if (!list || list.length === 0) {
+    wrap.innerHTML = `
+      <div class="empty">
+        <i class="ph ph-clipboard" style="font-size:2rem;color:#C6613F;display:block;margin-bottom:10px"></i>
+        還沒有問卷、可去 <a href="/knowledge/問卷/manager-ai-survey.html" style="color:#C6613F">主管問卷</a> 提交一筆試試<br>
+        或請主公手動 register 一份問卷（API: POST /api/survey?action=register）
+      </div>`;
+    return;
+  }
+
+  wrap.classList.remove('loading');
+  wrap.innerHTML = list.map(s => `
+    <div class="survey-card">
+      <div class="survey-head">
+        <div class="survey-icon"><i class="ph ph-clipboard-text"></i></div>
+        <div class="survey-info">
+          <div class="survey-title">${escapeHtml(s.title)}</div>
+          <div class="survey-meta">ID：${s.id} · 建立：${(s.createdAt||'').slice(0,10)}</div>
+        </div>
+      </div>
+      <div class="survey-stats">
+        <div class="stat">
+          <div class="stat-num">${s.responseCount || 0}</div>
+          <div class="stat-label">已收回覆</div>
+        </div>
+      </div>
+      <div class="survey-actions">
+        <button class="btn btn-view" onclick="viewResponses('${s.id}', '${escapeAttr(s.title)}')"><i class="ph ph-eye"></i> 看回覆</button>
+        <a class="btn btn-csv" href="/api/survey?action=export&id=${s.id}" onclick="downloadCsv(event, '${s.id}')"><i class="ph ph-download-simple"></i> 匯出 CSV</a>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function viewResponses(id, title) {
+  const email = localStorage.getItem(TOKEN_KEY);
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalBody').innerHTML = '<div class="loading">載入中…</div>';
+  document.getElementById('modal').classList.add('show');
+
+  try {
+    const res = await fetch(`/api/survey?action=responses&id=${id}`, {
+      headers: { 'X-Owner-Token': email }
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      document.getElementById('modalBody').innerHTML = `<div class="empty">錯誤：${data.error || '未知'}</div>`;
+      return;
+    }
+    if (!data.responses || data.responses.length === 0) {
+      document.getElementById('modalBody').innerHTML = '<div class="empty">這份問卷還沒有人填寫</div>';
+      return;
+    }
+    document.getElementById('modalBody').innerHTML = data.responses.map(r => `
+      <div class="resp-item">
+        <div class="resp-head">
+          <i class="ph-fill ph-user-circle" style="color:#C6613F;font-size:1.2rem"></i>
+          <div class="resp-who">${escapeHtml(r.who)}</div>
+          <div class="resp-time">${(r.submittedAt||'').replace('T', ' ').slice(0, 19)}</div>
+        </div>
+        ${Object.entries(r.answers || {}).map(([k, v]) => `
+          <div class="resp-q">
+            <div class="resp-qkey">${escapeHtml(k)}</div>
+            <div class="resp-qans ${!v ? 'empty' : ''}">${escapeHtml(v) || '（沒填）'}</div>
+          </div>
+        `).join('')}
+      </div>
+    `).join('');
+  } catch (e) {
+    document.getElementById('modalBody').innerHTML = `<div class="empty">連線錯誤：${e.message}</div>`;
+  }
+}
+
+async function downloadCsv(e, id) {
+  e.preventDefault();
+  const email = localStorage.getItem(TOKEN_KEY);
+  try {
+    const res = await fetch(`/api/survey?action=export&id=${id}`, {
+      headers: { 'X-Owner-Token': email }
+    });
+    if (!res.ok) { alert('匯出失敗'); return; }
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `survey-${id}-${Date.now()}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  } catch (err) {
+    alert('下載錯誤：' + err.message);
+  }
+}
+
+document.getElementById('modalClose').addEventListener('click', () => {
+  document.getElementById('modal').classList.remove('show');
+});
+document.getElementById('modal').addEventListener('click', (e) => {
+  if (e.target.id === 'modal') document.getElementById('modal').classList.remove('show');
+});
+
+function escapeHtml(s) {
+  return String(s || '').replace(/[&<>"']/g, c => ({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  })[c]);
+}
+function escapeAttr(s) {
+  return String(s || '').replace(/'/g, '\\\'').replace(/"/g, '&quot;');
+}
+
+// 自動進入（如果有記住）
+if (savedEmail) {
+  document.getElementById('enterBtn').click();
+}
+</script>
+
+</body>
+</html>

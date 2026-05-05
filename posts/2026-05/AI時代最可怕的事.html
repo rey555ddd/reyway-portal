@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 時代最可怕的事：你的知識，可以被打包複製｜笙之道</title>
+<meta name="description" content="我老婆不是工程師。她拿到我整理的一份文件，一小時後，她的 AI 開始幫她做事了。這件事讓我有點害怕。">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;700&family=Noto+Sans+TC:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --bg:#FFFFFF;
+    --text:#1A2238;
+    --text-2:#4A5568;
+    --text-3:#94A0B5;
+    --accent:#B8442B;
+    --border:rgba(26,34,56,0.10);
+    --quote-bg:#F7F4EE;
+  }
+  body{
+    font-family:"Noto Sans TC","Inter",sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.85;
+    -webkit-font-smoothing:antialiased;
+    font-size:17px;
+  }
+
+  .topbar{
+    border-bottom:1px solid var(--border);
+    padding:18px 24px;
+    background:#fff;
+  }
+  .topbar-inner{
+    max-width:760px;
+    margin:0 auto;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .brand{
+    font-family:"Noto Serif TC",serif;
+    font-weight:700;
+    font-size:1.05rem;
+    color:var(--text);
+    text-decoration:none;
+    letter-spacing:0.05em;
+  }
+  .brand-sub{
+    font-size:0.75rem;
+    color:var(--text-3);
+    letter-spacing:0.15em;
+    text-transform:uppercase;
+    margin-left:8px;
+  }
+  .nav-back{
+    font-size:0.85rem;
+    color:var(--text-2);
+    text-decoration:none;
+  }
+
+  article{
+    max-width:680px;
+    margin:0 auto;
+    padding:60px 24px 100px;
+  }
+
+  .meta{
+    font-size:0.78rem;
+    color:var(--text-3);
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    margin-bottom:18px;
+  }
+
+  h1{
+    font-family:"Noto Serif TC",serif;
+    font-size:2.25rem;
+    font-weight:700;
+    line-height:1.4;
+    margin-bottom:14px;
+    letter-spacing:-0.01em;
+  }
+
+  .subtitle{
+    font-size:1.05rem;
+    color:var(--text-2);
+    margin-bottom:48px;
+    font-weight:400;
+  }
+
+  .gold-line{
+    width:48px;
+    height:2px;
+    background:var(--accent);
+    margin:48px 0;
+  }
+
+  .lead{
+    font-family:"Noto Serif TC",serif;
+    font-size:1.18rem;
+    line-height:1.85;
+    color:var(--text);
+    margin-bottom:32px;
+    font-weight:500;
+  }
+
+  h2{
+    font-family:"Noto Serif TC",serif;
+    font-size:1.45rem;
+    font-weight:700;
+    margin:56px 0 20px;
+    line-height:1.5;
+  }
+
+  h3{
+    font-family:"Noto Serif TC",serif;
+    font-size:1.15rem;
+    font-weight:600;
+    margin:36px 0 14px;
+    color:var(--accent);
+  }
+
+  p{
+    margin-bottom:22px;
+    color:var(--text);
+  }
+
+  blockquote{
+    font-family:"Noto Serif TC",serif;
+    font-size:1.05rem;
+    font-style:italic;
+    color:var(--text-2);
+    background:var(--quote-bg);
+    padding:24px 28px;
+    margin:28px 0;
+    border-left:3px solid var(--accent);
+  }
+
+  ul{
+    margin:0 0 22px 0;
+    padding-left:24px;
+  }
+  li{
+    margin-bottom:8px;
+  }
+
+  strong{
+    color:var(--text);
+    font-weight:600;
+  }
+
+  .accent{
+    color:var(--accent);
+    font-weight:600;
+  }
+
+  .footer{
+    margin-top:64px;
+    padding-top:32px;
+    border-top:1px solid var(--border);
+    font-size:0.85rem;
+    color:var(--text-3);
+  }
+  .footer p{
+    margin-bottom:8px;
+    color:var(--text-3);
+  }
+
+  @media(max-width:640px){
+    article{padding:40px 20px 60px}
+    h1{font-size:1.75rem}
+    .lead{font-size:1.05rem}
+    body{font-size:16px}
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="/">笙之道<span class="brand-sub">AI 心得總站</span></a>
+    <a class="nav-back" href="/">所有文章 →</a>
+  </div>
+</header>
+
+<article>
+
+  <div class="meta">2026 年 5 月 3 日 · 心得</div>
+
+  <h1>AI 時代最可怕的事：你的知識，可以被打包複製</h1>
+
+  <p class="subtitle">一個讓我有點害怕的小故事</p>
+
+  <div class="gold-line"></div>
+
+  <p class="lead">
+    我老婆不是工程師。<br>
+    她拿到我整理的一份文件，一小時後，她的 AI 開始幫她做事了。
+  </p>
+
+  <p>
+    這件事我想了一晚上。
+  </p>
+
+  <p>
+    不是因為驚訝她學得快——而是因為我突然意識到一件事：
+    <strong>她學的不是技術，她接收的是我這幾個月積累的判斷。</strong>
+  </p>
+
+  <p>
+    我怎麼跟 AI 說話、遇到問題怎麼拆解、哪些事情叫 AI 做、哪些事情要自己決定——
+    這些東西，我花了幾個月才摸出來的，她一個小時就拿到了。
+  </p>
+
+  <div class="gold-line"></div>
+
+  <h2>啟動包是什麼？</h2>
+
+  <p>
+    不是工具，也不是軟體。
+  </p>
+
+  <p>
+    就是一份文字——把你腦袋裡「跟 AI 工作的邏輯」寫下來。
+  </p>
+
+  <p>
+    包括：
+  </p>
+
+  <ul>
+    <li>你希望 AI 在這個環境裡扮演什麼角色</li>
+    <li>什麼話不能說、什麼格式要維持</li>
+    <li>遇到不確定的時候要做什麼、不要做什麼</li>
+    <li>常用的任務怎麼啟動、怎麼驗收</li>
+    <li>你這個人的工作習慣是什麼</li>
+  </ul>
+
+  <p>
+    聽起來很簡單。但大多數人連第一條都沒有——
+    因為從來沒有人問過他們「你希望 AI 怎麼對你」。
+  </p>
+
+  <p>
+    我整理這份文件的時候，發現自己腦袋裡有很多東西是「說不清楚的直覺」。
+    寫下來很痛苦——因為你要把一個「感覺」轉成「可執行的規則」。
+  </p>
+
+  <p>
+    但寫完之後，AI 就不再是「你問一句、它答一句」。
+    它開始<span class="accent">照你的邏輯運作</span>。
+  </p>
+
+  <div class="gold-line"></div>
+
+  <h2>可怕在哪裡</h2>
+
+  <p>
+    以前，知識的傳遞靠時間。
+  </p>
+
+  <p>
+    你跟一個老師傅學手藝，要跟三年。
+    那三年，你接收的不只是「技術」，是他碰壁之後的判斷力、
+    他處理突發狀況的本能、他看一眼就知道有問題的那種感覺。
+  </p>
+
+  <p>
+    這些東西以前沒辦法打包。
+    只能靠「在旁邊待久了」慢慢滲透。
+  </p>
+
+  <p>
+    現在不一樣了。
+  </p>
+
+  <blockquote>
+    把腦袋裡的東西寫清楚，AI 就能幫你把這些判斷複製給別人。<br>
+    三年的積累，可能一小時就轉移完了。
+  </blockquote>
+
+  <p>
+    這讓我想到兩件事：
+  </p>
+
+  <h3>一、知識工作者的優勢正在改變</h3>
+
+  <p>
+    以前的護城河是「你懂、別人不懂」。
+    現在這條護城河在縮窄——
+    因為只要你願意整理，你懂的東西可以被快速複製。
+  </p>
+
+  <p>
+    未來的護城河，會是<strong>「你整理的速度，和你持續迭代的速度」</strong>。
+    不是知識本身，而是你把知識轉成可執行系統的能力。
+  </p>
+
+  <h3>二、打包需要工夫</h3>
+
+  <p>
+    這不是說「人人都會做」。
+  </p>
+
+  <p>
+    打包啟動包最難的那一步，是把「說不清楚的直覺」變成「說清楚的規則」。
+    大多數人根本不知道自己怎麼做決定——日常都是靠感覺在跑。
+  </p>
+
+  <p>
+    所以能打包的人，首先得是一個<span class="accent">能把自己拆開來看的人</span>。
+    這件事本身就不容易。
+  </p>
+
+  <div class="gold-line"></div>
+
+  <h2>我老婆的故事後來怎麼了</h2>
+
+  <p>
+    她拿到啟動包之後，花了大概一小時設定。
+  </p>
+
+  <p>
+    然後她的 AI 開始幫她：規劃網站結構、拆分任務、讓不同的 AI 角色分工做事。
+    她不用懂程式，她只需要說她想要什麼。
+  </p>
+
+  <p>
+    她建的第一個網站，是她自己喜歡的風格。
+    AI 記得她喜歡什麼顏色、什麼排版、什麼語氣。
+  </p>
+
+  <p>
+    這些，都來自那份她花一小時讀完的文件。
+  </p>
+
+  <p>
+    我站在旁邊看，說不上什麼感覺。
+    有一種「以前要花很長時間的事，現在快很多」的感嘆——
+    有點欣慰，也有點⋯⋯
+    說是可怕好像太誇張，但我確實在想這件事代表什麼。
+  </p>
+
+  <div class="gold-line"></div>
+
+  <h2>給你的問題</h2>
+
+  <p>
+    你腦袋裡的工作邏輯，說得清楚嗎？
+  </p>
+
+  <p>
+    不是「你會做什麼」——而是「你怎麼決定要做什麼」。
+  </p>
+
+  <p>
+    如果現在有人問你：「遇到這個狀況，你通常怎麼處理？」
+    你能不能不靠感覺、用幾條規則說清楚？
+  </p>
+
+  <p>
+    說得清楚的人，才能打包。<br>
+    打包了，才能複製。<br>
+    能複製的東西，才能 scale。
+  </p>
+
+  <p>
+    AI 幫你放大的，是你已經整理好的東西。<br>
+    你還沒整理的，它幫不了你。
+  </p>
+
+  <div class="gold-line"></div>
+
+  <p style="color:var(--text-2);font-style:italic;">
+    「笙之道｜AI 心得總站」持續更新——
+    把過程裡的踩坑、心得、方法寫下來，
+    給跟我一樣不是工程師、但想認真用 AI 工作的人看。
+  </p>
+
+  <div class="footer">
+    <p><strong>關於作者</strong>｜笙闆</p>
+    <p>淨淨 CleanClean 創辦人、26 人團隊、一個兒子、三隻貓女兒的爸爸。</p>
+    <p>這個站是我的 AI 工作心得記錄處。</p>
+  </div>
+
+</article>
+
+</body>
+</html>

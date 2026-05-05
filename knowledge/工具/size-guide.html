@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>尺寸速查表 - CleanClean 設計工具</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #FFFFFF;
+            color: #1E2230;
+            font-family: 'Noto Sans TC', 'Inter', sans-serif;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 40px;
+            padding-bottom: 24px;
+            border-bottom: 1.5px solid #EEF0F2;
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            border-radius: 20px;
+            background: #EBF9FC;
+            color: #329BAF;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .back-btn:hover {
+            background: #61D0DF;
+            color: #FFFFFF;
+            transform: translateX(-3px);
+        }
+
+        .header-content h1 {
+            font-size: 36px;
+            font-weight: 700;
+            color: #1E2230;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .header-content p {
+            font-size: 15px;
+            color: #8C8C8C;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        /* Controls */
+        .controls {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 36px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 240px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 16px 12px 40px;
+            background: #FFFFFF;
+            border: 1.5px solid #EEF0F2;
+            border-radius: 20px;
+            color: #1E2230;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .search-box input::placeholder {
+            color: #8C8C8C;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #61D0DF;
+            background: #EBF9FC;
+            box-shadow: 0 0 0 8px rgba(97, 208, 223, 0.08);
+        }
+
+        .search-box::before {
+            content: '🔍';
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 14px;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 10px 18px;
+            background: #FFFFFF;
+            border: 1.5px solid #EEF0F2;
+            border-radius: 20px;
+            color: #1E2230;
+            cursor: pointer;
+            font-family: 'Noto Sans TC', sans-serif;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .filter-btn:hover {
+            border-color: #61D0DF;
+            background: #EBF9FC;
+            color: #329BAF;
+        }
+
+        .filter-btn.active {
+            background: #61D0DF;
+            color: #FFFFFF;
+            border-color: #61D0DF;
+        }
+
+        /* Category Sections */
+        .category-section {
+            margin-bottom: 48px;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .category-section.hidden {
+            display: none;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .category-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #329BAF;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #61D0DF;
+            letter-spacing: -0.3px;
+        }
+
+        .dimension-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        /* Dimension Cards */
+        .dimension-card {
+            background: #FFFFFF;
+            border: 1.5px solid #EEF0F2;
+            border-radius: 20px;
+            padding: 24px;
+            transition: all 0.3s ease;
+            cursor: default;
+        }
+
+        .dimension-card:hover {
+            border-color: #61D0DF;
+            box-shadow: 0 8px 24px rgba(97, 208, 223, 0.12);
+            transform: translateY(-3px);
+        }
+
+        .preview-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 120px;
+            margin-bottom: 20px;
+            background: #EBF9FC;
+            border-radius: 16px;
+            padding: 12px;
+        }
+
+        .size-preview {
+            border: 2px solid #61D0DF;
+            background: rgba(97, 208, 223, 0.06);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            color: #329BAF;
+            font-weight: 600;
+            text-align: center;
+            padding: 4px;
+            font-family: 'Inter', monospace;
+        }
+
+        .card-info {
+            margin-bottom: 20px;
+        }
+
+        .card-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: #1E2230;
+            margin-bottom: 8px;
+            letter-spacing: -0.2px;
+        }
+
+        .card-dimensions {
+            font-size: 14px;
+            color: #61D0DF;
+            font-family: 'Inter', monospace;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .card-ratio {
+            font-size: 13px;
+            color: #8C8C8C;
+            margin-bottom: 4px;
+        }
+
+        .card-notes {
+            font-size: 13px;
+            color: #8C8C8C;
+            margin-top: 6px;
+            font-style: italic;
+        }
+
+        .copy-btn {
+            width: 100%;
+            padding: 11px;
+            background: #EBF9FC;
+            border: 1.5px solid #61D0DF;
+            border-radius: 16px;
+            color: #61D0DF;
+            font-family: 'Noto Sans TC', sans-serif;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .copy-btn:hover {
+            background: #61D0DF;
+            color: #FFFFFF;
+            transform: scale(1.02);
+        }
+
+        .copy-btn.copied {
+            background: rgba(76, 175, 80, 0.15);
+            border-color: #4CAF50;
+            color: #4CAF50;
+        }
+
+        /* Comparison Section */
+        .comparison-section {
+            margin-top: 60px;
+            padding: 36px;
+            background: #FFFFFF;
+            border: 1.5px solid #EEF0F2;
+            border-radius: 20px;
+        }
+
+        .comparison-section h2 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #329BAF;
+            margin-bottom: 28px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #61D0DF;
+            letter-spacing: -0.3px;
+        }
+
+        .comparison-canvas {
+            background: #EBF9FC;
+            border: 1.5px solid #EEF0F2;
+            border-radius: 16px;
+            padding: 40px;
+            overflow-x: auto;
+            min-height: 400px;
+            display: flex;
+            align-items: flex-end;
+            gap: 24px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .comparison-item {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .comparison-rect {
+            border: 2px solid #61D0DF;
+            background: rgba(97, 208, 223, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            color: #329BAF;
+            font-weight: 600;
+            text-align: center;
+            padding: 4px;
+            font-family: 'Inter', monospace;
+        }
+
+        .comparison-label {
+            font-size: 12px;
+            color: #1E2230;
+            text-align: center;
+            max-width: 110px;
+            word-break: break-word;
+            font-weight: 500;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            body {
+                padding: 24px 16px;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                margin-bottom: 32px;
+            }
+
+            .header-content h1 {
+                font-size: 28px;
+            }
+
+            .controls {
+                flex-direction: column;
+                margin-bottom: 28px;
+            }
+
+            .search-box {
+                min-width: unset;
+                width: 100%;
+            }
+
+            .filter-tabs {
+                width: 100%;
+                justify-content: flex-start;
+            }
+
+            .dimension-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .comparison-canvas {
+                flex-direction: column;
+                align-items: center;
+                padding: 28px;
+            }
+
+            .comparison-rect {
+                min-width: 60px;
+                min-height: 60px;
+            }
+
+            .comparison-section {
+                padding: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <a href="小彩工具箱.html" class="back-btn" title="淨淨美學工作室">←</a>
+            <div class="header-content">
+                <h1>尺寸速查表</h1>
+                <p>全平台版位尺寸，一目瞭然</p>
+            </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="搜尋尺寸、名稱...">
+            </div>
+            <div class="filter-tabs">
+                <button class="filter-btn active" data-filter="all">全部</button>
+                <button class="filter-btn" data-filter="shopline">官網</button>
+                <button class="filter-btn" data-filter="shopee">蝦皮</button>
+                <button class="filter-btn" data-filter="social">FB/IG</button>
+                <button class="filter-btn" data-filter="line">LINE</button>
+                <button class="filter-btn" data-filter="app">APP</button>
+                <button class="filter-btn" data-filter="retail">百貨</button>
+                <button class="filter-btn" data-filter="momo">momo</button>
+                <button class="filter-btn" data-filter="print">印刷</button>
+            </div>
+        </div>
+
+        <!-- Dimension Sections -->
+        <div id="dimensionsContainer"></div>
+
+        <!-- Comparison Section -->
+        <div class="comparison-section">
+            <h2>尺寸對比視圖</h2>
+            <div class="comparison-canvas" id="comparisonCanvas"></div>
+        </div>
+    </div>
+
+    <script>
+        // Data Structure
+        const dimensions = {
+            shopline: {
+                category: '官網 Shopline',
+                items: [
+                    { name: '首頁主Banner', width: 2000, height: 2000, notes: '正方形' },
+                    { name: '分類頁Banner', width: 1920, height: 896, notes: '寬橫幅' },
+                    { name: '自訂頁Banner', width: 2000, height: 1000, notes: '2:1' },
+                    { name: '會員登入頁Banner', width: 1840, height: 1040, notes: '' },
+                    { name: '官網SEO圖', width: 640, height: 360, notes: '16:9' },
+                    { name: '商品圖/白底圖', width: 1000, height: 1000, notes: '正方形' },
+                ]
+            },
+            shopee: {
+                category: '蝦皮',
+                items: [
+                    { name: '活動Banner寬版', width: 1200, height: 518, notes: '2.3:1' },
+                    { name: '活動Banner方形', width: 1200, height: 1200, notes: '正方形' },
+                    { name: '產品輪播Banner', width: 1200, height: 518, notes: '' },
+                    { name: '封面圖', width: 1200, height: 1200, notes: '正方形' },
+                    { name: '產品白底圖', width: 1040, height: 1040, notes: '正方形' },
+                ]
+            },
+            social: {
+                category: 'Facebook / Instagram',
+                items: [
+                    { name: 'FB貼文圖', width: 1080, height: 1080, notes: '正方形' },
+                    { name: 'IG貼文圖', width: 1060, height: 848, notes: '1.25:1' },
+                    { name: '限時動態', width: 1080, height: 1920, notes: '9:16' },
+                    { name: '廣告素材方形', width: 1200, height: 1200, notes: '正方形' },
+                    { name: '廣告素材橫幅', width: 1200, height: 628, notes: '1.91:1' },
+                ]
+            },
+            line: {
+                category: 'LINE',
+                items: [
+                    { name: 'LINE推播圖', width: 1040, height: 1040, notes: '正方形' },
+                    { name: 'LINE選單', width: 2500, height: 1686, notes: '1.48:1' },
+                ]
+            },
+            app: {
+                category: 'APP',
+                items: [
+                    { name: 'APP彈跳廣告', width: 360, height: 500, notes: '' },
+                    { name: 'APP彈跳廣告倒數版', width: 360, height: 500, notes: '' },
+                ]
+            },
+            retail: {
+                category: '百貨通路',
+                items: [
+                    { name: '百貨POS輪播', width: 1024, height: 768, notes: '4:3' },
+                    { name: '百貨官網Banner', width: 640, height: 320, notes: '2:1' },
+                    { name: '百貨APP Banner 橫', width: 640, height: 400, notes: '1.6:1' },
+                    { name: '百貨APP Banner 竪', width: 640, height: 500, notes: '0.8:1' },
+                    { name: '銷售據點圖', width: 1280, height: 600, notes: '2.13:1' },
+                ]
+            },
+            momo: {
+                category: 'MO店 momo',
+                items: [
+                    { name: '首頁Banner', width: 960, height: 480, notes: '2:1' },
+                ]
+            },
+            print: {
+                category: '印刷',
+                items: [
+                    { name: 'DM傳單 A4', width: 2480, height: 3508, notes: '210x297mm (300dpi)' },
+                    { name: 'DM傳單 A5', width: 1748, height: 2480, notes: '148x210mm (300dpi)' },
+                    { name: '海報 W94xH150cm', width: 3543, height: 5669, notes: '300dpi' },
+                    { name: '人形立牌 W60xH136cm', width: 2268, height: 5142, notes: '300dpi' },
+                    { name: '人形立牌 W60xH150cm', width: 2268, height: 5669, notes: '300dpi' },
+                    { name: '關東旗 60x150cm', width: 2268, height: 5669, notes: '300dpi' },
+                    { name: '布條 240x60cm', width: 9075, height: 2268, notes: '300dpi' },
+                    { name: '名牌/名片 54x85mm', width: 204, height: 321, notes: '300dpi' },
+                ]
+            }
+        };
+
+        // Calculate aspect ratio
+        function getAspectRatio(width, height) {
+            const gcd = (a, b) => b === 0 ? a : gcd(b, a % b);
+            const divisor = gcd(width, height);
+            return `${width / divisor}:${height / divisor}`;
+        }
+
+        // Scale rectangle to fit container while maintaining aspect ratio
+        function getScaledDimensions(width, height, maxHeight = 100) {
+            const ratio = width / height;
+            let scaledHeight = maxHeight;
+            let scaledWidth = ratio * scaledHeight;
+
+            const maxWidth = 200;
+            if (scaledWidth > maxWidth) {
+                scaledWidth = maxWidth;
+                scaledHeight = scaledWidth / ratio;
+            }
+
+            return { scaledWidth, scaledHeight };
+        }
+
+        // Render dimension cards
+        function renderDimensions() {
+            const container = document.getElementById('dimensionsContainer');
+            container.innerHTML = '';
+
+            Object.entries(dimensions).forEach(([key, category]) => {
+                const section = document.createElement('div');
+                section.className = 'category-section';
+                section.setAttribute('data-category', key);
+
+                section.innerHTML = `
+                    <h2 class="category-title">${category.category}</h2>
+                    <div class="dimension-grid">
+                        ${category.items.map((item) => {
+                            const { scaledWidth, scaledHeight } = getScaledDimensions(item.width, item.height);
+                            const ratio = getAspectRatio(item.width, item.height);
+
+                            return `
+                                <div class="dimension-card" data-search="${item.name.toLowerCase()} ${item.width} ${item.height}">
+                                    <div class="preview-container">
+                                        <div class="size-preview" style="width: ${scaledWidth}px; height: ${scaledHeight}px;">
+                                            ${scaledWidth > 40 && scaledHeight > 30 ? ratio : ''}
+                                        </div>
+                                    </div>
+                                    <div class="card-info">
+                                        <div class="card-name">${item.name}</div>
+                                        <div class="card-dimensions">${item.width} × ${item.height} px</div>
+                                        <div class="card-ratio">比例: ${ratio}</div>
+                                        ${item.notes ? `<div class="card-notes">${item.notes}</div>` : ''}
+                                    </div>
+                                    <button class="copy-btn" onclick="copyDimension(this, '${item.width}x${item.height}')">複製</button>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                `;
+
+                container.appendChild(section);
+            });
+        }
+
+        // Render comparison view
+        function renderComparison() {
+            const canvas = document.getElementById('comparisonCanvas');
+            canvas.innerHTML = '';
+
+            const allItems = [];
+            Object.values(dimensions).forEach(category => {
+                category.items.forEach(item => {
+                    allItems.push({ ...item, category: category.category });
+                });
+            });
+
+            // Find max dimension for scaling
+            const maxDim = Math.max(...allItems.map(item => Math.max(item.width, item.height)));
+            const baseScale = 150 / maxDim;
+
+            allItems.forEach(item => {
+                const scaledWidth = item.width * baseScale;
+                const scaledHeight = item.height * baseScale;
+
+                const compItem = document.createElement('div');
+                compItem.className = 'comparison-item';
+                compItem.innerHTML = `
+                    <div class="comparison-rect" style="width: ${scaledWidth}px; height: ${scaledHeight}px;"></div>
+                    <div class="comparison-label">${item.name}</div>
+                `;
+                canvas.appendChild(compItem);
+            });
+        }
+
+        // Copy to clipboard
+        function copyDimension(btn, dimensions) {
+            navigator.clipboard.writeText(dimensions).then(() => {
+                const originalText = btn.textContent;
+                btn.textContent = '✓ 已複製';
+                btn.classList.add('copied');
+
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+
+        // Search functionality
+        function filterDimensions(query, category) {
+            const sections = document.querySelectorAll('.category-section');
+
+            sections.forEach(section => {
+                const sectionCategory = section.getAttribute('data-category');
+                const cards = section.querySelectorAll('.dimension-card');
+                let visibleCards = 0;
+
+                cards.forEach(card => {
+                    const searchText = card.getAttribute('data-search');
+                    const matches = searchText.includes(query.toLowerCase());
+
+                    if (matches && (category === 'all' || sectionCategory === category)) {
+                        card.style.display = '';
+                        visibleCards++;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+
+                section.classList.toggle('hidden', visibleCards === 0);
+            });
+        }
+
+        // Event listeners
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            const query = e.target.value;
+            const activeFilter = document.querySelector('.filter-btn.active').getAttribute('data-filter');
+            filterDimensions(query, activeFilter);
+        });
+
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+
+                const filter = e.target.getAttribute('data-filter');
+                const query = document.getElementById('searchInput').value;
+                filterDimensions(query, filter);
+            });
+        });
+
+        // Initial render
+        renderDimensions();
+        renderComparison();
+    </script>
+</body>
+</html>

@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="zh-TW"><head><meta charset="UTF-8"><title>2026 Q1 經銷商業績報告-Eric</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Microsoft JhengHei','PingFang TC',sans-serif;background:#F4F6F8;color:#1B2A3E;line-height:1.55;font-size:15px}
+.container{max-width:1280px;margin:0 auto;padding:36px 28px}
+header.cover{background:linear-gradient(135deg,#1B2A3E 0%,#2C4C6B 50%,#5BC5C8 100%);color:#fff;padding:54px 44px;border-radius:16px;margin-bottom:30px}
+header.cover h1{font-size:42px;margin-bottom:10px;letter-spacing:2px}
+header.cover .brand{font-size:18px;opacity:.85;letter-spacing:3px}
+header.cover .meta{margin-top:22px;font-size:15px;opacity:.9}
+.card{background:#fff;border-radius:14px;padding:30px;margin-bottom:26px;box-shadow:0 2px 12px rgba(0,0,0,.05)}
+.card h3{font-size:22px;color:#1B2A3E}
+.org{display:flex;flex-direction:column;align-items:center;gap:0;padding:20px 0}
+.org-node{background:#fff;border:2px solid #5BC5C8;border-radius:10px;padding:10px 22px;font-weight:700;color:#1B2A3E;text-align:center;min-width:120px;box-shadow:0 2px 8px rgba(91,197,200,.2)}
+.org-node.boss{background:#1B2A3E;color:#fff;border-color:#1B2A3E;font-size:16px}
+.org-node.coo{background:#5BC5C8;color:#fff;border-color:#5BC5C8;font-size:15px}
+.org-line{width:2px;height:24px;background:#5BC5C8}
+.org-teams{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;width:100%;margin-top:10px}
+.team{border:2px solid #E6EAF0;border-radius:10px;padding:14px 10px;text-align:center;background:#FAFBFC}
+.team .icon{font-size:30px;margin-bottom:5px}
+.team .name{font-weight:700;font-size:15px;color:#1B2A3E}
+.team .role{font-size:12px;color:#7A8699;margin-top:3px}
+.summary-tbl{width:100%;border-collapse:collapse;margin-bottom:8px;font-size:14px}
+.summary-tbl th,.summary-tbl td{padding:13px 15px;text-align:left;border-bottom:1px solid #E6EAF0}
+.summary-tbl th{background:#F4F6F8;font-weight:600;font-size:14px;color:#5A6B80}
+.summary-tbl tr:last-child{font-weight:700;background:#FAFBFC}
+.ch-scroll{max-height:235px;overflow-y:auto;border:1px solid #E6EAF0;border-radius:8px;margin-top:14px}
+.ch-scroll .summary-tbl{margin-top:0!important}
+.ch-scroll thead{position:sticky;top:0;z-index:2;background:#F4F6F8}
+.ch-scroll thead th{background:#F4F6F8}
+.num{text-align:right;font-variant-numeric:tabular-nums}
+.up{color:#22A06B;font-weight:600}
+.down{color:#E94F64;font-weight:600}
+.bold{font-weight:700}
+.chart-box{position:relative;height:320px;margin-top:10px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:900px){.two-col{grid-template-columns:1fr}.org-teams{grid-template-columns:repeat(2,1fr)}.kpi-grid{grid-template-columns:repeat(3,1fr)!important}}
+
+.card-head-row{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;border-left:5px solid #5BC5C8;padding-left:12px;margin-bottom:18px}
+.card-head-row h3{border-left:none;padding-left:0}
+
+/* Compact quarter+month bar */
+.qm-bar{display:inline-flex;align-items:center;gap:9px;flex-wrap:wrap}
+.qtr-pills{display:inline-flex;background:#fff;border:1px solid #E6EAF0;border-radius:8px;padding:3px;gap:1px}
+.qp{padding:5px 11px;border:none;background:transparent;cursor:pointer;font-size:12px;font-family:inherit;border-radius:5px;color:#7A8699;font-weight:700;letter-spacing:.5px;transition:all .12s}
+.qp:hover{color:#1B2A3E}
+.qp.active{background:#1B2A3E;color:#fff}
+.qp.no-data{color:#C8CFD9;cursor:not-allowed}
+.qp.no-data:hover{color:#C8CFD9}
+.tab-group{display:inline-flex;background:#F0F2F5;border-radius:8px;padding:3px;gap:2px}
+.tab{padding:7px 16px;border:none;background:transparent;cursor:pointer;font-size:13px;font-family:inherit;border-radius:6px;color:#5A6B80;font-weight:600;transition:all .15s;min-width:46px}
+.tab:hover{color:#1B2A3E}
+.tab.active{background:#fff;color:#1B2A3E;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.tab.no-data{color:#C8CFD9;cursor:not-allowed}
+.tab.no-data:hover{color:#C8CFD9}
+.empty-state{padding:60px 20px;text-align:center;color:#B8C0CC;font-size:14px;background:#FAFBFC;border-radius:8px}
+.empty-state .em-icon{font-size:40px;margin-bottom:10px;display:block;opacity:.4}
+
+.seg{background:#fff;border-radius:14px;padding:28px;margin-bottom:24px;box-shadow:0 2px 12px rgba(0,0,0,.05)}
+.seg-head-row{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:14px;margin-bottom:18px}
+.seg-head-row h2{font-size:26px;margin-bottom:5px}
+.seg-head-row .sub{color:#7A8699;font-size:14px}
+.kpi-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;margin-bottom:22px}
+.kpi{background:#F7F9FB;padding:18px 14px;border-radius:10px;text-align:center}
+.kpi-label{font-size:13px;color:#7A8699;margin-bottom:6px;font-weight:600}
+.kpi-val{font-size:20px;font-weight:800;letter-spacing:.3px}
+
+.filter-bar{display:flex;gap:12px;align-items:center;margin-bottom:12px;position:relative}
+.ms-wrap{position:relative}
+.ms-btn{padding:11px 18px;border:1px solid #D6DCE6;border-radius:8px;background:#fff;cursor:pointer;font-size:15px;font-family:inherit;min-width:230px;text-align:left}
+.ms-btn:hover{border-color:#5BC5C8}
+.ms-dropdown{position:absolute;top:calc(100% + 4px);left:0;z-index:100;background:#fff;border:1px solid #D6DCE6;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.12);width:360px;max-width:80vw}
+.ms-head{display:flex;gap:6px;padding:10px;border-bottom:1px solid #E6EAF0}
+.ms-search{flex:1;padding:7px 11px;border:1px solid #D6DCE6;border-radius:6px;font-size:14px;font-family:inherit}
+.ms-head button{padding:5px 11px;font-size:13px;border:1px solid #D6DCE6;background:#F7F9FB;border-radius:6px;cursor:pointer;font-family:inherit}
+.ms-head button:hover{background:#5BC5C8;color:#fff;border-color:#5BC5C8}
+.ms-list{max-height:320px;overflow-y:auto;padding:8px 10px}
+.ms-list label{display:flex;align-items:center;gap:8px;padding:7px 4px;font-size:14px;cursor:pointer;border-radius:4px}
+.ms-list label:hover{background:#F7F9FB}
+.ms-list label.hidden{display:none}
+.hint{font-size:13px;color:#7A8699}
+.table-wrap{overflow:auto;border:1px solid #E6EAF0;border-radius:8px;max-height:480px}
+.prod-tbl{width:100%;border-collapse:collapse;font-size:14px}
+.prod-tbl thead{position:sticky;top:0;z-index:2}
+.prod-tbl tfoot{position:sticky;bottom:0;z-index:2}
+.prod-tbl th{background:#1B2A3E;color:#fff;padding:12px 14px;text-align:left;font-weight:600;font-size:13px}
+.prod-tbl th.num{text-align:right}
+.prod-tbl td{padding:11px 14px;border-bottom:1px solid #F0F2F5}
+.prod-tbl tbody tr:hover{background:#F7F9FB}
+.prod-tbl tbody tr:nth-child(even){background:#FAFBFC}
+.prod-tbl tr.hidden{display:none}
+.prod-tbl tfoot td{padding:11px 12px;background:#EDF7F7;font-weight:700;border-top:2px solid #5BC5C8}
+
+.tier-layout{display:grid;grid-template-columns:1.1fr 1fr;gap:24px;align-items:center}
+@media(max-width:900px){.tier-layout{grid-template-columns:1fr}}
+.tier-stats{display:flex;flex-direction:column;gap:10px}
+.tier-row{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:10px;border:1px solid #E6EAF0;background:#FAFBFC;transition:transform .12s,box-shadow .12s;cursor:pointer}
+.tier-row:hover{transform:translateX(3px);box-shadow:0 4px 14px rgba(0,0,0,.08);border-color:#5BC5C8}
+.tier-row.active{border-color:#1B2A3E;background:#fff;box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.tier-customers{margin-top:18px;border:1px solid #E6EAF0;border-radius:10px;padding:18px;background:#FAFBFC}
+.tier-cust-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap}
+.tier-cust-head h4{font-size:15px;color:#1B2A3E}
+.tier-cust-search{padding:7px 12px;border:1px solid #D6DCE6;border-radius:7px;font-size:13px;font-family:inherit;width:240px;max-width:100%}
+.tier-cust-search:focus{outline:none;border-color:#5BC5C8}
+.tier-cust-tbl{width:100%;border-collapse:collapse;font-size:14px;background:#fff;border-radius:8px;overflow:hidden}
+.tier-cust-tbl thead th{background:#1B2A3E;color:#fff;padding:11px 14px;text-align:left;font-size:13px;font-weight:600}
+.tier-cust-tbl thead th.num{text-align:right}
+.tier-cust-tbl td{padding:11px 14px;border-bottom:1px solid #F0F2F5}
+.tier-cust-tbl tbody tr:hover{background:#F7F9FB}
+.tier-cust-tbl tbody tr:nth-child(even){background:#FAFBFC}
+.tier-cust-wrap{max-height:340px;overflow-y:auto;border-radius:8px}
+.tier-cust-wrap thead{position:sticky;top:0;z-index:2}
+.tier-badge{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;color:#fff;flex-shrink:0;box-shadow:0 2px 6px rgba(0,0,0,.15)}
+.tier-info{flex:1;min-width:0}
+.tier-name{font-weight:700;font-size:16px;color:#1B2A3E;margin-bottom:3px}
+.tier-meta{font-size:13px;color:#7A8699}
+.tier-amt{font-weight:700;font-size:16px;font-variant-numeric:tabular-nums;color:#1B2A3E;text-align:right}
+.tier-amt small{display:block;font-size:12px;color:#7A8699;font-weight:400}
+.t-platinum{background:linear-gradient(135deg,#E5E4E2,#A6A6A6,#8B8B8B);color:#1B2A3E}
+.t-gold{background:linear-gradient(135deg,#F7E07A,#D4A017,#B8860B)}
+.t-silver{background:linear-gradient(135deg,#E8E8E8,#B8B8B8,#888)}
+.t-bronze{background:linear-gradient(135deg,#D9974C,#A0522D,#7B3F00)}
+.t-na{background:linear-gradient(135deg,#C8CFD9,#9098A4)}
+
+.amt-filter{display:inline-flex;align-items:center;gap:6px;background:#F7F9FB;border:1px solid #E6EAF0;border-radius:9px;padding:6px 12px;flex-wrap:wrap}
+.amt-label{font-size:13px;color:#7A8699;font-weight:600;margin-right:4px}
+.amt-btn{padding:7px 14px;border:none;background:transparent;cursor:pointer;font-size:13px;font-family:inherit;border-radius:6px;color:#5A6B80;font-weight:700;transition:all .12s}
+.amt-btn:hover{color:#1B2A3E;background:#EAF6F7}
+.amt-btn.active{background:#1B2A3E;color:#fff;box-shadow:0 2px 6px rgba(27,42,62,.2)}
+
+.lede{font-size:15px;color:#5A6B80;line-height:1.85;margin-bottom:22px;padding:16px 20px;background:#F7F9FB;border-left:4px solid #5BC5C8;border-radius:6px}
+.pillar-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:18px}
+.pillar{background:linear-gradient(180deg,#FAFBFC 0%,#fff 100%);border:1px solid #E6EAF0;border-radius:12px;padding:20px;position:relative;transition:transform .15s,box-shadow .15s}
+.pillar:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(91,197,200,.15);border-color:#5BC5C8}
+.pillar.pillar-wide{grid-column:1 / -1;background:linear-gradient(135deg,#F0FBFB 0%,#fff 100%);border-color:#5BC5C8}
+.pillar-head{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.pillar-num{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;background:#1B2A3E;color:#fff;border-radius:8px;font-weight:800;font-size:14px;flex-shrink:0}
+.pillar.pillar-wide .pillar-num{background:#5BC5C8}
+.pillar h4{font-size:16px;color:#1B2A3E;flex:1;min-width:0}
+.pillar-tag{font-size:12px;color:#7A8699;background:#F0F2F5;padding:4px 10px;border-radius:20px;white-space:nowrap}
+.pillar p{font-size:14px;color:#5A6B80;line-height:1.75;margin-bottom:10px}
+.pillar ul{list-style:none;padding:0;margin:10px 0;font-size:14px;line-height:1.85;color:#1B2A3E}
+.pillar li{padding-left:18px;position:relative}
+.pillar li:before{content:"▹";color:#5BC5C8;position:absolute;left:2px;font-weight:700}
+.pillar-foot{margin-top:12px;padding:11px 14px;background:#EDF7F7;border-radius:6px;font-size:14px;color:#1B2A3E;font-weight:600;border-left:3px solid #5BC5C8}
+.q1-summary-box{margin-top:22px;padding:26px 30px;background:linear-gradient(135deg,#1B2A3E 0%,#2C4C6B 100%);border-radius:12px;color:#fff}
+.q1-summary-label{font-size:14px;color:#5BC5C8;letter-spacing:2px;margin-bottom:10px;font-weight:700}
+.q1-summary-text{font-size:17px;line-height:1.9}
+.q1-summary-text b{color:#5BC5C8}
+@media(max-width:900px){.pillar-grid{grid-template-columns:1fr}}
+.insight-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:8px}
+.insight{padding:18px;border-radius:10px;border-left:5px solid}
+.insight.risk{background:#FFF3F5;border-color:#E94F64}
+.insight.opp{background:#F0FBF5;border-color:#22A06B}
+.insight h4{font-size:16px;margin-bottom:12px}
+.insight ul{list-style:none;padding-left:0;font-size:14px;line-height:1.85}
+.insight li{padding-left:20px;position:relative}
+.insight li:before{content:"▸";position:absolute;left:6px;color:inherit}
+@media(max-width:900px){.insight-grid{grid-template-columns:1fr}}
+footer{text-align:center;color:#7A8699;font-size:13px;padding:22px}
+</style></head>
+<body><div class="container">
+
+<header class="cover">
+  <div class="brand">淨淨 Clean Clean</div>
+  <h1>2026 Q1 經銷商業績報告-Eric</h1>
+  <div class="meta">製表日期：2026/04/07　｜　資料來源：2026-經銷業績cowork / 2026產品銷量明細cowork　｜　含稅金額</div>
+</header>
+
+<div class="card">
+  <h3 style="border-left:5px solid #5BC5C8;padding-left:12px;margin-bottom:8px">數位業務部 AI 團隊組織圖</h3>
+  <div class="org">
+    <div class="org-node boss">Eric（業務負責人）</div>
+    <div class="org-line"></div>
+    <div class="org-node coo">小克 · COO</div>
+    <div class="org-line"></div>
+    <div class="org-teams">
+      <div class="team"><div class="icon">🦅</div><div class="name">獵鷹</div><div class="role">市場開拓／新客</div></div>
+      <div class="team"><div class="icon">🧊</div><div class="name">破冰</div><div class="role">陌生開發／話術</div></div>
+      <div class="team"><div class="icon">☀️</div><div class="name">暖陽</div><div class="role">客戶關係／續單</div></div>
+      <div class="team"><div class="icon">👁️</div><div class="name">鷹眼</div><div class="role">數據／財務分析</div></div>
+      <div class="team"><div class="icon">🧠</div><div class="name">軍師</div><div class="role">策略／提案</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-head-row">
+    <h3>vs 去年同期 YoY</h3>
+<div class="qm-bar">
+  <div class="qtr-pills" data-target="yoyTabs">
+    <button type="button" class="qp active" data-q="q1">Q1</button>
+    <button type="button" class="qp" data-q="q2">Q2</button>
+    <button type="button" class="qp" data-q="q3">Q3</button>
+    <button type="button" class="qp" data-q="q4">Q4</button>
+  </div>
+  <div class="tab-group" id="yoyTabs">
+    <button type="button" class="tab" data-idx="0"></button>
+    <button type="button" class="tab" data-idx="1"></button>
+    <button type="button" class="tab" data-idx="2"></button>
+    <button type="button" class="tab" data-idx="3"></button>
+  </div>
+</div>
+  </div>
+  <table class="summary-tbl" id="yoyTable"><thead><tr><th>通路</th><th class="num" id="yoy-h25">2025年</th><th class="num" id="yoy-h26">2026年</th><th class="num">YoY</th></tr></thead><tbody></tbody></table>
+  <p id="yoyNote" style="margin-top:12px;font-size:13px;color:#5A6B80;line-height:1.7"></p>
+</div>
+
+<div class="two-col">
+  <div class="card">
+    <div class="card-head-row">
+      <h3>通路類型分析</h3>
+<div class="qm-bar">
+  <div class="qtr-pills" data-target="chTabs">
+    <button type="button" class="qp active" data-q="q1">Q1</button>
+    <button type="button" class="qp" data-q="q2">Q2</button>
+    <button type="button" class="qp" data-q="q3">Q3</button>
+    <button type="button" class="qp" data-q="q4">Q4</button>
+  </div>
+  <div class="tab-group" id="chTabs">
+    <button type="button" class="tab" data-idx="0"></button>
+    <button type="button" class="tab" data-idx="1"></button>
+    <button type="button" class="tab" data-idx="2"></button>
+    <button type="button" class="tab" data-idx="3"></button>
+  </div>
+</div>
+    </div>
+    <div class="chart-box"><canvas id="channelPie"></canvas></div>
+    <div class="ch-scroll"><table class="summary-tbl" style="margin-top:14px" id="chTable"><thead><tr><th>通路類型</th><th class="num">金額</th><th class="num">占比</th></tr></thead><tbody></tbody></table></div>
+  </div>
+  <div class="card">
+    <div class="card-head-row">
+      <h3>週別營收趨勢</h3>
+<div class="qm-bar">
+  <div class="qtr-pills" data-target="weekTabs">
+    <button type="button" class="qp active" data-q="q1">Q1</button>
+    <button type="button" class="qp" data-q="q2">Q2</button>
+    <button type="button" class="qp" data-q="q3">Q3</button>
+    <button type="button" class="qp" data-q="q4">Q4</button>
+  </div>
+  <div class="tab-group" id="weekTabs">
+    <button type="button" class="tab" data-idx="0"></button>
+    <button type="button" class="tab" data-idx="1"></button>
+    <button type="button" class="tab" data-idx="2"></button>
+    <button type="button" class="tab" data-idx="3"></button>
+  </div>
+</div>
+    </div>
+    <div class="chart-box"><canvas id="weeklyLine"></canvas></div>
+    <p style="font-size:12px;color:#7A8699;margin-top:10px">資料為銷貨日報表含稅金額 · 點季度切換月份檢視</p>
+  </div>
+</div>
+
+
+<div class="card">
+  <h3 style="border-left:5px solid #5BC5C8;padding-left:12px;margin-bottom:16px">廠商分級分布 · 客戶等級</h3>
+  <div class="tier-layout">
+    <div class="chart-box" style="height:280px"><canvas id="tierChart"></canvas></div>
+    <div class="tier-stats" id="tierStats"></div>
+  </div>
+  <p style="font-size:12px;color:#7A8699;margin-top:14px">客戶等級依年度業績累計分級：白金 / 金牌 / 銀牌 / 銅牌 / NA（企採等暫未分級）· 點擊任一等級可查看該等級客戶名單</p>
+  <div class="tier-customers" id="tierCustomers" hidden>
+    <div class="tier-cust-head">
+      <h4 id="tierCustTitle">客戶名單</h4>
+      <input type="text" class="tier-cust-search" id="tierCustSearch" placeholder="搜尋客戶名稱...">
+    </div>
+    <div class="tier-cust-wrap">
+      <table class="tier-cust-tbl">
+        <thead><tr><th>#</th><th>客戶名稱</th><th>通路類型</th><th class="num">年度業績</th></tr></thead>
+        <tbody id="tierCustBody"></tbody>
+      </table>
+    </div>
+    <p id="tierCustHint" style="font-size:12px;color:#7A8699;margin-top:10px"></p>
+  </div>
+</div>
+
+
+<section class="seg" style="border-top:6px solid #E94F64" data-seg="aqing">
+  <div class="seg-head-row">
+    <div><h2>① 阿清服飾</h2><p class="sub">直播通路／分批叫貨</p></div>
+    <div class="qm-bar">
+      <div class="qtr-pills" data-target="seg-aqing">
+        <button type="button" class="qp active" data-q="q1">Q1</button>
+        <button type="button" class="qp" data-q="q2">Q2</button>
+        <button type="button" class="qp" data-q="q3">Q3</button>
+        <button type="button" class="qp" data-q="q4">Q4</button>
+      </div>
+    </div>
+  </div>
+  <div class="kpi-grid" id="kpi-aqing"></div>
+  <div class="filter-bar">
+    <div class="ms-wrap">
+      <button type="button" class="ms-btn" data-target="tbl-aqing">▾ 選擇產品（可複選）</button>
+      <div class="ms-dropdown" hidden>
+        <div class="ms-head">
+          <input type="text" class="ms-search" placeholder="搜尋...">
+          <button type="button" class="ms-all">全選</button>
+          <button type="button" class="ms-none">清除</button>
+        </div>
+        <div class="ms-list" id="mslist-aqing"></div>
+      </div>
+    </div>
+    <div class="amt-filter" data-seg="aqing">
+      <span class="amt-label">💰 金額篩選</span>
+      <button type="button" class="amt-btn active" data-min="0">全部</button>
+      <button type="button" class="amt-btn" data-min="1">隱藏 $0</button>
+      <button type="button" class="amt-btn" data-min="10000">≥$1萬</button>
+      <button type="button" class="amt-btn" data-min="100000">≥$10萬</button>
+    </div>
+    <span class="hint" id="hint-aqing"></span>
+  </div>
+  <div class="table-wrap">
+    <table class="prod-tbl" id="tbl-aqing">
+      <thead id="thead-aqing"></thead>
+      <tbody id="tbody-aqing"></tbody>
+      <tfoot id="tfoot-aqing"></tfoot>
+    </table>
+  </div>
+</section>
+
+<section class="seg" style="border-top:6px solid #F5A623" data-seg="deyue_live">
+  <div class="seg-head-row">
+    <div><h2>② 得岳電商 + 其他直播</h2><p class="sub">得岳電商及直播通路合計</p></div>
+    <div class="qm-bar">
+      <div class="qtr-pills" data-target="seg-deyue_live">
+        <button type="button" class="qp active" data-q="q1">Q1</button>
+        <button type="button" class="qp" data-q="q2">Q2</button>
+        <button type="button" class="qp" data-q="q3">Q3</button>
+        <button type="button" class="qp" data-q="q4">Q4</button>
+      </div>
+    </div>
+  </div>
+  <div class="kpi-grid" id="kpi-deyue_live"></div>
+  <div class="filter-bar">
+    <div class="ms-wrap">
+      <button type="button" class="ms-btn" data-target="tbl-deyue_live">▾ 選擇產品（可複選）</button>
+      <div class="ms-dropdown" hidden>
+        <div class="ms-head">
+          <input type="text" class="ms-search" placeholder="搜尋...">
+          <button type="button" class="ms-all">全選</button>
+          <button type="button" class="ms-none">清除</button>
+        </div>
+        <div class="ms-list" id="mslist-deyue_live"></div>
+      </div>
+    </div>
+    <div class="amt-filter" data-seg="deyue_live">
+      <span class="amt-label">💰 金額篩選</span>
+      <button type="button" class="amt-btn active" data-min="0">全部</button>
+      <button type="button" class="amt-btn" data-min="1">隱藏 $0</button>
+      <button type="button" class="amt-btn" data-min="10000">≥$1萬</button>
+      <button type="button" class="amt-btn" data-min="100000">≥$10萬</button>
+    </div>
+    <span class="hint" id="hint-deyue_live"></span>
+  </div>
+  <div class="table-wrap">
+    <table class="prod-tbl" id="tbl-deyue_live">
+      <thead id="thead-deyue_live"></thead>
+      <tbody id="tbody-deyue_live"></tbody>
+      <tfoot id="tfoot-deyue_live"></tfoot>
+    </table>
+  </div>
+</section>
+
+<section class="seg" style="border-top:6px solid #5BC5C8" data-seg="dealer">
+  <div class="seg-head-row">
+    <div><h2>③ 純經銷（不含直播/阿清/得岳）</h2><p class="sub">一般經銷 + 企業採購 + 團購選品</p></div>
+    <div class="qm-bar">
+      <div class="qtr-pills" data-target="seg-dealer">
+        <button type="button" class="qp active" data-q="q1">Q1</button>
+        <button type="button" class="qp" data-q="q2">Q2</button>
+        <button type="button" class="qp" data-q="q3">Q3</button>
+        <button type="button" class="qp" data-q="q4">Q4</button>
+      </div>
+    </div>
+  </div>
+  <div class="kpi-grid" id="kpi-dealer"></div>
+  <div class="filter-bar">
+    <div class="ms-wrap">
+      <button type="button" class="ms-btn" data-target="tbl-dealer">▾ 選擇產品（可複選）</button>
+      <div class="ms-dropdown" hidden>
+        <div class="ms-head">
+          <input type="text" class="ms-search" placeholder="搜尋...">
+          <button type="button" class="ms-all">全選</button>
+          <button type="button" class="ms-none">清除</button>
+        </div>
+        <div class="ms-list" id="mslist-dealer"></div>
+      </div>
+    </div>
+    <div class="amt-filter" data-seg="dealer">
+      <span class="amt-label">💰 金額篩選</span>
+      <button type="button" class="amt-btn active" data-min="0">全部</button>
+      <button type="button" class="amt-btn" data-min="1">隱藏 $0</button>
+      <button type="button" class="amt-btn" data-min="10000">≥$1萬</button>
+      <button type="button" class="amt-btn" data-min="100000">≥$10萬</button>
+    </div>
+    <span class="hint" id="hint-dealer"></span>
+  </div>
+  <div class="table-wrap">
+    <table class="prod-tbl" id="tbl-dealer">
+      <thead id="thead-dealer"></thead>
+      <tbody id="tbody-dealer"></tbody>
+      <tfoot id="tfoot-dealer"></tfoot>
+    </table>
+  </div>
+</section>
+
+
+<div class="card">
+  <div class="card-head-row">
+    <h3>關鍵洞察 · 業務核心重點總結</h3>
+    <div class="qm-bar">
+      <div class="qtr-pills" data-target="insightTabs">
+        <button type="button" class="qp active" data-q="q1">Q1</button>
+        <button type="button" class="qp" data-q="q2">Q2</button>
+        <button type="button" class="qp" data-q="q3">Q3</button>
+        <button type="button" class="qp" data-q="q4">Q4</button>
+      </div>
+    </div>
+  </div>
+  <div id="insightBody"></div>
+</div>
+
+<footer>淨淨 Clean Clean · 數位業務部 AI 團隊 · 鷹眼財務分析</footer>
+</div>
+
+<script>
+const YOY_DATA = {"1": {"h25": "2025年1月", "h26": "2026年1月", "rows": [["阿清服飾", 273240, 4644619], ["得岳+直播", 0, 432865], ["純經銷（不含直播/阿清/得岳）", 1308555, 2256198], ["總計", 1581795, 7333682]], "note": "1月受惠於阿清大單（$464萬）及純經銷雙倍成長，總業績 $7,333,682，<b style=\"color:#22A06B\">年增 +363.6%</b>。"}, "2": {"h25": "2025年2月", "h26": "2026年2月", "rows": [["阿清服飾", 0, 0], ["得岳+直播", 243890, 155580], ["純經銷（不含直播/阿清/得岳）", 1907562, 1165269], ["總計", 2151452, 1320849]], "note": "2月為傳統淡季，農曆年節影響，總業績 $1,320,849，<b style=\"color:#E94F64\">年減 -38.6%</b>，需於 Q2 提前備貨與活動節奏。"}, "3": {"h25": "2025年3月", "h26": "2026年3月", "rows": [["阿清服飾", 7094598, 1371646], ["得岳+直播", 410800, 553574], ["純經銷（不含直播/阿清/得岳）", 1626077, 2272555], ["總計", 9131475, 4197775]], "note": "3月阿清 <b style=\"color:#E94F64\">-80.7%</b> 拖累總體，但 <b style=\"color:#22A06B\">得岳+直播 +34.8%、純經銷 +39.8%</b>，結構性轉好。"}, "q1": {"h25": "2025 Q1", "h26": "2026 Q1", "rows": [["阿清服飾", 7367838, 6016265], ["得岳+直播", 654690, 1142019], ["純經銷（不含直播/阿清/得岳）", 4842194, 5694022], ["總計", 12864722, 12852306]], "note": "💡 <b>總結：</b>Q1 總業績 $12,852,306 vs 去年 $12,864,722 幾乎持平（-0.1%）。阿清單月 -80.7% 但 Q1 僅 -18.3%；<b style=\"color:#22A06B\">得岳+直播 Q1 +74.4%</b>、<b style=\"color:#22A06B\">純經銷 Q1 +17.6%</b>，補回阿清缺口，營收結構更健康。"}};
+const CHANNEL_DATA = {"1": [["直播", 5056784], ["選品", 958000], ["團購", 531009], ["福委團購", 269160], ["母嬰", 229698], ["藥局", 182728], ["蝦皮", 85638], ["自用", 10000], ["清潔公司", 5020], ["跑團", 3645], ["民宿", 2000]], "all": [["直播", 6589260], ["選品", 2803433], ["團購", 1544189], ["母嬰", 766195], ["福委團購", 712810], ["藥局", 284002], ["蝦皮", 106352], ["自用", 20000], ["玻璃鍍膜", 8250], ["跑團", 6795], ["民宿", 6000], ["清潔公司", 5020]], "2": [["選品", 674614], ["母嬰", 242704], ["團購", 126815], ["直播", 124400], ["福委團購", 101560], ["藥局", 46596], ["跑團", 2160], ["民宿", 2000]], "3": [["直播", 1408076], ["選品", 1170819], ["團購", 886365], ["福委團購", 342090], ["母嬰", 293793], ["藥局", 54678], ["蝦皮", 20714], ["自用", 10000], ["玻璃鍍膜", 8250], ["民宿", 2000], ["跑團", 990]], "4": [], "5": [], "6": [], "7": [], "8": [], "9": [], "10": [], "11": [], "12": [], "q1": [["直播", 6589260], ["選品", 2803433], ["團購", 1544189], ["母嬰", 766195], ["福委團購", 712810], ["藥局", 284002], ["蝦皮", 106352], ["自用", 20000], ["玻璃鍍膜", 8250], ["跑團", 6795], ["民宿", 6000], ["清潔公司", 5020]], "q2": [], "q3": [], "q4": []};
+const WEEKLY_DATA = {"1": [["1/1-1/7", 775453], ["1/8-1/14", 4845297], ["1/15-1/21", 1339194], ["1/22-1/28", 312514], ["1/29-1/31", 61224]], "2": [["2/1-2/7", 956885], ["2/8-2/14", 120728], ["2/22-2/28", 243236]], "3": [["3/1-3/7", 929758], ["3/8-3/14", 202772], ["3/15-3/21", 810840], ["3/22-3/28", 1793897], ["3/29-3/31", 460508]], "4": [], "5": [], "6": [], "7": [], "8": [], "9": [], "10": [], "11": [], "12": [], "q1": [["1/1-1/7", 775453], ["1/8-1/14", 4845297], ["1/15-1/21", 1339194], ["1/22-1/28", 312514], ["1/29-1/31", 61224], ["2/1-2/7", 956885], ["2/8-2/14", 120728], ["2/22-2/28", 243236], ["3/1-3/7", 929758], ["3/8-3/14", 202772], ["3/15-3/21", 810840], ["3/22-3/28", 1793897], ["3/29-3/31", 460508]], "q2": [], "q3": [], "q4": [], "all": []};
+const PRODUCTS_DATA = {"aqing": {"q1": [{"name": "[升級版]牙膏薄荷(含氟)150g", "months": [7302, 0, 0], "total_qty": 7302, "total_amt": 730200}, {"name": "洗衣精800ml", "months": [6766, 0, 29], "total_qty": 6795, "total_amt": 1936430}, {"name": "洗衣精補充瓶800ml", "months": [2263, 0, 70], "total_qty": 2333, "total_amt": 558940}, {"name": "真濃縮洗衣精10ml(隨身包)", "months": [2000, 0, 0], "total_qty": 2000, "total_amt": 0}, {"name": "食器清潔皂500ml", "months": [649, 0, 1319], "total_qty": 1968, "total_amt": 393000}, {"name": "剋菌液濃縮瓶500ml", "months": [1047, 0, 374], "total_qty": 1421, "total_amt": 205220}, {"name": "剋菌液居家瓶300ml", "months": [1047, 0, 361], "total_qty": 1408, "total_amt": 119160}, {"name": "復活草植潤水凝乳 300ml", "months": [999, 1, 378], "total_qty": 1378, "total_amt": 527115}, {"name": "除垢慕斯 500ML 補充瓶", "months": [888, 0, 0], "total_qty": 888, "total_amt": 168720}, {"name": "濃縮家事皂700ml", "months": [810, 0, 28], "total_qty": 838, "total_amt": 226260}, {"name": "沐浴露(棉花)500ml", "months": [745, 0, 0], "total_qty": 745, "total_amt": 0}, {"name": "沐浴慕斯(花香)600ml", "months": [12, 0, 676], "total_qty": 688, "total_amt": 249660}, {"name": "沐浴慕斯(棉花)600ml", "months": [12, 0, 672], "total_qty": 684, "total_amt": 250680}, {"name": "淨淨-簡單柔濕巾(70抽×12包/箱)", "months": [424, 0, 243], "total_qty": 667, "total_amt": 340170}, {"name": "剋菌液100ml", "months": [302, 0, 360], "total_qty": 662, "total_amt": 39720}, {"name": "除垢噴槍", "months": [444, 0, 0], "total_qty": 444, "total_amt": 0}, {"name": "淨淨-簡單柔濕巾(15抽×40包/箱)", "months": [228, 0, 186], "total_qty": 414, "total_amt": 256680}, {"name": "濃縮家事皂噴瓶300ml", "months": [407, 0, 1], "total_qty": 408, "total_amt": 4050}, {"name": "除黴凝膠150ml", "months": [148, 0, 0], "total_qty": 148, "total_amt": 0}, {"name": "沐浴慕斯(棉花)50ml", "months": [0, 0, 100], "total_qty": 100, "total_amt": 0}, {"name": "沐浴慕斯(花香)50ml", "months": [0, 0, 100], "total_qty": 100, "total_amt": 0}, {"name": "食器清潔皂補充瓶500ml", "months": [24, 0, 36], "total_qty": 60, "total_amt": 10260}, {"name": "洗衣精 壓頭*1", "months": [2, 0, 0], "total_qty": 2, "total_amt": 0}], "q2": [], "q3": [], "q4": []}, "deyue_live": {"q1": [{"name": "洗衣精800ml", "months": [220, 100, 354], "total_qty": 674, "total_amt": 224023}, {"name": "[升級版]牙膏薄荷(含氟)150g", "months": [509, 0, 56], "total_qty": 565, "total_amt": 57668}, {"name": "洗衣精補充瓶800ml", "months": [223, 57, 198], "total_qty": 478, "total_amt": 148512}, {"name": "潔顏乳120ml", "months": [400, 0, 45], "total_qty": 445, "total_amt": 86000}, {"name": "除黴凝膠150ml", "months": [154, 166, 113], "total_qty": 433, "total_amt": 51180}, {"name": "真濃縮洗衣精10ml(隨身包)", "months": [220, 0, 170], "total_qty": 390, "total_amt": 2960}, {"name": "【新版】速效除垢慕斯500ml", "months": [241, 0, 144], "total_qty": 385, "total_amt": 83422}, {"name": "濃縮家事皂700ml", "months": [158, 95, 114], "total_qty": 367, "total_amt": 111197}, {"name": "除垢噴槍", "months": [121, 72, 150], "total_qty": 343, "total_amt": 4706}, {"name": "除垢慕斯 500ML 補充瓶", "months": [79, 229, 23], "total_qty": 331, "total_amt": 71940}, {"name": "胺基酸沐浴露 療癒花語(隨身包)8mL", "months": [0, 200, 100], "total_qty": 300, "total_amt": 0}, {"name": "植潤．水凝乳(隨身包)8mL", "months": [170, 0, 129], "total_qty": 299, "total_amt": 4257}, {"name": "濃縮家事皂噴瓶300ml", "months": [134, 42, 56], "total_qty": 232, "total_amt": 15533}, {"name": "沐浴慕斯(花香)600ml", "months": [67, 0, 46], "total_qty": 113, "total_amt": 44603}, {"name": "沐浴慕斯(棉花)600ml", "months": [63, 0, 46], "total_qty": 109, "total_amt": 43882}, {"name": "胺基酸沐浴露 日光棉花(隨身包)8mL", "months": [0, 100, 0], "total_qty": 100, "total_amt": 0}, {"name": "雙層輕便刮鬍刀", "months": [0, 95, 0], "total_qty": 95, "total_amt": 2470}, {"name": "除垢慕斯 500ML", "months": [93, 0, 0], "total_qty": 93, "total_amt": 19180}, {"name": "洗衣精隨身瓶30ml", "months": [0, 0, 85], "total_qty": 85, "total_amt": 5455}, {"name": "潔顏慕斯150ml", "months": [0, 6, 69], "total_qty": 75, "total_amt": 20210}, {"name": "復活草植潤水凝乳 300ml", "months": [0, 0, 57], "total_qty": 57, "total_amt": 30660}, {"name": "食器清潔皂500ml", "months": [0, 0, 57], "total_qty": 57, "total_amt": 12642}, {"name": "食器清潔皂補充瓶500ml", "months": [0, 0, 49], "total_qty": 49, "total_amt": 11375}, {"name": "剋菌液居家瓶300ml", "months": [0, 0, 40], "total_qty": 40, "total_amt": 24570}, {"name": "剋菌液濃縮瓶500ml", "months": [0, 0, 40], "total_qty": 40, "total_amt": 9590}, {"name": "[升級版]牙膏薄荷(無氟)150g", "months": [0, 0, 40], "total_qty": 40, "total_amt": 5470}, {"name": "淨淨-簡單柔濕巾(70抽×12包/箱)", "months": [0, 0, 25], "total_qty": 25, "total_amt": 18200}, {"name": "【升級版】兒童護齒牙膏-無氟葡萄75g", "months": [0, 0, 14], "total_qty": 14, "total_amt": 1555}, {"name": "淨淨-簡單柔濕巾(15抽×40包/箱)", "months": [0, 0, 13], "total_qty": 13, "total_amt": 12064}, {"name": "無泡護敏150ml", "months": [0, 0, 13], "total_qty": 13, "total_amt": 4700}, {"name": "沐浴露(花香)500ml", "months": [0, 0, 12], "total_qty": 12, "total_amt": 5970}, {"name": "沐浴露(棉花)500ml", "months": [0, 0, 12], "total_qty": 12, "total_amt": 5720}, {"name": "【升級版】兒童護齒牙膏-無氟草莓75g", "months": [0, 0, 8], "total_qty": 8, "total_amt": 799}, {"name": "【升級版】兒童護齒牙膏-草莓口味75g", "months": [0, 0, 6], "total_qty": 6, "total_amt": 756}, {"name": "運費", "months": [1, 3, 1], "total_qty": 5, "total_amt": 750}, {"name": "沐浴慕斯(棉花)50ml", "months": [0, 0, 4], "total_qty": 4, "total_amt": 0}, {"name": "沐浴慕斯(花香)50ml", "months": [0, 0, 4], "total_qty": 4, "total_amt": 0}, {"name": "淨淨-簡單柔濕巾(70抽×3包/串)", "months": [0, 0, 2], "total_qty": 2, "total_amt": 0}], "q2": [], "q3": [], "q4": []}, "dealer": {"q1": [{"name": "洗衣精補充瓶800ml", "months": [1954, 772, 2296], "total_qty": 5022, "total_amt": 1360133}, {"name": "食器清潔皂補充瓶500ml", "months": [1209, 761, 1417], "total_qty": 3387, "total_amt": 615511}, {"name": "除垢慕斯 500ML 補充瓶", "months": [473, 905, 1048], "total_qty": 2426, "total_amt": 505740}, {"name": "洗衣精800ml", "months": [771, 388, 1235], "total_qty": 2394, "total_amt": 723212}, {"name": "除垢慕斯 500ML", "months": [1674, 469, 0], "total_qty": 2143, "total_amt": 454963}, {"name": "除黴凝膠150ml", "months": [1011, 451, 537], "total_qty": 1999, "total_amt": 288075}, {"name": "食器清潔皂500ml", "months": [501, 327, 693], "total_qty": 1521, "total_amt": 307006}, {"name": "除垢噴槍", "months": [0, 575, 819], "total_qty": 1394, "total_amt": 252}, {"name": "剋菌液100ml", "months": [378, 372, 534], "total_qty": 1284, "total_amt": 85740}, {"name": "剋菌液居家瓶300ml", "months": [257, 159, 463], "total_qty": 879, "total_amt": 189210}, {"name": "胺基酸沐浴露 療癒花語(隨身包)8mL", "months": [215, 40, 560], "total_qty": 815, "total_amt": 0}, {"name": "濃縮家事皂700ml", "months": [365, 189, 190], "total_qty": 744, "total_amt": 204640}, {"name": "食器清潔皂50ml", "months": [288, 120, 273], "total_qty": 681, "total_amt": 56690}, {"name": "胺基酸沐浴露 日光棉花(隨身包)8mL", "months": [215, 40, 410], "total_qty": 665, "total_amt": 0}, {"name": "[升級版]牙膏薄荷(含氟)150g", "months": [158, 111, 265], "total_qty": 534, "total_amt": 62400}, {"name": "濃縮家事皂噴瓶300ml", "months": [204, 139, 94], "total_qty": 437, "total_amt": 25837}, {"name": "真濃縮洗衣精10ml(隨身包)", "months": [150, 0, 180], "total_qty": 330, "total_amt": 0}, {"name": "【升級版】兒童護齒牙膏-草莓口味75g", "months": [83, 84, 157], "total_qty": 324, "total_amt": 32210}, {"name": "剋菌液濃縮瓶500ml", "months": [97, 78, 146], "total_qty": 321, "total_amt": 122600}, {"name": "[升級版]牙膏薄荷(無氟)150g", "months": [61, 71, 172], "total_qty": 304, "total_amt": 36920}, {"name": "沐浴慕斯(棉花)600ml", "months": [95, 68, 140], "total_qty": 303, "total_amt": 127410}, {"name": "潔顏慕斯150ml", "months": [165, 15, 104], "total_qty": 284, "total_amt": 69040}, {"name": "【升級版】兒童護齒牙膏-葡萄口味75g", "months": [70, 52, 162], "total_qty": 284, "total_amt": 28215}, {"name": "沐浴露(棉花)500ml", "months": [88, 5, 83], "total_qty": 176, "total_amt": 65340}, {"name": "沐浴慕斯(花香)600ml", "months": [75, 15, 61], "total_qty": 151, "total_amt": 64540}, {"name": "沐浴慕斯(無香)600ml", "months": [28, 33, 68], "total_qty": 129, "total_amt": 55530}, {"name": "沐浴露(花香)500ml", "months": [75, 10, 24], "total_qty": 109, "total_amt": 40530}, {"name": "淨淨-簡單柔濕巾(70抽×12包/箱)", "months": [43, 28, 37], "total_qty": 108, "total_amt": 61560}, {"name": "潔顏乳120ml", "months": [29, 47, 28], "total_qty": 104, "total_amt": 20740}, {"name": "植潤．水凝乳(隨身包)8mL", "months": [0, 0, 100], "total_qty": 100, "total_amt": 0}, {"name": "沐浴露(棉花)30ml", "months": [38, 1, 28], "total_qty": 67, "total_amt": 2220}, {"name": "潔顏慕斯30ml", "months": [25, 10, 19], "total_qty": 54, "total_amt": 3962}, {"name": "【升級版】胺基酸多效牙膏-清涼薄荷20g", "months": [26, 0, 27], "total_qty": 53, "total_amt": 2240}, {"name": "復活草植潤水凝乳 300ml", "months": [31, 5, 12], "total_qty": 48, "total_amt": 20500}, {"name": "【升級版】兒童護齒牙膏-無氟草莓75g", "months": [20, 16, 12], "total_qty": 48, "total_amt": 4781}, {"name": "沐浴慕斯(棉花)50ml", "months": [20, 6, 22], "total_qty": 48, "total_amt": 4440}, {"name": "【升級版】兒童護齒牙膏-無氟葡萄75g", "months": [15, 6, 20], "total_qty": 41, "total_amt": 4142}, {"name": "沐浴露(花香)30ml", "months": [9, 1, 29], "total_qty": 39, "total_amt": 2320}, {"name": "潔顏乳20ml", "months": [10, 13, 12], "total_qty": 35, "total_amt": 2350}, {"name": "沐浴慕斯(花香)50ml", "months": [17, 2, 14], "total_qty": 33, "total_amt": 3045}, {"name": "淨淨-簡單柔濕巾(70抽×3包/串)", "months": [0, 0, 32], "total_qty": 32, "total_amt": 10396}, {"name": "淨淨精美提袋(大)", "months": [0, 0, 30], "total_qty": 30, "total_amt": 657}, {"name": "無泡護敏150ml", "months": [15, 0, 9], "total_qty": 24, "total_amt": 7520}, {"name": "淨淨-簡單柔濕巾(15抽×40包/箱)", "months": [5, 8, 10], "total_qty": 23, "total_amt": 14950}, {"name": "無泡護敏20ml", "months": [13, 0, 8], "total_qty": 21, "total_amt": 1587}, {"name": "運費", "months": [4, 2, 10], "total_qty": 16, "total_amt": 2400}, {"name": "【升級版】胺基酸多效牙膏-無氟薄荷20g", "months": [6, 2, 5], "total_qty": 13, "total_amt": 550}, {"name": "淨淨刺繡高質感洗衣袋(6件組)", "months": [12, 0, 0], "total_qty": 12, "total_amt": 1920}, {"name": "洗衣精隨身瓶30ml", "months": [0, 0, 5], "total_qty": 5, "total_amt": 0}, {"name": "洗衣精 壓頭", "months": [0, 1, 0], "total_qty": 1, "total_amt": 0}], "q2": [], "q3": [], "q4": []}};
+const SEG_KPI = {"aqing": {"q1": {"y25": [7094598, 7367838], "y26": [1371646, 6016265]}}, "deyue_live": {"q1": {"y25": [410800, 654690], "y26": [553574, 1142019]}}, "dealer": {"q1": {"y25": [1626077, 4842194], "y26": [2272555, 5694022]}}};
+const SEG_COLOR = {"aqing": "#E94F64", "deyue_live": "#F5A623", "dealer": "#5BC5C8"};
+const INSIGHTS = {"q1": {"lede": "本季總業績與去年同期幾乎持平（-0.1%），但營收結構與業務模式已經完成質變——從「單點依賴阿清」轉向「多通路並行、模型化經營」。以下七大重點說明 Q1 的真正成長。", "pillars": [{"num": "01", "title": "通路結構建立", "tag": "單點銷售 → 多元通路佈局", "intro": "本季已逐步建立多元通路結構，降低單一通路依賴：", "items": ["團購通路（KOC/KOL／社群團媽）", "福委會／企業採購", "非典型通路（跑團、登山、母嬰、藥局等）", "直播通路（阿清、KOL 合作）", "電商與實體經銷"], "foot": "👉 目前已形成「多通路並行、互相支撐」的銷售結構"}, {"num": "02", "title": "團購模型成形", "tag": "接單 → 可複製操作", "intro": "團購不再是單次合作，而是建立出一套可複製邏輯：", "items": ["下單禮 × 組合設計 → 提升轉單率", "試用包灑樣 → 降低首購門檻", "團主分級與篩選 → 提升效率"], "foot": "👉 團購已從「人帶貨」變成「模型在帶貨」"}, {"num": "03", "title": "福委通路突破", "tag": "打進企業內部採購場景", "intro": "成功切入福委會與企業採購體系：", "items": ["透過宥澄等中間商進入企業端", "建立「便利性 &gt; 價格」的銷售邏輯", "開始出現企業禮贈型訂單（可複製）"], "foot": "👉 這條線是未來「高穩定＋可放大」的關鍵成長來源"}, {"num": "04", "title": "經銷經營升級", "tag": "出貨 → 經營通路", "intro": "與經銷商的關係從交易轉為經營：", "items": ["協助分析客群與產品結構（6:4、品類轉換）", "提供組合建議與活動規劃", "建立回購節奏（週期型訂單）"], "foot": "👉 經銷商開始感受到：「你不是來賣貨，是在幫他賺錢」"}, {"num": "05", "title": "價格與通路秩序管理", "tag": "守住品牌長期價值", "intro": "", "items": ["控制酷澎等平台亂價問題", "協調折扣與通路衝突（美滋滋等案例）", "建立價格底線與合作規範"], "foot": "👉 避免品牌被「短期銷量」破壞長期價值"}, {"num": "06", "title": "轉換效率優化", "tag": "進入第二階段：鋪貨 → 提升轉單", "intro": "", "items": ["試用包機制導入", "門市曝光優化（跳卡、小展架）", "現場轉換思維建立"], "foot": "👉 開始優化「同一批流量，賣更多」"}, {"num": "07", "title": "業務思維升級", "tag": "這其實最重要", "wide": true, "intro": "這季最大的變化不是做了什麼，而是：", "items": ["從「成交」→「經營關係（問答讚）」", "從「推產品」→「理解客群與場景」", "從「接單」→「預判下一筆訂單在哪」"], "foot": "👉 已經從「業務」進入「通路經營者」階段"}], "summary": "建立多通路銷售結構，打造可複製團購模型，並成功切入企業採購場景；同時開始優化通路轉換效率，讓業務從<b>成交導向</b>轉為<b>經營導向</b>。", "risks": ["阿清 3月 -80.7%，單月落差近 $572 萬，過去 TOP1 通路貢獻明顯放緩，Q1 占比仍約 47%", "2月為淡季（$1.49M），季節性波動大，需提前備貨與行銷節奏", "部分選品／團購客戶為一次性大單，Q2 若無補單將直接顯現", "平台亂價與通路衝突仍需持續巡查與溝通"], "opps": ["純經銷 Q1 +17.6%、3月 +39.8%，經銷基盤正在變厚", "得岳+直播 Q1 +74.4%，多元直播通路拓展見效", "福委／企業採購可複製性高，是 Q2 主攻放大方向", "洗衣精 × 牙膏兩大跨通路主力，可設計組合衝客單價"]}, "q2": null, "q3": null, "q4": null};
+const TIERS = {"白金": {"count": 2, "amt": 8016749, "customers": [{"name": "阿清服飾", "channel": "直播", "amt": 6016265}, {"name": "Mizz美滋滋", "channel": "選品", "amt": 2000484}]}, "金牌": {"count": 2, "amt": 1056205, "customers": [{"name": "宥澄國際有限公司", "channel": "福委團購", "amt": 712810}, {"name": "251", "channel": "直播", "amt": 343395}]}, "銀牌": {"count": 3, "amt": 1157249, "customers": [{"name": "得岳電商", "channel": "團購", "amt": 569024}, {"name": "C2C", "channel": "選品", "amt": 399270}, {"name": "COBlE", "channel": "團購", "amt": 188955}]}, "銅牌": {"count": 54, "amt": 2622103, "customers": [{"name": "樂鎂國際", "channel": "團購", "amt": 272831}, {"name": "鉅崴國際", "channel": "直播", "amt": 198835}, {"name": "米堤實業", "channel": "選品", "amt": 178285}, {"name": "禾坊醫療器材", "channel": "藥局", "amt": 167320}, {"name": "布布童鞋總店", "channel": "母嬰", "amt": 134165}, {"name": "立康", "channel": "藥局", "amt": 116682}, {"name": "伊比ㄚㄚ婦幼", "channel": "母嬰", "amt": 105060}, {"name": "樂比比股份有限公司", "channel": "團購", "amt": 96670}, {"name": "騰捷貿易", "channel": "蝦皮", "amt": 93352}, {"name": "六甲媽咪", "channel": "母嬰", "amt": 92225}, {"name": "荷康", "channel": "團購", "amt": 88505}, {"name": "優迪國際", "channel": "選品", "amt": 88180}, {"name": "貝比加有限公司", "channel": "團購", "amt": 71140}, {"name": "耀盛-娘娘抖", "channel": "團購", "amt": 61675}, {"name": "寶貝俏媽咪", "channel": "母嬰", "amt": 57937}, {"name": "花蓮樂芙", "channel": "選品", "amt": 55562}, {"name": "Rosemama", "channel": "團購", "amt": 41055}, {"name": "喜寶婦嬰坊", "channel": "母嬰", "amt": 39280}, {"name": "愛兒麗總倉", "channel": "母嬰", "amt": 38730}, {"name": "吉吉熊嬰兒", "channel": "母嬰", "amt": 35860}, {"name": "棉芽寶貝坊", "channel": "團購", "amt": 35606}, {"name": "海揚無限", "channel": "選品", "amt": 34819}, {"name": "布布童鞋福康", "channel": "母嬰", "amt": 32585}, {"name": "馬丁電商", "channel": "選品", "amt": 32130}, {"name": "Buma日本代購", "channel": "團購", "amt": 30755}, {"name": "小萌娃嬰童館", "channel": "母嬰", "amt": 30307}, {"name": "怡君服飾", "channel": "直播", "amt": 25965}, {"name": "亞斯丹", "channel": "團購", "amt": 23600}, {"name": "拓域國貿", "channel": "母嬰", "amt": 22240}, {"name": "C&H SHOP", "channel": "團購", "amt": 21191}, {"name": "Q寶兒", "channel": "母嬰", "amt": 21185}, {"name": "頑皮寶貝", "channel": "母嬰", "amt": 20095}, {"name": "媽媽寶寶斗六", "channel": "母嬰", "amt": 20050}, {"name": "海駿股份有限公司", "channel": "自用", "amt": 20000}, {"name": "果青-康奈德", "channel": "團購", "amt": 19750}, {"name": "媽咪寶貝世界", "channel": "母嬰", "amt": 18380}, {"name": "樂寶貝國際有限公司", "channel": "母嬰", "amt": 18000}, {"name": "利達婦嬰用品", "channel": "母嬰", "amt": 15732}, {"name": "小日常童裝", "channel": "選品", "amt": 14703}, {"name": "壹又貳分之壹-潭子", "channel": "母嬰", "amt": 13360}, {"name": "大喆商行", "channel": "蝦皮", "amt": 13000}, {"name": "樂芙寶貝", "channel": "母嬰", "amt": 10650}, {"name": "澎湖幼儒婦嬰", "channel": "母嬰", "amt": 10210}, {"name": "日日森", "channel": "團購", "amt": 10150}, {"name": "游學寶北台中", "channel": "母嬰", "amt": 10085}, {"name": "蒔全蒔美商行", "channel": "團購", "amt": 10052}, {"name": "金寶貝文心店", "channel": "母嬰", "amt": 10030}, {"name": "林萌小舖", "channel": "母嬰", "amt": 10029}, {"name": "森築美居", "channel": "玻璃鍍膜", "amt": 8250}, {"name": "用久體適能", "channel": "跑團", "amt": 6795}, {"name": "美好境界五結", "channel": "民宿", "amt": 6000}, {"name": "宅科技", "channel": "清潔公司", "amt": 5020}, {"name": "三果服飾", "channel": "直播", "amt": 4800}, {"name": "精實國際", "channel": "團購", "amt": 3230}]}, "NA": {"count": 36, "amt": 0, "customers": [{"name": "根我攝影", "channel": "蝦皮", "amt": 0}, {"name": "媽媽寶寶豐原", "channel": "母嬰", "amt": 0}, {"name": "益嬰行婦嬰", "channel": "母嬰", "amt": 0}, {"name": "好孕到", "channel": "母嬰", "amt": 0}, {"name": "麗緻寶貝", "channel": "母嬰", "amt": 0}, {"name": "馳城國際", "channel": "蝦皮", "amt": 0}, {"name": "蘋果樹藥局", "channel": "藥局", "amt": 0}, {"name": "凱逸美學有限公司", "channel": "個人官網", "amt": 0}, {"name": "壹又貳分之壹-苑裡", "channel": "母嬰", "amt": 0}, {"name": "茂森耀淨", "channel": "選品", "amt": 0}, {"name": "聯勝國際", "channel": "蝦皮", "amt": 0}, {"name": "麗彤生醫", "channel": "個人官網", "amt": 0}, {"name": "傘王中山二店", "channel": "選品", "amt": 0}, {"name": "梵姬企業社", "channel": "面銷", "amt": 0}, {"name": "玖果服飾", "channel": "直播", "amt": 0}, {"name": "凌煬生技", "channel": "團購", "amt": 0}, {"name": "子航有限公司", "channel": "直播", "amt": 0}, {"name": "羽軒直播", "channel": "直播", "amt": 0}, {"name": "瑞氏生技", "channel": "自用", "amt": 0}, {"name": "元榆牧場", "channel": "採購-觀光牧場", "amt": 0}, {"name": "牧羊人集團", "channel": "自用", "amt": 0}, {"name": "美好境界漢口", "channel": "民宿", "amt": 0}, {"name": "美好境界開封", "channel": "民宿", "amt": 0}, {"name": "美好行旅重慶館", "channel": "民宿", "amt": 0}, {"name": "美好境界冬山", "channel": "民宿", "amt": 0}, {"name": "安宏", "channel": "採購-家電業", "amt": 0}, {"name": "沁悅產後", "channel": "採購-月子中心", "amt": 0}, {"name": "頑劣份子", "channel": "軍用服飾", "amt": 0}, {"name": "寒沐酒店房務", "channel": "飯店", "amt": 0}, {"name": "力群開發有限公司", "channel": "民宿", "amt": 0}, {"name": "優杰", "channel": "瑜珈", "amt": 0}, {"name": "上境科技", "channel": "自用", "amt": 0}, {"name": "東隆電器", "channel": "採購-家電業", "amt": 0}, {"name": "潔淨所能", "channel": "清潔公司", "amt": 0}, {"name": "三中實業有限公司", "channel": "水電用品", "amt": 0}, {"name": "立康團購", "channel": "自用", "amt": 0}]}};
+
+const QUARTER_MONTHS = {q1:[1,2,3], q2:[4,5,6], q3:[7,8,9], q4:[10,11,12]};
+const QUARTER_LABEL = {q1:'Q1',q2:'Q2',q3:'Q3',q4:'Q4'};
+
+// ============== Generic quarter+tab controller ==============
+function setupQM(prefix, dataLookup, render, defaultIdx, defaultQ){
+  const tabs = document.querySelectorAll('#'+prefix+' .tab');
+  const pills = document.querySelectorAll('.qtr-pills[data-target="'+prefix+'"] .qp');
+  let curQ = defaultQ || 'q1';
+  let curIdx = defaultIdx;
+
+  function refreshTabLabels(){
+    const ms = QUARTER_MONTHS[curQ];
+    tabs[0].textContent = ms[0]+'月'; tabs[0].dataset.key = String(ms[0]);
+    tabs[1].textContent = ms[1]+'月'; tabs[1].dataset.key = String(ms[1]);
+    tabs[2].textContent = ms[2]+'月'; tabs[2].dataset.key = String(ms[2]);
+    tabs[3].textContent = QUARTER_LABEL[curQ]; tabs[3].dataset.key = curQ;
+    // mark no-data state
+    tabs.forEach(t=>{
+      const has = !!dataLookup(t.dataset.key);
+      t.classList.toggle('no-data', !has);
+    });
+    pills.forEach(p=>{
+      // pill no-data if all 4 tabs of that quarter empty
+      const q = p.dataset.q;
+      const ms2 = QUARTER_MONTHS[q];
+      const any = dataLookup(String(ms2[0])) || dataLookup(String(ms2[1])) || dataLookup(String(ms2[2])) || dataLookup(q);
+      p.classList.toggle('no-data', !any);
+    });
+  }
+
+  function activate(idx){
+    curIdx = idx;
+    tabs.forEach((t,i)=>t.classList.toggle('active', i===idx));
+    render(tabs[idx].dataset.key);
+  }
+
+  tabs.forEach((t,i)=>t.addEventListener('click',()=>{
+    if(t.classList.contains('no-data')) { render(t.dataset.key); tabs.forEach((x,j)=>x.classList.toggle('active',j===i)); curIdx=i; return; }
+    activate(i);
+  }));
+  pills.forEach(p=>p.addEventListener('click',()=>{
+    pills.forEach(x=>x.classList.remove('active'));
+    p.classList.add('active');
+    curQ = p.dataset.q;
+    refreshTabLabels();
+    activate(curIdx);
+  }));
+
+  refreshTabLabels();
+  activate(defaultIdx);
+}
+
+// ============== YoY ==============
+function yoyLookup(k){return YOY_DATA[k]?YOY_DATA[k]:null;}
+function renderYoY(k){
+  const d = YOY_DATA[k];
+  const tbl = document.getElementById('yoyTable');
+  const note = document.getElementById('yoyNote');
+  if(!d){
+    tbl.style.display='none';
+    note.innerHTML = `<div class="empty-state"><span class="em-icon">📭</span>${k.toUpperCase().replace('Q','Q')} 尚無資料<br><span style="font-size:12px">補上資料後將自動顯示</span></div>`;
+    return;
+  }
+  tbl.style.display='';
+  document.getElementById('yoy-h25').textContent = d.h25;
+  document.getElementById('yoy-h26').textContent = d.h26;
+  tbl.querySelector('tbody').innerHTML = d.rows.map(r=>{
+    const diff=r[2]-r[1], pct=r[1]?(diff/r[1]*100):0;
+    const cls=diff>=0?'up':'down', arr=diff>=0?'▲':'▼';
+    return `<tr><td>${r[0]}</td><td class="num">$${r[1].toLocaleString()}</td><td class="num">$${r[2].toLocaleString()}</td><td class="num ${cls}">${arr} ${pct>=0?'+':''}${pct.toFixed(1)}%</td></tr>`;
+  }).join('');
+  note.innerHTML = d.note;
+}
+setupQM('yoyTabs', yoyLookup, renderYoY, 2, 'q1');
+
+// ============== Channel pie ==============
+const CH_COLORS=['#5BC5C8','#F5A623','#E94F64','#7B61FF','#22A06B','#FFB84D','#4A90E2','#B8C4D6','#FF7A9C','#5D6D7E','#D6DCE6','#C8E0F0'];
+const chPie = new Chart(document.getElementById('channelPie'),{
+  type:'doughnut',
+  data:{labels:[],datasets:[{data:[],backgroundColor:CH_COLORS}]},
+  options:{plugins:{legend:{position:'right',labels:{font:{size:12}}}},maintainAspectRatio:false}
+});
+function chLookup(k){const d=CHANNEL_DATA[k]; return (d&&d.length)?d:null;}
+function renderCh(k){
+  const d = CHANNEL_DATA[k] || [];
+  const tbl = document.getElementById('chTable');
+  if(!d.length){
+    chPie.data.labels=[]; chPie.data.datasets[0].data=[]; chPie.update();
+    tbl.querySelector('tbody').innerHTML=`<tr><td colspan="3"><div class="empty-state"><span class="em-icon">📭</span>${k.toUpperCase()} 尚無資料</div></td></tr>`;
+    return;
+  }
+  const tot = d.reduce((a,b)=>a+b[1],0);
+  chPie.data.labels = d.map(x=>x[0]);
+  chPie.data.datasets[0].data = d.map(x=>x[1]);
+  chPie.update();
+  tbl.querySelector('tbody').innerHTML = d.map(x=>`<tr><td>${x[0]}</td><td class="num">$${x[1].toLocaleString()}</td><td class="num">${(x[1]/tot*100).toFixed(1)}%</td></tr>`).join('');
+}
+setupQM('chTabs', chLookup, renderCh, 2, 'q1');
+
+// ============== Weekly line ==============
+const wkChart = new Chart(document.getElementById('weeklyLine'),{
+  type:'line',
+  data:{labels:[],datasets:[{label:'營收',data:[],borderColor:'#5BC5C8',backgroundColor:'rgba(91,197,200,.15)',fill:true,tension:.3,pointRadius:4,pointBackgroundColor:'#1B2A3E'}]},
+  options:{plugins:{legend:{display:false}},maintainAspectRatio:false,scales:{y:{ticks:{callback:v=>'$'+(v/1000).toFixed(0)+'K'}}}}
+});
+function wkLookup(k){const d=WEEKLY_DATA[k]; return (d&&d.length)?d:null;}
+function renderWk(k){
+  const d = WEEKLY_DATA[k] || [];
+  if(!d.length){
+    wkChart.data.labels=['尚無資料']; wkChart.data.datasets[0].data=[0]; wkChart.update();
+    return;
+  }
+  wkChart.data.labels = d.map(x=>x[0]);
+  wkChart.data.datasets[0].data = d.map(x=>x[1]);
+  wkChart.update();
+}
+setupQM('weekTabs', wkLookup, renderWk, 3, 'q1');
+
+// ============== Tier breakdown ==============
+(function renderTiers(){
+  const order = ['白金','金牌','銀牌','銅牌','NA'];
+  const colors = {'白金':'#A6A6A6','金牌':'#D4A017','銀牌':'#B8B8B8','銅牌':'#A0522D','NA':'#9098A4'};
+  const cls = {'白金':'t-platinum','金牌':'t-gold','銀牌':'t-silver','銅牌':'t-bronze','NA':'t-na'};
+  const labels = [], data = [], bg = [];
+  order.forEach(t=>{
+    if(TIERS[t]){
+      labels.push(t);
+      data.push(TIERS[t].amt);
+      bg.push(colors[t]);
+    }
+  });
+  new Chart(document.getElementById('tierChart'),{
+    type:'doughnut',
+    data:{labels, datasets:[{data, backgroundColor:bg, borderWidth:2, borderColor:'#fff'}]},
+    options:{plugins:{legend:{position:'right',labels:{font:{size:12}}},
+      tooltip:{callbacks:{label:c=>` ${c.label}: $${c.parsed.toLocaleString()}`}}},
+      maintainAspectRatio:false, cutout:'58%'}
+  });
+  const stats = document.getElementById('tierStats');
+  const totalAmt = order.reduce((a,t)=>a+(TIERS[t]?TIERS[t].amt:0),0);
+  stats.innerHTML = order.filter(t=>TIERS[t]).map(t=>{
+    const d = TIERS[t];
+    const pct = totalAmt? (d.amt/totalAmt*100).toFixed(1):'0.0';
+    const initial = t==='NA'?'NA':t.charAt(0);
+    return `<div class="tier-row" data-tier="${t}">
+      <div class="tier-badge ${cls[t]}">${initial}</div>
+      <div class="tier-info">
+        <div class="tier-name">${t}</div>
+        <div class="tier-meta">${d.count} 客戶 · 占比 ${pct}%</div>
+      </div>
+      <div class="tier-amt">$${d.amt.toLocaleString()}<small>年度業績</small></div>
+    </div>`;
+  }).join('');
+
+  // Customer panel
+  let curTier = null;
+  const panel = document.getElementById('tierCustomers');
+  const titleEl = document.getElementById('tierCustTitle');
+  const bodyEl = document.getElementById('tierCustBody');
+  const hintEl = document.getElementById('tierCustHint');
+  const searchEl = document.getElementById('tierCustSearch');
+  function renderCustList(filter=''){
+    if(!curTier) return;
+    const d = TIERS[curTier];
+    const all = d.customers || [];
+    const f = filter.toLowerCase().trim();
+    const list = f ? all.filter(c=>c.name.toLowerCase().includes(f)) : all;
+    bodyEl.innerHTML = list.length
+      ? list.map((c,i)=>`<tr><td>${i+1}</td><td><b>${c.name}</b></td><td>${c.channel||'-'}</td><td class="num">$${(c.amt||0).toLocaleString()}</td></tr>`).join('')
+      : `<tr><td colspan="4" style="padding:30px;text-align:center;color:#B8C0CC">無符合條件的客戶</td></tr>`;
+    hintEl.textContent = `顯示 ${list.length} / ${all.length} 位客戶`;
+  }
+  document.querySelectorAll('.tier-row').forEach(row=>{
+    row.addEventListener('click',()=>{
+      const t = row.dataset.tier;
+      if(curTier===t){
+        // toggle off
+        curTier = null;
+        panel.hidden = true;
+        document.querySelectorAll('.tier-row').forEach(r=>r.classList.remove('active'));
+        return;
+      }
+      curTier = t;
+      document.querySelectorAll('.tier-row').forEach(r=>r.classList.toggle('active', r===row));
+      panel.hidden = false;
+      titleEl.innerHTML = `<span class="tier-badge ${cls[t]}" style="display:inline-flex;width:28px;height:28px;font-size:12px;vertical-align:middle;margin-right:8px">${t==='NA'?'NA':t.charAt(0)}</span>${t} 客戶名單`;
+      searchEl.value = '';
+      renderCustList('');
+    });
+  });
+  searchEl.addEventListener('input', e=>renderCustList(e.target.value));
+})();
+
+// ============== Product sections ==============
+function makeSegRender(seg){
+  const color = SEG_COLOR[seg];
+  const meta = SEG_KPI[seg];
+  const filterState = {selected: new Set(), curQ: 'q1', minAmt: 0};
+
+  function lookup(k){
+    // accept "1","2","3" => return month-only data; "q1" => quarter data
+    if(['q1','q2','q3','q4'].includes(k)){
+      const arr = PRODUCTS_DATA[seg][k] || [];
+      return arr.length ? arr : null;
+    }
+    // month: check if any product in current quarter has data for that month
+    const mInt = parseInt(k);
+    const q = 'q'+Math.ceil(mInt/3);
+    const arr = PRODUCTS_DATA[seg][q] || [];
+    if(!arr.length) return null;
+    const monthIdx = (mInt-1)%3;
+    const has = arr.some(p=>p.months[monthIdx] && p.months[monthIdx]>0);
+    return has ? true : null;
+  }
+
+  function renderKPI(){
+    const grid = document.getElementById('kpi-'+seg);
+    const q = filterState.curQ;
+    const m = meta[q];
+    if(!m){
+      grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><span class="em-icon">📭</span>${q.toUpperCase()} 尚無 KPI 資料</div>`;
+      return;
+    }
+    // Determine which 月 KPI to show based on tab idx? Simpler: show last-month + quarter
+    const months = QUARTER_MONTHS[q];
+    const lastM = months[2];
+    grid.innerHTML = `
+      <div class="kpi"><div class="kpi-label">${lastM}月 2025</div><div class="kpi-val">$${m.y25[0].toLocaleString()}</div></div>
+      <div class="kpi"><div class="kpi-label">${lastM}月 2026</div><div class="kpi-val" style="color:${color}">$${m.y26[0].toLocaleString()}</div></div>
+      <div class="kpi"><div class="kpi-label">${lastM}月 YoY</div><div class="kpi-val ${m.y26[0]>=m.y25[0]?'up':'down'}">${m.y26[0]>=m.y25[0]?'▲':'▼'} ${m.y25[0]?((m.y26[0]-m.y25[0])/m.y25[0]*100).toFixed(1):'0.0'}%</div></div>
+      <div class="kpi"><div class="kpi-label">${q.toUpperCase()} 2025</div><div class="kpi-val">$${m.y25[1].toLocaleString()}</div></div>
+      <div class="kpi"><div class="kpi-label">${q.toUpperCase()} 2026</div><div class="kpi-val" style="color:${color}">$${m.y26[1].toLocaleString()}</div></div>
+      <div class="kpi"><div class="kpi-label">${q.toUpperCase()} YoY</div><div class="kpi-val ${m.y26[1]>=m.y25[1]?'up':'down'}">${m.y26[1]>=m.y25[1]?'▲':'▼'} ${m.y25[1]?((m.y26[1]-m.y25[1])/m.y25[1]*100).toFixed(1):'0.0'}%</div></div>
+    `;
+  }
+
+  function buildMSList(prods){
+    const list = document.getElementById('mslist-'+seg);
+    list.innerHTML = prods.map(p=>`<label><input type="checkbox" value="${p.name}" checked> ${p.name}</label>`).join('');
+    filterState.selected = new Set(prods.map(p=>p.name));
+  }
+
+  function render(k){
+    renderKPI();
+    const q = filterState.curQ;
+    let arr = (PRODUCTS_DATA[seg][q] || []).slice();
+    arr.sort((a,b)=>b.total_qty - a.total_qty);
+    const months = QUARTER_MONTHS[q];
+    const thead = document.getElementById('thead-'+seg);
+    const tbody = document.getElementById('tbody-'+seg);
+    const tfoot = document.getElementById('tfoot-'+seg);
+    const wrap = document.getElementById('tbl-'+seg).parentElement;
+
+    if(!arr.length){
+      thead.innerHTML = '';
+      tbody.innerHTML = `<tr><td><div class="empty-state" style="margin:0"><span class="em-icon">📭</span>${q.toUpperCase()} 尚無產品銷量資料</div></td></tr>`;
+      tfoot.innerHTML = '';
+      document.getElementById('hint-'+seg).textContent = `${q.toUpperCase()} 尚無資料`;
+      return;
+    }
+
+    // Header
+    thead.innerHTML = `<tr><th>#</th><th>產品名稱</th><th class="num">${months[0]}月數量</th><th class="num">${months[1]}月數量</th><th class="num">${months[2]}月數量</th><th class="num">${q.toUpperCase()} 總量 ▼</th><th class="num">${q.toUpperCase()} 金額(含稅)</th></tr>`;
+
+    // Build MS list if not built for this quarter
+    buildMSList(arr);
+
+    // Body
+    tbody.innerHTML = arr.map((p,i)=>`<tr data-name="${p.name}"><td>${i+1}</td><td>${p.name}</td><td class="num">${p.months[0].toLocaleString()}</td><td class="num">${p.months[1].toLocaleString()}</td><td class="num">${p.months[2].toLocaleString()}</td><td class="num bold">${p.total_qty.toLocaleString()}</td><td class="num">$${Math.round(p.total_amt).toLocaleString()}</td></tr>`).join('');
+
+    tfoot.innerHTML = `<tr><td></td><td><b>小計</b></td><td class="num" data-sum="m1"></td><td class="num" data-sum="m2"></td><td class="num" data-sum="m3"></td><td class="num" data-sum="qq"></td><td class="num" data-sum="qa"></td></tr>`;
+
+    // Wire up filter
+    wireMS(seg);
+    updateSums(seg);
+  }
+
+  return {render, lookup, setQ:(q)=>{filterState.curQ=q;}, setMinAmt:(v)=>{filterState.minAmt=v;}, getState:()=>filterState};
+}
+
+function wireMS(seg){
+  const wrap = document.querySelector(`#tbl-${seg}`).closest('section').querySelector('.ms-wrap');
+  const btn = wrap.querySelector('.ms-btn');
+  const dd = wrap.querySelector('.ms-dropdown');
+  const search = wrap.querySelector('.ms-search');
+  const allBtn = wrap.querySelector('.ms-all');
+  const noneBtn = wrap.querySelector('.ms-none');
+  const boxes = wrap.querySelectorAll('.ms-list input[type=checkbox]');
+  const labels = wrap.querySelectorAll('.ms-list label');
+
+  btn.onclick = e=>{
+    e.stopPropagation();
+    document.querySelectorAll('.ms-dropdown').forEach(x=>{if(x!==dd)x.hidden=true});
+    dd.hidden = !dd.hidden;
+  };
+  search.oninput = e=>{
+    const q = e.target.value.toLowerCase();
+    labels.forEach(l=>l.classList.toggle('hidden', q && !l.textContent.toLowerCase().includes(q)));
+  };
+  allBtn.onclick = ()=>{boxes.forEach(b=>{if(!b.parentElement.classList.contains('hidden'))b.checked=true}); updateSums(seg);};
+  noneBtn.onclick = ()=>{boxes.forEach(b=>{if(!b.parentElement.classList.contains('hidden'))b.checked=false}); updateSums(seg);};
+  boxes.forEach(b=>b.onchange = ()=>updateSums(seg));
+}
+
+function updateSums(seg){
+  const tbl = document.getElementById('tbl-'+seg);
+  const section = tbl.closest('section');
+  const wrap = section.querySelector('.ms-wrap');
+  const boxes = wrap.querySelectorAll('.ms-list input[type=checkbox]');
+  const selected = new Set([...boxes].filter(b=>b.checked).map(b=>b.value));
+  // amount filter
+  const amtBtn = section.querySelector('.amt-btn.active');
+  const minAmt = amtBtn ? parseInt(amtBtn.dataset.min)||0 : 0;
+  let shown = 0, hiddenByAmt = 0;
+  const sums = {m1:0,m2:0,m3:0,qq:0,qa:0};
+  tbl.querySelectorAll('tbody tr').forEach(tr=>{
+    const c = tr.querySelectorAll('td');
+    const amtVal = parseInt(c[6].textContent.replace(/[^0-9-]/g,''))||0;
+    const passSel = selected.has(tr.dataset.name);
+    const passAmt = amtVal >= minAmt;
+    const show = passSel && passAmt;
+    tr.classList.toggle('hidden', !show);
+    if(passSel && !passAmt) hiddenByAmt++;
+    if(show){
+      shown++;
+      sums.m1 += parseInt(c[2].textContent.replace(/[^0-9-]/g,''))||0;
+      sums.m2 += parseInt(c[3].textContent.replace(/[^0-9-]/g,''))||0;
+      sums.m3 += parseInt(c[4].textContent.replace(/[^0-9-]/g,''))||0;
+      sums.qq += parseInt(c[5].textContent.replace(/[^0-9-]/g,''))||0;
+      sums.qa += amtVal;
+    }
+  });
+  const hint = document.getElementById('hint-'+seg);
+  const amtNote = minAmt>0 ? ` · 金額篩選隱藏 ${hiddenByAmt} 項` : '';
+  hint.textContent = `已選 ${shown} / ${boxes.length} 項 · 依銷量由多到少${amtNote}`;
+  const btn = wrap.querySelector('.ms-btn');
+  btn.textContent = shown===boxes.length?'▾ 選擇產品（可複選）':`▾ 已選 ${shown} 項產品`;
+  ['m1','m2','m3','qq','qa'].forEach(k=>{
+    const el = tbl.querySelector(`[data-sum=${k}]`);
+    if(el) el.textContent = (k==='qa'?'$':'') + sums[k].toLocaleString();
+  });
+}
+
+// Init each segment with quarter pills (no inner month tabs needed; just renders by quarter)
+['aqing','deyue_live','dealer'].forEach(seg=>{
+  const r = makeSegRender(seg);
+  // wire quarter pills
+  const pills = document.querySelectorAll(`.qtr-pills[data-target="seg-${seg}"] .qp`);
+  pills.forEach(p=>{
+    // mark no-data
+    const arr = PRODUCTS_DATA[seg][p.dataset.q] || [];
+    if(!arr.length) p.classList.add('no-data');
+    p.addEventListener('click',()=>{
+      pills.forEach(x=>x.classList.remove('active'));
+      p.classList.add('active');
+      r.setQ(p.dataset.q);
+      r.render(p.dataset.q);
+    });
+  });
+  // wire amount filter
+  const amtBtns = document.querySelectorAll(`.amt-filter[data-seg="${seg}"] .amt-btn`);
+  amtBtns.forEach(b=>{
+    b.addEventListener('click',()=>{
+      amtBtns.forEach(x=>x.classList.remove('active'));
+      b.classList.add('active');
+      r.setMinAmt(parseInt(b.dataset.min)||0);
+      updateSums(seg);
+    });
+  });
+  r.setQ('q1');
+  r.render('q1');
+});
+
+// ============== Insights ==============
+function renderInsight(q){
+  const d = INSIGHTS[q];
+  const body = document.getElementById('insightBody');
+  if(!d){
+    body.innerHTML = `<div class="empty-state"><span class="em-icon">📭</span>${q.toUpperCase()} 業務核心重點尚未撰寫<br><span style="font-size:12px">補上資料後將自動顯示</span></div>`;
+    return;
+  }
+  const pillarsHtml = d.pillars.map(p=>`
+    <div class="pillar${p.wide?' pillar-wide':''}">
+      <div class="pillar-head"><span class="pillar-num">${p.num}</span><h4>${p.title}</h4><span class="pillar-tag">${p.tag}</span></div>
+      ${p.intro?`<p>${p.intro}</p>`:''}
+      <ul>${p.items.map(i=>`<li>${i}</li>`).join('')}</ul>
+      <p class="pillar-foot">${p.foot}</p>
+    </div>`).join('');
+  body.innerHTML = `
+    <p class="lede">${d.lede}</p>
+    <div class="pillar-grid">${pillarsHtml}</div>
+    <div class="q1-summary-box">
+      <div class="q1-summary-label">📌 一句話總結 ${q.toUpperCase()}</div>
+      <div class="q1-summary-text">${d.summary}</div>
+    </div>
+    <div class="insight-grid" style="margin-top:24px">
+      <div class="insight risk"><h4>⚠️ 仍需緊盯的風險</h4><ul>${d.risks.map(x=>`<li>${x}</li>`).join('')}</ul></div>
+      <div class="insight opp"><h4>🚀 可放大的成長引擎</h4><ul>${d.opps.map(x=>`<li>${x}</li>`).join('')}</ul></div>
+    </div>`;
+}
+document.querySelectorAll('.qtr-pills[data-target="insightTabs"] .qp').forEach(p=>{
+  if(!INSIGHTS[p.dataset.q]) p.classList.add('no-data');
+  p.addEventListener('click',()=>{
+    document.querySelectorAll('.qtr-pills[data-target="insightTabs"] .qp').forEach(x=>x.classList.remove('active'));
+    p.classList.add('active');
+    renderInsight(p.dataset.q);
+  });
+});
+renderInsight('q1');
+
+// Close dropdowns on outside click
+document.addEventListener('click', e=>{
+  document.querySelectorAll('.ms-dropdown').forEach(dd=>{
+    if(!dd.parentElement.contains(e.target)) dd.hidden = true;
+  });
+});
+</script></body></html>

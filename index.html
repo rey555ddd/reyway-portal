@@ -1,0 +1,1584 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>陳睿笙 · REYWAY</title>
+<meta name="description" content="笙闆 AI Studio — 品牌工具集合站">
+<!-- PWA -->
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#0fa882">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="REYWAY">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- 4 字體工具箱（軍師五拍 2026-04-30）：Inter UI + 思源黑體/宋體 + Klee 楷書 -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@400;500;600;700&family=Klee+One:wght@400;600&display=swap" rel="stylesheet">
+<!-- 粉圓體 JfOpenHuninn（淨淨親民場景）-->
+<link href="https://cdn.jsdelivr.net/gh/justfont/open-huninn-font@2.0/font.css" rel="stylesheet">
+<!-- Phosphor icons（駕駛艙統一、不混用其他家）-->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* === v8 軍師五拍 · Anthropic 鏽橘 × Notion 簡潔（2026-04-30 拍板）=== */
+  --bg:#FAF7F0;               /* 暖米白底 */
+  --bg-deep:#F2EBDD;           /* 卡 hover 底 */
+  --surface:#FFFFFF;            /* 卡片 */
+  --text:#1A1A1A;               /* 主文字黑灰 */
+  --text-2:#666666;             /* 副文字 */
+  --text-3:#999999;             /* 三級 */
+  --accent:#C6613F;             /* Anthropic 鏽橘（單色主色） */
+  --accent-deep:#A14E2F;        /* 鏽橘按下 / hover */
+  --accent-soft:rgba(198,97,63,0.10);
+  --accent-edge:rgba(198,97,63,0.22);
+  --border:rgba(26,26,26,0.08);
+  --border-warm:rgba(198,97,63,0.18);
+  --shadow:0 1px 2px rgba(26,26,26,0.04), 0 6px 18px rgba(26,26,26,0.05);
+  --shadow-hover:0 12px 30px rgba(198,97,63,0.10), 0 2px 6px rgba(26,26,26,0.05);
+  --radius:12px;
+  --radius-sm:10px;
+  /* 字型 4 套 */
+  --font-ui:'Inter','Noto Sans TC',-apple-system,sans-serif;
+  --font-serif:'Noto Serif TC',serif;
+  --font-kai:'Klee One','Noto Serif TC',serif;
+  --font-yuan:'jf-openhuninn-2.0','Noto Sans TC',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font-ui);
+  background:var(--bg);
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  min-height:100vh;
+  font-feature-settings:"palt";
+}
+
+/* ===== Layout ===== */
+.wrap{max-width:960px;margin:0 auto;padding:0 20px}
+
+/* ===== Google Login Gate ===== */
+#site-gate{
+  position:fixed;inset:0;z-index:999;
+  background:var(--bg);
+  display:flex;align-items:center;justify-content:center;flex-direction:column;
+  gap:0;
+}
+#site-gate.hidden{display:none}
+.gate-card{
+  background:var(--surface);
+  border-radius:24px;
+  padding:40px 36px 36px;
+  text-align:center;
+  box-shadow:0 8px 40px rgba(0,0,0,0.1);
+  width:320px;max-width:90vw;
+  display:flex;flex-direction:column;align-items:center;gap:16px;
+}
+.gate-logo{font-size:2rem;margin-bottom:4px}
+.gate-title{font-size:1.15rem;font-weight:700;color:var(--text);letter-spacing:-0.01em}
+.gate-desc{font-size:0.83rem;color:var(--text-2);line-height:1.6;max-width:220px}
+.gate-divider{width:100%;height:1px;background:var(--border);margin:4px 0}
+#g_signin_btn{margin-top:4px}
+.gate-note{font-size:0.72rem;color:var(--text-3)}
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+.shake{animation:shake 0.35s ease}
+
+/* ===== Link Modal ===== */
+#link-modal{
+  position:fixed;inset:0;z-index:998;
+  background:rgba(0,0,0,0.35);backdrop-filter:blur(4px);
+  display:flex;align-items:center;justify-content:center;
+}
+#link-modal.hidden{display:none}
+.modal-box{
+  background:var(--surface);border-radius:20px;padding:32px 28px;
+  width:320px;max-width:90vw;text-align:center;
+  box-shadow:0 20px 60px rgba(0,0,0,0.15);
+}
+.modal-box h3{font-size:1rem;font-weight:600;margin-bottom:6px}
+.modal-box p{font-size:0.82rem;color:var(--text-2);margin-bottom:20px}
+.modal-box input{
+  padding:11px 18px;border-radius:100px;border:1px solid var(--border);
+  background:var(--bg);font-size:1rem;text-align:center;
+  width:100%;outline:none;letter-spacing:6px;margin-bottom:10px;
+}
+.modal-row{display:flex;gap:8px;margin-top:4px}
+.modal-row button{flex:1;padding:11px;border-radius:100px;border:none;cursor:pointer;font-size:0.85rem;font-weight:500}
+.btn-cancel{background:var(--bg);color:var(--text-2)}
+.btn-ok{background:var(--text);color:#fff}
+#link-modal-error{font-size:0.8rem;color:#FF3B30;min-height:16px;margin-bottom:4px}
+
+/* ===== 待審核畫面 ===== */
+#pending-gate{
+  position:fixed;inset:0;z-index:999;
+  background:var(--bg);
+  display:flex;align-items:center;justify-content:center;
+}
+#pending-gate.hidden{display:none}
+.pending-card{
+  background:var(--surface);border-radius:24px;
+  padding:40px 36px;text-align:center;
+  box-shadow:0 8px 40px rgba(0,0,0,0.1);
+  width:320px;max-width:90vw;
+  display:flex;flex-direction:column;align-items:center;gap:12px;
+}
+.pending-card .icon{font-size:2.5rem}
+.pending-card h2{font-size:1.1rem;font-weight:700}
+.pending-card p{font-size:0.84rem;color:var(--text-2);line-height:1.6}
+.pending-card .hint{font-size:0.75rem;color:var(--text-3)}
+
+/* ===== 收件夾按鈕（主公專用，固定右上角）===== */
+#notify-bar{
+  position:fixed;top:16px;right:16px;z-index:990;
+  background:rgba(255,255,255,0.92);
+  border:1px solid rgba(0,0,0,0.08);
+  border-radius:100px;
+  padding:8px 16px 8px 12px;
+  display:flex;
+  align-items:center;gap:8px;
+  cursor:pointer;
+  box-shadow:0 2px 12px rgba(0,0,0,0.08);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  transition:all 0.2s;
+  user-select:none;
+}
+#notify-bar:hover{
+  box-shadow:0 4px 20px rgba(0,0,0,0.12);
+  transform:translateY(-1px);
+}
+.notify-icon{font-size:1rem;line-height:1}
+.notify-text{font-size:0.82rem;font-weight:600;color:var(--text-1)}
+.notify-badge{
+  background:#FF3B30;color:#fff;
+  font-size:0.68rem;font-weight:700;
+  padding:2px 7px;border-radius:100px;
+  min-width:18px;text-align:center;
+  display:none;
+}
+#notify-bar.has-pending .notify-badge{display:inline-block}
+
+/* ===== 審核 Modal ===== */
+#approve-modal{
+  position:fixed;inset:0;z-index:998;
+  background:rgba(0,0,0,0.35);backdrop-filter:blur(4px);
+  display:flex;align-items:center;justify-content:center;
+}
+#approve-modal.hidden{display:none}
+.approve-box{
+  background:var(--surface);border-radius:20px;
+  padding:28px 24px;width:360px;max-width:90vw;
+  box-shadow:0 20px 60px rgba(0,0,0,0.15);
+}
+.approve-box h3{font-size:1rem;font-weight:700;margin-bottom:4px}
+.approve-box .sub{font-size:0.8rem;color:var(--text-2);margin-bottom:16px}
+.approve-list{display:flex;flex-direction:column;gap:10px;max-height:300px;overflow-y:auto}
+.approve-item{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 14px;border-radius:12px;
+  background:var(--bg);
+}
+.approve-item .info{flex:1}
+.approve-item .name{font-size:0.88rem;font-weight:600}
+.approve-item .email{font-size:0.75rem;color:var(--text-2)}
+.approve-item .time{font-size:0.72rem;color:var(--text-3)}
+.approve-actions{display:flex;gap:6px}
+.btn-approve{padding:6px 14px;border-radius:100px;border:none;cursor:pointer;font-size:0.78rem;font-weight:600;background:#34C759;color:#fff}
+.btn-reject{padding:6px 14px;border-radius:100px;border:none;cursor:pointer;font-size:0.78rem;font-weight:500;background:rgba(0,0,0,0.06);color:var(--text-2)}
+.approve-empty{font-size:0.85rem;color:var(--text-3);text-align:center;padding:20px}
+.approve-close{float:right;background:none;border:none;cursor:pointer;font-size:1rem;color:var(--text-3);margin-bottom:8px}
+.inbox-tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.inbox-tab{padding:6px 14px;border-radius:100px;border:none;cursor:pointer;font-size:0.78rem;font-weight:500;background:var(--bg);color:var(--text-2);transition:background 0.15s,color 0.15s}
+.inbox-tab.active{background:var(--text);color:#fff}
+.inbox-item{display:flex;gap:12px;padding:12px 14px;border-radius:12px;background:var(--bg);margin-bottom:8px}
+.inbox-item .inbox-body{flex:1;min-width:0}
+.inbox-item .inbox-site{font-size:0.7rem;font-weight:600;color:var(--text-3);letter-spacing:0.05em;text-transform:uppercase;margin-bottom:3px}
+.inbox-item .inbox-msg{font-size:0.86rem;color:var(--text);line-height:1.5;word-wrap:break-word}
+.inbox-item .inbox-time{font-size:0.7rem;color:var(--text-3);margin-top:4px}
+.inbox-item .inbox-actions{display:flex;gap:6px;flex-shrink:0;align-self:flex-start}
+.inbox-item .inbox-act-btn{background:none;border:none;cursor:pointer;font-size:0.75rem;padding:4px 10px;border-radius:100px}
+.inbox-item .inbox-act-btn.ok{background:rgba(52,199,89,0.15);color:#1a7a35;font-weight:600}
+.inbox-item .inbox-act-btn.del{color:var(--text-3);opacity:0.7}
+.inbox-item .inbox-act-btn.del:hover{opacity:1;color:#FF3B30}
+
+/* ===== Header v8 軍師五拍——Anthropic+Notion 混血 ===== */
+header{padding:72px 0 48px;text-align:center;position:relative}
+
+.avatar-ring{
+  width:130px;height:130px;border-radius:50%;
+  margin:0 auto 28px;
+  position:relative;
+  background:var(--surface);
+  display:flex;align-items:center;justify-content:center;
+  border:2px solid var(--accent-edge);
+  box-shadow:0 4px 16px rgba(198,97,63,0.10);
+}
+.avatar-inner{
+  width:120px;height:120px;border-radius:50%;
+  overflow:hidden;
+  background:var(--bg-deep);
+}
+.avatar-inner img{
+  width:100%;height:100%;
+  object-fit:cover;
+  object-position:center 28%;
+}
+
+header .eyebrow{
+  font-family:var(--font-ui);
+  font-weight:500;
+  font-size:0.78rem;letter-spacing:0.22em;
+  color:var(--accent);text-transform:uppercase;margin-bottom:14px;
+  display:inline-flex;align-items:center;gap:8px;
+}
+header .eyebrow .ph{font-size:0.9rem}
+
+header h1{
+  font-family:var(--font-serif);
+  font-size:2.4rem;font-weight:600;letter-spacing:0.04em;
+  color:var(--text);margin-bottom:8px;line-height:1.3;
+}
+header h1 strong{font-weight:700;color:var(--accent)}
+header .en{
+  font-family:var(--font-ui);
+  font-weight:500;
+  font-size:0.82rem;letter-spacing:0.24em;
+  color:var(--text-2);margin-bottom:18px;text-transform:uppercase;
+}
+header .gold-divider{
+  width:48px;height:2px;
+  background:var(--accent);
+  margin:18px auto;border-radius:2px;
+}
+header .bio{
+  font-family:var(--font-ui);
+  font-size:0.95rem;color:var(--text-2);line-height:1.95;
+  max-width:420px;margin:0 auto;font-weight:400;letter-spacing:0.02em;
+}
+header .hero-quote{
+  font-family:var(--font-kai);
+  font-size:1.15rem;font-weight:400;
+  color:var(--accent-deep);
+  margin-top:20px;letter-spacing:0.08em;line-height:1.7;
+}
+.hero-social{
+  display:flex;justify-content:center;gap:14px;
+  margin-top:18px;
+}
+.hero-social a{
+  width:38px;height:38px;border-radius:50%;
+  background:var(--surface);
+  border:1px solid var(--border-warm);
+  display:inline-flex;align-items:center;justify-content:center;
+  color:var(--accent);
+  text-decoration:none;
+  transition:all 0.25s cubic-bezier(0.16,1,0.3,1);
+}
+.hero-social a:hover{
+  background:var(--accent);color:#fff;
+  border-color:var(--accent);
+  transform:translateY(-2px);
+  box-shadow:0 6px 18px rgba(198,97,63,0.25);
+}
+.hero-social a .ph{font-size:1.2rem}
+@media(max-width:600px){
+  header{padding:52px 0 32px}
+  .avatar-ring{width:108px;height:108px;margin-bottom:22px}
+  .avatar-inner{width:98px;height:98px}
+  header h1{font-size:1.85rem}
+}
+
+/* ===== Quick Nav ===== */
+.quick-nav{
+  display:flex;gap:8px;flex-wrap:wrap;justify-content:center;align-items:center;
+  padding:0 0 36px;
+}
+.qnav{
+  padding:8px 18px;border-radius:100px;
+  background:var(--surface);
+  border:none;cursor:pointer;
+  font-size:0.82rem;font-weight:500;
+  color:var(--text-2);
+  box-shadow:var(--shadow);
+  transition:background 0.18s,color 0.18s,box-shadow 0.18s;
+  text-decoration:none;display:inline-block;
+}
+.qnav:hover{
+  background:var(--text);color:#fff;
+  box-shadow:var(--shadow-hover);
+}
+
+/* ===== Section v8 ===== */
+section{margin-bottom:72px;scroll-margin-top:24px}
+.section-intro{
+  text-align:center;padding:48px 20px 36px;
+}
+.section-intro .eyebrow{
+  font-family:var(--font-ui);
+  font-size:0.78rem;letter-spacing:0.22em;
+  color:var(--accent);text-transform:uppercase;margin-bottom:10px;
+  font-weight:500;
+}
+.section-intro h2{
+  font-family:var(--font-serif);
+  font-size:2rem;font-weight:600;letter-spacing:0.04em;
+  color:var(--text);margin-bottom:6px;line-height:1.3;
+}
+.section-intro h2 strong{font-weight:700;color:var(--accent)}
+.section-intro .sub{
+  font-family:var(--font-ui);
+  font-size:0.95rem;color:var(--text-2);font-weight:400;
+  letter-spacing:0.04em;
+}
+.section-intro .gold-line{
+  width:48px;height:2px;background:var(--accent);
+  margin:14px auto;border-radius:2px;
+}
+.section-head{
+  display:flex;align-items:center;gap:12px;margin-bottom:20px;
+}
+.section-label{
+  font-size:0.72rem;font-weight:600;letter-spacing:0.1em;
+  text-transform:uppercase;color:var(--text-3);
+}
+.section-line{flex:1;height:1px;background:var(--border)}
+
+/* ===== Grid ===== */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:16px;
+}
+.grid-2{grid-template-columns:repeat(2,1fr)}
+
+/* ===== Card v8 — Anthropic+Notion 鏽橘版 ===== */
+.card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:24px 24px 20px;
+  box-shadow:var(--shadow);
+  cursor:pointer;
+  transition:all 0.3s cubic-bezier(0.16,1,0.3,1);
+  text-decoration:none;
+  color:inherit;
+  display:block;
+  position:relative;
+  overflow:hidden;
+}
+.card:hover{
+  border-color:var(--accent-edge);
+  transform:translateY(-3px);
+  box-shadow:var(--shadow-hover);
+}
+.card.inactive{cursor:default;opacity:0.55}
+.card.inactive:hover{transform:none;border-color:var(--border)}
+
+/* 鎮站之寶卡（brain.reyway）：鏽橘漸層底 */
+.card.featured{
+  background:linear-gradient(180deg, #FDF4EB 0%, #F8E5D2 100%);
+  border:1.5px solid var(--accent-edge);
+  box-shadow:0 6px 22px rgba(198,97,63,0.12);
+}
+.card.featured:hover{
+  border-color:var(--accent);
+  box-shadow:0 14px 32px rgba(198,97,63,0.18);
+}
+.card.featured .card-tag{
+  background:var(--accent);color:#fff;
+}
+
+.card-icon{
+  width:48px;height:48px;border-radius:var(--radius-sm);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.5rem;
+  margin-bottom:16px;flex-shrink:0;
+  background:var(--accent-soft);
+  color:var(--accent);
+  transition:all 0.3s ease;
+}
+.card:hover .card-icon{
+  background:var(--accent);
+  color:#fff;
+}
+.card-icon .ph{font-size:1.55rem;line-height:1}
+.card-icon img{width:100%;height:100%;object-fit:contain;border-radius:inherit}
+
+.card h3{
+  font-family:var(--font-serif);
+  font-size:1.15rem;font-weight:600;
+  letter-spacing:0.02em;
+  margin-bottom:6px;line-height:1.4;
+  color:var(--text);
+}
+.card p{
+  font-size:0.86rem;color:var(--text-2);
+  line-height:1.75;margin-bottom:14px;
+  font-weight:400;letter-spacing:0.02em;
+}
+.card-tag{
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:0.72rem;font-weight:500;
+  padding:4px 10px;border-radius:100px;
+  background:rgba(0,0,0,0.04);color:var(--text-2);
+}
+.tag-live{background:rgba(52,199,89,0.1);color:#1a7a35}
+.tag-live::before{content:'●';font-size:0.6em}
+.tag-dev{background:rgba(0,0,0,0.05);color:var(--text-3)}
+.tag-dev::before{content:'○';font-size:0.6em}
+.tag-goto{background:rgba(0,122,255,0.08);color:#0055CC}
+.tag-goto::before{content:'→';margin-right:1px}
+
+/* Icon bg variants — subtle, no border */
+.ic-green{background:rgba(52,199,89,0.1);color:#1a7a35}
+.ic-purple{background:rgba(107,92,173,0.1);color:#5b4ca3}
+.ic-gold{background:rgba(184,150,62,0.1);color:#8a6e1a}
+.ic-blue{background:rgba(0,122,255,0.08);color:#0055CC}
+.ic-orange{background:rgba(255,149,0,0.1);color:#b56600}
+.ic-teal{background:rgba(0,199,190,0.1);color:#007a76}
+.ic-red{background:rgba(255,59,48,0.08);color:#cc2200}
+.ic-neutral{background:rgba(0,0,0,0.05);color:var(--text-2)}
+
+/* ===== Big link card ===== */
+.card-full{
+  display:flex;align-items:center;gap:18px;
+  padding:22px 24px;
+}
+.card-full .card-icon{margin-bottom:0;flex-shrink:0}
+.card-full .card-body{flex:1}
+.card-full .card-body h3{margin-bottom:4px}
+.card-full .card-body p{margin-bottom:0}
+.card-full .card-arrow{
+  font-size:1.1rem;color:var(--text-3);flex-shrink:0;
+}
+
+/* ===== 知識庫 ===== */
+.kb-tabs{
+  display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;
+}
+.kb-tab{
+  padding:6px 16px;border-radius:100px;border:none;cursor:pointer;
+  font-size:0.8rem;font-weight:500;
+  background:var(--surface);color:var(--text-2);
+  box-shadow:var(--shadow);
+  transition:background 0.15s,color 0.15s;
+}
+.kb-tab.active,.kb-tab:hover{background:var(--text);color:#fff}
+
+.kb-grid{display:flex;flex-direction:column;gap:10px}
+
+.kb-card{
+  background:var(--surface);
+  border-radius:var(--radius-sm);
+  padding:16px 20px;
+  box-shadow:var(--shadow);
+  display:flex;align-items:center;justify-content:space-between;
+  text-decoration:none;color:inherit;
+  transition:box-shadow 0.2s,transform 0.2s;
+  cursor:pointer;
+}
+.kb-card:hover{box-shadow:var(--shadow-hover);transform:translateY(-1px)}
+.kb-left{display:flex;align-items:center;gap:14px}
+.kb-icon{font-size:1.3rem;flex-shrink:0;width:36px;text-align:center}
+.kb-title{font-size:0.9rem;font-weight:600;margin-bottom:3px}
+.kb-meta{font-size:0.75rem;color:var(--text-3)}
+.kb-arrow{font-size:0.95rem;color:var(--text-3);flex-shrink:0}
+.kb-card.hidden{display:none}
+.kb-empty-hint{cursor:default}
+.kb-empty-hint:hover{box-shadow:var(--shadow);transform:none}
+
+/* ===== Studio Stats v8 ===== */
+.stats-section{margin-bottom:64px;padding:0 4px}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.stat{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius-sm);
+  padding:24px 18px 20px;text-align:center;
+  transition:all 0.25s ease;
+}
+.stat:hover{border-color:var(--accent-edge);transform:translateY(-2px)}
+.stat-num{
+  font-family:var(--font-serif);
+  font-size:2.6rem;font-weight:600;letter-spacing:-0.01em;line-height:1;
+  color:var(--accent);
+  margin-bottom:8px;
+}
+.stat-num span{font-weight:500;font-size:1.4rem;color:var(--accent)}
+.stat-label{
+  font-family:var(--font-ui);
+  font-size:0.74rem;letter-spacing:0.18em;
+  color:var(--text-3);text-transform:uppercase;margin-bottom:4px;font-weight:500;
+}
+.stat-desc{font-size:0.86rem;color:var(--text-2);font-weight:400;letter-spacing:0.02em}
+
+/* ===== Dashboard Bar v9（取代 stats-grid、3 顆動態儀表卡）===== */
+.dashboard-bar{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:14px;
+  margin-bottom:64px;
+}
+.dash-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius-sm);
+  padding:18px 20px 16px;
+  position:relative;
+  transition:all 0.3s cubic-bezier(0.16,1,0.3,1);
+}
+.dash-card:hover{
+  border-color:var(--accent-edge);
+  transform:translateY(-2px);
+  box-shadow:0 8px 24px rgba(198,97,63,0.08);
+}
+.dash-icon{
+  width:36px;height:36px;border-radius:9px;
+  background:rgba(198,97,63,0.10);color:var(--accent);
+  display:inline-flex;align-items:center;justify-content:center;
+  margin-bottom:10px;
+}
+.dash-icon .ph{font-size:1.2rem}
+.dash-label{
+  font-family:var(--font-ui);
+  font-size:0.7rem;color:var(--text-3);
+  letter-spacing:0.18em;text-transform:uppercase;
+  font-weight:500;margin-bottom:4px;
+}
+.dash-value{
+  font-family:var(--font-serif);
+  font-size:1.5rem;font-weight:600;color:var(--text);
+  letter-spacing:0;line-height:1.3;margin-bottom:3px;
+}
+.dash-trend{
+  font-size:0.7rem;color:var(--accent);
+  font-weight:400;letter-spacing:0.02em;
+  line-height:1.55;opacity:0.85;
+}
+.dash-stamp{
+  position:absolute;top:16px;right:18px;
+  font-size:0.66rem;color:var(--text-3);
+  font-family:var(--font-ui);letter-spacing:0.04em;
+}
+
+/* ===== 若水聯盟後台 HQ Dashboard ===== */
+#sec-hq{margin-bottom:60px}
+.hq-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.hq-title{font-family:var(--font-serif);font-size:1.05rem;font-weight:600;display:flex;align-items:center;gap:8px;color:var(--text)}
+.hq-live{display:inline-flex;align-items:center;gap:5px;font-size:0.7rem;color:#22c55e;font-weight:600;letter-spacing:0.06em;background:rgba(34,197,94,0.1);padding:3px 10px;border-radius:100px}
+.hq-live::before{content:'';width:6px;height:6px;border-radius:50%;background:#22c55e;animation:hq-pulse 2s infinite;flex-shrink:0}
+@keyframes hq-pulse{0%,100%{opacity:1}50%{opacity:0.35}}
+.agents-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
+.agent-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:13px 15px;transition:all 0.2s}
+.agent-card.active{border-color:rgba(34,197,94,0.35);background:rgba(34,197,94,0.03)}
+.agent-card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:3px}
+.agent-name-cn{font-weight:700;font-size:0.9rem;color:var(--text)}
+.agent-name-en{font-size:0.65rem;color:var(--text-3);letter-spacing:0.05em;margin-bottom:5px}
+.agent-dot{width:7px;height:7px;border-radius:50%;background:#d1d5db;flex-shrink:0}
+.agent-dot.active{background:#22c55e;box-shadow:0 0 0 2px rgba(34,197,94,0.2)}
+.agent-task{font-size:0.7rem;color:var(--text-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.agent-unread{font-size:0.65rem;color:var(--accent);font-weight:600}
+.hq-panels{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.hq-panel{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:15px 17px}
+.hq-panel-title{font-size:0.68rem;color:var(--text-3);letter-spacing:0.16em;text-transform:uppercase;font-weight:500;margin-bottom:10px;display:flex;align-items:center;gap:5px}
+.hq-panel-title .ph{font-size:0.85rem}
+.task-row,.inbox-row{display:flex;align-items:flex-start;gap:8px;padding:5px 0;border-bottom:1px solid var(--border);font-size:0.78rem}
+.task-row:last-child,.inbox-row:last-child{border-bottom:none;padding-bottom:0}
+.task-dot{flex-shrink:0;width:6px;height:6px;border-radius:50%;margin-top:5px}
+.task-dot.done{background:#22c55e}
+.task-dot.running{background:var(--accent)}
+.task-dot.pending{background:#f59e0b}
+.task-text{flex:1;color:var(--text);line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.task-time,.inbox-time{flex-shrink:0;font-size:0.67rem;color:var(--text-3)}
+.inbox-from{flex-shrink:0;font-size:0.7rem;font-weight:700;color:var(--accent);min-width:32px}
+.inbox-body{flex:1;color:var(--text-2);line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hq-footer{text-align:right;margin-top:10px}
+.hq-footer a{font-size:0.78rem;color:var(--accent);font-weight:500;text-decoration:none;display:inline-flex;align-items:center;gap:4px}
+.hq-footer a:hover{color:var(--accent-deep)}
+@media(max-width:700px){.agents-grid{grid-template-columns:repeat(2,1fr)}.hq-panels{grid-template-columns:1fr}}
+
+/* ===== About / Philosophy v8 ===== */
+.about-grid{
+  display:grid;grid-template-columns:1.4fr 1fr;gap:32px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:40px 40px 36px;
+}
+.about-quote{
+  font-family:var(--font-kai);
+  font-size:1.6rem;font-weight:600;letter-spacing:0.08em;
+  color:var(--accent-deep);
+  margin-bottom:22px;line-height:1.6;
+}
+.about-text p{
+  font-size:0.95rem;color:var(--text);line-height:1.95;
+  font-weight:400;letter-spacing:0.02em;margin-bottom:14px;
+}
+.about-text p strong{color:var(--accent);font-weight:600}
+.about-tags{display:flex;flex-direction:column;gap:10px}
+
+/* ===== AI Timeline (v8 about 右欄重寫) ===== */
+.about-timeline{
+  position:relative;padding-left:8px;
+  max-height:380px;overflow-y:auto;
+  scrollbar-width:thin;scrollbar-color:var(--accent-edge) transparent;
+}
+.about-timeline::-webkit-scrollbar{width:4px}
+.about-timeline::-webkit-scrollbar-thumb{background:var(--accent-edge);border-radius:4px}
+.timeline-list{
+  position:relative;
+  padding-left:18px;
+  border-left:1.5px solid var(--accent-edge);
+}
+.timeline-item{
+  position:relative;
+  padding:8px 0 12px 4px;
+  display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:baseline;
+}
+.timeline-item::before{
+  content:'';position:absolute;
+  left:-25px;top:13px;
+  width:9px;height:9px;border-radius:50%;
+  background:var(--surface);
+  border:2px solid var(--accent-edge);
+  transition:all 0.25s ease;
+}
+.timeline-item:hover::before{
+  background:var(--accent);border-color:var(--accent);
+  transform:scale(1.2);
+}
+.timeline-item.current::before{
+  background:var(--accent);border-color:var(--accent);
+  box-shadow:0 0 0 4px rgba(198,97,63,0.18);
+}
+.timeline-date{
+  font-family:var(--font-ui);
+  font-size:0.74rem;font-weight:600;
+  color:var(--accent);
+  letter-spacing:0.04em;
+  font-variant-numeric:tabular-nums;
+  white-space:nowrap;
+}
+.timeline-text{
+  font-size:0.84rem;color:var(--text);font-weight:400;
+  line-height:1.65;letter-spacing:0.02em;
+}
+.timeline-item.current .timeline-text{
+  font-weight:500;
+}
+.tag-row{
+  display:flex;align-items:center;gap:12px;
+  padding:14px 18px;
+  background:var(--bg);
+  border:1px solid var(--border);
+  border-radius:8px;
+  font-size:0.88rem;color:var(--text-2);font-weight:400;
+  line-height:1.5;
+}
+.tag-key{
+  flex-shrink:0;width:30px;height:30px;border-radius:7px;
+  display:inline-flex;align-items:center;justify-content:center;
+  font-family:var(--font-kai);font-weight:600;font-size:1rem;
+  background:var(--accent-soft);color:var(--accent);
+}
+
+/* ===== Status Feed v8 ===== */
+.feed-list{
+  display:flex;flex-direction:column;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:8px 24px;
+}
+.feed-item{
+  display:grid;grid-template-columns:auto auto 1fr;gap:16px;
+  align-items:center;
+  padding:14px 0;
+  border-bottom:1px solid var(--border);
+  font-size:0.92rem;
+  transition:padding-left 0.2s ease;
+}
+.feed-item:last-child{border-bottom:none}
+.feed-item:hover{padding-left:6px}
+.feed-date{
+  color:var(--text-3);font-family:var(--font-ui);
+  font-size:0.78rem;letter-spacing:0.04em;
+  font-variant-numeric:tabular-nums;font-weight:500;
+}
+.feed-tag{
+  font-size:0.7rem;letter-spacing:0.14em;
+  padding:4px 10px;border-radius:4px;font-weight:500;
+}
+.feed-tag.tag-deploy{background:var(--accent-soft);color:var(--accent)}
+.feed-tag.tag-ship{background:rgba(46,160,67,0.10);color:#1F7A33;border:1px solid rgba(46,160,67,0.20)}
+.feed-tag.tag-build{background:rgba(110,80,200,0.10);color:#5536A8;border:1px solid rgba(110,80,200,0.20)}
+.feed-tag.tag-think{background:rgba(180,120,40,0.10);color:#8A5A1F;border:1px solid rgba(180,120,40,0.22)}
+.feed-text{color:var(--text);font-weight:400;letter-spacing:0.02em;line-height:1.5}
+
+/* ===== Tab 折疊（合作品牌 / 內部工具）===== */
+details.collapse-section{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  margin-top:20px;
+  overflow:hidden;
+}
+details.collapse-section[open]{box-shadow:var(--shadow)}
+details.collapse-section summary{
+  list-style:none;
+  padding:18px 24px;
+  cursor:pointer;
+  display:flex;align-items:center;gap:14px;
+  font-family:var(--font-serif);
+  font-size:1.1rem;font-weight:600;color:var(--text);
+  transition:background 0.2s ease;
+}
+details.collapse-section summary::-webkit-details-marker{display:none}
+details.collapse-section summary:hover{background:var(--bg)}
+details.collapse-section summary .ph{font-size:1.3rem;color:var(--accent)}
+details.collapse-section summary .summary-meta{
+  margin-left:auto;
+  font-family:var(--font-ui);
+  font-size:0.84rem;color:var(--text-3);font-weight:400;letter-spacing:0.04em;
+}
+details.collapse-section summary .caret{
+  transition:transform 0.25s ease;
+  color:var(--text-3);font-size:1rem;
+}
+details.collapse-section[open] summary .caret{transform:rotate(90deg)}
+.collapse-body{padding:8px 24px 24px}
+.mini-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;
+}
+.mini-card{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 14px;
+  background:var(--bg);
+  border:1px solid var(--border);
+  border-radius:10px;
+  text-decoration:none;color:inherit;
+  transition:all 0.25s ease;
+}
+.mini-card:hover{border-color:var(--accent-edge);transform:translateY(-2px)}
+.mini-card .mini-icon{
+  width:34px;height:34px;border-radius:7px;
+  display:inline-flex;align-items:center;justify-content:center;
+  background:var(--accent-soft);color:var(--accent);
+  font-family:var(--font-serif);font-weight:600;font-size:0.95rem;
+  flex-shrink:0;
+}
+.mini-card .mini-name{font-size:0.86rem;font-weight:600;color:var(--text);margin-bottom:2px}
+.mini-card .mini-desc{font-size:0.74rem;color:var(--text-3);line-height:1.4}
+
+/* ===== Footer v8 ===== */
+footer{text-align:center;padding:56px 20px 64px;position:relative}
+.footer-quote{
+  font-family:var(--font-kai);
+  font-size:1.3rem;font-weight:600;letter-spacing:0.08em;
+  color:var(--accent-deep);margin-bottom:14px;
+}
+.footer-line{
+  width:48px;height:2px;background:var(--accent);
+  margin:18px auto;border-radius:2px;
+}
+.footer-meta{
+  font-family:var(--font-ui);
+  font-size:0.78rem;color:var(--text-3);
+  letter-spacing:0.06em;line-height:1.85;
+}
+.footer-meta a{color:var(--accent);text-decoration:none;transition:color 0.2s}
+.footer-meta a:hover{color:var(--accent-deep)}
+
+/* ===== 收件夾按鈕 v8 ===== */
+#notify-bar{
+  background:var(--surface) !important;
+  border:1px solid var(--accent-edge) !important;
+  color:var(--text) !important;
+  box-shadow:0 2px 12px rgba(198,97,63,0.12) !important;
+}
+#notify-bar:hover{
+  border-color:var(--accent) !important;
+  box-shadow:0 4px 20px rgba(198,97,63,0.20) !important;
+}
+.notify-text{color:var(--text) !important}
+.btn-ok,.btn-approve{background:var(--accent) !important;color:#fff !important}
+.btn-ok:hover,.btn-approve:hover{background:var(--accent-deep) !important}
+.inbox-tab.active{background:var(--accent) !important;color:#fff !important}
+
+
+/* ===== Edit Mode v8 ===== */
+#edit-toggle{
+  position:fixed;bottom:18px;right:18px;z-index:990;
+  width:auto;padding:9px 16px 9px 13px;
+  background:var(--surface);
+  border:1px solid var(--border-warm);border-radius:100px;
+  display:none;
+  align-items:center;gap:8px;
+  font-family:var(--font-ui);font-size:0.82rem;font-weight:500;
+  color:var(--text);cursor:pointer;
+  box-shadow:0 2px 12px rgba(198,97,63,0.12);
+  transition:all 0.2s ease;
+  user-select:none;
+}
+#edit-toggle.show{display:inline-flex}
+#edit-toggle:hover{
+  border-color:var(--accent);
+  box-shadow:0 4px 18px rgba(198,97,63,0.22);
+}
+#edit-toggle.editing{
+  background:var(--accent);color:#fff;border-color:var(--accent);
+}
+#edit-toggle .ph{font-size:1rem}
+[data-edit-id]{transition:background 0.2s,box-shadow 0.2s,outline 0.2s}
+body.edit-on [data-edit-id]{
+  outline:1px dashed var(--accent-edge);
+  outline-offset:3px;
+  background:rgba(198,97,63,0.04);
+  border-radius:4px;
+  cursor:text;
+}
+body.edit-on [data-edit-id]:hover{
+  outline-color:var(--accent);
+  background:rgba(198,97,63,0.08);
+}
+body.edit-on [data-edit-id]:focus{
+  outline:2px solid var(--accent);outline-offset:3px;
+  background:rgba(255,255,255,0.85);
+  box-shadow:0 0 0 6px rgba(198,97,63,0.10);
+}
+#edit-toast{
+  position:fixed;bottom:78px;right:18px;z-index:991;
+  padding:9px 16px;
+  background:var(--text);color:#FAF7F0;
+  border-radius:8px;font-size:0.82rem;font-weight:500;
+  box-shadow:0 8px 24px rgba(0,0,0,0.2);
+  opacity:0;transform:translateY(8px);
+  transition:opacity 0.25s,transform 0.25s;
+  pointer-events:none;
+}
+#edit-toast.show{opacity:1;transform:translateY(0)}
+
+/* ===== 字體大小工具列（編輯模式） ===== */
+#fs-toolbar{
+  position:fixed;top:16px;left:50%;transform:translateX(-50%);
+  background:#1A1A1A;border:1px solid rgba(201,169,106,0.3);
+  border-radius:10px;padding:8px 14px;
+  display:flex;align-items:center;gap:10px;z-index:99999;
+  font-size:0.78rem;color:#fff;
+  opacity:0;pointer-events:none;
+  transition:opacity 0.2s;
+  box-shadow:0 4px 20px rgba(0,0,0,0.4);
+}
+#fs-toolbar.visible{opacity:1;pointer-events:auto}
+#fs-toolbar .fs-label{
+  color:rgba(255,255,255,0.4);font-size:0.68rem;
+  max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+#fs-toolbar .fs-btn{
+  background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.1);
+  color:#fff;border-radius:5px;padding:3px 9px;cursor:pointer;
+  font-size:0.8rem;font-weight:700;transition:background 0.15s;
+}
+#fs-toolbar .fs-btn:hover{background:rgba(201,169,106,0.25)}
+#fs-toolbar .fs-value{
+  font-size:0.85rem;font-weight:600;color:#C9A96A;
+  min-width:40px;text-align:center;
+}
+#fs-toolbar .fs-reset{
+  font-size:0.68rem;color:rgba(255,255,255,0.35);cursor:pointer;
+  padding:2px 6px;border-radius:4px;border:1px solid rgba(255,255,255,0.1);
+  transition:color 0.15s;
+}
+#fs-toolbar .fs-reset:hover{color:#fff}
+#fs-toolbar .fs-close{
+  color:rgba(255,255,255,0.3);cursor:pointer;
+  font-size:1rem;line-height:1;padding:0 2px;
+}
+#fs-toolbar .fs-close:hover{color:#fff}
+
+/* ===== Responsive ===== */
+@media(max-width:760px){
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .dashboard-bar{grid-template-columns:1fr;gap:10px}
+  .about-grid{grid-template-columns:1fr;padding:28px 22px}
+  .feed-item{grid-template-columns:1fr;gap:6px}
+  .feed-date,.feed-tag{font-size:0.66rem}
+  /* 字體工具列手機版：縮小間距、不超出螢幕寬 */
+  #fs-toolbar{
+    top:8px;left:8px;right:8px;transform:none;
+    max-width:calc(100vw - 16px);
+    flex-wrap:wrap;gap:6px;padding:8px 10px;
+  }
+  #fs-toolbar .fs-label{display:none} /* 手機空間小，隱藏 id 標籤 */
+}
+@media(max-width:600px){
+  header{padding:40px 0 28px}
+  .grid-2{grid-template-columns:1fr}
+  .card-full{flex-direction:column;text-align:center}
+  .card-full .card-icon{margin-bottom:8px}
+  .card-full .card-arrow{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== Google Login Gate（已廢棄：CF Access 負責認證）===== -->
+<div id="site-gate" class="hidden">
+  <div class="gate-card">
+    <div class="gate-logo"><i class="ph ph-lock-key" style="color:var(--accent);font-size:1.8rem"></i></div>
+    <div class="gate-title">阿笙的 AI 總站</div>
+    <div class="gate-desc">本站為私人網站，請輸入密碼才能進入</div>
+    <div class="gate-divider"></div>
+    <input id="site-pwd-input" type="password" placeholder="••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doPasswordLogin()" style="padding:12px 20px;border-radius:100px;border:1px solid rgba(0,0,0,0.1);background:#F5F4F0;font-size:1.1rem;text-align:center;width:100%;outline:none;letter-spacing:8px;margin-bottom:8px">
+    <div id="site-pwd-error" style="font-size:0.78rem;color:#FF3B30;min-height:18px;margin-bottom:4px"></div>
+    <button onclick="doPasswordLogin()" style="width:100%;padding:13px;border-radius:100px;border:none;background:#1C1C1E;color:#fff;font-size:0.9rem;font-weight:600;cursor:pointer">進入</button>
+    <div class="gate-note">登入後 7 天內免重複輸入</div>
+  </div>
+</div>
+
+<!-- ===== Link Gate Modal ===== -->
+<div id="link-modal" class="hidden">
+  <div class="modal-box">
+    <h3 id="link-modal-title">確認身份</h3>
+    <p>請輸入工具站密碼</p>
+    <input id="link-modal-input" type="password" placeholder="••••"
+      onkeydown="if(event.key==='Enter')checkLinkGate()">
+    <div id="link-modal-error"></div>
+    <div class="modal-row">
+      <button class="btn-cancel" onclick="closeLinkModal()">取消</button>
+      <button class="btn-ok" onclick="checkLinkGate()">進入</button>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- ===== 收件夾 Modal ===== -->
+<div id="approve-modal" class="hidden">
+  <div class="approve-box">
+    <button class="approve-close" onclick="closeApproveModal()"><i class="ph ph-x"></i></button>
+    <h3><i class="ph ph-bell" style="color:var(--accent);vertical-align:-2px"></i> 收件夾</h3>
+    <div class="inbox-tabs">
+      <button class="inbox-tab active" data-tab="bug" onclick="switchInboxTab('bug', this)"><i class="ph ph-bug" style="vertical-align:-2px"></i> Bug 回報</button>
+      <button class="inbox-tab" data-tab="wish" onclick="switchInboxTab('wish', this)"><i class="ph ph-lightbulb" style="vertical-align:-2px"></i> 許願池</button>
+    </div>
+    <div class="approve-list" id="approve-list">
+      <div class="approve-empty">載入中…</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Main ===== -->
+<div class="wrap">
+
+  <!-- Header v8 — Anthropic+Notion 鏽橘版 -->
+  <header>
+    <div class="avatar-ring">
+      <div class="avatar-inner">
+        <img src="/photos/cover.jpg" alt="陳睿笙" onerror="this.outerHTML='<div style=\'width:100%;height:100%;background:#FAF7F0;display:flex;align-items:center;justify-content:center;color:#C6613F;font-size:2rem;font-family:Noto Serif TC,serif;font-weight:600\'>笙</div>'">
+      </div>
+    </div>
+    <div class="eyebrow" data-edit-id="hero-eyebrow"><i class="ph ph-shield-check"></i> REYWAY · AI STUDIO</div>
+    <h1 data-edit-id="hero-title">阿笙的 <strong>AI 總站</strong></h1>
+    <div class="en" data-edit-id="hero-en">CHEN REY-SHENG</div>
+    <div class="gold-divider"></div>
+    <div class="bio" data-edit-id="hero-bio">苗栗囝仔・淨淨 CleanClean 創辦人<br>用 AI 改變品牌的玩法</div>
+    <div class="hero-quote" data-edit-id="hero-quote">上善若水・利他不爭</div>
+    <div class="hero-social">
+      <a href="https://www.instagram.com/sheng0432/" target="_blank" rel="noopener" aria-label="Instagram"><i class="ph ph-instagram-logo"></i></a>
+      <a href="https://www.threads.com/@sheng0432" target="_blank" rel="noopener" aria-label="Threads"><i class="ph ph-threads-logo"></i></a>
+    </div>
+  </header>
+
+  <!-- 收件夾按鈕（主公專用、右上角固定）-->
+  <div id="notify-bar" onclick="openApproveModal()">
+    <i class="ph ph-bell" style="font-size:1rem;color:var(--accent)"></i>
+    <div class="notify-text">收件夾</div>
+    <div class="notify-badge" id="notify-count">0</div>
+  </div>
+
+  <!-- ═══ Dashboard Bar v9（即時儀表板、編輯模式可改）═══ -->
+  <section class="dashboard-bar">
+    <a class="dash-card" href="https://rsway.net" target="_blank" rel="noopener" style="text-decoration:none;display:block;color:inherit">
+      <div class="dash-icon"><i class="ph ph-article"></i></div>
+      <div class="dash-label">笙之道 · 最新文章</div>
+      <div class="dash-value" id="blog-latest-title">AI 方法論 Blog</div>
+      <div class="dash-trend" id="blog-latest-trend">rsway.net →</div>
+    </a>
+    <div class="dash-card" style="cursor:pointer" onclick="window.open('https://aiteam.reyway.com','_blank')">
+      <div class="dash-icon"><i class="ph ph-list-checks"></i></div>
+      <div class="dash-label">AI 軍團工作日誌</div>
+      <div class="dash-value" id="ai-tasks-value">—</div>
+      <div class="dash-trend" id="ai-tasks-trend">載入中…</div>
+    </div>
+    <div class="dash-card">
+      <div class="dash-icon"><i class="ph ph-fire"></i></div>
+      <div class="dash-label">AI 本月花費（各站）</div>
+      <div class="dash-value" id="ai-month-value">—</div>
+      <div class="dash-trend" id="ai-month-trend">載入中…</div>
+    </div>
+  </section>
+
+  <!-- ═══ 核心兩主舞台（brain.reyway 排第一）═══ -->
+  <section id="sec-categories">
+    <div class="section-intro">
+      <div class="eyebrow" data-edit-id="sec-core-eyebrow">CORE COLLECTIONS</div>
+      <h2 data-edit-id="sec-core-title">核心 <strong>兩</strong></h2>
+      <div class="gold-line"></div>
+      <div class="sub" data-edit-id="sec-core-sub">事業 · 成長</div>
+    </div>
+
+    <div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;">
+      <a class="card featured" href="https://brain.reyway.com">
+        <div class="card-icon"><i class="ph ph-brain"></i></div>
+        <h3 data-edit-id="card-brain-title">第二大腦 · brain.reyway</h3>
+        <p data-edit-id="card-brain-desc">主公個人知識體系・DIKW 三階提煉<br>Inbox → Archive → Sanctum・取代 Obsidian</p>
+        <span class="card-tag" data-edit-id="card-brain-tag">笙之道 · Phase 1</span>
+      </a>
+
+      <a class="card" href="/cleanclean-hub/">
+        <div class="card-icon"><i class="ph ph-leaf"></i></div>
+        <h3 data-edit-id="card-clean-title">淨淨體系</h3>
+        <p data-edit-id="card-clean-desc">家用清潔・個人護理品牌<br>營銷總站・門市小幫手・行銷神隊友・電商數據站</p>
+        <span class="card-tag" data-edit-id="card-clean-tag">事業 · 5 個工具</span>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ═══ 笙闆個人 IP（獨立區塊）═══ -->
+  <section id="sec-shengboss" style="margin-top:0">
+    <a class="card card-full" href="https://shengboss.reyway.com"
+       style="background:linear-gradient(135deg,#FDF4EB 0%,#F8E3CC 100%);border:1.5px solid rgba(198,97,63,0.28);box-shadow:0 4px 20px rgba(198,97,63,0.12);text-decoration:none;color:inherit;">
+      <div class="card-icon" style="background:rgba(198,97,63,0.15);color:#C6613F;flex-shrink:0;">
+        <i class="ph ph-microphone-stage"></i>
+      </div>
+      <div class="card-body">
+        <h3 style="font-family:'Noto Serif TC',serif;font-size:1.1rem;font-weight:600;color:#1A1A1A;margin-bottom:4px;">笙闆 IP 工作室</h3>
+        <p style="font-size:0.85rem;color:#666;line-height:1.65;margin-bottom:0;">個人品牌經營中央指揮塔・Threads / IG / 短影音<br>文案庫 · 行事曆 · 互動數據・從發文到覆盤一站搞定</p>
+      </div>
+      <div class="card-arrow" style="font-size:1.1rem;color:#C6613F;flex-shrink:0;">
+        <i class="ph ph-arrow-right"></i>
+      </div>
+    </a>
+  </section>
+
+  <!-- ═══ 折疊：合作品牌 + 內部工具 ═══ -->
+  <section id="sec-extras">
+    <div class="section-intro">
+      <div class="eyebrow" data-edit-id="sec-extras-eyebrow">COLLECTIONS</div>
+      <h2 data-edit-id="sec-extras-title">綜合 <strong>分類</strong></h2>
+      <div class="gold-line"></div>
+      <div class="sub" data-edit-id="sec-extras-sub">智能工具</div>
+    </div>
+
+    <details class="collapse-section">
+      <summary>
+        <i class="ph ph-grid-four"></i>
+        <span>綜合頁面</span>
+        <span class="summary-meta">1 個頁面</span>
+        <i class="ph ph-caret-right caret"></i>
+      </summary>
+      <div class="collapse-body">
+        <div class="mini-grid">
+          <a class="mini-card" href="/founder/">
+            <span class="mini-icon"><i class="ph ph-buildings" style="font-size:1rem"></i></span>
+            <div><div class="mini-name" data-edit-id="mini-founder-name">笙闆 AI 總站</div><div class="mini-desc" data-edit-id="mini-founder-desc">AI 軍團指揮所・12 人董事會</div></div>
+          </a>
+        </div>
+      </div>
+    </details>
+
+    <details class="collapse-section">
+      <summary>
+        <i class="ph ph-toolbox"></i>
+        <span>綜合工具</span>
+        <span class="summary-meta">1 個小工具</span>
+        <i class="ph ph-caret-right caret"></i>
+      </summary>
+      <div class="collapse-body">
+        <div class="mini-grid">
+          <a class="mini-card" href="/tools/">
+            <span class="mini-icon"><i class="ph ph-wrench" style="font-size:1rem"></i></span>
+            <div><div class="mini-name" data-edit-id="mini-tools-name">智能工具</div><div class="mini-desc" data-edit-id="mini-tools-desc">跨品牌通用 AI 小工具</div></div>
+          </a>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- ═══ About / 笙之道 ═══ -->
+  <section id="sec-about">
+    <div class="section-intro">
+      <div class="eyebrow" data-edit-id="sec-about-eyebrow">AI JOURNEY</div>
+      <h2 data-edit-id="sec-about-title">關於笙之道的 <strong>AI 之路</strong></h2>
+      <div class="gold-line"></div>
+      <div class="sub" data-edit-id="sec-about-sub">2025.12 → 現在進行中</div>
+    </div>
+
+    <div class="about-grid">
+      <div class="about-text">
+        <p class="about-quote" data-edit-id="about-quote">上善若水・水善利萬物而不爭</p>
+        <p data-edit-id="about-p1">苗栗囝仔。2018 年創辦淨淨 CleanClean、把家用清潔做成有溫度的品牌——代言人李仁哥、SGS 認證、歐洲 ECARF 蓋章、3 萬戶台灣家庭的客廳裡。</p>
+        <p data-edit-id="about-p2">2026 年起、把 AI 推進每個工作流程——不是取代人、是讓 8 個人能做 80 個人的事。創立<strong>若水聯盟</strong>、12 個 AI 軍團人格 24/7 運作。</p>
+        <p data-edit-id="about-p3">核心三件事：<strong>淨淨</strong>（事業）／<strong>若水</strong>（系統）／<strong>笙之道</strong>（成長）。其他、是朋友的幫忙跟家人的愛護。</p>
+      </div>
+      <div class="about-timeline">
+        <div class="timeline-list">
+          <div class="timeline-item">
+            <span class="timeline-date" data-edit-id="tl1-date">2025.12.29</span>
+            <span class="timeline-text" data-edit-id="tl1-text">試水期・第一次認真把 AI 當員工用</span>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-date" data-edit-id="tl2-date">2026.04.11</span>
+            <span class="timeline-text" data-edit-id="tl2-text">系統化・從聊天升級到工作流程</span>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-date" data-edit-id="tl3-date">2026.04.20</span>
+            <span class="timeline-text" data-edit-id="tl3-text">Memory 啟動・給 AI 長期記憶</span>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-date" data-edit-id="tl4-date">2026.04.22</span>
+            <span class="timeline-text" data-edit-id="tl4-text">若水聯盟成軍・12 個 AI 人格分工</span>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-date" data-edit-id="tl5-date">2026.04.23</span>
+            <span class="timeline-text" data-edit-id="tl5-text">工作習慣總則・最大授權／不講術語／邊做邊報</span>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-date" data-edit-id="tl6-date">2026.04.26</span>
+            <span class="timeline-text" data-edit-id="tl6-text">淨淨營銷總站上線・Notion 退場、AI 自架 SaaS</span>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-date" data-edit-id="tl7-date">2026.04.28</span>
+            <span class="timeline-text" data-edit-id="tl7-text">Hook 自動化體系・AI 背後的引擎</span>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-date" data-edit-id="tl8-date">2026.04.29</span>
+            <span class="timeline-text" data-edit-id="tl8-text">brain.reyway 規劃・個人第二大腦取代 Obsidian</span>
+          </div>
+          <div class="timeline-item current">
+            <span class="timeline-date" data-edit-id="tl9-date">2026.04.30</span>
+            <span class="timeline-text" data-edit-id="tl9-text">reyway.com v8・軍師五拍視覺改造</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ Status Log / 進行中 ═══ -->
+  <section id="sec-feed">
+    <div class="section-intro">
+      <div class="eyebrow" data-edit-id="sec-feed-eyebrow">STATUS LOG</div>
+      <h2 data-edit-id="sec-feed-title">進行 <strong>中</strong></h2>
+      <div class="gold-line"></div>
+      <div class="sub" data-edit-id="sec-feed-sub">最近 30 天</div>
+    </div>
+
+    <div class="feed-list">
+      <div class="feed-item">
+        <span class="feed-date" data-edit-id="feed-item-1-date">2026.04.30</span>
+        <span class="feed-tag tag-deploy">DEPLOY</span>
+        <span class="feed-text" data-edit-id="feed-item-1-text">reyway.com v8 主視覺套用軍師五拍（鏽橘 + 4 字體 + Phosphor）</span>
+      </div>
+      <div class="feed-item">
+        <span class="feed-date" data-edit-id="feed-item-2-date">2026.04.30</span>
+        <span class="feed-tag tag-build">BUILD</span>
+        <span class="feed-text" data-edit-id="feed-item-2-text">cleanclean-hub IA v4 + 業務部報價單 + 檔案資料庫完整版</span>
+      </div>
+      <div class="feed-item">
+        <span class="feed-date" data-edit-id="feed-item-3-date">2026.04.29</span>
+        <span class="feed-tag tag-ship">SHIP</span>
+        <span class="feed-text" data-edit-id="feed-item-3-text">若水聯盟六大 Hook 體系 + 8 Slash Commands + 5 Plugin 自用包</span>
+      </div>
+      <div class="feed-item">
+        <span class="feed-date" data-edit-id="feed-item-4-date">2026.04.28</span>
+        <span class="feed-tag tag-build">BUILD</span>
+        <span class="feed-text" data-edit-id="feed-item-4-text">leon.reyway.com 吐司專屬小老師 Phase 0+ 上線</span>
+      </div>
+      <div class="feed-item">
+        <span class="feed-date" data-edit-id="feed-item-5-date">2026.04.27</span>
+        <span class="feed-tag tag-deploy">DEPLOY</span>
+        <span class="feed-text" data-edit-id="feed-item-5-text">store.reyway.com 門市小幫手 4 櫃位上線</span>
+      </div>
+      <div class="feed-item">
+        <span class="feed-date" data-edit-id="feed-item-6-date">2026.04.26</span>
+        <span class="feed-tag tag-ship">SHIP</span>
+        <span class="feed-text" data-edit-id="feed-item-6-text">cleanclean-hub Phase 1 共 11 模組</span>
+      </div>
+      <div class="feed-item">
+        <span class="feed-date" data-edit-id="feed-item-7-date">2026.04.24</span>
+        <span class="feed-tag tag-think">THINK</span>
+        <span class="feed-text" data-edit-id="feed-item-7-text">工作習慣總則第七章升級：4 步法 + 11 條思維模型庫</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ Footer v8 軍師五拍 ═══ -->
+  <footer>
+    <div class="footer-quote" data-edit-id="footer-quote">上善若水・利他不爭</div>
+    <div class="footer-line"></div>
+    <div class="footer-meta">
+      <span data-edit-id="footer-meta">REYWAY · v8.0 · BUILT WITH CLAUDE × SHENG</span><br>
+      © 2026 陳睿笙 · ALL RIGHTS RESERVED
+    </div>
+  </footer>
+
+</div>
+
+<!-- Lucide icons CDN（5 大分類入口 + 子頁圖示用）-->
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>document.addEventListener('DOMContentLoaded', () => { try { window.lucide?.createIcons?.(); } catch(_){} });</script>
+
+<script>
+// ─── 設定 ───
+var SITE_PWD   = '0000';
+var AUTH_KEY   = 'reyway_auth';
+var AUTH_TTL   = 7 * 24 * 60 * 60 * 1000; // 7 天
+var AITEAM_API = 'https://aiteam.reyway.com/api/feedback';
+
+function hide(id){ document.getElementById(id).classList.add('hidden'); }
+function show(id){ document.getElementById(id).classList.remove('hidden'); }
+
+// ─── AI 花費儀表板 ───
+async function fetchAICosts() {
+  try {
+    var res = await fetch('/api/ai-costs');
+    var d   = await res.json();
+
+    // ── 花費卡 ──
+    var mEl = document.getElementById('ai-month-value');
+    var mTr = document.getElementById('ai-month-trend');
+    if (d.month) {
+      mEl.textContent = 'NT$ ' + parseFloat(d.month.twd || 0).toFixed(2);
+      var todayTwd = d.today ? 'NT$ ' + parseFloat(d.today.twd || 0).toFixed(2) : 'NT$ 0';
+      mTr.textContent = '今日：' + todayTwd + ' · ' + (d.month.count || 0) + ' 筆 · 同步自各站';
+    } else {
+      mEl.textContent = 'NT$ 0';
+      mTr.textContent = '尚無今月紀錄';
+    }
+
+    // ── 過濾測試訊息（避免 FORCE_ERROR / 嗨笙闆 等垃圾顯示）──
+    function isJunkMessage(s) {
+      if (!s || typeof s !== 'string') return false;
+      // 1. 測試垃圾關鍵字
+      if (/FORCE_ERROR|TEST_XYZ|測試指令|\$\$\$\$|pm-log/.test(s)) return true;
+      // 2. 過時角色名（小笙是 4-22 之前的舊命名、現在叫韓信）
+      if (/我是小笙|小笙[，,]?\s*你/.test(s)) return true;
+      // 3. 對話/招呼訊息（不是真的軍團任務 summary）
+      var head = s.trim().slice(0, 12);
+      if (/^(嗨|嘿|哈囉|hello|主公|笙[闆哥])/i.test(head)) return true;
+      if (/我是.{1,5}[，,]\s*你的|PM\s*分身/.test(s)) return true;
+      return false;
+    }
+    if (d.tasks) {
+      if (Array.isArray(d.tasks.recentDone)) {
+        d.tasks.recentDone = d.tasks.recentDone.filter(function(r){ return !isJunkMessage(r && r.summary); });
+      }
+      if (Array.isArray(d.tasks.running)) {
+        var _origRun = d.tasks.running.length;
+        d.tasks.running = d.tasks.running.filter(function(r){ return !isJunkMessage(r && (r.message || r.summary)); });
+        if (typeof d.tasks.inProgress === 'number' && _origRun > 0) {
+          d.tasks.inProgress = Math.max(0, d.tasks.inProgress - (_origRun - d.tasks.running.length));
+        }
+      }
+    }
+
+    // ── 工作日誌卡 ──
+    var tEl = document.getElementById('ai-tasks-value');
+    var tTr = document.getElementById('ai-tasks-trend');
+    if (tEl && d.tasks) {
+      var t = d.tasks;
+      var running = t.inProgress || 0;
+      var done    = t.todayDone  || 0;
+      if (running > 0) {
+        tEl.textContent = running + ' 件執行中';
+      } else if (done > 0) {
+        tEl.textContent = '今日 ' + done + ' 件完成';
+      } else {
+        tEl.textContent = '今日無任務';
+      }
+      // 顯示最近完成任務的摘要
+      var recent = Array.isArray(t.recentDone) && t.recentDone.length > 0
+        ? t.recentDone[0].summary || '—'
+        : '無近期記錄';
+      tTr.textContent = '最新：' + recent;
+    } else if (tEl) {
+      tEl.textContent = '—';
+      tTr.textContent = '尚無資料';
+    }
+
+    // ── 軍團後台：agent 狀態 ──
+    var AGENT_MAP = {
+      pm:        { cn:'韓信', en:'將軍·PM' },
+      optimizer: { cn:'郭嘉', en:'軍師' },
+      engineer:  { cn:'墨子', en:'工程' },
+      designer:  { cn:'小喬', en:'美術' },
+      marketer:  { cn:'周瑜', en:'行銷' },
+      backend:   { cn:'蕭何', en:'架構' },
+      concierge: { cn:'傳令', en:'24h 值班' },
+    };
+    var ag = document.getElementById('agents-grid');
+    if (ag && d.agents && d.agents.agents) {
+      var agList = d.agents.agents;
+      // 補傳令（inbox 不追蹤 concierge，手動加 idle）
+      var hasConcierge = agList.some(function(a){ return a.agent === 'concierge'; });
+      if (!hasConcierge) agList = agList.concat([{ agent:'concierge', isActive:false, unreadRecent:0, currentTask:null }]);
+      ag.innerHTML = agList.map(function(a) {
+        var m = AGENT_MAP[a.agent] || { cn: a.agent, en: '' };
+        var isActive = !!a.isActive;
+        var dot = '<div class="agent-dot' + (isActive ? ' active' : '') + '"></div>';
+        var taskHint = isActive && a.currentTask
+          ? '<div class="agent-task">' + a.currentTask.slice(0,28) + '…</div>'
+          : a.unreadRecent > 0
+            ? '<div class="agent-unread">' + a.unreadRecent + ' 則未讀</div>'
+            : '<div class="agent-task" style="color:var(--text-3)">待命中</div>';
+        return '<div class="agent-card' + (isActive ? ' active' : '') + '">' +
+          '<div class="agent-card-top"><span class="agent-name-cn">' + m.en + '</span>' + dot + '</div>' +
+          taskHint + '</div>';
+      }).join('');
+    }
+
+    // ── 軍團後台：任務列表 ──
+    var tp = document.getElementById('tasks-panel');
+    if (tp && d.tasks) {
+      var rows = [];
+      // 進行中
+      if (Array.isArray(d.tasks.running) && d.tasks.running.length > 0) {
+        d.tasks.running.forEach(function(r) {
+          rows.push('<div class="task-row"><div class="task-dot running"></div><div class="task-text">' + (r.message||'').slice(0,40) + '</div><div class="task-time">執行中</div></div>');
+        });
+      }
+      // 最近完成
+      if (Array.isArray(d.tasks.recentDone)) {
+        d.tasks.recentDone.slice(0,4).forEach(function(r) {
+          var ago = r.endedAt ? relTime(r.endedAt) : '';
+          rows.push('<div class="task-row"><div class="task-dot done"></div><div class="task-text">' + (r.summary||'').slice(0,40) + '</div><div class="task-time">' + ago + '</div></div>');
+        });
+      }
+      tp.innerHTML = rows.length ? rows.join('') : '<div class="task-row"><span class="task-text" style="color:var(--text-3)">今日無任務記錄</span></div>';
+    }
+
+    // ── 軍團後台：收件列表 ──
+    var ip = document.getElementById('inbox-panel');
+    if (ip && d.inbox && Array.isArray(d.inbox.messages)) {
+      var irows = d.inbox.messages.slice(0,5).map(function(m) {
+        var fromMap = AGENT_MAP[m.from] || { cn: m.from };
+        var ago = m.created_at ? relTime(new Date(m.created_at).getTime()) : '';
+        var body = (m.subject || m.body || '').slice(0,36);
+        return '<div class="inbox-row"><div class="inbox-from">' + fromMap.cn + '</div><div class="inbox-body">' + body + '</div><div class="inbox-time">' + ago + '</div></div>';
+      });
+      ip.innerHTML = irows.length ? irows.join('') : '<div class="inbox-row"><span class="inbox-body" style="color:var(--text-3)">無近期訊息</span></div>';
+    }
+
+    // Blog 最新文章（嘗試從 rsway.net 抓標題）
+    fetchLatestBlogPost();
+  } catch (e) {
+    console.warn('[fetchAICosts] 失敗:', e);
+  }
+}
+
+function relTime(ts) {
+  var diff = Date.now() - (typeof ts === 'number' ? ts : new Date(ts).getTime());
+  var m = Math.floor(diff / 60000);
+  if (m < 1)  return '剛剛';
+  if (m < 60) return m + ' 分前';
+  var h = Math.floor(m / 60);
+  if (h < 24) return h + ' 小時前';
+  return Math.floor(h / 24) + ' 天前';
+}
+
+async function fetchLatestBlogPost() {
+  try {
+    var res = await fetch('https://rsway.net/posts/index.json', { signal: AbortSignal.timeout(3000) });
+    if (!res.ok) return;
+    var d = await res.json();
+    var latest = Array.isArray(d) ? d[0] : (d.posts ? d.posts[0] : null);
+    if (!latest) return;
+    var titleEl = document.getElementById('blog-latest-title');
+    var trendEl = document.getElementById('blog-latest-trend');
+    if (titleEl && latest.title) titleEl.textContent = latest.title;
+    if (trendEl && latest.date)  trendEl.textContent = latest.date + ' · rsway.net →';
+  } catch (e) { /* 靜默失敗，保留預設文字 */ }
+}
+
+// ─── 密碼登入 ───
+function doPasswordLogin(){
+  var inp = document.getElementById('site-pwd-input');
+  var val = (inp.value || '').trim();
+  var errEl = document.getElementById('site-pwd-error');
+  if (val === SITE_PWD){
+    errEl.textContent = '';
+    localStorage.setItem(AUTH_KEY, JSON.stringify({ expiry: Date.now() + AUTH_TTL }));
+    hide('site-gate');
+    document.getElementById('notify-bar').style.display = 'flex';
+    checkFeedbackNotify();
+    fetchAICosts();
+  } else {
+    errEl.textContent = '密碼錯誤，請再試一次';
+    inp.classList.remove('shake'); void inp.offsetWidth; inp.classList.add('shake');
+    inp.value = ''; setTimeout(function(){ inp.focus(); }, 50);
+  }
+}
+
+// ─── 初始化（CF Access 已負責認證，直接跳過 HTML 密碼門）───
+(function(){
+  hide('site-gate');
+  document.getElementById('notify-bar').style.display = 'flex';
+  checkFeedbackNotify();
+  fetchAICosts();
+})();
+
+// ─── 收件夾 ───
+async function checkFeedbackNotify(){
+  try {
+    var res = await fetch(AITEAM_API);
+    var data = await res.json();
+    var count = (data.items || []).length;
+    if (count > 0){
+      document.getElementById('notify-count').textContent = count;
+      document.getElementById('notify-bar').classList.add('has-pending');
+    }
+  } catch(e){}
+}
+
+var _currentTab = 'bug';
+var _allFeedback = [];
+
+function switchInboxTab(tab, btnEl){
+  _currentTab = tab;
+  var tabs = document.querySelectorAll('.inbox-tab');
+  for (var i=0; i<tabs.length; i++) tabs[i].classList.remove('active');
+  if (btnEl) btnEl.classList.add('active');
+  renderInboxList(_allFeedback);
+}
+
+async function openApproveModal(){
+  show('approve-modal');
+  var list = document.getElementById('approve-list');
+  list.innerHTML = '<div class="approve-empty">載入中…</div>';
+  _allFeedback = [];
+  try {
+    var res = await fetch(AITEAM_API);
+    var data = await res.json();
+    _allFeedback = (data.items || []).slice().sort(function(a,b){
+      return new Date(b.createdAt||b.time||0) - new Date(a.createdAt||a.time||0);
+    });
+    renderInboxList(_allFeedback);
+  } catch(e){
+    list.innerHTML = '<div class="approve-empty">載入失敗，請稍後再試</div>';
+  }
+}
+
+function escapeHtml(s){
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function renderInboxList(items){
+  var list = document.getElementById('approve-list');
+  var filtered = items.filter(function(item){
+    var t = (item.type || item.kind || 'feedback').toLowerCase();
+    if (_currentTab === 'bug') return t === 'bug' || t === 'error';
+    if (_currentTab === 'wish') return t === 'wish' || t === 'feature' || t === 'idea';
+    return true;
+  });
+
+  if (filtered.length === 0){
+    var label = _currentTab === 'bug' ? 'Bug 回報' : '許願';
+    list.innerHTML = '<div class="approve-empty">目前沒有' + label + '項目 ✓</div>';
+    return;
+  }
+
+  list.innerHTML = filtered.map(function(item){
+    var t = new Date(item.createdAt || item.time || 0);
+    var timeStr = isNaN(t.getTime()) ? '' : t.toLocaleString('zh-TW',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'});
+    var site = escapeHtml(item.site || '未知站台');
+    var msg = escapeHtml(item.message || item.content || '');
+    var id = escapeHtml(item.id || '');
+    var actions = '<button class="inbox-act-btn del" onclick="deleteFeedback(\'' + id + '\')" title="刪除"><i class="ph ph-x"></i></button>';
+    return '<div class="inbox-item" id="fi-' + id + '">' +
+      '<div class="inbox-body">' +
+        '<div class="inbox-site">' + site + '</div>' +
+        '<div class="inbox-msg">' + msg + '</div>' +
+        '<div class="inbox-time">' + timeStr + '</div>' +
+      '</div>' +
+      '<div class="inbox-actions">' + actions + '</div>' +
+    '</div>';
+  }).join('');
+}
+
+async function deleteFeedback(id){
+  if (!id) return;
+  try {
+    await fetch(AITEAM_API + '/' + encodeURIComponent(id), { method: 'DELETE' });
+    _allFeedback = _allFeedback.filter(function(x){ return x.id !== id; });
+    renderInboxList(_allFeedback);
+    if (_allFeedback.length === 0){
+      document.getElementById('notify-bar').classList.remove('has-pending');
+    } else {
+      document.getElementById('notify-count').textContent = _allFeedback.length;
+    }
+  } catch(e){}
+}
+
+function closeApproveModal(){ hide('approve-modal'); }
+document.getElementById('approve-modal').addEventListener('click', function(e){
+  if (e.target === this) closeApproveModal();
+});
+
+// ─── 知識庫 filter ───
+function filterKb(tag){
+  document.querySelectorAll('.kb-tab').forEach(function(t){ t.classList.remove('active'); });
+  event.target.classList.add('active');
+  document.querySelectorAll('.kb-card').forEach(function(card){
+    if (card.classList.contains('kb-empty-hint')) return;
+    var match = tag === 'all' || card.dataset.tag === tag;
+    card.classList.toggle('hidden', !match);
+  });
+}
+
+// ─── Link Gate (0000) ───
+const LINK_PWD = '0000';
+let _pendingUrl = '';
+function gatedLink(e, url, title){
+  e.preventDefault();
+  _pendingUrl = url;
+  document.getElementById('link-modal-title').textContent = title || '確認身份';
+  document.getElementById('link-modal-input').value = '';
+  document.getElementById('link-modal-error').textContent = '';
+  document.getElementById('link-modal').classList.remove('hidden');
+  setTimeout(()=>document.getElementById('link-modal-input').focus(),100);
+}
+function closeLinkModal(){
+  document.getElementById('link-modal').classList.add('hidden');
+  _pendingUrl = '';
+}
+function checkLinkGate(){
+  const v = document.getElementById('link-modal-input').value;
+  if(v === LINK_PWD){
+    closeLinkModal();
+    window.open(_pendingUrl,'_blank');
+  } else {
+    const inp = document.getElementById('link-modal-input');
+    document.getElementById('link-modal-error').textContent = '密碼錯誤';
+    inp.classList.remove('shake'); void inp.offsetWidth; inp.classList.add('shake');
+    inp.value = ''; setTimeout(()=>inp.focus(),50);
+  }
+}
+document.getElementById('link-modal').addEventListener('click', function(e){
+  if(e.target === this) closeLinkModal();
+});
+</script>
+
+
+<!-- ═══ 編輯模式（主公專用） ═══ -->
+<button id="edit-toggle" type="button" title="編輯模式">
+  <i class="ph ph-pencil-simple-line"></i>
+  <span id="edit-toggle-text">編輯模式</span>
+</button>
+<div id="edit-toast">已儲存 ✓</div>
+<script src="/edit-mode.js"></script>
+
+</body>
+</html>

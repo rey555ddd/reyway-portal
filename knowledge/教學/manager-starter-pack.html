@@ -1,0 +1,2350 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>淨淨主管啟動包使用指南 ｜ 讓 AI 從第一天就幫你做事</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css">
+<style>
+  .ph, .ph-fill { font-style: normal; vertical-align: -0.1em; }
+  .ph-lg { font-size: 1.4em; }
+  .ph-xl { font-size: 1.8em; }
+  .ph-2xl { font-size: 2.4em; }
+  .ph-teal { color: var(--teal); }
+  .ph-green { color: var(--green); }
+  .ph-orange { color: var(--orange); }
+  .ph-red { color: var(--red); }
+  .ph-navy { color: var(--navy); }
+  .ph-amber { color: #F59E0B; }
+  .ph-blue { color: #3B82F6; }
+  .ph-purple { color: #8B5CF6; }
+</style>
+<style>
+  :root {
+    --teal: #5BC8D5;
+    --teal-light: #E8F8FA;
+    --teal-mid: #C5EDF1;
+    --navy: #1E293B;
+    --slate: #475569;
+    --muted: #94A3B8;
+    --border: #E2E8F0;
+    --bg: #FFFFFF;
+    --bg-soft: #F8FDFE;
+    --green: #10B981;
+    --orange: #F59E0B;
+    --red: #EF4444;
+    --purple: #8B5CF6;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'PingFang TC', 'Noto Sans TC', sans-serif;
+    background: var(--bg);
+    color: var(--navy);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Progress Bar */
+  #progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    background: var(--teal);
+    z-index: 9999;
+    transition: width 0.1s;
+    width: 0%;
+  }
+
+  /* Top Nav */
+  nav {
+    position: fixed;
+    top: 3px;
+    left: 0;
+    right: 0;
+    background: rgba(255,255,255,0.96);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    z-index: 100;
+    padding: 0 24px;
+  }
+
+  .nav-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 10px 0;
+  }
+
+  .nav-inner::-webkit-scrollbar { display: none; }
+
+  .nav-inner a {
+    white-space: nowrap;
+    text-decoration: none;
+    font-size: 12px;
+    color: var(--slate);
+    padding: 4px 10px;
+    border-radius: 20px;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+
+  .nav-inner a:hover {
+    background: var(--teal-light);
+    color: var(--navy);
+  }
+
+  .nav-inner a.active {
+    background: var(--teal-light);
+    color: var(--teal);
+    font-weight: 700;
+  }
+
+  .nav-logo {
+    font-weight: 700;
+    color: var(--teal) !important;
+    margin-right: 8px;
+    font-size: 13px !important;
+  }
+
+  /* Main */
+  main {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 80px 24px 100px;
+  }
+
+  /* Back Banner */
+  .back-banner {
+    background: var(--navy);
+    border-radius: 12px;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .back-banner-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .back-banner-left span {
+    font-size: 13px;
+    color: #CBD5E1;
+  }
+
+  .back-banner-left strong {
+    color: white;
+    font-size: 13px;
+  }
+
+  .back-banner a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--teal);
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid rgba(91,200,213,0.4);
+    transition: all 0.2s;
+  }
+
+  .back-banner a:hover {
+    background: rgba(91,200,213,0.15);
+    border-color: var(--teal);
+  }
+
+  /* Hero */
+  .hero {
+    text-align: center;
+    padding: 60px 0 50px;
+    border-bottom: 2px solid var(--teal-light);
+    margin-bottom: 70px;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    background: var(--teal-light);
+    color: var(--teal);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    letter-spacing: 0.05em;
+  }
+
+  .hero h1 {
+    font-size: clamp(24px, 5vw, 38px);
+    font-weight: 800;
+    color: var(--navy);
+    line-height: 1.3;
+    margin-bottom: 16px;
+  }
+
+  .hero h1 span { color: var(--teal); }
+
+  .hero-sub {
+    font-size: 15px;
+    color: var(--muted);
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+
+  .hero p {
+    font-size: 16px;
+    color: var(--slate);
+    max-width: 580px;
+    margin: 0 auto 28px;
+  }
+
+  .hero-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--teal);
+    color: white;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 12px 28px;
+    border-radius: 30px;
+    transition: all 0.2s;
+    box-shadow: 0 4px 16px rgba(91,200,213,0.4);
+  }
+
+  .hero-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(91,200,213,0.5);
+  }
+
+  /* Section */
+  section {
+    margin-bottom: 80px;
+    scroll-margin-top: 70px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.55s ease, transform 0.55s ease;
+  }
+
+  section.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--teal);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  section h2 {
+    font-size: clamp(22px, 4vw, 30px);
+    font-weight: 800;
+    color: var(--navy);
+    margin-bottom: 10px;
+    line-height: 1.3;
+  }
+
+  .section-sub {
+    font-size: 15px;
+    color: var(--slate);
+    margin-bottom: 32px;
+    line-height: 1.6;
+  }
+
+  .section-divider {
+    width: 48px;
+    height: 3px;
+    background: var(--teal);
+    border-radius: 2px;
+    margin-bottom: 28px;
+  }
+
+  /* Cards */
+  .card {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    transition: box-shadow 0.28s cubic-bezier(0.34,1.56,0.64,1), transform 0.28s cubic-bezier(0.34,1.56,0.64,1);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 2px 8px rgba(0,0,0,0.04);
+  }
+
+  .card:hover {
+    box-shadow: 0 4px 24px rgba(91,200,213,0.13), 0 1px 6px rgba(0,0,0,0.07);
+    transform: translateY(-3px);
+  }
+
+  .card-teal {
+    background: var(--teal-light);
+    border-color: var(--teal-mid);
+  }
+
+  .card h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 10px;
+  }
+
+  .card p, .card li {
+    font-size: 14px;
+    color: var(--slate);
+    line-height: 1.7;
+  }
+
+  .card ul { padding-left: 20px; }
+  .card li { margin-bottom: 6px; }
+
+  /* Skill Grid */
+  .skill-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 14px;
+    margin-bottom: 32px;
+  }
+
+  .skill-card {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 16px;
+    transition: box-shadow 0.25s ease, transform 0.25s ease;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  }
+
+  .skill-card:hover {
+    box-shadow: 0 4px 20px rgba(91,200,213,0.15);
+    transform: translateY(-2px);
+    border-color: var(--teal-mid);
+  }
+
+  .skill-card-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: var(--teal-light);
+    color: var(--teal);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+
+  .skill-card h4 {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 4px;
+  }
+
+  .skill-card p {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* Agent Cards */
+  .agent-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+
+  .agent-card {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    transition: box-shadow 0.25s ease, transform 0.25s ease;
+  }
+
+  .agent-card:hover {
+    box-shadow: 0 4px 20px rgba(91,200,213,0.13);
+    transform: translateY(-2px);
+  }
+
+  .agent-dot {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+    color: white;
+    font-weight: 700;
+    font-size: 12px;
+  }
+
+  .agent-card-info h4 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 2px;
+  }
+
+  .agent-card-info .agent-role-label {
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 6px;
+    display: block;
+  }
+
+  .agent-card-info p {
+    font-size: 12px;
+    color: var(--slate);
+    line-height: 1.5;
+  }
+
+  /* Table */
+  .table-wrap { overflow-x: auto; margin-bottom: 24px; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+
+  thead th {
+    background: var(--navy);
+    color: #fff;
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 13px;
+  }
+
+  thead th:first-child { border-radius: 8px 0 0 0; }
+  thead th:last-child { border-radius: 0 8px 0 0; }
+
+  tbody tr { border-bottom: 1px solid var(--border); transition: background 0.18s ease; }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:nth-child(even) { background: var(--bg-soft); }
+  tbody tr:hover { background: var(--teal-light) !important; }
+
+  tbody td {
+    padding: 12px 16px;
+    color: var(--slate);
+    vertical-align: top;
+  }
+
+  tbody td:first-child { font-weight: 600; color: var(--navy); }
+
+  .tag-teal { color: var(--teal); font-weight: 700; }
+  .tag-green { color: var(--green); font-weight: 700; }
+  .tag-orange { color: var(--orange); font-weight: 700; }
+
+  /* Highlight Box */
+  .highlight {
+    background: var(--teal-light);
+    border-left: 4px solid var(--teal);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+    box-shadow: inset 0 0 0 0 transparent;
+    transition: box-shadow 0.3s ease;
+  }
+
+  .highlight:hover {
+    box-shadow: inset 3px 0 0 var(--teal), 0 2px 12px rgba(91,200,213,0.1);
+  }
+
+  .highlight p {
+    font-size: 14px;
+    color: var(--navy);
+    line-height: 1.7;
+  }
+
+  .highlight strong { color: var(--teal); }
+
+  /* Step Card */
+  .step-card {
+    background: var(--navy);
+    border-radius: 16px;
+    padding: 24px 28px;
+    margin-bottom: 16px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .step-card::before {
+    content: '';
+    position: absolute;
+    top: -30px;
+    right: -30px;
+    width: 120px;
+    height: 120px;
+    background: rgba(91,200,213,0.08);
+    border-radius: 50%;
+  }
+
+  .step-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    background: var(--teal);
+    border-radius: 50%;
+    font-size: 13px;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 10px;
+  }
+
+  .step-card h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 8px;
+  }
+
+  .step-card p {
+    font-size: 14px;
+    color: #CBD5E1;
+    line-height: 1.7;
+  }
+
+  .step-card-light {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px 28px;
+    margin-bottom: 16px;
+    position: relative;
+  }
+
+  .step-card-light h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 8px;
+  }
+
+  .step-card-light p {
+    font-size: 14px;
+    color: var(--slate);
+    line-height: 1.7;
+  }
+
+  /* Code block */
+  .code-block {
+    background: var(--navy);
+    color: #E2E8F0;
+    border-radius: 10px;
+    padding: 16px 20px;
+    font-family: 'SF Mono', 'Consolas', monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    margin: 10px 0 0 0;
+    overflow-x: auto;
+    box-shadow: 0 2px 16px rgba(30,41,59,0.12);
+    transition: box-shadow 0.25s ease;
+  }
+
+  .code-block:hover {
+    box-shadow: 0 4px 28px rgba(30,41,59,0.2);
+  }
+
+  .code-block .teal { color: #5BC8D5; }
+  .code-block .green { color: #86EFAC; }
+  .code-block .comment { color: #64748B; }
+
+  /* Warning / Tip */
+  .tip {
+    background: #FFFBEB;
+    border: 1px solid #FCD34D;
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 16px;
+    font-size: 14px;
+    color: #92400E;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .tip-icon { font-size: 18px; flex-shrink: 0; margin-top: 2px; }
+
+  .warning {
+    background: #FFF5F5;
+    border: 1px solid #FCA5A5;
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 16px;
+    font-size: 14px;
+    color: #991B1B;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  /* Detect Mode Box */
+  .detect-box {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin: 16px 0;
+  }
+
+  .detect-box h4 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 12px;
+  }
+
+  .detect-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .detect-row:last-child { border-bottom: none; }
+
+  .detect-badge {
+    display: inline-flex;
+    align-items: center;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 12px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .detect-badge.new { background: #DCFCE7; color: #15803D; }
+  .detect-badge.merge { background: var(--teal-light); color: var(--teal); }
+
+  .detect-row p { font-size: 13px; color: var(--slate); line-height: 1.5; }
+
+  /* Chat Bubble */
+  .chat-demo {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+
+  .chat-bubble-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 14px;
+    align-items: flex-start;
+  }
+
+  .chat-bubble-row.right {
+    flex-direction: row-reverse;
+  }
+
+  .chat-avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 700;
+    flex-shrink: 0;
+    font-size: 12px;
+    color: white;
+  }
+
+  .chat-avatar.user { background: var(--slate); }
+  .chat-avatar.ai { background: var(--teal); }
+
+  .chat-bubble {
+    max-width: 75%;
+    padding: 10px 14px;
+    border-radius: 14px;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .chat-bubble.user {
+    background: var(--navy);
+    color: #E2E8F0;
+    border-top-right-radius: 4px;
+  }
+
+  .chat-bubble.ai {
+    background: white;
+    border: 1px solid var(--border);
+    color: var(--navy);
+    border-top-left-radius: 4px;
+  }
+
+  /* Prompt Tabs */
+  .tab-bar {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 0;
+    border-bottom: 2px solid var(--border);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .tab-bar::-webkit-scrollbar { display: none; }
+
+  .tab-btn {
+    padding: 10px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+    border: none;
+    background: none;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    white-space: nowrap;
+    transition: color 0.2s;
+  }
+
+  .tab-btn.active {
+    color: var(--teal);
+    border-bottom-color: var(--teal);
+  }
+
+  .tab-btn:hover { color: var(--navy); }
+
+  .tab-panel {
+    display: none;
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-top: none;
+    border-radius: 0 0 12px 12px;
+    padding: 20px;
+    margin-bottom: 24px;
+  }
+
+  .tab-panel.active { display: block; }
+
+  .prompt-text {
+    background: var(--navy);
+    color: #E2E8F0;
+    border-radius: 10px;
+    padding: 16px 20px;
+    font-family: 'SF Mono', 'Consolas', monospace;
+    font-size: 13px;
+    line-height: 1.8;
+    margin-bottom: 12px;
+    position: relative;
+  }
+
+  .prompt-text .placeholder {
+    color: var(--teal);
+    font-style: italic;
+  }
+
+  .copy-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--teal);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .copy-btn:hover {
+    background: #47b5c1;
+    transform: translateY(-1px);
+  }
+
+  .copy-btn.copied {
+    background: var(--green);
+  }
+
+  /* Habit Cards */
+  .habit-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+
+  .habit-card {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px;
+    transition: box-shadow 0.25s ease, transform 0.25s ease;
+  }
+
+  .habit-card:hover {
+    box-shadow: 0 4px 20px rgba(91,200,213,0.13);
+    transform: translateY(-2px);
+  }
+
+  .habit-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    background: var(--teal-light);
+    color: var(--teal);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    margin-bottom: 12px;
+  }
+
+  .habit-card h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 8px;
+  }
+
+  .habit-card p {
+    font-size: 13px;
+    color: var(--slate);
+    line-height: 1.6;
+  }
+
+  /* Progress Curve (pure CSS) */
+  .progress-curve {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px 24px 20px;
+    margin-bottom: 24px;
+  }
+
+  .progress-curve h4 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .curve-chart {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    height: 120px;
+    padding: 0 8px;
+    margin-bottom: 12px;
+    position: relative;
+  }
+
+  .curve-chart::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    right: 8px;
+    bottom: 0;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .curve-bar-wrap {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    position: relative;
+  }
+
+  .curve-bar {
+    width: 100%;
+    background: linear-gradient(to top, var(--teal), rgba(91,200,213,0.4));
+    border-radius: 4px 4px 0 0;
+    position: relative;
+    min-height: 8px;
+    transition: height 0.6s ease;
+  }
+
+  .curve-label {
+    font-size: 11px;
+    color: var(--muted);
+    text-align: center;
+    line-height: 1.3;
+    white-space: nowrap;
+  }
+
+  .curve-value {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--teal);
+    text-align: center;
+  }
+
+  /* FAQ Accordion */
+  .faq-item {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    transition: box-shadow 0.2s ease;
+  }
+
+  .faq-item:hover { box-shadow: 0 2px 12px rgba(91,200,213,0.1); }
+
+  .faq-question {
+    width: 100%;
+    text-align: left;
+    background: var(--bg-soft);
+    border: none;
+    padding: 16px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--navy);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    transition: background 0.2s;
+  }
+
+  .faq-question:hover { background: var(--teal-light); }
+
+  .faq-question.open {
+    background: var(--teal-light);
+    color: var(--teal);
+  }
+
+  .faq-chevron {
+    font-size: 16px;
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+  }
+
+  .faq-question.open .faq-chevron { transform: rotate(180deg); }
+
+  .faq-answer {
+    display: none;
+    padding: 16px 20px;
+    font-size: 14px;
+    color: var(--slate);
+    line-height: 1.7;
+    border-top: 1px solid var(--border);
+    background: white;
+  }
+
+  .faq-answer.open { display: block; }
+
+  /* Footer CTA */
+  .footer-cta {
+    text-align: center;
+    padding: 60px 24px;
+    background: var(--navy);
+    border-radius: 20px;
+    margin-bottom: 60px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .footer-cta::before {
+    content: '';
+    position: absolute;
+    top: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(91,200,213,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .footer-cta h2 {
+    font-size: clamp(20px, 4vw, 28px);
+    font-weight: 800;
+    color: white;
+    margin-bottom: 10px;
+    position: relative;
+  }
+
+  .footer-cta p {
+    font-size: 15px;
+    color: #94A3B8;
+    margin-bottom: 28px;
+    position: relative;
+  }
+
+  .footer-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--teal);
+    color: white;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 12px 28px;
+    border-radius: 30px;
+    transition: all 0.2s;
+    position: relative;
+    box-shadow: 0 4px 16px rgba(91,200,213,0.4);
+  }
+
+  .footer-cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(91,200,213,0.55);
+  }
+
+  footer {
+    text-align: center;
+    padding: 40px 24px;
+    font-size: 12px;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+  }
+
+  /* Confidential Banner */
+  .confidential-banner {
+    background: linear-gradient(135deg, #FEF2F2 0%, #FFF5F5 100%);
+    border: 2px solid #FCA5A5;
+    border-radius: 14px;
+    padding: 16px 22px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .confidential-banner .conf-icon {
+    width: 40px;
+    height: 40px;
+    background: #EF4444;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: white;
+    font-size: 20px;
+  }
+
+  .confidential-banner h3 {
+    font-size: 14px;
+    font-weight: 700;
+    color: #991B1B;
+    margin-bottom: 4px;
+  }
+
+  .confidential-banner p {
+    font-size: 13px;
+    color: #7F1D1D;
+    line-height: 1.6;
+  }
+
+  /* Foreword */
+  .foreword-card {
+    background: linear-gradient(135deg, var(--bg-soft) 0%, #F0FBFC 100%);
+    border: 1px solid var(--teal-mid);
+    border-radius: 20px;
+    padding: 32px 36px;
+    margin-bottom: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .foreword-card::before {
+    content: '"';
+    position: absolute;
+    top: -10px;
+    left: 20px;
+    font-size: 140px;
+    color: var(--teal-mid);
+    font-family: Georgia, serif;
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .foreword-title {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--teal);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 16px;
+  }
+
+  .foreword-body {
+    font-size: 15px;
+    line-height: 1.9;
+    color: var(--navy);
+    position: relative;
+    z-index: 1;
+  }
+
+  .foreword-body p { margin-bottom: 14px; }
+  .foreword-body p:last-child { margin-bottom: 0; }
+
+  .foreword-body strong { color: var(--teal); }
+
+  .foreword-sig {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--teal-mid);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .foreword-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--teal), #2A9D9D);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .foreword-sig-info strong {
+    display: block;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--navy);
+  }
+
+  .foreword-sig-info span {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* Stats Row */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .stat-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px 16px;
+    text-align: center;
+  }
+
+  .stat-num {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--teal);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--slate);
+    line-height: 1.4;
+  }
+
+  /* Comparison Table */
+  .compare-section {
+    margin-bottom: 40px;
+  }
+
+  .compare-table-wrap {
+    overflow-x: auto;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    margin-bottom: 16px;
+  }
+
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 640px;
+  }
+
+  .compare-table thead tr {
+    background: var(--navy);
+    color: white;
+  }
+
+  .compare-table thead th {
+    padding: 16px 20px;
+    text-align: left;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .compare-table thead th:first-child {
+    border-radius: 15px 0 0 0;
+    width: 28%;
+  }
+
+  .compare-table thead th:last-child {
+    border-radius: 0 15px 0 0;
+  }
+
+  .compare-table thead .col-with {
+    background: var(--teal);
+  }
+
+  .compare-table tbody tr {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .compare-table tbody tr:last-child {
+    border-bottom: none;
+  }
+
+  .compare-table tbody tr:hover {
+    background: var(--bg-soft);
+  }
+
+  .compare-table tbody td {
+    padding: 14px 20px;
+    font-size: 13px;
+    vertical-align: top;
+    line-height: 1.6;
+  }
+
+  .compare-table .row-label {
+    font-weight: 600;
+    color: var(--navy);
+    font-size: 13px;
+  }
+
+  .compare-table .col-without {
+    color: var(--slate);
+    background: #FAFAFA;
+  }
+
+  .compare-table .col-with {
+    color: var(--navy);
+    background: #F0FBFC;
+  }
+
+  .compare-table .col-with strong {
+    color: var(--teal);
+  }
+
+  .compare-check {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+
+  .compare-check.good {
+    background: #DCFCE7;
+    color: #15803D;
+  }
+
+  .compare-check.bad {
+    background: #FEF2F2;
+    color: #DC2626;
+  }
+
+  .compare-check.ok {
+    background: #FEF9C3;
+    color: #92400E;
+  }
+
+  /* Timeline */
+  .timeline {
+    padding: 8px 0;
+    margin-bottom: 24px;
+  }
+
+  .timeline-item {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 20px;
+    align-items: flex-start;
+  }
+
+  .timeline-dot {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--teal-light);
+    border: 2px solid var(--teal);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--teal);
+    font-size: 14px;
+  }
+
+  .timeline-content h4 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 4px;
+  }
+
+  .timeline-content p {
+    font-size: 13px;
+    color: var(--slate);
+    line-height: 1.5;
+  }
+
+  .timeline-connector {
+    width: 2px;
+    height: 16px;
+    background: var(--border);
+    margin: 4px 0 4px 17px;
+  }
+
+  /* Visual Callout Box */
+  .callout-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 24px 0;
+  }
+
+  .callout-box {
+    border-radius: 14px;
+    padding: 20px;
+  }
+
+  .callout-box.danger {
+    background: #FFF5F5;
+    border: 1px solid #FCA5A5;
+  }
+
+  .callout-box.success {
+    background: #F0FBF4;
+    border: 1px solid #86EFAC;
+  }
+
+  .callout-box h4 {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .callout-box.danger h4 { color: #991B1B; }
+  .callout-box.success h4 { color: #15803D; }
+
+  .callout-box ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .callout-box ul li {
+    font-size: 13px;
+    padding: 4px 0;
+    line-height: 1.5;
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .callout-box.danger ul li { color: #7F1D1D; }
+  .callout-box.success ul li { color: #14532D; }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    main { padding: 70px 16px 60px; }
+    .skill-grid { grid-template-columns: 1fr 1fr; }
+    .agent-grid { grid-template-columns: 1fr; }
+    .habit-grid { grid-template-columns: 1fr; }
+    .chat-bubble { max-width: 90%; }
+    .back-banner { flex-direction: column; align-items: flex-start; }
+    .curve-label { font-size: 10px; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+    .callout-row { grid-template-columns: 1fr; }
+    .foreword-card { padding: 24px 20px; }
+    .foreword-card::before { font-size: 100px; }
+  }
+
+  @media (max-width: 400px) {
+    .skill-grid { grid-template-columns: 1fr; }
+    .tab-btn { padding: 8px 10px; font-size: 12px; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">淨淨主管啟動包</a>
+    <a href="#step0">包裡有什麼</a>
+    <a href="#step1">一鍵安裝</a>
+    <a href="#step2">6 個夥伴</a>
+    <a href="#step3">第一個任務</a>
+    <a href="#step4">越用越強</a>
+    <a href="#step5">常見問題</a>
+  </div>
+</nav>
+
+<main>
+
+  <!-- Back Banner -->
+  <div class="back-banner">
+    <div class="back-banner-left">
+      <i class="ph ph-graduation-cap" style="color:var(--teal);font-size:18px;"></i>
+      <span>你已完成 <strong>主管 AI 培訓課</strong></span>
+    </div>
+    <a href="manager-training.html">
+      <i class="ph ph-arrow-left"></i> 回到培訓課
+    </a>
+  </div>
+
+  <!-- Confidential Banner -->
+  <div class="confidential-banner">
+    <div class="conf-icon">
+      <i class="ph ph-lock-key"></i>
+    </div>
+    <div>
+      <h3>公司機密文件 — 嚴禁外傳</h3>
+      <p>以下內容是我們公司的智慧財產，僅供淨淨內部主管使用。請勿截圖、轉傳或分享給公司以外的任何人。違反者依公司規定處理。</p>
+    </div>
+  </div>
+
+  <!-- Foreword -->
+  <div class="foreword-card">
+    <div class="foreword-title">創辦人的話</div>
+    <div class="foreword-body">
+      <p>這份啟動包，是我<strong>燃燒 20 天</strong>總結出來的核心 know-how。</p>
+      <p>在這 20 天裡，我測試了超過 200 種 prompt、分析數十部教學影片、爬文、測試踩過無數坑、反覆調整 AI 工作流程的架構、基礎建設，才把「讓AI做事」這件事變成一套<a href="#" style="color:var(--teal);font-weight:600;text-decoration:none;">可以複製的系統</a>。</p>
+      <p>據我所知，目前市場上很少有品牌公司可以做到這個程度——不只是讓員工用 AI，而是讓 AI 真正懂你的品牌、懂你的產品、懂你的法規紅線，從第一天就能直接出工具。</p>
+      <p>這是我送給團隊的禮物，請大家好好使用，也請大家珍惜，請勿外流</p>
+    </div>
+    <div class="foreword-sig">
+      <div class="foreword-avatar">笙</div>
+      <div class="foreword-sig-info">
+        <strong>陳睿笙</strong>
+        <span>淨淨 CleanClean 創辦人 &nbsp;·&nbsp; 2026 年 5 月</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats Row -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-num">20</div>
+      <div class="stat-label">天研發提煉<br>系統化精華</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">6</div>
+      <div class="stat-label">個 AI 夥伴<br>各司其職</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">9</div>
+      <div class="stat-label">個知識模組<br>淨淨專屬</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">3<span style="font-size:18px;font-weight:500">分鐘</span></div>
+      <div class="stat-label">完成安裝<br>立即上工</div>
+    </div>
+  </div>
+
+  <!-- Industry Benchmark -->
+  <div style="background:var(--navy);border-radius:20px;padding:28px 32px;margin-bottom:32px;position:relative;overflow:hidden;">
+    <div style="position:absolute;top:-20px;right:-20px;width:120px;height:120px;background:rgba(91,200,213,0.08);border-radius:50%;"></div>
+    <div style="position:absolute;bottom:-30px;left:40px;width:80px;height:80px;background:rgba(91,200,213,0.05);border-radius:50%;"></div>
+
+    <div style="font-size:11px;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;">行業定位</div>
+    <h3 style="color:white;font-size:20px;font-weight:800;margin-bottom:6px;">台灣中小企業 AI 應用，你在前幾 %？</h3>
+    <p style="color:#94A3B8;font-size:13px;margin-bottom:24px;">直接說結論：<strong style="color:var(--teal);">前 1%，可能是前 0.5%。</strong>清潔用品產業裡，大概是唯一一個。</p>
+
+    <!-- Bar chart -->
+    <div style="display:flex;flex-direction:column;gap:14px;">
+
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div style="color:#94A3B8;font-size:12px;width:38px;text-align:right;flex-shrink:0;">90%</div>
+        <div style="flex:1;background:rgba(255,255,255,0.06);border-radius:6px;height:32px;overflow:hidden;position:relative;">
+          <div style="width:90%;height:100%;background:rgba(148,163,184,0.25);border-radius:6px;display:flex;align-items:center;padding:0 12px;">
+            <span style="color:#94A3B8;font-size:12px;">完全沒用，或只用 ChatGPT 問問題</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div style="color:#94A3B8;font-size:12px;width:38px;text-align:right;flex-shrink:0;">8%</div>
+        <div style="flex:1;background:rgba(255,255,255,0.06);border-radius:6px;height:32px;overflow:hidden;position:relative;">
+          <div style="width:8%;height:100%;background:rgba(148,163,184,0.4);border-radius:6px;min-width:80px;display:flex;align-items:center;padding:0 12px;white-space:nowrap;">
+            <span style="color:#CBD5E1;font-size:12px;">有用工具，但沒有系統</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div style="color:#94A3B8;font-size:12px;width:38px;text-align:right;flex-shrink:0;">1.5%</div>
+        <div style="flex:1;background:rgba(255,255,255,0.06);border-radius:6px;height:32px;overflow:hidden;position:relative;">
+          <div style="width:1.5%;height:100%;background:rgba(91,200,213,0.4);border-radius:6px;min-width:110px;display:flex;align-items:center;padding:0 12px;white-space:nowrap;">
+            <span style="color:#7DD3DE;font-size:12px;">有建 workflow（Notion / Zapier）</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div style="color:var(--teal);font-size:12px;font-weight:800;width:38px;text-align:right;flex-shrink:0;">0.5%</div>
+        <div style="flex:1;background:rgba(91,200,213,0.08);border:1px solid rgba(91,200,213,0.3);border-radius:6px;height:40px;overflow:hidden;position:relative;">
+          <div style="width:0.5%;height:100%;background:linear-gradient(90deg,var(--teal),#2A9D9D);border-radius:6px;min-width:130px;display:flex;align-items:center;padding:0 12px;white-space:nowrap;gap:8px;">
+            <i class="ph ph-crown" style="color:white;font-size:14px;flex-shrink:0;"></i>
+            <span style="color:white;font-size:12px;font-weight:700;">你 — 自建軍團、記憶、鐵律、成本控制、教育體系</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="margin-top:20px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;gap:8px;">
+      <i class="ph ph-info" style="color:var(--teal);font-size:16px;flex-shrink:0;"></i>
+      <p style="color:#64748B;font-size:12px;line-height:1.6;">這份啟動包代表淨淨已走在行業最前端。你手上現在拿到的，是台灣同產業裡極少數公司能做到的 AI 工作架構，請認真對待它。</p>
+    </div>
+  </div>
+
+  <!-- Comparison Table -->
+  <div class="compare-section">
+    <div class="section-label" style="margin-bottom:8px;">有沒有差在哪</div>
+    <h2 style="font-size:22px;margin-bottom:8px;">啟動包 vs. 自己摸索</h2>
+    <p style="color:var(--slate);font-size:14px;margin-bottom:20px;">一張表讓你看清楚，這份文件幫你省了多少時間。</p>
+
+    <div class="compare-table-wrap">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>比較項目</th>
+            <th>沒有啟動包（自己摸索）</th>
+            <th class="col-with">有啟動包（現在的你）</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="row-label">開始使用 AI 的時間</td>
+            <td class="col-without">需要 2～4 週摸索，才能建立基本工作流<br><span class="compare-check bad"><i class="ph ph-x"></i> 慢</span></td>
+            <td class="col-with">安裝完成後 <strong>3 分鐘內開始</strong>，當天就能產出<br><span class="compare-check good"><i class="ph ph-check"></i> 立即可用</span></td>
+          </tr>
+          <tr>
+            <td class="row-label">AI 對淨淨品牌的認識</td>
+            <td class="col-without">完全不懂，每次都要重新說明品牌規範、產品、合規紅線<br><span class="compare-check bad"><i class="ph ph-x"></i> 每次從頭說</span></td>
+            <td class="col-with">內建品牌色、產品全目錄、禁用詞速查，<strong>無需重複解釋</strong><br><span class="compare-check good"><i class="ph ph-check"></i> 淨淨專屬記憶</span></td>
+          </tr>
+          <tr>
+            <td class="row-label">文案合規把關</td>
+            <td class="col-without">靠自己記得哪些詞不能說，容易疏漏，出錯才知道<br><span class="compare-check bad"><i class="ph ph-x"></i> 高風險</span></td>
+            <td class="col-with">AI 自動套用合規模組，<strong>「殺菌、消炎、抗菌」</strong>等禁用詞主動提示<br><span class="compare-check good"><i class="ph ph-check"></i> AI 自動擋第一關</span></td>
+          </tr>
+          <tr>
+            <td class="row-label">任務分工方式</td>
+            <td class="col-without">所有事情都問同一個 AI，沒有分工，效率低落<br><span class="compare-check bad"><i class="ph ph-x"></i> 一人包辦</span></td>
+            <td class="col-with">6 個 AI 角色各司其職，PM 協調，寫文案找行銷、做設計找美編<br><span class="compare-check good"><i class="ph ph-check"></i> 專業分工</span></td>
+          </tr>
+          <tr>
+            <td class="row-label">工作成果品質</td>
+            <td class="col-without">輸出品質不穩定，AI 做的事常常要大改，甚至重做<br><span class="compare-check ok"><i class="ph ph-minus"></i> 不穩定</span></td>
+            <td class="col-with">PM 四層驗收機制（功能/品質/合規/格式），確保每次交出好成品<br><span class="compare-check good"><i class="ph ph-check"></i> 品質有保障</span></td>
+          </tr>
+          <tr>
+            <td class="row-label">自己做設定需要的時間</td>
+            <td class="col-without">光研究 Claude Code 架構就要 1～2 週，寫 prompt 系統又要更多時間<br><span class="compare-check bad"><i class="ph ph-x"></i> 20 天以上</span></td>
+            <td class="col-with">創辦人花 20 天踩坑、總結、打磨，你直接繼承成果<br><span class="compare-check good"><i class="ph ph-check"></i> 省 20 天</span></td>
+          </tr>
+          <tr>
+            <td class="row-label">資訊安全</td>
+            <td class="col-without">不知道哪些東西不能貼給 AI，容易洩漏員工個資或 API 金鑰<br><span class="compare-check bad"><i class="ph ph-x"></i> 有風險</span></td>
+            <td class="col-with">資安守則內建，明確說明哪些資料需要去識別化才能給 AI 分析<br><span class="compare-check good"><i class="ph ph-check"></i> 有規範保護</span></td>
+          </tr>
+          <tr>
+            <td class="row-label">開新對話後 AI 的狀態</td>
+            <td class="col-without">每次重開對話，AI 什麼都忘了，要重新說明所有背景<br><span class="compare-check bad"><i class="ph ph-x"></i> 每次重來</span></td>
+            <td class="col-with">打 <code>/上工</code>，AI 立刻重新載入你的工作習慣和品牌知識<br><span class="compare-check good"><i class="ph ph-check"></i> 記憶一鍵回來</span></td>
+          </tr>
+          <tr>
+            <td class="row-label">適合我們產業的深度</td>
+            <td class="col-without">AI 對清潔、個人護理產業的法規和宣稱限制一無所知<br><span class="compare-check bad"><i class="ph ph-x"></i> 通用 AI，不懂行</span></td>
+            <td class="col-with">針對化粧品法、清潔商品標示規範客製化，含罰款等級提示<br><span class="compare-check good"><i class="ph ph-check"></i> 業界深度客製</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout-row">
+      <div class="callout-box danger">
+        <h4><i class="ph ph-warning" style="color:#DC2626;"></i> 沒有這份文件的主管</h4>
+        <ul>
+          <li><i class="ph ph-x" style="color:#DC2626;font-size:12px;margin-top:2px;"></i> 自己在網路上找 prompt 拼拼湊湊</li>
+          <li><i class="ph ph-x" style="color:#DC2626;font-size:12px;margin-top:2px;"></i> AI 說出「殺菌」也沒人提醒</li>
+          <li><i class="ph ph-x" style="color:#DC2626;font-size:12px;margin-top:2px;"></i> 每次開新對話都要重新介紹品牌</li>
+          <li><i class="ph ph-x" style="color:#DC2626;font-size:12px;margin-top:2px;"></i> 不知道哪個任務要找哪個 AI 做</li>
+          <li><i class="ph ph-x" style="color:#DC2626;font-size:12px;margin-top:2px;"></i> AI 產出品質靠運氣，改稿沒完沒了</li>
+        </ul>
+      </div>
+      <div class="callout-box success">
+        <h4><i class="ph ph-check-circle" style="color:#15803D;"></i> 有這份文件的你</h4>
+        <ul>
+          <li><i class="ph ph-check" style="color:#15803D;font-size:12px;margin-top:2px;"></i> 系統在 3 分鐘內全部就定位</li>
+          <li><i class="ph ph-check" style="color:#15803D;font-size:12px;margin-top:2px;"></i> 合規知識內建，AI 自動提醒</li>
+          <li><i class="ph ph-check" style="color:#15803D;font-size:12px;margin-top:2px;"></i> 品牌記憶永久保留，不用重複說</li>
+          <li><i class="ph ph-check" style="color:#15803D;font-size:12px;margin-top:2px;"></i> 6 個專業夥伴各司其職</li>
+          <li><i class="ph ph-check" style="color:#15803D;font-size:12px;margin-top:2px;"></i> PM 四層驗收，品質有保障</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-sub">你已完成 Claude Code 培訓課程</div>
+    <div class="hero-badge">淨淨主管啟動包 — 安裝指南</div>
+    <h1>現在，把你的 AI 從單打獨鬥<br>升級成<span>六人團隊</span></h1>
+    <p>這份啟動包會在 3 分鐘內幫你安裝好：6 個 AI 夥伴人格、淨淨完整品牌知識、PM 派工驗收工作流、資安守則。</p>
+    <a href="#step1" class="hero-btn">
+      <i class="ph ph-rocket-launch"></i> 開始安裝
+    </a>
+  </div>
+
+  <!-- Section 0: 包裡有什麼 -->
+  <section id="step0">
+    <div class="section-label">SECTION 0</div>
+    <h2>包裡有什麼</h2>
+    <div class="section-divider"></div>
+    <p class="section-sub">啟動包預裝了 9 個知識模組和 6 個 AI 夥伴人格，讓你從第一天就能直接用。</p>
+
+    <div class="skill-grid">
+      <div class="skill-card">
+        <div class="skill-card-icon"><i class="ph ph-package"></i></div>
+        <h4>淨淨知識庫</h4>
+        <p>品牌故事、產品規格、行銷策略、合規守則四合一</p>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-icon"><i class="ph ph-flow-arrow"></i></div>
+        <h4>PM 工作流</h4>
+        <p>派工單格式、驗收 SOP、進度回報標準流程</p>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-icon"><i class="ph ph-shield-check"></i></div>
+        <h4>資訊安全守則</h4>
+        <p>API Key 保護、個資處理規範、提示詞注入防範</p>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-icon"><i class="ph ph-robot"></i></div>
+        <h4>AI 夥伴框架</h4>
+        <p>DISPATCH / DONE / FAIL 三類訊息系統，讓 AI 回報零歧義</p>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-icon"><i class="ph ph-palette"></i></div>
+        <h4>視覺設計規範</h4>
+        <p>淨淨品牌色系、icon 使用規則、排版標準</p>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-icon"><i class="ph ph-wrench"></i></div>
+        <h4>網站建造手冊</h4>
+        <p>部署 SOP、常見踩坑速查、環境設定清單</p>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-icon"><i class="ph ph-plugs"></i></div>
+        <h4>後端串接指南</h4>
+        <p>API 串接規範、CORS 設定、環境變數管理</p>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-icon"><i class="ph ph-image"></i></div>
+        <h4>AI 生圖工具</h4>
+        <p>廣告圖、Banner、產品情境圖一鍵生成</p>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-icon"><i class="ph ph-video"></i></div>
+        <h4>AI 生影片工具</h4>
+        <p>產品照轉短影片、圖生影片工作流</p>
+      </div>
+    </div>
+
+    <h3 style="font-size:18px;font-weight:700;color:var(--navy);margin:36px 0 16px;">6 個 AI 夥伴</h3>
+    <div class="agent-grid">
+      <div class="agent-card">
+        <div class="agent-dot" style="background:#F59E0B;">PM</div>
+        <div class="agent-card-info">
+          <h4>PM（經理）</h4>
+          <span class="agent-role-label">統籌全隊</span>
+          <p>拆任務、協調各夥伴、驗收成品，是你最主要的對話對象</p>
+        </div>
+      </div>
+      <div class="agent-card">
+        <div class="agent-dot" style="background:#8B5CF6;">策</div>
+        <div class="agent-card-info">
+          <h4>策略</h4>
+          <span class="agent-role-label">規劃優化</span>
+          <p>規劃行銷方向、流程優化、品質把關，看全局的人</p>
+        </div>
+      </div>
+      <div class="agent-card">
+        <div class="agent-dot" style="background:#3B82F6;">前</div>
+        <div class="agent-card-info">
+          <h4>前端</h4>
+          <span class="agent-role-label">網頁視覺</span>
+          <p>HTML/CSS 網頁製作、視覺調整、手機版 RWD 測試</p>
+        </div>
+      </div>
+      <div class="agent-card">
+        <div class="agent-dot" style="background:#10B981;">後</div>
+        <div class="agent-card-info">
+          <h4>後端</h4>
+          <span class="agent-role-label">部署上線</span>
+          <p>資料庫設計、AI 串接、網站部署上線，搞定技術底層</p>
+        </div>
+      </div>
+      <div class="agent-card">
+        <div class="agent-dot" style="background:#EC4899;">行</div>
+        <div class="agent-card-info">
+          <h4>行銷</h4>
+          <span class="agent-role-label">文案創意</span>
+          <p>IG/FB/Threads 貼文、廣告文案、活動企劃，內建合規審查</p>
+        </div>
+      </div>
+      <div class="agent-card">
+        <div class="agent-dot" style="background:#EAB308;">美</div>
+        <div class="agent-card-info">
+          <h4>美編</h4>
+          <span class="agent-role-label">視覺素材</span>
+          <p>廣告 Banner、AI 生圖、產品情境圖、品牌卡片製作</p>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="font-size:18px;font-weight:700;color:var(--navy);margin:36px 0 16px;">8 個快捷指令</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>數字</th>
+            <th>Slash 指令</th>
+            <th>做什麼</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>9</td>
+            <td><span class="tag-teal">/上工</span></td>
+            <td>開始新對話，重新載入所有規則和記憶</td>
+          </tr>
+          <tr>
+            <td>0</td>
+            <td><span class="tag-teal">/收件夾</span></td>
+            <td>查看有沒有未讀訊息、重載規則、回報現況</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td><span class="tag-teal">/工作日誌</span></td>
+            <td>把這次對話的決定存進 AI 記憶</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td><span class="tag-teal">/繼續</span></td>
+            <td>你這邊做完了，叫 AI 繼續下一步</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td><span class="tag-teal">/審查</span></td>
+            <td>叫 AI 用最嚴格的眼光審查成品，找出問題直接修</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td><span class="tag-teal">/升級</span></td>
+            <td>把這次新發現的好方法存進知識庫</td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td><span class="tag-teal">/衝</span></td>
+            <td>全力執行，細節不問你，直接做完</td>
+          </tr>
+          <tr>
+            <td>3 1 4</td>
+            <td><span class="tag-teal">/收工</span></td>
+            <td>收工三連擊：審查 + 存日誌 + 升級知識庫</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Section 1: 一鍵安裝 -->
+  <section id="step1">
+    <div class="section-label">SECTION 1</div>
+    <h2>3 分鐘安裝完成</h2>
+    <div class="section-divider"></div>
+    <p class="section-sub">五個步驟，全程有腳本幫你跑，不需要工程背景。</p>
+
+    <div class="step-card">
+      <div class="step-num">1</div>
+      <h3>確認已安裝 Claude Code</h3>
+      <p>在終端機（Terminal）貼上這行，裝過了直接跳步驟 2：</p>
+      <div class="code-block">
+        <span class="teal">npm</span> install -g @anthropic-ai/claude-code
+      </div>
+    </div>
+
+    <div class="step-card-light">
+      <div class="step-num" style="background:var(--teal);color:white;display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;font-size:13px;font-weight:800;margin-bottom:10px;">2</div>
+      <h3>解壓縮啟動包</h3>
+      <p>笙闆（主公）會透過 LINE 或 Google Drive 把啟動包傳給你。下載後解壓縮，放在桌面方便找到。</p>
+
+      <!-- File Structure Visual -->
+      <div style="margin-top:16px;background:var(--navy);border-radius:12px;padding:20px 24px;font-family:monospace;font-size:13px;line-height:2;">
+        <div style="color:#94A3B8;margin-bottom:8px;font-size:11px;letter-spacing:1px;">啟動包內容結構</div>
+        <div style="color:#E2E8F0;">主管Claude啟動包/</div>
+        <div style="color:#94A3B8;padding-left:18px;">├── <span style="color:#5BC8D5;">雙擊我啟動.command</span> <span style="color:#475569;font-size:11px;">← 雙擊這個開始安裝</span></div>
+        <div style="color:#94A3B8;padding-left:18px;">├── INSTALL.sh <span style="color:#475569;font-size:11px;">← 智能安裝腳本</span></div>
+        <div style="color:#94A3B8;padding-left:18px;">└── claude/</div>
+        <div style="color:#94A3B8;padding-left:36px;">├── <span style="color:#86EFAC;">CLAUDE.md</span> <span style="color:#475569;font-size:11px;">← AI 工作守則</span></div>
+        <div style="color:#94A3B8;padding-left:36px;">├── agents/ <span style="color:#475569;font-size:11px;">← 6 個 AI 夥伴人格</span></div>
+        <div style="color:#94A3B8;padding-left:36px;">├── <span style="color:#FCD34D;">skills/</span> <span style="color:#475569;font-size:11px;">← 9 個知識模組</span></div>
+        <div style="color:#94A3B8;padding-left:36px;">├── commands/ <span style="color:#475569;font-size:11px;">← 8 個快捷指令</span></div>
+        <div style="color:#94A3B8;padding-left:36px;">├── hooks/ <span style="color:#475569;font-size:11px;">← 自動觸發機制</span></div>
+        <div style="color:#94A3B8;padding-left:36px;">└── output-styles/ <span style="color:#475569;font-size:11px;">← 3 種回答風格</span></div>
+      </div>
+    </div>
+
+    <div class="step-card-light">
+      <div class="step-num" style="background:var(--teal);color:white;display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;font-size:13px;font-weight:800;margin-bottom:10px;">3</div>
+      <h3>雙擊「雙擊我啟動.command」</h3>
+      <p>找到解壓縮後的資料夾，雙擊這個檔案。腳本會自動偵測你的狀況，決定用哪種安裝方式。</p>
+    </div>
+
+    <div class="detect-box">
+      <h4>安裝腳本偵測邏輯</h4>
+      <div class="detect-row">
+        <span class="detect-badge new">全新安裝</span>
+        <p>你從來沒有 <code style="font-size:12px;background:var(--bg-soft);padding:2px 6px;border-radius:4px;">~/.claude/agents</code>，腳本會完整安裝全套：6 個夥伴人格 + 9 個知識模組 + 快捷指令設定</p>
+      </div>
+      <div class="detect-row">
+        <span class="detect-badge merge">合併模式</span>
+        <p>你已有 Claude Code 設定，腳本只補缺少的 Skill 和指令，<strong>你現有的夥伴和設定完全不動</strong></p>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num">4</div>
+      <h3>填入 API Key</h3>
+      <p>腳本跑完後，找到 <code style="color:#5BC8D5;">~/.claude/.env.example</code>，改名成 <code style="color:#86EFAC;">.env</code>，填入你的 ANTHROPIC_API_KEY。</p>
+      <div class="code-block">
+        <span class="comment"># 把 .env.example 改名成 .env</span><br>
+        <span class="teal">ANTHROPIC_API_KEY</span>=<span class="green">sk-ant-xxxxxxxxxxxxxxxx</span>
+      </div>
+    </div>
+
+    <div class="warning">
+      <i class="ph ph-warning-circle tip-icon" style="color:var(--red);"></i>
+      <div><strong>Key 安全守則：</strong>API Key 是你的帳號密碼，等級最高。不要貼到任何對話框、不要傳 LINE 給別人、不要放進公開文件。有人問你要 Key，一律回絕。</div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num">5</div>
+      <h3>進入 Claude Code，打 /上工</h3>
+      <p>開終端機，進入你想工作的資料夾，輸入 <code style="color:#5BC8D5;">claude</code> 啟動，然後第一件事打 <code style="color:#86EFAC;">/上工</code>：</p>
+      <div class="code-block">
+        <span class="teal">claude</span><br>
+        <span class="green">/上工</span>
+      </div>
+    </div>
+
+    <div class="highlight">
+      <p><strong>安裝成功的標誌：</strong>打完 /上工 後，AI 會自動列出它載入了哪些知識模組，還會跟你打招呼說明它的 6 個夥伴分別負責什麼。看到這個，代表安裝完成。</p>
+    </div>
+  </section>
+
+  <!-- Section 2: 認識你的夥伴 -->
+  <section id="step2">
+    <div class="section-label">SECTION 2</div>
+    <h2>第一次使用，先跟 PM 打招呼</h2>
+    <div class="section-divider"></div>
+    <p class="section-sub">PM 是你的主要聯絡窗口，把任務告訴它，它幫你決定派給誰做。</p>
+
+    <!-- PM Workflow Visual -->
+    <div style="background:var(--bg-soft);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:24px;">
+      <div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:20px;">PM 派工流程</div>
+
+      <!-- Flow diagram -->
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:24px;">
+        <!-- You box -->
+        <div style="background:var(--navy);color:white;border-radius:12px;padding:12px 18px;text-align:center;min-width:90px;">
+          <div style="font-size:20px;margin-bottom:4px;"><i class="ph ph-user" style="color:#94A3B8;"></i></div>
+          <div style="font-size:13px;font-weight:700;">你</div>
+          <div style="font-size:11px;color:#94A3B8;margin-top:2px;">說任務</div>
+        </div>
+        <div style="color:var(--teal);font-size:20px;"><i class="ph ph-arrow-right"></i></div>
+        <!-- PM box -->
+        <div style="background:linear-gradient(135deg,#F59E0B,#D97706);color:white;border-radius:12px;padding:12px 18px;text-align:center;min-width:90px;">
+          <div style="font-size:20px;margin-bottom:4px;"><i class="ph ph-crown"></i></div>
+          <div style="font-size:13px;font-weight:700;">PM（經理）</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.8);margin-top:2px;">拆任務 + 派工</div>
+        </div>
+        <div style="color:var(--teal);font-size:20px;"><i class="ph ph-arrow-right"></i></div>
+        <!-- Team boxes -->
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="background:white;border:1px solid var(--border);border-radius:10px;padding:8px 14px;display:flex;align-items:center;gap:8px;min-width:110px;">
+            <div style="width:28px;height:28px;border-radius:50%;background:#EC4899;display:flex;align-items:center;justify-content:center;color:white;font-size:11px;font-weight:700;flex-shrink:0;">行</div>
+            <div><div style="font-size:12px;font-weight:700;color:var(--navy);">行銷</div><div style="font-size:11px;color:var(--muted);">寫文案</div></div>
+          </div>
+          <div style="background:white;border:1px solid var(--border);border-radius:10px;padding:8px 14px;display:flex;align-items:center;gap:8px;min-width:110px;">
+            <div style="width:28px;height:28px;border-radius:50%;background:#EAB308;display:flex;align-items:center;justify-content:center;color:white;font-size:11px;font-weight:700;flex-shrink:0;">美</div>
+            <div><div style="font-size:12px;font-weight:700;color:var(--navy);">美編</div><div style="font-size:11px;color:var(--muted);">做設計</div></div>
+          </div>
+          <div style="background:white;border:1px solid var(--border);border-radius:10px;padding:8px 14px;display:flex;align-items:center;gap:8px;min-width:110px;">
+            <div style="width:28px;height:28px;border-radius:50%;background:#8B5CF6;display:flex;align-items:center;justify-content:center;color:white;font-size:11px;font-weight:700;flex-shrink:0;">策</div>
+            <div><div style="font-size:12px;font-weight:700;color:var(--navy);">策略</div><div style="font-size:11px;color:var(--muted);">分析規劃</div></div>
+          </div>
+        </div>
+        <div style="color:var(--teal);font-size:20px;"><i class="ph ph-arrow-right"></i></div>
+        <!-- Verification -->
+        <div style="background:var(--teal-light);border:1px solid var(--teal-mid);border-radius:12px;padding:12px 16px;text-align:center;min-width:100px;">
+          <div style="font-size:20px;margin-bottom:4px;color:var(--teal);"><i class="ph ph-check-square"></i></div>
+          <div style="font-size:12px;font-weight:700;color:var(--navy);">PM 四層驗收</div>
+          <div style="font-size:11px;color:var(--slate);margin-top:2px;">品質把關</div>
+        </div>
+        <div style="color:var(--teal);font-size:20px;"><i class="ph ph-arrow-right"></i></div>
+        <!-- Result -->
+        <div style="background:linear-gradient(135deg,#10B981,#059669);color:white;border-radius:12px;padding:12px 16px;text-align:center;min-width:90px;">
+          <div style="font-size:20px;margin-bottom:4px;"><i class="ph ph-star"></i></div>
+          <div style="font-size:12px;font-weight:700;">成品交付</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.8);margin-top:2px;">你只看結果</div>
+        </div>
+      </div>
+
+      <!-- 4-layer verification -->
+      <div style="background:white;border-radius:12px;padding:16px 20px;border:1px solid var(--border);">
+        <div style="font-size:12px;font-weight:700;color:var(--navy);margin-bottom:12px;">PM 四層驗收 — 每次交付前必過</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <div style="display:flex;align-items:flex-start;gap:8px;">
+            <div style="width:24px;height:24px;background:var(--teal);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span style="color:white;font-size:11px;font-weight:800;">1</span></div>
+            <div><div style="font-size:13px;font-weight:700;color:var(--navy);">功能</div><div style="font-size:12px;color:var(--slate);">要做的事都做了嗎？</div></div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:8px;">
+            <div style="width:24px;height:24px;background:var(--teal);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span style="color:white;font-size:11px;font-weight:800;">2</span></div>
+            <div><div style="font-size:13px;font-weight:700;color:var(--navy);">品質</div><div style="font-size:12px;color:var(--slate);">邏輯通順？有沒有 AI 味？</div></div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:8px;">
+            <div style="width:24px;height:24px;background:#EF4444;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span style="color:white;font-size:11px;font-weight:800;">3</span></div>
+            <div><div style="font-size:13px;font-weight:700;color:var(--navy);">合規</div><div style="font-size:12px;color:var(--slate);">有沒有禁用詞？資訊正確？</div></div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:8px;">
+            <div style="width:24px;height:24px;background:#8B5CF6;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span style="color:white;font-size:11px;font-weight:800;">4</span></div>
+            <div><div style="font-size:13px;font-weight:700;color:var(--navy);">交付</div><div style="font-size:12px;color:var(--slate);">格式對嗎？說明完整？</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chat-demo">
+      <div style="font-size:12px;color:var(--muted);margin-bottom:16px;font-weight:600;">叫 PM 分配你的第一個任務</div>
+
+      <div class="chat-bubble-row right">
+        <div class="chat-avatar user">你</div>
+        <div class="chat-bubble user">我有個任務想討論，幫我想想怎麼分工</div>
+      </div>
+
+      <div class="chat-bubble-row">
+        <div class="chat-avatar ai">PM</div>
+        <div class="chat-bubble ai">好，說說你想做什麼？把目標講一下，我來幫你拆任務、決定派給誰。</div>
+      </div>
+
+      <div class="chat-bubble-row right">
+        <div class="chat-avatar user">你</div>
+        <div class="chat-bubble user">我想這個月推淨淨洗碗精，寫三篇 IG 貼文，還要做一張蝦皮主圖</div>
+      </div>
+
+      <div class="chat-bubble-row">
+        <div class="chat-avatar ai">PM</div>
+        <div class="chat-bubble ai">了解，分兩線同時跑：行銷寫三篇 IG 貼文（目標受眾、語氣風格你決定後告訴我），美編做蝦皮主圖（1024x1024，要放產品照嗎？有的話傳給我）。我先派行銷先動，美編等你確認圖片需求再開始。</div>
+      </div>
+    </div>
+
+    <h3 style="font-size:18px;font-weight:700;color:var(--navy);margin:32px 0 16px;">什麼時候叫哪個夥伴</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>我要做什麼</th>
+            <th>找誰</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>不知道從哪開始</td>
+            <td><span class="tag-orange">PM</span></td>
+          </tr>
+          <tr>
+            <td>規劃一個新的行銷活動</td>
+            <td>策略 → <span class="tag-orange">PM</span> 統籌</td>
+          </tr>
+          <tr>
+            <td>寫 IG / FB / Threads 貼文</td>
+            <td><span class="tag-teal">行銷</span></td>
+          </tr>
+          <tr>
+            <td>做廣告 Banner</td>
+            <td><span class="tag-teal">美編</span></td>
+          </tr>
+          <tr>
+            <td>建立一個工具網頁</td>
+            <td><span class="tag-orange">PM</span> → 前端 + 後端</td>
+          </tr>
+          <tr>
+            <td>確認文案有沒有違法</td>
+            <td><span class="tag-teal">行銷</span>（內建合規檢查）</td>
+          </tr>
+          <tr>
+            <td>生一張廣告圖</td>
+            <td><span class="tag-teal">美編</span></td>
+          </tr>
+          <tr>
+            <td>分析行銷數據</td>
+            <td><span class="tag-teal">策略</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Section 3: 第一個任務 -->
+  <section id="step3">
+    <div class="section-label">SECTION 3</div>
+    <h2>複製貼上就能用的 Prompt 模板</h2>
+    <div class="section-divider"></div>
+    <p class="section-sub">四種最常用的情境，把括號裡的內容換成你自己的就行。</p>
+
+    <div class="tab-bar">
+      <button class="tab-btn active" onclick="switchTab(0)">寫行銷文案</button>
+      <button class="tab-btn" onclick="switchTab(1)">規劃廣告策略</button>
+      <button class="tab-btn" onclick="switchTab(2)">做設計素材</button>
+      <button class="tab-btn" onclick="switchTab(3)">資安審查</button>
+    </div>
+
+    <div id="tab0" class="tab-panel active">
+      <div class="prompt-text" id="prompt0">幫我寫三篇淨淨 <span class="placeholder">[產品名稱，例：洗碗精]</span> 的 IG 貼文，<br>目標受眾是 <span class="placeholder">[說明，例：30-40 歲家庭主婦，注重環保]</span>，<br>語氣 <span class="placeholder">[例：活潑親切、有點幽默]</span>，<br>請行銷寫完後自動確認無合規禁用詞。</div>
+      <button class="copy-btn" onclick="copyPrompt('prompt0', this)">
+        <i class="ph ph-copy"></i> 複製模板
+      </button>
+      <div style="margin-top:12px;">
+        <p style="font-size:13px;color:var(--muted);">換掉 [ ] 裡的描述就能直接用。行銷夥伴會在產出後自動跑一次合規檢查。</p>
+      </div>
+    </div>
+
+    <div id="tab1" class="tab-panel">
+      <div class="prompt-text" id="prompt1">我想這個月衝 <span class="placeholder">[產品名稱]</span> 業績，<br>目標是 <span class="placeholder">[說明，例：提高蝦皮月銷 30%]</span>，<br>預算大概 <span class="placeholder">[例：一個月 NT$30,000 廣告費]</span>，<br>請策略分析行銷漏斗建議方向，PM 統籌規劃執行清單。</div>
+      <button class="copy-btn" onclick="copyPrompt('prompt1', this)">
+        <i class="ph ph-copy"></i> 複製模板
+      </button>
+      <div style="margin-top:12px;">
+        <p style="font-size:13px;color:var(--muted);">策略夥伴會先分析、PM 再把分析結果拆成可執行的任務清單給你確認。</p>
+      </div>
+    </div>
+
+    <div id="tab2" class="tab-panel">
+      <div class="prompt-text" id="prompt2">需要一張 <span class="placeholder">[平台，例：蝦皮商品主圖]</span> 廣告圖，<br>產品是 <span class="placeholder">[說明，例：淨淨洗碗精 500ml 淡雅花香]</span>，<br>風格 <span class="placeholder">[例：清新自然、白底乾淨、強調天然成分]</span>，<br>請美編依淨淨品牌規範生成，完成後給我看。</div>
+      <button class="copy-btn" onclick="copyPrompt('prompt2', this)">
+        <i class="ph ph-copy"></i> 複製模板
+      </button>
+      <div style="margin-top:12px;">
+        <p style="font-size:13px;color:var(--muted);">美編會用淨淨品牌色和設計規範生圖，不符合的地方可以直接用白話說「調整一下 XXX」。</p>
+      </div>
+    </div>
+
+    <div id="tab3" class="tab-panel">
+      <div class="prompt-text" id="prompt3">請幫我確認這段文案有沒有合規問題：<br><br><span class="placeholder">[貼上你要確認的文案內容]</span><br><br>特別確認：有沒有違反化粧品管理法、商品標示法，<br>以及公平交易法的宣稱規定。</div>
+      <button class="copy-btn" onclick="copyPrompt('prompt3', this)">
+        <i class="ph ph-copy"></i> 複製模板
+      </button>
+      <div style="margin-top:12px;">
+        <p style="font-size:13px;color:var(--muted);">行銷夥伴有內建淨淨合規清單，會逐條對照台灣法規。最終上架前還是建議人工再看一次。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 4: 越用越強 -->
+  <section id="step4">
+    <div class="section-label">SECTION 4</div>
+    <h2>越用越強的三個習慣</h2>
+    <div class="section-divider"></div>
+    <p class="section-sub">這三件事做到，一個月後你的 AI 就跟剛裝好時完全不同。</p>
+
+    <div class="habit-grid">
+      <div class="habit-card">
+        <div class="habit-icon"><i class="ph ph-flag-banner"></i></div>
+        <h3>習慣 1：每次收工打 /收工</h3>
+        <p>AI 幫你審查今天的成品、把決定存進記憶、把新知識補進知識庫。下次開新對話，AI 從這個版本出發，不是從零開始。</p>
+      </div>
+      <div class="habit-card">
+        <div class="habit-icon"><i class="ph ph-arrow-up-right"></i></div>
+        <h3>習慣 2：好流程就 /升級</h3>
+        <p>當 AI 做了一件事做得很好，告訴它：「這個方法很好，幫我存進知識庫」。下次 AI 直接用這個方法，不需要你重新說明。</p>
+      </div>
+      <div class="habit-card">
+        <div class="habit-icon"><i class="ph ph-notebook"></i></div>
+        <h3>習慣 3：決策要 /工作日誌</h3>
+        <p>特別是做了重要決策的時候（選了哪個方向、不做什麼）一定要存。下一個對話的 AI 不知道你上次的決定，存了才知道。</p>
+      </div>
+    </div>
+
+    <div class="progress-curve">
+      <h4>30 天 AI 成長曲線</h4>
+      <div class="curve-chart" id="curveChart">
+        <div class="curve-bar-wrap">
+          <div class="curve-value">基礎</div>
+          <div class="curve-bar" style="height:20px;" data-height="20"></div>
+          <div class="curve-label">第 1 天<br>基礎功能</div>
+        </div>
+        <div class="curve-bar-wrap">
+          <div class="curve-value">+40%</div>
+          <div class="curve-bar" style="height:45px;" data-height="45"></div>
+          <div class="curve-label">第 7 天<br>語氣偏好</div>
+        </div>
+        <div class="curve-bar-wrap">
+          <div class="curve-value">+70%</div>
+          <div class="curve-bar" style="height:75px;" data-height="75"></div>
+          <div class="curve-label">第 14 天<br>常用工作流</div>
+        </div>
+        <div class="curve-bar-wrap">
+          <div class="curve-value">+120%</div>
+          <div class="curve-bar" style="height:110px; background:linear-gradient(to top, var(--teal), #2aabbb);" data-height="110"></div>
+          <div class="curve-label">第 30 天<br>熟悉判斷標準</div>
+        </div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);text-align:center;">每次 /收工 存下的記憶，是下一個對話的起點。累積越多，輸出品質提升越快。</p>
+    </div>
+
+    <div class="highlight">
+      <p><strong>從第 7 天開始：</strong>AI 會開始用你的語氣回話，知道你不喜歡什麼格式，輸出就直接對你口味。<br><strong>第 14 天：</strong>常用任務流程 AI 記住了，你說「幫我做上次那種行銷企劃」，AI 知道你說的是什麼。<br><strong>第 30 天：</strong>AI 開始主動提醒你「這個方向不符合你之前的決定」。</p>
+    </div>
+  </section>
+
+  <!-- Section 5: 常見問題 -->
+  <section id="step5">
+    <div class="section-label">SECTION 5</div>
+    <h2>常見問題</h2>
+    <div class="section-divider"></div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        AI 夥伴用什麼語言回覆我？
+        <i class="ph ph-caret-down faq-chevron"></i>
+      </button>
+      <div class="faq-answer">
+        全中文白話文。淨淨啟動包特別設定了不說術語的原則，你看到的回應會是日常可以讀懂的語言，不會出現「API」「deploy」「schema」這類工程詞彙，有什麼就直接說是在做什麼。
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        我已經有 Claude Code 設定，安裝後我現有的設定會不見嗎？
+        <i class="ph ph-caret-down faq-chevron"></i>
+      </button>
+      <div class="faq-answer">
+        不會。安裝腳本會自動偵測你的狀況，進入合併模式。只補缺少的 Skill 模組和快捷指令，你現有的 agents、設定、記憶全部保留不動。不需要擔心。
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        什麼時候 AI 會來問我確認？
+        <i class="ph ph-caret-down faq-chevron"></i>
+      </button>
+      <div class="faq-answer">
+        只有四種情況：<br><br>
+        1. 需要你的帳號密碼或手機驗證碼<br>
+        2. 要對外正式發布訊息（公告、客戶信、社群貼文）<br>
+        3. 要刪除重要資料（不可復原的操作）<br>
+        4. 有兩個方向差異很大，需要你拍板<br><br>
+        其他事情 AI 直接做，做完告訴你結果。
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        API Key 要怎麼取得？
+        <i class="ph ph-caret-down faq-chevron"></i>
+      </button>
+      <div class="faq-answer">
+        去 Anthropic Console：<strong>console.anthropic.com</strong>，登入後點左側「API Keys」，建立新的 Key，複製起來貼到 <code style="font-size:12px;background:#f1f5f9;padding:2px 6px;border-radius:4px;">~/.claude/.env</code> 裡的 ANTHROPIC_API_KEY 欄位。Key 只能看到一次，記得當下就複製。
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        淨淨的文案 AI 會幫我確認合規嗎？
+        <i class="ph ph-caret-down faq-chevron"></i>
+      </button>
+      <div class="faq-answer">
+        行銷夥伴有內建淨淨合規清單，包含化粧品管理法、商品標示法、公平交易法的常見禁用詞和限制規定。AI 產出文案時會自動對照，有問題會標出來說明原因。不過法規解釋會有灰色地帶，最終判斷還是要人工確認，AI 的合規檢查是第一道篩選，不是最終保證。
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        什麼是 /收工？它和 /工作日誌 有什麼不同？
+        <i class="ph ph-caret-down faq-chevron"></i>
+      </button>
+      <div class="faq-answer">
+        <strong>/工作日誌</strong>：只存今天的決定和進度，快速記錄一次。<br><br>
+        <strong>/收工</strong>：三連擊，做三件事：<br>
+        1. 審查今天的成品（找問題、直接修）<br>
+        2. 存工作日誌（同上面）<br>
+        3. 把新發現的好方法升級進知識庫<br><br>
+        建議每天結束工作前打 /收工，比只打 /工作日誌 效果好三倍。
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer CTA -->
+  <div class="footer-cta">
+    <h2>你已裝備完成</h2>
+    <p>把今天學到的東西用出來。第一個任務，就從叫 PM 開始。</p>
+    <a href="manager-training.html" class="footer-cta-btn">
+      <i class="ph ph-arrow-left"></i> 回到主管培訓課
+    </a>
+  </div>
+
+</main>
+
+<footer>
+  淨淨主管啟動包使用指南 &nbsp;|&nbsp; 2026 若水聯盟
+</footer>
+
+<script>
+  // Progress bar
+  window.addEventListener('scroll', () => {
+    const docH = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = (window.scrollY / docH) * 100;
+    document.getElementById('progress-bar').style.width = progress + '%';
+  });
+
+  // Section fade-in
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.08 });
+
+  document.querySelectorAll('section').forEach(s => observer.observe(s));
+
+  // Nav active highlight
+  const navLinks = document.querySelectorAll('.nav-inner a:not(.nav-logo)');
+  const sections = document.querySelectorAll('section[id]');
+
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 120) current = s.id;
+    });
+    navLinks.forEach(a => {
+      a.classList.remove('active');
+      if (a.getAttribute('href') === '#' + current) a.classList.add('active');
+    });
+  });
+
+  // Tab switch
+  function switchTab(idx) {
+    document.querySelectorAll('.tab-btn').forEach((b, i) => {
+      b.classList.toggle('active', i === idx);
+    });
+    document.querySelectorAll('.tab-panel').forEach((p, i) => {
+      p.classList.toggle('active', i === idx);
+    });
+  }
+
+  // Copy prompt
+  function copyPrompt(id, btn) {
+    const el = document.getElementById(id);
+    const text = el.innerText;
+    navigator.clipboard.writeText(text).then(() => {
+      const orig = btn.innerHTML;
+      btn.innerHTML = '<i class="ph ph-check"></i> 已複製';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.innerHTML = orig;
+        btn.classList.remove('copied');
+      }, 2000);
+    }).catch(() => {
+      // fallback
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      const orig = btn.innerHTML;
+      btn.innerHTML = '<i class="ph ph-check"></i> 已複製';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.innerHTML = orig;
+        btn.classList.remove('copied');
+      }, 2000);
+    });
+  }
+
+  // FAQ accordion
+  function toggleFaq(btn) {
+    const answer = btn.nextElementSibling;
+    const isOpen = btn.classList.contains('open');
+
+    // Close all
+    document.querySelectorAll('.faq-question.open').forEach(q => {
+      q.classList.remove('open');
+      q.nextElementSibling.classList.remove('open');
+    });
+
+    if (!isOpen) {
+      btn.classList.add('open');
+      answer.classList.add('open');
+    }
+  }
+</script>
+<script src="edit-mode.js"></script>
+</body>
+</html>

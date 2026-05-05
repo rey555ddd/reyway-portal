@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="zh-TW"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>淨淨 2026｜年度計畫</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&amp;family=Inter:wght@300;400;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --g900:#0D2818; --g800:#1B4332; --g700:#2D6A4F; --g600:#40916C;
+  --g500:#52B788; --g400:#74C69D; --g300:#95D5B2; --g200:#B7E4C7;
+  --cyan:#61D0DF; --gold:#E9B949;
+  --cleanblue:#61D0DF; --cleanblue-dark:#2DB8CC; --cleanblue-deep:#0A7A8C;
+  --white:#FFFFFF; --bg:#F5FAF6; --text:#1A2E22; --muted:#4A6358;
+  --shadow:rgba(27,67,50,.1);
+}
+html { scroll-behavior:smooth; }
+body { font-family:'Noto Sans TC',sans-serif; background:var(--bg); color:var(--text); line-height:1.6; overflow-x:hidden; }
+
+/* ── HERO ── */
+.hero { background:#fff; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:60px 24px 72px; position:relative; overflow:hidden; border-bottom:1px solid rgba(27,67,50,.07); }
+.hero::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 25% 80%,rgba(64,145,108,.05) 0%,transparent 55%),radial-gradient(ellipse at 75% 10%,rgba(97,208,223,.04) 0%,transparent 50%); pointer-events:none; }
+.hero-eyebrow { font-family:'Inter',sans-serif; font-size:11px; font-weight:700; letter-spacing:4px; text-transform:uppercase; color:var(--g700); margin-bottom:14px; opacity:0; animation:fadeUp .8s .2s forwards; }
+.hero-title { font-size:clamp(30px,6vw,60px); font-weight:900; color:var(--g800); text-align:center; letter-spacing:-1px; line-height:1.15; opacity:0; animation:fadeUp .8s .35s forwards; }
+.hero-title span { color:var(--cyan); }
+.hero-story { font-size:15px; color:var(--muted); text-align:center; max-width:500px; margin:12px auto 0; line-height:1.75; opacity:0; animation:fadeUp .8s .45s forwards; }
+.growth-container { width:min(800px,96vw); margin:40px auto 30px; opacity:0; animation:fadeUp 1s .55s forwards; filter:drop-shadow(0 12px 40px rgba(27,67,50,.1)); }
+.ns-pills { display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-top:4px; opacity:0; animation:fadeUp .8s .8s forwards; }
+.ns-pill { display:flex; align-items:center; gap:8px; background:rgba(27,67,50,.06); border:1px solid rgba(27,67,50,.14); border-radius:100px; padding:7px 18px; font-size:14px; font-weight:500; color:var(--g800); }
+.ns-pill .dot { width:7px; height:7px; border-radius:50%; }
+.ns-pill:nth-child(1) .dot { background:var(--gold); }
+.ns-pill:nth-child(2) .dot { background:var(--g600); }
+.ns-pill:nth-child(3) .dot { background:var(--cyan); }
+.hero-sub { margin-top:18px; font-size:13px; color:var(--muted); opacity:0; animation:fadeUp .8s 1s forwards; }
+
+/* ── NORTH STAR ── */
+.ns-section { background:var(--white); padding:72px 24px; text-align:center; }
+.section-label { font-family:'Inter',sans-serif; font-size:11px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--cyan); margin-bottom:12px; }
+.section-title { font-size:clamp(22px,4vw,34px); font-weight:900; color:var(--g800); margin-bottom:10px; }
+.section-desc { font-size:15px; color:var(--muted); max-width:560px; margin:0 auto 48px; line-height:1.8; }
+.three-cols { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:22px; max-width:900px; margin:0 auto; }
+.ns-card { border-radius:20px; padding:30px 26px; text-align:left; transition:transform .25s,box-shadow .25s; }
+.ns-card:hover { transform:translateY(-4px); box-shadow:0 14px 44px var(--shadow); }
+.ns-card.card-grow  { background:linear-gradient(135deg,#FFF9ED,#FFFBF0); border:1.5px solid #F4E3A0; }
+.ns-card.card-root  { background:linear-gradient(135deg,#EDF7F1,#F0FAF3); border:1.5px solid var(--g200); }
+.ns-card.card-evolve{ background:linear-gradient(135deg,#EBF8FA,#EFF9FA); border:1.5px solid #A5E9F0; }
+.ns-card-icon { font-size:30px; margin-bottom:12px; display:block; }
+.ns-card-num { font-family:'Inter',sans-serif; font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; margin-bottom:7px; }
+.card-grow   .ns-card-num { color:#B8860B; }
+.card-root   .ns-card-num { color:var(--g700); }
+.card-evolve .ns-card-num { color:#0E7490; }
+.ns-card h3 { font-size:21px; font-weight:900; margin-bottom:9px; color:var(--text); }
+.ns-card p  { font-size:13.5px; color:var(--muted); line-height:1.75; }
+.ns-card-tag { display:inline-block; margin-top:12px; font-size:11px; font-weight:600; padding:3px 11px; border-radius:100px; }
+.card-grow  .ns-card-tag { background:#FEF3C7; color:#92400E; }
+.card-root  .ns-card-tag { background:var(--g200); color:var(--g800); }
+.card-evolve .ns-card-tag { background:#CFFAFE; color:#0E7490; }
+
+/* ── FOUR GOALS (ACCORDION) ── */
+.goals-section { padding:80px 24px; max-width:960px; margin:0 auto; }
+.goals-section .section-title,.goals-section .section-label,.goals-section .section-desc { text-align:center; }
+.accordion-list { display:flex; flex-direction:column; gap:14px; margin-top:16px; }
+.acc-card { background:var(--white); border-radius:20px; box-shadow:0 3px 18px var(--shadow); overflow:hidden; transition:box-shadow .25s; }
+.acc-card:hover { box-shadow:0 8px 32px var(--shadow); }
+.acc-card::before { content:''; display:block; height:4px; }
+.acc-card.g1::before { background:linear-gradient(90deg,#F59E0B,#FBBF24); }
+.acc-card.g2::before { background:linear-gradient(90deg,var(--g600),var(--g400)); }
+.acc-card.g3::before { background:linear-gradient(90deg,var(--cleanblue-dark),var(--cleanblue)); }
+.acc-card.g4::before { background:linear-gradient(90deg,#8B5CF6,#A78BFA); }
+
+.acc-header { display:flex; align-items:center; gap:18px; padding:22px 28px; cursor:pointer; user-select:none; transition:background .2s; -webkit-user-select:none; }
+.acc-header:hover { background:rgba(0,0,0,.02); }
+.acc-icon { width:48px; height:48px; flex-shrink:0; display:flex; align-items:center; justify-content:center; border-radius:14px; }
+.g1 .acc-icon { background:#FEF3C7; }
+.g2 .acc-icon { background:var(--g200); }
+.g3 .acc-icon { background:#E0F7FA; }
+.g4 .acc-icon { background:#EDE9FE; }
+.acc-title-wrap { flex:1; }
+.acc-num { font-family:'Inter',sans-serif; font-size:10px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; margin-bottom:3px; }
+.g1 .acc-num { color:#D97706; }
+.g2 .acc-num { color:var(--g700); }
+.g3 .acc-num { color:var(--cleanblue-dark); }
+.g4 .acc-num { color:#7C3AED; }
+.acc-name { font-size:22px; font-weight:900; color:var(--text); letter-spacing:-.3px; }
+.acc-chevron { width:28px; height:28px; display:flex; align-items:center; justify-content:center; border-radius:50%; background:rgba(0,0,0,.05); transition:transform .35s, background .2s; flex-shrink:0; }
+.acc-chevron svg { transition:transform .35s; }
+.acc-card.open .acc-chevron svg { transform:rotate(180deg); }
+.acc-card.open .acc-chevron { background:rgba(0,0,0,.1); }
+
+.acc-body { max-height:0; overflow:hidden; transition:max-height .45s cubic-bezier(.4,0,.2,1); }
+.acc-card.open .acc-body { max-height:6000px; }
+.acc-inner { padding:0 28px 28px; border-top:1px solid rgba(0,0,0,.05); }
+.acc-desc { font-size:16px; color:var(--muted); line-height:1.8; margin:16px 0; font-weight:500; }
+.acc-kpis { list-style:none; display:flex; flex-direction:column; gap:8px; }
+.acc-kpis li { display:flex; align-items:flex-start; gap:10px; font-size:13.5px; color:var(--text); line-height:1.5; }
+.acc-kpis li::before { content:'→'; font-weight:700; flex-shrink:0; font-size:13px; margin-top:1px; }
+.g1 .acc-kpis li::before { color:#D97706; }
+.g2 .acc-kpis li::before { color:var(--g600); }
+.g3 .acc-kpis li::before { color:var(--cleanblue-dark); }
+.g4 .acc-kpis li::before { color:#7C3AED; }
+.acc-kpis li strong {
+    color:#0A5C6B;
+    font-size:1.1em;
+    background:rgba(97,208,223,.13);
+    padding:1px 7px;
+    border-radius:5px;
+    display:inline-block;
+  }
+
+/* ── ORG CHART ── */
+.org-section { background:var(--cleanblue-deep); padding:72px 24px; }
+.org-section .section-label { color:rgba(255,255,255,.75); letter-spacing:3px; }
+.org-section .section-title { color:var(--white); }
+.org-section .section-desc  { color:rgba(255,255,255,.55); margin-bottom:44px; }
+.org-wrap { max-width:960px; margin:0 auto; }
+
+/* Top: 執行長室 */
+.org-ceo { display:flex; justify-content:center; margin-bottom:12px; }
+.org-box { background:rgba(255,255,255,.92); border:none; border-radius:12px; padding:12px 18px; text-align:center; backdrop-filter:blur(8px); transition:background .2s; box-shadow:0 2px 12px rgba(0,0,0,.15); }
+.org-box:hover { background:white; }
+.org-box-title { font-size:13px; font-weight:700; color:#0A5C6B; margin-bottom:4px; }
+.org-box-people { font-size:11px; color:#1B4332; line-height:1.5; opacity:.8; }
+.org-ceo .org-box { min-width:240px; background:white; border:2px solid rgba(97,208,223,.5); }
+
+/* Connector line */
+.org-connector { display:flex; justify-content:center; }
+.org-line-v { width:2px; height:24px; background:rgba(255,255,255,.35); }
+
+/* Dept row */
+.org-depts { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:12px; position:relative; }
+.org-depts::before { content:''; position:absolute; top:0; left:10%; right:10%; height:2px; background:rgba(255,255,255,.3); }
+.org-dept-col { display:flex; flex-direction:column; gap:8px; }
+.org-dept-header { background:rgba(255,255,255,.92); border:none; border-radius:12px 12px 0 0; padding:10px 14px; border-bottom:2px solid rgba(10,122,140,.15); box-shadow:0 2px 8px rgba(0,0,0,.1); }
+.org-dept-header .org-box-title { font-size:12px; color:#0A5C6B; }
+.org-dept-header .org-box-people { font-size:10px; }
+.org-dept-body { background:rgba(255,255,255,.85); border:none; border-radius:0 0 12px 12px; padding:10px 14px; flex:1; box-shadow:0 3px 10px rgba(0,0,0,.08); }
+.org-group-row { margin-bottom:6px; }
+.org-group-name { font-size:10px; font-weight:700; color:#0A7A8C; letter-spacing:.5px; margin-bottom:2px; }
+.org-group-people { font-size:11px; color:#1B4332; line-height:1.5; opacity:.85; }
+.org-tag-vacant { display:inline-block; font-size:10px; padding:1px 7px; border-radius:100px; background:#FEF3C7; color:#92400E; margin-left:4px; }
+.org-tag-acting { display:inline-block; font-size:10px; padding:1px 7px; border-radius:100px; background:#CFFAFE; color:#164E63; margin-left:4px; }
+.org-tag-leave { display:inline-block; font-size:10px; padding:1px 7px; border-radius:100px; background:#F3F4F6; color:#6B7280; margin-left:4px; }
+
+/* ── DEPT MAPPING (BLUE) ── */
+.dept-section { background:var(--cleanblue-deep); padding:64px 24px; }
+.dept-section .section-label { color:rgba(255,255,255,.75); letter-spacing:3px; }
+.dept-section .section-title { color:var(--white); }
+.dept-section .section-desc  { color:rgba(255,255,255,.55); margin-bottom:36px; }
+.dept-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px; max-width:1000px; margin:0 auto; }
+.dept-card { background:rgba(255,255,255,.9); border:none; border-radius:14px; padding:22px 18px; backdrop-filter:blur(8px); transition:background .2s; }
+.dept-card:hover { background:white; }
+.dept-name { font-size:14px; font-weight:700; color:#0A5C6B; margin-bottom:10px; }
+.dept-tags { display:flex; flex-wrap:wrap; gap:5px; }
+.dept-tag { font-size:10px; font-weight:600; padding:3px 9px; border-radius:100px; }
+.tag-1 { background:#FEF3C7; color:#92400E; }
+.tag-2 { background:#D1FAE5; color:#065F46; }
+.tag-3 { background:#CFFAFE; color:#164E63; }
+.tag-4 { background:#EDE9FE; color:#4C1D95; }
+.dept-people { margin-top:9px; font-size:11px; color:#4A6358; }
+
+/* ── FOOTER ── */
+footer { background:#137A8A; border-top:1px solid rgba(255,255,255,.06); padding:36px 24px; text-align:center; }
+.footer-logo { font-size:17px; font-weight:900; color:var(--white); margin-bottom:6px; }
+.footer-logo span { color:var(--cyan); }
+footer p { font-size:12px; color:rgba(255,255,255,.3); }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:translateY(0)} }
+@media(max-width:640px){
+  .three-cols,.dept-grid { grid-template-columns:1fr; }
+  .acc-header { padding:16px 18px; gap:12px; }
+  .acc-inner  { padding:0 18px 20px; }
+  .org-depts  { grid-template-columns:1fr 1fr; }
+}
+
+  /* ─── EDIT MODE ─── */
+  [contenteditable]:hover{outline:2px dashed rgba(97,208,223,.4);outline-offset:3px;border-radius:4px;cursor:text;}
+  [contenteditable]:focus{outline:2px solid #61D0DF;outline-offset:3px;border-radius:4px;}
+  .fmt-bar{position:fixed;background:rgba(10,90,105,.97);backdrop-filter:blur(20px);border:1px solid rgba(97,208,223,.35);border-radius:14px;padding:7px 12px;display:none;align-items:center;gap:5px;z-index:10001;box-shadow:0 10px 36px rgba(0,0,0,.5);pointer-events:auto;user-select:none;font-family:'Inter','Noto Sans TC',sans-serif;}
+  .fmt-bar.visible{display:flex;}
+  .fmt-btn{background:rgba(255,255,255,.12);color:rgba(255,255,255,.95);border:none;border-radius:7px;min-width:28px;height:26px;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;transition:background .15s;display:flex;align-items:center;justify-content:center;padding:0 7px;flex-shrink:0;}
+  .fmt-btn:hover{background:rgba(255,255,255,.25);}
+  .fmt-divider{width:1px;height:18px;background:rgba(255,255,255,.2);margin:0 2px;flex-shrink:0;}
+  .clr-btn{width:20px;height:20px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:transform .15s,border-color .15s;flex-shrink:0;outline:none;}
+  .clr-btn:hover{transform:scale(1.28);border-color:rgba(255,255,255,.6);}
+  .edit-bar{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:rgba(10,90,105,.96);backdrop-filter:blur(20px);border:1px solid rgba(97,208,223,.35);border-radius:100px;padding:10px 10px 10px 22px;display:flex;align-items:center;gap:14px;z-index:9999;box-shadow:0 8px 40px rgba(0,0,0,.4);font-family:'Noto Sans TC',sans-serif;white-space:nowrap;}
+  .edit-bar-label{font-size:12px;color:rgba(255,255,255,.6);display:flex;align-items:center;gap:8px;}
+  .edit-dot{width:7px;height:7px;border-radius:50%;background:#61D0DF;animation:eb 1.6s ease-in-out infinite;}
+  @keyframes eb{0%,100%{opacity:1}50%{opacity:.3}}
+  .edit-hint{font-size:12px;color:rgba(255,255,255,.35);}
+  .save-btn{background:linear-gradient(135deg,#0A7A8C,#61D0DF);color:white;border:none;border-radius:100px;padding:9px 22px;font-size:13px;font-weight:700;font-family:'Noto Sans TC',sans-serif;cursor:pointer;transition:opacity .2s,transform .15s;}
+  .save-btn:hover{opacity:.9;transform:scale(1.05);}
+  .toast{position:fixed;top:28px;left:50%;transform:translateX(-50%) translateY(-80px);background:#0A7A8C;color:white;padding:12px 28px;border-radius:100px;font-size:14px;font-weight:600;font-family:'Noto Sans TC',sans-serif;transition:transform .4s cubic-bezier(.34,1.56,.64,1);z-index:10000;box-shadow:0 8px 24px rgba(10,122,140,.5);pointer-events:none;}
+  .toast.show{transform:translateX(-50%) translateY(0);}
+
+</style>
+</head>
+<body>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <p class="hero-eyebrow">淨淨 CleanClean &nbsp;·&nbsp; 2026</p>
+  <h1 class="hero-title" contenteditable="true" spellcheck="false">2026 年到未來</h1>
+  <p class="hero-story" contenteditable="true" spellcheck="false">2017種子發芽，2024 小樹長大。2026，是我們能不能長成大樹的關鍵時刻</p>
+
+  <div class="growth-container">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 295" fill="none">
+      <line x1="40" y1="245" x2="785" y2="245" stroke="rgba(27,67,50,.1)" stroke-width="1.5"></line>
+      <path d="M777 241 L787 245 L777 249" stroke="rgba(97,208,223,.5)" stroke-width="1.5" fill="none"></path>
+
+      <!-- ground ellipses -->
+      <ellipse cx="82" cy="247" rx="16" ry="4" fill="rgba(64,145,108,.1)"></ellipse>
+      <ellipse cx="185" cy="247" rx="20" ry="5" fill="rgba(64,145,108,.12)"></ellipse>
+      <ellipse cx="298" cy="247" rx="28" ry="6" fill="rgba(64,145,108,.14)"></ellipse>
+      <ellipse cx="420" cy="247" rx="38" ry="7" fill="rgba(64,145,108,.17)"></ellipse>
+      <ellipse cx="555" cy="248" rx="50" ry="8" fill="rgba(64,145,108,.2)"></ellipse>
+      <ellipse cx="700" cy="249" rx="64" ry="9" fill="rgba(97,208,223,.1)"></ellipse>
+
+      <!-- ── 2017 種子年 ── -->
+      <path d="M82 245 Q82 238 82 232" stroke="#95D5B2" stroke-width="2.5" stroke-linecap="round"></path>
+      <ellipse cx="82" cy="229" rx="6" ry="4" fill="#74C69D" opacity=".8"></ellipse>
+      <path d="M78 232 Q75 228 73 225" stroke="#95D5B2" stroke-width="1.5" stroke-linecap="round" opacity=".7"></path>
+      <path d="M86 232 Q89 228 91 225" stroke="#95D5B2" stroke-width="1.5" stroke-linecap="round" opacity=".7"></path>
+      <circle cx="82" cy="224" r="7" fill="#52B788" opacity=".75"></circle>
+      <circle cx="82" cy="220" r="4" fill="#74C69D" opacity=".85"></circle>
+      <text x="82" y="262" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="700" fill="rgba(27,67,50,.65)" letter-spacing="1">2017</text>
+      <text x="82" y="275" text-anchor="middle" font-family="Noto Sans TC,sans-serif" font-size="9.5" fill="rgba(27,67,50,.42)">種子年</text>
+
+      <!-- ── 2022 嫩芽 ── -->
+      <line x1="185" y1="245" x2="185" y2="228" stroke="#52B788" stroke-width="3" stroke-linecap="round"></line>
+      <line x1="180" y1="236" x2="185" y2="230" stroke="#74C69D" stroke-width="2" stroke-linecap="round"></line>
+      <line x1="190" y1="234" x2="185" y2="228" stroke="#74C69D" stroke-width="2" stroke-linecap="round"></line>
+      <circle cx="185" cy="222" r="13" fill="#40916C" opacity=".8"></circle>
+      <circle cx="178" cy="228" r="8" fill="#52B788"></circle>
+      <circle cx="192" cy="228" r="8" fill="#52B788"></circle>
+      <circle cx="185" cy="216" r="9" fill="#74C69D"></circle>
+      <circle cx="185" cy="210" r="5" fill="#95D5B2" opacity=".9"></circle>
+      <text x="185" y="262" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="700" fill="rgba(27,67,50,.68)" letter-spacing="1">2022</text>
+      <text x="185" y="275" text-anchor="middle" font-family="Noto Sans TC,sans-serif" font-size="9.5" fill="rgba(27,67,50,.42)">嫩芽冒出</text>
+
+      <!-- ── 2023 小苗 ── -->
+      <rect x="296" y="210" width="5" height="35" rx="2.5" fill="#40916C"></rect>
+      <circle cx="298" cy="200" r="20" fill="#2D6A4F" opacity=".75"></circle>
+      <circle cx="289" cy="207" r="14" fill="#2D6A4F" opacity=".75"></circle>
+      <circle cx="307" cy="207" r="14" fill="#2D6A4F" opacity=".75"></circle>
+      <circle cx="298" cy="193" r="18" fill="#40916C"></circle>
+      <circle cx="291" cy="200" r="11" fill="#40916C"></circle>
+      <circle cx="305" cy="200" r="11" fill="#40916C"></circle>
+      <circle cx="292" cy="185" r="11" fill="#52B788"></circle>
+      <circle cx="303" cy="182" r="10" fill="#52B788"></circle>
+      <circle cx="298" cy="174" r="8" fill="#74C69D" opacity=".9"></circle>
+      <circle cx="295" cy="167" r="5" fill="#95D5B2" opacity=".8"></circle>
+      <circle cx="306" cy="183" r="3" fill="#61D0DF" opacity=".7"></circle>
+      <text x="298" y="262" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="700" fill="rgba(27,67,50,.72)" letter-spacing="1">2023</text>
+      <text x="298" y="275" text-anchor="middle" font-family="Noto Sans TC,sans-serif" font-size="9.5" fill="rgba(27,67,50,.45)">快速萌發</text>
+
+      <!-- ── 2024 成長 ── -->
+      <path d="M416 245 C414 215 414 190 416 168 C417 155 418 143 420 133" stroke="#1B4332" stroke-width="13" stroke-linecap="round"></path>
+      <path d="M424 245 C426 215 426 190 424 168 C423 155 422 143 420 133" stroke="#40916C" stroke-width="11" stroke-linecap="round"></path>
+      <path d="M419 195 Q400 183 383 178" stroke="#40916C" stroke-width="5" stroke-linecap="round"></path>
+      <path d="M421 185 Q441 173 458 168" stroke="#40916C" stroke-width="5" stroke-linecap="round"></path>
+      <circle cx="420" cy="115" r="50" fill="#133527" opacity=".5"></circle>
+      <circle cx="384" cy="152" r="34" fill="#133527" opacity=".45"></circle>
+      <circle cx="456" cy="147" r="31" fill="#133527" opacity=".45"></circle>
+      <circle cx="420" cy="109" r="44" fill="#1B4332"></circle>
+      <circle cx="388" cy="146" r="28" fill="#1B4332"></circle>
+      <circle cx="452" cy="141" r="26" fill="#1B4332"></circle>
+      <circle cx="420" cy="102" r="38" fill="#2D6A4F"></circle>
+      <circle cx="391" cy="138" r="23" fill="#2D6A4F"></circle>
+      <circle cx="449" cy="134" r="21" fill="#2D6A4F"></circle>
+      <circle cx="420" cy="95" r="32" fill="#40916C"></circle>
+      <circle cx="406" cy="86" r="22" fill="#52B788"></circle>
+      <circle cx="432" cy="83" r="20" fill="#52B788"></circle>
+      <circle cx="420" cy="72" r="17" fill="#74C69D" opacity=".9"></circle>
+      <circle cx="415" cy="62" r="9" fill="#95D5B2" opacity=".8"></circle>
+      <circle cx="443" cy="88" r="3.5" fill="#61D0DF" opacity=".85"></circle>
+      <circle cx="396" cy="128" r="2.5" fill="#61D0DF" opacity=".7"></circle>
+      <text x="420" y="262" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="700" fill="rgba(27,67,50,.8)" letter-spacing="1">2024</text>
+      <text x="420" y="275" text-anchor="middle" font-family="Noto Sans TC,sans-serif" font-size="9.5" fill="rgba(27,67,50,.5)">爆發成長</text>
+
+      <!-- ── 2025 小樹（現在）── -->
+      <path d="M550 245 C547 208 547 176 550 148 C552 130 553 114 554 101" stroke="#1B4332" stroke-width="17" stroke-linecap="round"></path>
+      <path d="M558 245 C561 208 561 176 558 148 C556 130 555 114 554 101" stroke="#40916C" stroke-width="14" stroke-linecap="round"></path>
+      <path d="M552 188 Q523 172 501 166" stroke="#40916C" stroke-width="6.5" stroke-linecap="round"></path>
+      <path d="M558 172 Q587 156 606 151" stroke="#40916C" stroke-width="6.5" stroke-linecap="round"></path>
+      <circle cx="554" cy="82" r="66" fill="#0D2818" opacity=".5"></circle>
+      <circle cx="510" cy="130" r="48" fill="#0D2818" opacity=".45"></circle>
+      <circle cx="598" cy="124" r="44" fill="#0D2818" opacity=".45"></circle>
+      <circle cx="554" cy="76" r="60" fill="#1B4332"></circle>
+      <circle cx="513" cy="122" r="42" fill="#1B4332"></circle>
+      <circle cx="595" cy="117" r="39" fill="#1B4332"></circle>
+      <circle cx="554" cy="69" r="52" fill="#2D6A4F"></circle>
+      <circle cx="517" cy="114" r="36" fill="#2D6A4F"></circle>
+      <circle cx="591" cy="109" r="33" fill="#2D6A4F"></circle>
+      <circle cx="554" cy="62" r="44" fill="#40916C"></circle>
+      <circle cx="522" cy="104" r="28" fill="#40916C"></circle>
+      <circle cx="586" cy="100" r="26" fill="#40916C"></circle>
+      <circle cx="540" cy="48" r="28" fill="#52B788"></circle>
+      <circle cx="568" cy="44" r="25" fill="#52B788"></circle>
+      <circle cx="554" cy="36" r="20" fill="#74C69D" opacity=".9"></circle>
+      <circle cx="548" cy="27" r="11" fill="#95D5B2" opacity=".9"></circle>
+      <circle cx="543" cy="20" r="7" fill="rgba(255,255,255,.2)"></circle>
+      <circle cx="580" cy="52" r="4" fill="#61D0DF" opacity=".9"></circle>
+      <circle cx="520" cy="97" r="3" fill="#61D0DF" opacity=".8"></circle>
+      <circle cx="594" cy="108" r="2.5" fill="#61D0DF" opacity=".7"></circle>
+      <rect x="509" y="254" width="90" height="19" rx="9.5" fill="rgba(64,145,108,.2)" stroke="rgba(64,145,108,.35)" stroke-width="1"></rect>
+      <text x="554" y="262" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="800" fill="rgba(27,67,50,.9)" letter-spacing="1">2025</text>
+      <text x="554" y="276" text-anchor="middle" font-family="Noto Sans TC,sans-serif" font-size="9.5" fill="rgba(27,67,50,.62)">小樹成型</text>
+
+      <!-- ── 2026 大樹? ── -->
+      <circle cx="700" cy="105" r="98" fill="none" stroke="rgba(97,208,223,.05)" stroke-width="22"></circle>
+      <circle cx="700" cy="105" r="80" fill="none" stroke="rgba(97,208,223,.07)" stroke-width="16"></circle>
+      <path d="M695 245 C692 198 692 160 695 128 C697 108 698 90 699 76" stroke="rgba(97,208,223,.3)" stroke-width="17" stroke-linecap="round" fill="none" stroke-dasharray="5 4"></path>
+      <path d="M705 245 C708 198 708 160 705 128 C703 108 702 90 701 76" stroke="rgba(97,208,223,.18)" stroke-width="13" stroke-linecap="round" fill="none" stroke-dasharray="5 4"></path>
+      <circle cx="700" cy="55" r="78" stroke="rgba(97,208,223,.2)" stroke-width="1.5" fill="rgba(97,208,223,.04)" stroke-dasharray="6 5"></circle>
+      <circle cx="652" cy="108" r="58" stroke="rgba(97,208,223,.17)" stroke-width="1.5" fill="rgba(97,208,223,.03)" stroke-dasharray="6 5"></circle>
+      <circle cx="748" cy="102" r="54" stroke="rgba(97,208,223,.17)" stroke-width="1.5" fill="rgba(97,208,223,.03)" stroke-dasharray="6 5"></circle>
+      <circle cx="700" cy="50" r="50" fill="rgba(97,208,223,.05)"></circle>
+      <text x="700" y="65" text-anchor="middle" font-family="Inter,sans-serif" font-size="46" font-weight="900" fill="rgba(97,208,223,.25)">?</text>
+      <circle cx="636" cy="52" r="3.5" fill="#61D0DF" opacity=".5"></circle>
+      <circle cx="762" cy="58" r="3" fill="#61D0DF" opacity=".45"></circle>
+      <circle cx="768" cy="92" r="2.5" fill="#61D0DF" opacity=".42"></circle>
+      <circle cx="632" cy="86" r="2.5" fill="#61D0DF" opacity=".42"></circle>
+      <rect x="658" y="254" width="84" height="19" rx="9.5" fill="rgba(97,208,223,.15)" stroke="rgba(97,208,223,.35)" stroke-width="1"></rect>
+      <text x="700" y="262" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="800" fill="#61D0DF" opacity=".8" letter-spacing="1">2026</text>
+      <text x="700" y="276" text-anchor="middle" font-family="Noto Sans TC,sans-serif" font-size="9.5" fill="#61D0DF" opacity=".65">今年決定</text>
+    </svg>
+  </div>
+
+  <div class="ns-pills">
+    <div class="ns-pill" contenteditable="true" spellcheck="false"><span class="dot"></span>健康成長</div>
+    <div class="ns-pill" contenteditable="true" spellcheck="false"><span class="dot"></span>生根落地</div>
+    <div class="ns-pill" contenteditable="true" spellcheck="false"><span class="dot"></span>團隊進化</div>
+  </div>
+  <p class="hero-sub" contenteditable="true" spellcheck="false">從品牌到團隊，一次深度進化</p>
+</section>
+
+
+<!-- ══ NORTH STAR ══ -->
+<section class="ns-section">
+  <p class="section-label">北極星</p>
+  <h2 class="section-title" contenteditable="true" spellcheck="false">今年3大北極星方向</h2>
+  <p class="section-desc" contenteditable="true" spellcheck="false">向上生長、向下紮根，用新科技、新制度，讓整棵樹重新進化</p>
+  <div class="three-cols">
+    <div class="ns-card card-grow">
+      <span class="ns-card-icon">🌿</span>
+      <p class="ns-card-num" contenteditable="true" spellcheck="false">North Star · 01</p>
+      <h3 contenteditable="true" spellcheck="false">健康成長</h3>
+      <p contenteditable="true" spellcheck="false">不只賺得到、更要賺得健康，淨淨品牌度過燒錢衝刺期，今年要「健康盈利」建立可持續的商業模式<br>提高全體夥伴福利獎金</p>
+      <span class="ns-card-tag" contenteditable="true" spellcheck="false">① 有名有利</span>
+    </div>
+    <div class="ns-card card-root">
+      <span class="ns-card-icon">🌱</span>
+      <p class="ns-card-num" contenteditable="true" spellcheck="false">North Star · 02</p>
+      <h3 contenteditable="true" spellcheck="false">生長紮根</h3>
+      <p contenteditable="true" spellcheck="false">淨淨從數位品牌起家，要更走進消費者的真實生活。從「聽說過，到用完覺得棒」， 從「值得到感動」、從「自己愛用到想推薦大家用」</p>
+      <span class="ns-card-tag" contenteditable="true" spellcheck="false">② 生根落地</span>
+    </div>
+    <div class="ns-card card-evolve">
+      <span class="ns-card-icon">⚡</span>
+      <p class="ns-card-num" contenteditable="true" spellcheck="false">North Star · 03</p>
+      <h3 contenteditable="true" spellcheck="false">團隊進化</h3>
+      <p contenteditable="true" spellcheck="false">人治與法治並行—溫度＆效率兼具<br>啟動人資系統，落實追蹤考核，讓你的付出被看見、被獎勵<br>透過AI科技讓全體夥伴就地升級<br>30人公司發揮過去百人企業的效益</p>
+      <span class="ns-card-tag" contenteditable="true" spellcheck="false">③ 系統升級 &nbsp;·&nbsp; ④ AI 戰力</span>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══ FOUR GOALS ACCORDION ══ -->
+<section class="goals-section">
+  <p class="section-label">四大目標</p>
+  <h2 class="section-title" contenteditable="true" spellcheck="false">有名有利 · 生根落地 · 系統升級 · AI 戰力</h2>
+  <p class="section-desc" contenteditable="true" spellcheck="false">點開每個目標，查看本年度的具體方向與 KPI</p>
+
+  <div class="accordion-list">
+
+    <!-- ① 有名有利 -->
+    <div class="acc-card g1">
+      <div class="acc-header" onclick="toggleAcc(this.closest('.acc-card'))">
+        <div class="acc-icon">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <path d="M4 20 L10 13 L15 16 L22 8" stroke="#D97706" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path>
+            <circle cx="22" cy="8" r="2.5" fill="#D97706"></circle>
+            <rect x="4" y="22" width="20" height="2" rx="1" fill="#FBBF24" opacity=".5"></rect>
+          </svg>
+        </div>
+        <div class="acc-title-wrap">
+          <p class="acc-num" contenteditable="true" spellcheck="false">Goal 01</p>
+          <h3 class="acc-name" contenteditable="true" spellcheck="false">有名有利</h3>
+        </div>
+        <div class="acc-chevron">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 4.5 L7 9.5 L12 4.5" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        </div>
+      </div>
+      <div class="acc-body" onclick="event.stopPropagation()">
+        <div class="acc-inner">
+          <p class="acc-desc" contenteditable="true" spellcheck="false">穩定品牌基礎，讓淨淨賺得到錢、更要賺得健康。擴大高毛利通路，降低廣告依賴。</p>
+          <div style="border:1.5px solid rgba(97,208,223,.25);border-radius:14px;overflow:hidden;margin-bottom:18px;font-family:'Noto Sans TC',sans-serif;">
+
+            <!-- Header -->
+            <div style="background:rgba(97,208,223,.14);display:grid;grid-template-columns:1.4fr 1.1fr 0.75fr 2fr;padding:8px 16px;font-size:10px;font-weight:700;color:#0A5C6B;letter-spacing:.5px;align-items:center;">
+              <div>通路</div>
+              <div style="text-align:right">Y26 目標</div>
+              <div style="text-align:right">成長率</div>
+              <div style="padding-left:14px">說明</div>
+            </div>
+
+            <!-- Rows -->
+            <div style="background:white;font-size:13px;color:#1A2E22;">
+
+              <!-- 官網+電商 -->
+              <div style="display:grid;grid-template-columns:1.4fr 1.1fr 0.75fr 2fr;padding:10px 16px;border-bottom:1px solid rgba(97,208,223,.1);align-items:center;">
+                <div style="font-weight:600">官網＋電商平台</div>
+                <div style="text-align:right">
+                  <div style="font-weight:700">1.22 億</div>
+                  <div style="font-size:10px;color:#9CA3AF;margin-top:2px">Y25：1.16 億</div>
+                </div>
+                <div style="text-align:right;color:#065F46;font-weight:600">+5%</div>
+                <div style="padding-left:14px;font-size:12px;color:#4A6358;line-height:1.5">官網維穩，提高舊客回購及<br>客戶推薦佔比</div>
+              </div>
+
+              <!-- 百貨門市 -->
+              <div style="display:grid;grid-template-columns:1.4fr 1.1fr 0.75fr 2fr;padding:10px 16px;border-bottom:1px solid rgba(97,208,223,.1);align-items:center;">
+                <div style="font-weight:600">百貨門市</div>
+                <div style="text-align:right">
+                  <div style="font-weight:700">1,800 萬</div>
+                  <div style="font-size:10px;color:#9CA3AF;margin-top:2px">Y25：1,590 萬</div>
+                </div>
+                <div style="text-align:right;color:#065F46;font-weight:600">+13%</div>
+                <div style="padding-left:14px;font-size:12px;color:#4A6358;line-height:1.5">穩定開櫃，提升客單價與成交率。<br>部分額度計入經銷特約。</div>
+              </div>
+
+              <!-- 經銷特約 🔑 -->
+              <div style="display:grid;grid-template-columns:1.4fr 1.1fr 0.75fr 2fr;padding:10px 16px;border-bottom:1px solid rgba(97,208,223,.1);background:rgba(209,250,229,.2);align-items:center;">
+                <div style="font-weight:700">經銷特約 🔑</div>
+                <div style="text-align:right">
+                  <div style="font-weight:700;color:#065F46">3,900 萬</div>
+                  <div style="font-size:10px;color:#9CA3AF;margin-top:2px">Y25：3,010 萬</div>
+                </div>
+                <div style="text-align:right;color:#065F46;font-weight:700">+30%↑</div>
+                <div style="padding-left:14px;font-size:12px;color:#4A6358;line-height:1.5">增加連鎖通路，<br>開發非典型通路</div>
+              </div>
+
+              <!-- KOL 帶貨 🔑 -->
+              <div style="display:grid;grid-template-columns:1.4fr 1.1fr 0.75fr 2fr;padding:10px 16px;border-bottom:1px solid rgba(97,208,223,.1);background:rgba(209,250,229,.2);align-items:center;">
+                <div style="font-weight:700">KOL 帶貨 🔑</div>
+                <div style="text-align:right">
+                  <div style="font-weight:700;color:#065F46">600 萬</div>
+                  <div style="font-size:10px;color:#9CA3AF;margin-top:2px">Y25：120 萬</div>
+                </div>
+                <div style="text-align:right;color:#065F46;font-weight:700">+400%↑</div>
+                <div style="padding-left:14px;font-size:12px;color:#4A6358;line-height:1.5">業配、短連結、折扣碼等<br>可追蹤數字（計入官網歸因）</div>
+              </div>
+
+              <!-- 阿清直播 -->
+              <div style="display:grid;grid-template-columns:1.4fr 1.1fr 0.75fr 2fr;padding:10px 16px;border-bottom:1px solid rgba(97,208,223,.1);align-items:center;">
+                <div style="font-weight:600">阿清直播</div>
+                <div style="text-align:right">
+                  <div style="font-weight:700">1,500 萬</div>
+                  <div style="font-size:10px;color:#9CA3AF;margin-top:2px">Y25：2,290 萬</div>
+                </div>
+                <div style="text-align:right;color:#9C3C3C;font-weight:600">−35%↓</div>
+                <div style="padding-left:14px;font-size:12px;color:#9C3C3C;line-height:1.5">直播主 9 月退休，<br>預期業績下滑</div>
+              </div>
+
+              <!-- 品牌合計 -->
+              <div style="display:grid;grid-template-columns:1.4fr 1.1fr 0.75fr 2fr;padding:10px 16px;background:rgba(97,208,223,.1);align-items:center;">
+                <div style="font-weight:700">品牌合計</div>
+                <div style="text-align:right">
+                  <div style="font-weight:900;font-size:15px;color:#0A5C6B">2 億</div>
+                  <div style="font-size:10px;color:#9CA3AF;margin-top:2px">Y25：1.84 億</div>
+                </div>
+                <div style="text-align:right;color:#065F46;font-weight:700">+8.7%</div>
+                <div style="padding-left:14px;font-size:12px;color:#4A6358"></div>
+              </div>
+
+            </div>
+          </div>
+          <div style="background:linear-gradient(135deg,rgba(97,208,223,.08),rgba(209,250,229,.12));border:1px solid rgba(97,208,223,.22);border-radius:12px;padding:14px 18px;margin-bottom:16px;">
+            <div style="font-size:11px;font-weight:700;color:#0A7A8C;letter-spacing:.5px;margin-bottom:8px;text-transform:uppercase" contenteditable="true" spellcheck="false">關於今年 +8.7% 的成長目標</div>
+            <div style="font-size:12.5px;color:#1A2E22;line-height:1.75;" contenteditable="true" spellcheck="false">
+              去年（Y25）淨淨品牌成長了 <strong style="color:#065F46">+25.6%</strong>，但大量人力、廣告、系統費用同步投入，導致淨淨品牌虧損。<br>
+              今年 +8.7% 是刻意的選擇——重點不在衝數字，而是：
+            </div>
+            <div style="display:flex;gap:10px;margin-top:10px;flex-wrap:wrap;">
+              <div style="background:rgba(97,208,223,.15);border-radius:20px;padding:5px 14px;font-size:12px;font-weight:600;color:#0A5C6B" contenteditable="true" spellcheck="false">深耕優化</div>
+              <div style="background:rgba(97,208,223,.15);border-radius:20px;padding:5px 14px;font-size:12px;font-weight:600;color:#0A5C6B" contenteditable="true" spellcheck="false">系統盤點</div>
+              <div style="background:rgba(97,208,223,.15);border-radius:20px;padding:5px 14px;font-size:12px;font-weight:600;color:#0A5C6B" contenteditable="true" spellcheck="false">穩定成長</div>
+            </div>
+            <div style="font-size:12px;color:#4A6358;margin-top:10px;line-height:1.6;" contenteditable="true" spellcheck="false">
+              今年的目標是讓淨淨品牌健康盈利，同時讓夥伴的獎金制度、AI 工具、考核系統全部到位。<br>打好地基，才能在 2027 年再度加速。
+            </div>
+          </div>
+          <div style="font-size:11px;color:#4A6358;margin-bottom:14px;padding:0 4px;opacity:.8" contenteditable="true" spellcheck="false">
+            ＊ KOL 帶貨業績為歸因計算（折扣碼 + UTM 追蹤），訂單計入官網通路。追蹤機制需在 Shopline 後台確認上線。
+          </div>
+          <ul class="acc-kpis">
+            <li contenteditable="true" spellcheck="false">品牌年營收目標：<strong>2 億</strong>（不含 OEM）</li>
+            <li contenteditable="true" spellcheck="false">淨利率目標：<strong>6%+</strong></li>
+            <li contenteditable="true" spellcheck="false">成長核心：<strong>經銷特約 3,900 萬</strong>（+30%）、<strong>KOL 帶貨 600 萬</strong>（+400%）</li>
+            <li contenteditable="true" spellcheck="false">KOL 大咖推薦：李多慧、吳淡如、好味小姐……等（Q2 起）</li>
+            <li contenteditable="true" spellcheck="false">Q3 洗衣精新味道上市</li>
+            <li contenteditable="true" spellcheck="false">Q4 沙龍髮品定案期（為明年新品上市做鋪墊）</li>
+            <li contenteditable="true" spellcheck="false" style="flex-direction:column;align-items:flex-start;">
+              <strong>社群目標</strong>（Q1–Q2 初訂，Q3/Q4 目標由社群組長於 Q2 決定）：
+              <div style="margin:8px 0 0 14px;display:flex;flex-direction:column;gap:5px;">
+                <div style="font-size:13px;" contenteditable="true" spellcheck="false">短影音：每支平均播放 <strong>2 萬+</strong>（絕對數字，不看成長率）</div>
+                <div style="font-size:13px;" contenteditable="true" spellcheck="false">IG 貼文互動率：平均 <strong>≥ 3%</strong>（讚＋留言＋儲存 ÷ 觸及人數）</div>
+                <div style="font-size:13px;" contenteditable="true" spellcheck="false">Threads：每週至少 <strong>3 則</strong>，每則互動（讚＋回覆）達追蹤數 <strong>1%+</strong></div>
+                <div style="font-size:13px;" contenteditable="true" spellcheck="false">用行銷智能夥伴平台逐篇追蹤效果，每月回顧一次，淘汰低效內容</div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ② 生根落地 -->
+    <div class="acc-card g2">
+      <div class="acc-header" onclick="toggleAcc(this.closest('.acc-card'))">
+        <div class="acc-icon">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <path d="M14 4 Q14 12 10 16 Q7 19 5 22" stroke="#40916C" stroke-width="2" stroke-linecap="round"></path>
+            <path d="M14 8 Q17 12 20 13" stroke="#40916C" stroke-width="1.8" stroke-linecap="round"></path>
+            <path d="M14 14 Q11 17 9 18" stroke="#40916C" stroke-width="1.8" stroke-linecap="round"></path>
+            <path d="M6 24 Q14 22 22 24" stroke="#52B788" stroke-width="2" stroke-linecap="round"></path>
+            <circle cx="14" cy="4" r="3" fill="#52B788"></circle>
+          </svg>
+        </div>
+        <div class="acc-title-wrap">
+          <p class="acc-num" contenteditable="true" spellcheck="false">Goal 02</p>
+          <h3 class="acc-name" contenteditable="true" spellcheck="false">生根落地</h3>
+        </div>
+        <div class="acc-chevron">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 4.5 L7 9.5 L12 4.5" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        </div>
+      </div>
+      <div class="acc-body" onclick="event.stopPropagation()">
+                <div class="acc-inner" onclick="event.stopPropagation()">
+          <p class="acc-desc" contenteditable="true" spellcheck="false">淨淨從純電商走進消費者的真實生活——不只讓人「知道」淨淨，而是讓人「愛上」、「分享」、「推薦」淨淨。品牌要扎根，策略要落地。</p>
+
+          <div style="border:1.5px solid rgba(97,208,223,.2);border-radius:12px;overflow:hidden;margin-bottom:16px;display:grid;grid-template-columns:repeat(3,1fr);">
+            
+              <div style="border-right:1px solid rgba(97,208,223,.15);padding:10px 14px;last-child{border:none}">
+                <div style="font-size:10px;font-weight:700;color:#0A7A8C;margin-bottom:4px">Q2</div>
+                <div style="font-size:12.5px;font-weight:600;color:#1A2E22;line-height:1.5">KOL 大咖上線</div>
+                <div style="font-size:11px;color:#4A6358;margin-top:3px;line-height:1.4" contenteditable="true" spellcheck="false">李多慧、吳淡如、好味小姐<br>OOH 廣告：北中南捷運 / 公車</div>
+              </div>
+              <div style="border-right:1px solid rgba(97,208,223,.15);padding:10px 14px;last-child{border:none}">
+                <div style="font-size:10px;font-weight:700;color:#0A7A8C;margin-bottom:4px">Q3</div>
+                <div style="font-size:12.5px;font-weight:600;color:#1A2E22;line-height:1.5">推薦制度正式上線</div>
+                <div style="font-size:11px;color:#4A6358;margin-top:3px;line-height:1.4" contenteditable="true" spellcheck="false">推薦碼啟動、大使第一批授證<br>百貨新檔持續展店</div>
+              </div>
+              <div style="border-right:1px solid rgba(97,208,223,.15);padding:10px 14px;last-child{border:none}">
+                <div style="font-size:10px;font-weight:700;color:#0A7A8C;margin-bottom:4px">Q4</div>
+                <div style="font-size:12.5px;font-weight:600;color:#1A2E22;line-height:1.5">收穫期</div>
+                <div style="font-size:11px;color:#4A6358;margin-top:3px;line-height:1.4" contenteditable="true" spellcheck="false">雙11 推薦加碼<br>大使年度聚會</div>
+              </div>
+          </div>
+          <ul class="acc-kpis">
+            <li contenteditable="true" spellcheck="false">百貨門市：Y26 目標 <strong>1,800 萬</strong>（+13%）｜品牌廣告費上限 <strong>150 萬</strong></li>
+            <li contenteditable="true" spellcheck="false">KOL 大咖推薦：李多慧、吳淡如、好味小姐……等（Q2 起）</li>
+            <li contenteditable="true" spellcheck="false">推薦制度：Q2 技術確認，每位推薦獲客成本目標 <strong>&lt; 100 元</strong>（廣告 CPA 的 1/3 以下）</li>
+            <li contenteditable="true" spellcheck="false">社群大使計畫：邀請制，全台 <strong>50–100 位</strong>，年底第一批正式授證</li>
+            <li contenteditable="true" spellcheck="false">VIP 深耕：客戶消費體驗地圖 Q2 定版，舊客回購率目標高於一般客</li>
+          </ul>
+        </div>
+</div>
+      </div>
+    </div>
+
+    <!-- ③ 系統升級 -->
+    <div class="acc-card g3">
+      <div class="acc-header" onclick="toggleAcc(this.closest('.acc-card'))">
+        <div class="acc-icon">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <circle cx="14" cy="14" r="4" stroke="#2563EB" stroke-width="2"></circle>
+            <path d="M14 4 L14 7" stroke="#2563EB" stroke-width="2" stroke-linecap="round"></path>
+            <path d="M14 21 L14 24" stroke="#2563EB" stroke-width="2" stroke-linecap="round"></path>
+            <path d="M4 14 L7 14" stroke="#2563EB" stroke-width="2" stroke-linecap="round"></path>
+            <path d="M21 14 L24 14" stroke="#2563EB" stroke-width="2" stroke-linecap="round"></path>
+            <path d="M6.5 6.5 L8.6 8.6" stroke="#3B82F6" stroke-width="1.8" stroke-linecap="round"></path>
+            <path d="M19.4 19.4 L21.5 21.5" stroke="#3B82F6" stroke-width="1.8" stroke-linecap="round"></path>
+            <path d="M21.5 6.5 L19.4 8.6" stroke="#3B82F6" stroke-width="1.8" stroke-linecap="round"></path>
+            <path d="M8.6 19.4 L6.5 21.5" stroke="#3B82F6" stroke-width="1.8" stroke-linecap="round"></path>
+          </svg>
+        </div>
+        <div class="acc-title-wrap">
+          <p class="acc-num" contenteditable="true" spellcheck="false">Goal 03</p>
+          <h3 class="acc-name" contenteditable="true" spellcheck="false">系統升級</h3>
+        </div>
+        <div class="acc-chevron">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 4.5 L7 9.5 L12 4.5" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        </div>
+      </div>
+      <div class="acc-body" onclick="event.stopPropagation()">
+                <div class="acc-inner" onclick="event.stopPropagation()">
+          <p class="acc-desc" contenteditable="true" spellcheck="false">人治與法治並行——有溫度地管人，也有清楚的規矩。今年讓每個夥伴的付出被追蹤、被看見、被獎勵。制度不是束縛，是保護每個人努力成果的框架。</p>
+
+          <div style="border:1.5px solid rgba(97,208,223,.2);border-radius:12px;overflow:hidden;margin-bottom:16px;display:grid;grid-template-columns:repeat(3,1fr);">
+            
+              <div style="border-right:1px solid rgba(97,208,223,.15);padding:10px 14px;last-child{border:none}">
+                <div style="font-size:10px;font-weight:700;color:#0A7A8C;margin-bottom:4px">H1 輕量版</div>
+                <div style="font-size:12.5px;font-weight:600;color:#1A2E22;line-height:1.5">基礎建設</div>
+                <div style="font-size:11px;color:#4A6358;margin-top:3px;line-height:1.4" contenteditable="true" spellcheck="false">全員 1-on-1 完成<br>考核表定案<br>招募 SOP 上線</div>
+              </div>
+              <div style="border-right:1px solid rgba(97,208,223,.15);padding:10px 14px;last-child{border:none}">
+                <div style="font-size:10px;font-weight:700;color:#0A7A8C;margin-bottom:4px">H2 正式版</div>
+                <div style="font-size:12.5px;font-weight:600;color:#1A2E22;line-height:1.5">全面啟動</div>
+                <div style="font-size:11px;color:#4A6358;margin-top:3px;line-height:1.4" contenteditable="true" spellcheck="false">正式考核評分<br>人評會決議<br>獎金 1 月發放</div>
+              </div>
+              <div style="border-right:1px solid rgba(97,208,223,.15);padding:10px 14px;last-child{border:none}">
+                <div style="font-size:10px;font-weight:700;color:#0A7A8C;margin-bottom:4px">全年</div>
+                <div style="font-size:12.5px;font-weight:600;color:#1A2E22;line-height:1.5">持續推進</div>
+                <div style="font-size:11px;color:#4A6358;margin-top:3px;line-height:1.4" contenteditable="true" spellcheck="false">SOP 完成率 80%+<br>儀表板系統上線<br>AI 輔助工具標配</div>
+              </div>
+          </div>
+          <ul class="acc-kpis">
+            <li contenteditable="true" spellcheck="false"><strong>考核系統</strong>：H1 輕量版（全員填表）→ H2 正式版（評分＋獎金結算）</li>
+            <li contenteditable="true" spellcheck="false"><strong>369 目標機制</strong>：每季度目標設定 × 考核聯動，季季有追蹤</li>
+            <li contenteditable="true" spellcheck="false"><strong>招募系統</strong>：獨立上線，招聘流程 SOP 化</li>
+            <li contenteditable="true" spellcheck="false"><strong>產品認證系統</strong>：國際認證升級規劃（Q2 可行性確認）</li>
+            <li contenteditable="true" spellcheck="false">SOP 文件化：各組完成率 <strong>80%+</strong></li>
+            <li contenteditable="true" spellcheck="false">教育訓練：每人每季 <strong>6 小時</strong>排程，完成率納入考核</li>
+            <li contenteditable="true" spellcheck="false"><strong>儀表板系統</strong>：月報、週報、KPI 追蹤自動化，讓老闆和組長即時掌握數字</li>
+            <li contenteditable="true" spellcheck="false"><strong>輔助工具導入</strong>：Notion / Slack 使用規範定版，AI 工具使用標準化</li>
+          </ul>
+        </div>
+</div>
+      </div>
+    
+
+    <!-- ④ AI 戰力 -->
+    <div class="acc-card g4 open">
+      <div class="acc-header" onclick="toggleAcc(this.closest('.acc-card'))">
+        <div class="acc-icon">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <polygon points="14,3 17,11 25,11 19,17 21,25 14,20 7,25 9,17 3,11 11,11" stroke="#7C3AED" stroke-width="2" stroke-linejoin="round" fill="none"></polygon>
+            <circle cx="14" cy="14" r="3" fill="#8B5CF6"></circle>
+          </svg>
+        </div>
+        <div class="acc-title-wrap">
+          <p class="acc-num" contenteditable="true" spellcheck="false">Goal 04</p>
+          <h3 class="acc-name" contenteditable="true" spellcheck="false">AI 戰力</h3>
+        </div>
+        <div class="acc-chevron">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 4.5 L7 9.5 L12 4.5" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        </div>
+      </div>
+      <div class="acc-body" onclick="event.stopPropagation()">
+                <div class="acc-inner" onclick="event.stopPropagation()">
+          <p class="acc-desc" contenteditable="true" spellcheck="false">不是讓大家學 AI——是讓 AI 幫大家做事。<br>每個人從執行者，升級為 AI 的管理者與決策者。把AI正做的交給 AI，把心力放在真正非你不可的地方。</p>
+
+          <div style="border:1.5px solid rgba(97,208,223,.2);border-radius:12px;overflow:hidden;margin-bottom:16px;display:grid;grid-template-columns:repeat(3,1fr);">
+            
+              <div style="border-right:1px solid rgba(97,208,223,.15);padding:10px 14px;last-child{border:none}">
+                <div style="font-size:10px;font-weight:700;color:#0A7A8C;margin-bottom:4px">Q2｜建立</div>
+                <div style="font-size:12.5px;font-weight:600;color:#1A2E22;line-height:1.5">全工具站第一版完成</div>
+                <div style="font-size:11px;color:#4A6358;margin-top:3px;line-height:1.4" contenteditable="true" spellcheck="false">各部門可開始試用<br>美學 / 客服 / 其他站 MVP</div>
+              </div>
+              <div style="border-right:1px solid rgba(97,208,223,.15);padding:10px 14px;last-child{border:none}">
+                <div style="font-size:10px;font-weight:700;color:#0A7A8C;margin-bottom:4px">Q3｜推廣</div>
+                <div style="font-size:12.5px;font-weight:600;color:#1A2E22;line-height:1.5">全員順暢使用</div>
+                <div style="font-size:11px;color:#4A6358;margin-top:3px;line-height:1.4" contenteditable="true" spellcheck="false">驗證效率提升成效<br>蒐集回饋找瓶頸</div>
+              </div>
+              <div style="border-right:1px solid rgba(97,208,223,.15);padding:10px 14px;last-child{border:none}">
+                <div style="font-size:10px;font-weight:700;color:#0A7A8C;margin-bottom:4px">Q4｜優化</div>
+                <div style="font-size:12.5px;font-weight:600;color:#1A2E22;line-height:1.5">持續迭代改版</div>
+                <div style="font-size:11px;color:#4A6358;margin-top:3px;line-height:1.4" contenteditable="true" spellcheck="false">根據使用回饋調整<br>工具越用越好用</div>
+              </div>
+          </div>
+          <div style="border:1.5px solid rgba(139,92,246,.2);border-radius:12px;overflow:hidden;margin-bottom:16px;font-size:12.5px;">
+            <div style="background:rgba(139,92,246,.08);display:grid;grid-template-columns:1.5fr 0.8fr 2fr;padding:7px 14px;font-size:10px;font-weight:700;color:#7C3AED;letter-spacing:.5px;">
+              <div>工具站</div><div style="text-align:center">時程</div><div>預期效益</div>
+            </div>
+            <div style="background:white;">
+              <div style="display:grid;grid-template-columns:1.5fr 0.8fr 2fr;padding:7px 14px;border-bottom:1px solid rgba(139,92,246,.08);align-items:center;">
+                <div>行銷站 ✅ 已上線</div><div style="text-align:center;font-size:11px;color:#4A6358" contenteditable="true" spellcheck="false">持續迭代</div><div style="color:#4A6358">廣告週報自動產、文案一鍵生成</div>
+              </div>
+              <div style="display:grid;grid-template-columns:1.5fr 0.8fr 2fr;padding:7px 14px;border-bottom:1px solid rgba(139,92,246,.08);align-items:center;background:rgba(237,233,254,.12);">
+                <div style="font-weight:600">美學 / 客服 / 營運 / 業務站</div><div style="text-align:center;font-weight:600;color:#7C3AED">Q2 MVP</div><div style="color:#4A6358">第一版完成，Q3 驗證效率</div>
+              </div>
+              <div style="display:grid;grid-template-columns:1.5fr 0.8fr 2fr;padding:7px 14px;align-items:center;">
+                <div>產品站</div><div style="text-align:center;font-weight:600;color:#7C3AED">Q4｜優化</div><div style="color:#4A6358">合規檢查自動化</div>
+              </div>
+            </div>
+          </div>
+          <ul class="acc-kpis">
+            <li contenteditable="true" spellcheck="false">全工具站 <strong>Q2 完成第一版</strong>，各部門 Q2 開始使用、測試、迭代）</li>
+            <li contenteditable="true" spellcheck="false">工作效率目標：比去年提升 <strong>50%+</strong>（Q2 開始正式追蹤）</li>
+            <li contenteditable="true" spellcheck="false">各站月活躍使用率：<strong>80%+</strong>（Q3 起追蹤）</li>
+            <li contenteditable="true" spellcheck="false">每個部門至少 1 個核心重複任務被 AI 替代，並有明確效益數字</li>
+            <li contenteditable="true" spellcheck="false">AI 標配工具全員導入：Gemini / NotebookLM / Claude&nbsp; 全員標配使用</li>
+            <li contenteditable="true" spellcheck="false">客服 AI 化：常見問題 AI 處理，客服聚焦 VIP 深耕、正負評處理</li>
+          </ul>
+        </div>
+</div>
+      </div>
+    
+
+  
+</section>
+
+
+<!-- ══ ORG CHART ══ -->
+<section class="org-section">
+  <div style="text-align:center;margin-bottom:44px">
+    <p class="section-label" style="color:rgba(255,255,255,.8)">組織架構</p>
+    <h2 class="section-title" style="color:#fff">淨淨 2026 組織架構</h2>
+    <p class="section-desc" style="color:rgba(255,255,255,.65)">26 位夥伴 · 三大部門</p>
+  </div>
+  <div class="org-wrap">
+
+    <!-- THREE DEPTS -->
+    <div class="org-three" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;max-width:1000px;margin:0 auto;">
+
+      <!-- 行銷增長部 -->
+      <div class="org-dept-col">
+        <div class="org-dept-header">
+          <div class="org-box-title" contenteditable="true" spellcheck="false">行銷增長部&nbsp;</div>
+          <div class="org-box-people" style="font-size:10px" contenteditable="true" spellcheck="false">14 人 ／ 5 組</div>
+        </div>
+        <div class="org-dept-body">
+          <div class="org-group-row">
+            <div class="org-group-name" contenteditable="true" spellcheck="false">電商平台組</div>
+            <div class="org-group-people" contenteditable="true" spellcheck="false">饅頭<br>羽芯・跳跳・冠達</div>
+          </div>
+          <div class="org-group-row" style="margin-top:8px">
+            <div class="org-group-name" contenteditable="true" spellcheck="false">客戶關係組</div>
+            <div class="org-group-people" contenteditable="true" spellcheck="false">Emily<br>采妮・詠婕・媛媛</div>
+          </div>
+          <div class="org-group-row" style="margin-top:8px">
+            <div class="org-group-name" contenteditable="true" spellcheck="false">專櫃門市組</div>
+            <div class="org-group-people" contenteditable="true" spellcheck="false">于婷 ／ 可可</div>
+          </div>
+          <div class="org-group-row" style="margin-top:8px">
+            <div class="org-group-name" contenteditable="true" spellcheck="false">社群行銷組</div>
+            <div class="org-group-people" contenteditable="true" spellcheck="false">戴戴 ／ 傅傅</div>
+          </div>
+          <div class="org-group-row" style="margin-top:8px">
+            <div class="org-group-name" contenteditable="true" spellcheck="false">公關媒體組</div>
+            <div class="org-group-people" contenteditable="true" spellcheck="false">阿芸 ／ Cara</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 美學設計部 -->
+      <div class="org-dept-col">
+        <div class="org-dept-header">
+          <div class="org-box-title" contenteditable="true" spellcheck="false">美學設計部</div>
+          <div class="org-box-people" style="font-size:10px" contenteditable="true" spellcheck="false">4 人</div>
+        </div>
+        <div class="org-dept-body">
+          <div class="org-group-row">
+            <div class="org-group-name" contenteditable="true" spellcheck="false">設計組</div>
+            <div class="org-group-people" contenteditable="true" spellcheck="false">小花 美學經理<br>酥酥・VIDA 設計師<br>Moon <span class="org-tag-leave">產假中</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 營運管理部 -->
+      <div class="org-dept-col">
+        <div class="org-dept-header">
+          <div class="org-box-title" contenteditable="true" spellcheck="false">營運管理部</div>
+          <div class="org-box-people" style="font-size:10px" contenteditable="true" spellcheck="false">8 人 ／ 3 組</div>
+        </div>
+        <div class="org-dept-body">
+          <div class="org-group-row">
+            <div class="org-group-name" contenteditable="true" spellcheck="false">執行長室</div>
+            <div class="org-group-people" contenteditable="true" spellcheck="false">笙闆 執行長<br>小瑄 業務通路 ＋ 執行長助理<br>依庭 執行長特助</div>
+          </div>
+          <div class="org-group-row" style="margin-top:10px">
+            <div class="org-group-name" contenteditable="true" spellcheck="false">營運組</div>
+            <div class="org-group-people" contenteditable="true" spellcheck="false">妮妮 營運經理<br>美鳳・如如 營運專員</div>
+          </div>
+          <div class="org-group-row" style="margin-top:10px">
+            <div class="org-group-name" contenteditable="true" spellcheck="false">研發室</div>
+            <div class="org-group-people" contenteditable="true" spellcheck="false">Tiffany（闆娘）產品總監<br>白白 研發課長</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+
+<!-- ══ DEPT MAPPING ══ -->
+<section class="dept-section">
+  <div style="text-align:center">
+    <p class="section-label">部門對應</p>
+    <h2 class="section-title">誰負責哪一塊</h2>
+    <p class="section-desc">每個部門在四大目標裡都有清楚的位置</p>
+  </div>
+  <div class="dept-grid">
+    <div class="dept-card"><p class="dept-name" contenteditable="true" spellcheck="false">執行長室</p><div class="dept-tags"><span class="dept-tag tag-1" contenteditable="true" spellcheck="false">① 有名有利</span><span class="dept-tag tag-3" contenteditable="true" spellcheck="false">③ 系統升級</span><span class="dept-tag tag-4" contenteditable="true" spellcheck="false">④ AI 戰力</span></div><p class="dept-people" contenteditable="true" spellcheck="false">笙闆 · 小瑄 · 依庭</p></div>
+    <div class="dept-card"><p class="dept-name" contenteditable="true" spellcheck="false">行銷增長 · 電商平台</p><div class="dept-tags"><span class="dept-tag tag-1" contenteditable="true" spellcheck="false">① 電商業績</span><span class="dept-tag tag-2" contenteditable="true" spellcheck="false">② 推薦制度</span></div><p class="dept-people" contenteditable="true" spellcheck="false">饅頭 · 羽芯 · 跳跳 · 冠達</p></div>
+    <div class="dept-card"><p class="dept-name" contenteditable="true" spellcheck="false">行銷增長 · 客戶關係</p><div class="dept-tags"><span class="dept-tag tag-2" contenteditable="true" spellcheck="false">② VIP 深耕</span><span class="dept-tag tag-4" contenteditable="true" spellcheck="false">④ 客服 AI</span></div><p class="dept-people" contenteditable="true" spellcheck="false">Emily · 媛媛 · 羽芯 · 采妮 · 詠婕</p></div>
+    <div class="dept-card"><p class="dept-name" contenteditable="true" spellcheck="false">行銷增長 · 社群 / KOL</p><div class="dept-tags"><span class="dept-tag tag-1" contenteditable="true" spellcheck="false">① 社群目標</span><span class="dept-tag tag-2" contenteditable="true" spellcheck="false">② KOL 帶貨</span></div><p class="dept-people" contenteditable="true" spellcheck="false">戴戴 · 傅傅 · 阿芸 · Cara</p></div>
+    <div class="dept-card"><p class="dept-name" contenteditable="true" spellcheck="false">行銷增長 · 專櫃門市</p><div class="dept-tags"><span class="dept-tag tag-2" contenteditable="true" spellcheck="false">② 品牌落地</span><span class="dept-tag tag-1" contenteditable="true" spellcheck="false">① 百貨業績</span></div><p class="dept-people" contenteditable="true" spellcheck="false">于婷 · 可可</p></div>
+    <div class="dept-card"><p class="dept-name" contenteditable="true" spellcheck="false">美學設計部</p><div class="dept-tags"><span class="dept-tag tag-1" contenteditable="true" spellcheck="false">① 品質＆效率</span><span class="dept-tag tag-4" contenteditable="true" spellcheck="false">④ 設計工具</span></div><p class="dept-people" contenteditable="true" spellcheck="false">小花 · 酥酥 · VIDA</p></div>
+    <div class="dept-card"><p class="dept-name" contenteditable="true" spellcheck="false">產品開發部</p><div class="dept-tags"><span class="dept-tag tag-1" contenteditable="true" spellcheck="false">① 新品上市</span><span class="dept-tag tag-3" contenteditable="true" spellcheck="false">③ 認證升級</span></div><p class="dept-people" contenteditable="true" spellcheck="false">闆娘 · 白白</p></div>
+    <div class="dept-card"><p class="dept-name" contenteditable="true" spellcheck="false">營運管理部</p><div class="dept-tags"><span class="dept-tag tag-3" contenteditable="true" spellcheck="false">③ SOP 制度</span><span class="dept-tag tag-4" contenteditable="true" spellcheck="false">④ 營運工具</span></div><p class="dept-people" contenteditable="true" spellcheck="false">妮妮 · 美鳳 · 如如</p></div>
+  </div>
+</section>
+
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <p class="footer-logo" contenteditable="true" spellcheck="false">淨淨 <span>CleanClean</span></p>
+  <p>年度計畫 v1.0 &nbsp;·&nbsp; 2026 &nbsp;·&nbsp; 執行長室整理</p>
+  <p style="margin-top:5px;font-size:11px;opacity:.25">用家人標準，讓乾淨簡單療癒</p>
+</footer>
+
+<script>
+function toggleAcc(card) {
+  var isOpen = card.classList.contains('open');
+  document.querySelectorAll('.acc-card').forEach(function(c){ c.classList.remove('open'); });
+  if (!isOpen) card.classList.add('open');
+}
+</script>
+
+
+<div class="fmt-bar" id="fmtBar" style="left: 496.828px; top: 248.641px;">
+  <button class="fmt-btn" onclick="fmtDo('bold')"><b>B</b></button>
+  <button class="fmt-btn" onclick="fmtWeight(400)" style="font-weight:400">N</button>
+  <button class="fmt-btn" onclick="fmtWeight(300)" style="opacity:.7;font-weight:300">L</button>
+  <div class="fmt-divider"></div>
+  <button class="fmt-btn" onclick="fmtSize(-2)" style="font-size:10px">A−</button>
+  <button class="fmt-btn" onclick="fmtSize(+2)" style="font-size:14px">A+</button>
+  <div class="fmt-divider"></div>
+  <button class="clr-btn" onclick="fmtColor('#0A5C6B')" style="background:#0A5C6B"></button>
+  <button class="clr-btn" onclick="fmtColor('#1B4332')" style="background:#1B4332"></button>
+  <button class="clr-btn" onclick="fmtColor('#61D0DF')" style="background:#61D0DF"></button>
+  <button class="clr-btn" onclick="fmtColor('#40916C')" style="background:#40916C"></button>
+  <button class="clr-btn" onclick="fmtColor('#E9B949')" style="background:#E9B949"></button>
+  <button class="clr-btn" onclick="fmtColor('#EF4444')" style="background:#EF4444"></button>
+  <button class="clr-btn" onclick="fmtColor('#1a1a1a')" style="background:#1a1a1a"></button>
+  <button class="clr-btn" onclick="fmtColor('#fff')" style="background:#fff;border:2px solid #ccc"></button>
+  <div class="fmt-divider"></div>
+  <button class="fmt-btn" onclick="fmtClear()" style="font-size:10px;color:rgba(255,255,255,.5)">✕</button>
+</div>
+<div class="edit-bar">
+  <span class="edit-bar-label"><span class="edit-dot"></span>編輯模式</span>
+  <span class="edit-hint">點文字可改・選取可調樣式</span>
+  <button class="save-btn" onclick="saveEdits()">💾 儲存下載</button>
+</div>
+<div class="toast" id="toast">✅ 已下載！</div>
+<script>
+(function(){
+  ['.hero-title','.hero-sub','.hero-story','.ns-pill',
+   '.ns-card h3','.ns-card p','.ns-card span.ns-card-tag',
+   '.ns-section .section-title','.ns-section .section-desc',
+   '.goals-section .section-title','.goals-section .section-desc',
+   '.acc-num','.acc-name','.acc-desc','.acc-kpis li',
+   '.dept-card .dept-name','.dept-card .dept-people','.dept-card .dept-tag',
+   '.org-box-title','.org-box-people','.org-group-name','.org-group-people',
+   '.footer-logo'
+  ].forEach(function(s){
+    document.querySelectorAll(s).forEach(function(el){el.contentEditable='true';el.spellcheck=false;});
+  });
+})();
+var ic=false;
+document.addEventListener('compositionstart',function(){ic=true;});
+document.addEventListener('compositionend',function(){ic=false;});
+document.addEventListener('keydown',function(e){
+  if(e.key==='Enter'&&!ic&&document.activeElement&&document.activeElement.isContentEditable){
+    e.preventDefault();document.execCommand('insertLineBreak');
+  }
+});
+var fb=document.getElementById('fmtBar'),ss=null;
+function sv(){var s=window.getSelection();if(s.rangeCount)ss=s.getRangeAt(0).cloneRange();}
+function rs(){if(!ss)return;var s=window.getSelection();s.removeAllRanges();s.addRange(ss);}
+function fmtDo(c){rs();document.execCommand(c);}
+function fmtColor(c){rs();document.execCommand('foreColor',false,c);fb.classList.remove('visible');}
+function fmtClear(){rs();document.execCommand('removeFormat');fb.classList.remove('visible');}
+function fmtWeight(w){rs();var s=window.getSelection();if(!s.rangeCount||s.isCollapsed)return;
+  var r=s.getRangeAt(0),sp=document.createElement('span');sp.style.fontWeight=w;
+  try{r.surroundContents(sp);}catch(e){var f=r.extractContents();sp.appendChild(f);r.insertNode(sp);}
+  fb.classList.remove('visible');}
+function fmtSize(d){rs();var s=window.getSelection();if(!s.rangeCount||s.isCollapsed)return;
+  var r=s.getRangeAt(0),el=r.commonAncestorContainer;
+  if(el.nodeType===3)el=el.parentElement;
+  var c=parseFloat(window.getComputedStyle(el).fontSize)||16,n=Math.max(10,Math.min(80,c+d));
+  var sp=document.createElement('span');sp.style.fontSize=n+'px';
+  try{r.surroundContents(sp);}catch(e){var f=r.extractContents();sp.appendChild(f);r.insertNode(sp);}
+}
+var ht=null;
+document.addEventListener('selectionchange',function(){
+  clearTimeout(ht);var s=window.getSelection();
+  if(s.rangeCount&&!s.isCollapsed){sv();var rect=s.getRangeAt(0).getBoundingClientRect();
+    if(rect.width>0){fb.classList.add('visible');
+      var bw=fb.offsetWidth||360,l=rect.left+rect.width/2-bw/2;
+      l=Math.max(8,Math.min(l,window.innerWidth-bw-8));
+      var tp=rect.top-52;if(tp<8)tp=rect.bottom+8;
+      fb.style.left=l+'px';fb.style.top=tp+'px';}}
+  else{ht=setTimeout(function(){fb.classList.remove('visible');},180);}
+});
+fb.addEventListener('mousedown',function(e){e.preventDefault();});
+function saveEdits(){
+  if(document.activeElement)document.activeElement.blur();
+  fb.classList.remove('visible');
+  var h='<!DOCTYPE html>\n'+document.documentElement.outerHTML;
+  var b=new Blob([h],{type:'text/html;charset=utf-8'}),u=URL.createObjectURL(b);
+  var a=document.createElement('a');a.href=u;a.download='cleanclean-2026-edited.html';
+  document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(u);
+  var t=document.getElementById('toast');t.classList.add('show');
+  setTimeout(function(){t.classList.remove('show');},2500);
+}
+
+// Patch: make new content-editable elements in dynamically added content
+(function patchNewContent(){
+  // Context box
+  document.querySelectorAll('.acc-inner [style*="background:linear-gradient"]').forEach(function(box){
+    box.querySelectorAll('div[style*="font-size"]').forEach(function(el){
+      if(!el.hasAttribute('contenteditable') && el.children.length === 0){
+        el.contentEditable = 'true';
+        el.spellcheck = false;
+      }
+    });
+  });
+  // KOL footnote
+  document.querySelectorAll('.acc-inner div[style*="font-size:11px"]').forEach(function(el){
+    if(!el.hasAttribute('contenteditable')){
+      el.contentEditable = 'true';
+      el.spellcheck = false;
+    }
+  });
+})();
+</script>
+
+
+</body></html>

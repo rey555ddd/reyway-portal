@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>其他 · 網頁知識庫 · REYWAY</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#F5F4F0;--surface:#FFF;--text:#1C1C1E;--text-2:#6E6E73;--text-3:#AEAEB2;--border:rgba(0,0,0,0.06);--shadow:0 2px 16px rgba(0,0,0,0.06),0 1px 4px rgba(0,0,0,0.04);--shadow-hover:0 8px 32px rgba(0,0,0,0.1),0 2px 8px rgba(0,0,0,0.06);--radius-sm:12px}
+body{font-family:"Inter","Noto Sans TC",sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;min-height:100vh}
+.wrap{max-width:800px;margin:0 auto;padding:0 20px}
+.topbar{position:sticky;top:0;z-index:10;background:rgba(245,244,240,0.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:14px 0}
+.topbar-inner{display:flex;align-items:center;gap:12px}
+.back-btn{display:flex;align-items:center;gap:6px;font-size:0.82rem;color:var(--text-2);text-decoration:none;padding:6px 14px;border-radius:100px;background:var(--surface);box-shadow:var(--shadow);white-space:nowrap;flex-shrink:0}
+.back-btn:hover{box-shadow:var(--shadow-hover)}
+.topbar h1{font-size:1rem;font-weight:700;flex:1}
+.count{font-size:0.8rem;color:var(--text-3);flex-shrink:0}
+.search-wrap{padding:24px 0 0}
+.search-box{display:flex;align-items:center;gap:10px;background:var(--surface);border-radius:100px;padding:11px 20px;box-shadow:var(--shadow)}
+.search-box input{flex:1;border:none;outline:none;background:none;font-size:0.9rem;font-family:inherit;color:var(--text)}
+.search-box input::placeholder{color:var(--text-3)}
+.list{display:flex;flex-direction:column;gap:10px;padding:20px 0 60px}
+.kb-card{background:var(--surface);border-radius:var(--radius-sm);padding:18px 20px;box-shadow:var(--shadow);display:flex;align-items:center;gap:14px;text-decoration:none;color:inherit;transition:box-shadow .2s,transform .2s}
+.kb-card:hover{box-shadow:var(--shadow-hover);transform:translateY(-1px)}
+.kb-card.hidden{display:none}
+.kb-icon{font-size:1.25rem;width:36px;text-align:center;flex-shrink:0}
+.kb-body{flex:1;min-width:0}
+.kb-title{font-size:0.92rem;font-weight:600;margin-bottom:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kb-date{font-size:0.75rem;color:var(--text-3)}
+.kb-arrow{font-size:0.95rem;color:var(--text-3);flex-shrink:0}
+.empty{text-align:center;padding:60px 20px;font-size:0.88rem;color:var(--text-3);display:none}
+#auth-gate{position:fixed;inset:0;z-index:999;background:var(--bg);display:flex;align-items:center;justify-content:center}
+#auth-gate.hidden{display:none}
+</style>
+</head>
+<body>
+<div id="auth-gate"><div style="color:#AEAEB2;font-size:.9rem">驗證中…</div></div>
+<div class="topbar"><div class="wrap topbar-inner">
+  <a class="back-btn" href="/knowledge/">← 知識庫</a>
+  <h1>📁 其他</h1>
+  <div class="count" id="count"></div>
+</div></div>
+<div class="wrap">
+  <div class="search-wrap"><div class="search-box">
+    <span style="color:#AEAEB2">🔍</span>
+    <input id="q" type="text" placeholder="搜尋…" oninput="filter()">
+  </div></div>
+  <div class="list" id="list">
+    <!-- 尚無內容 -->
+
+  </div>
+  <div id="empty" class="empty">沒有符合的頁面</div>
+</div>
+<script>
+(function(){
+  try{const s=JSON.parse(localStorage.getItem("reyway_gauth")||"null");if(s&&s.expiry>Date.now()){document.getElementById("auth-gate").classList.add("hidden");upd();return;}}catch(e){}
+  window.location.href="/";
+})();
+function filter(){
+  const q=document.getElementById("q").value.toLowerCase();
+  let v=0;
+  document.querySelectorAll("#list .kb-card").forEach(c=>{
+    const show=!q||c.dataset.title.toLowerCase().includes(q);
+    c.classList.toggle("hidden",!show);if(show)v++;
+  });
+  document.getElementById("empty").style.display=v===0?"block":"none";
+  upd();
+}
+function upd(){
+  const v=document.querySelectorAll("#list .kb-card:not(.hidden)").length;
+  const t=document.querySelectorAll("#list .kb-card").length;
+  document.getElementById("count").textContent=v===t?t+" 個頁面":v+"/"+t;
+}
+</script>
+</body></html>

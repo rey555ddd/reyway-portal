@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>笙闆 AI 總站 · REYWAY</title>
+<meta name="description" content="若水聯盟總站・董事會議室 — 笙闆專屬 AI 軍團指揮所">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#0fa882">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="REYWAY">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<script src="https://accounts.google.com/gsi/client" async></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@400;500;600;700&family=Klee+One:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="/style.css">
+<style>
+/* ===== founder v8 軍師五拍：方格 grid + 鏽橘 + Phosphor ===== */
+:root{
+  --f-bg:#FAF7F0; --f-surface:#FFFFFF;
+  --f-text:#1A1A1A; --f-text2:#666; --f-text3:#999;
+  --f-accent:#C6613F; --f-accent-deep:#A14E2F;
+  --f-accent-soft:rgba(198,97,63,0.10);
+  --f-edge:rgba(198,97,63,0.18);
+  --f-border:rgba(26,26,26,0.08);
+}
+body{background:var(--f-bg);color:var(--f-text);font-family:'Inter','Noto Sans TC',sans-serif}
+.subpage-header h1{font-family:'Noto Serif TC',serif;font-weight:600;color:var(--f-text);letter-spacing:0.04em}
+.subpage-header p{color:var(--f-text2)}
+.founder-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;
+  margin-top:24px;
+}
+.f-card{
+  background:var(--f-surface);
+  border:1px solid var(--f-border);
+  border-radius:12px;
+  padding:22px 22px 20px;
+  text-decoration:none;color:inherit;
+  display:block;position:relative;
+  transition:all 0.3s cubic-bezier(0.16,1,0.3,1);
+  cursor:pointer;min-height:160px;
+}
+.f-card:hover{
+  border-color:var(--f-edge);
+  transform:translateY(-3px);
+  box-shadow:0 12px 28px rgba(198,97,63,0.10), 0 1px 3px rgba(0,0,0,0.04);
+}
+.f-card .f-icon{
+  width:42px;height:42px;border-radius:10px;
+  background:var(--f-accent-soft);color:var(--f-accent);
+  display:inline-flex;align-items:center;justify-content:center;
+  margin-bottom:14px;
+  transition:all 0.3s ease;
+}
+.f-card:hover .f-icon{background:var(--f-accent);color:#fff}
+.f-card .f-icon .ph{font-size:1.4rem}
+.f-card h3{
+  font-family:'Noto Serif TC',serif;
+  font-size:1.05rem;font-weight:600;letter-spacing:0.02em;
+  color:var(--f-text);margin-bottom:6px;line-height:1.4;
+}
+.f-card .f-domain{
+  font-family:'Inter',monospace;font-size:0.74rem;font-weight:500;
+  color:var(--f-accent);letter-spacing:0.04em;margin-bottom:8px;
+}
+.f-card p{
+  font-size:0.82rem;color:var(--f-text2);
+  line-height:1.7;font-weight:400;letter-spacing:0.02em;
+}
+.f-card .f-tag{
+  display:inline-block;
+  margin-top:10px;
+  padding:3px 9px;border-radius:99px;
+  background:var(--f-accent-soft);color:var(--f-accent-deep);
+  font-size:0.7rem;letter-spacing:0.06em;font-weight:500;
+}
+@media(max-width:600px){
+  .founder-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== Google Login Gate ===== -->
+<div id="site-gate">
+  <div class="gate-card">
+    <div class="gate-logo"><i class="ph ph-lock-key" style="color:#C6613F;font-size:1.8rem"></i></div>
+    <div class="gate-title">阿笙的 AI 總站</div>
+    <div class="gate-desc">本站為私人網站，請登入 Google 帳號才能開始</div>
+    <div class="gate-divider"></div>
+    <div id="g_signin_btn"></div>
+    <div class="gate-note">登入後 3 天內免登入</div>
+  </div>
+</div>
+
+<!-- ===== Link Modal ===== -->
+<div id="link-modal" class="hidden">
+  <div class="modal-box">
+    <h3 id="link-modal-title">確認身份</h3>
+    <p>請輸入工具站密碼</p>
+    <input id="link-modal-input" type="password" placeholder="••••" onkeydown="if(event.key==='Enter')checkLinkGate()">
+    <div id="link-modal-error"></div>
+    <div class="modal-row">
+      <button class="btn-cancel" onclick="closeLinkModal()">取消</button>
+      <button class="btn-ok" onclick="checkLinkGate()">進入</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 待審核 ===== -->
+<div id="pending-gate" class="hidden">
+  <div class="pending-card">
+    <div class="icon"><i class="ph ph-hourglass-medium" style="color:#C6613F;font-size:1.8rem"></i></div>
+    <h2>申請已送出</h2>
+    <p>你的登入申請已送達，<br>等待主人審核通過後即可進入。</p>
+    <div class="hint">通常在數小時內處理，請稍後再試</div>
+  </div>
+</div>
+
+<!-- ===== 審核 Modal ===== -->
+<div id="approve-modal" class="hidden">
+  <div class="approve-box">
+    <button class="approve-close" onclick="closeApproveModal()"><i class="ph ph-x"></i></button>
+    <h3>登入審核</h3>
+    <div class="sub">以下帳號申請進入 reyway.com</div>
+    <div class="approve-list" id="approve-list">
+      <div class="approve-empty">載入中…</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Main ===== -->
+<div class="wrap">
+
+  <nav class="subpage-nav">
+    <a class="back-home" href="/">← 回首頁</a>
+    <span class="subpage-title">笙闆 AI 總站</span>
+  </nav>
+
+  <div class="subpage-header">
+    <h1>笙闆 AI 總站</h1>
+    <p>若水聯盟 AI 軍團的指揮所、與 12 人董事會議室。<br>所有重大決策從這裡開始。</p>
+  </div>
+
+  <div id="notify-bar" onclick="openApproveModal()">
+    <div class="notify-dot"></div>
+    <div class="notify-text">有新的登入申請等待審核</div>
+    <div class="notify-badge" id="notify-count">0</div>
+  </div>
+
+  <section>
+    <div class="founder-grid">
+
+      <a class="f-card" href="https://aiteam.reyway.com/__login" target="_blank" rel="noopener">
+        <div class="f-icon"><i class="ph ph-buildings"></i></div>
+        <h3 data-edit-id="founder-aiteam-title">若水聯盟總站</h3>
+        <div class="f-domain">aiteam.reyway.com</div>
+        <p data-edit-id="founder-aiteam-desc">AI 軍團後台・任務派工・Inbox・員工檔案・系統設定</p>
+        <span class="f-tag">指揮所</span>
+      </a>
+
+      <a class="f-card" href="https://boardroom.reyway.com" target="_blank" rel="noopener">
+        <div class="f-icon"><i class="ph ph-users-three"></i></div>
+        <h3 data-edit-id="founder-board-title">笙闆董事會議室</h3>
+        <div class="f-domain">boardroom.reyway.com</div>
+        <p data-edit-id="founder-board-desc">馬斯克・蒙格・賈伯斯・張一鳴・費曼・張雪峰 6 位思維大師 × 軍團 6 員 視覺化會議</p>
+        <span class="f-tag">12 人董事會</span>
+      </a>
+
+    </div>
+  </section>
+
+  <footer>© 2026 REYWAY · 陳睿笙 · Built with AI</footer>
+
+</div>
+
+<script src="/auth.js"></script>
+
+<!-- 編輯模式（主公專用）-->
+<button id="edit-toggle" type="button" title="編輯模式" style="position:fixed;bottom:18px;right:18px;z-index:990;display:none;align-items:center;gap:8px;padding:9px 16px 9px 13px;background:#fff;border:1px solid rgba(198,97,63,0.18);border-radius:100px;font-family:Inter,sans-serif;font-size:0.82rem;font-weight:500;color:#1A1A1A;cursor:pointer;box-shadow:0 2px 12px rgba(198,97,63,0.12);transition:all 0.2s ease;">
+  <i class="ph ph-pencil-simple-line"></i>
+  <span id="edit-toggle-text">編輯模式</span>
+</button>
+<div id="edit-toast" style="position:fixed;bottom:78px;right:18px;z-index:991;padding:9px 16px;background:#1A1A1A;color:#FAF7F0;border-radius:8px;font-size:0.82rem;font-weight:500;box-shadow:0 8px 24px rgba(0,0,0,0.2);opacity:0;transform:translateY(8px);transition:opacity 0.25s,transform 0.25s;pointer-events:none">已儲存 ✓</div>
+<style>
+#edit-toggle.show{display:inline-flex !important}
+#edit-toggle.editing{background:#C6613F;color:#fff;border-color:#C6613F}
+#edit-toast.show{opacity:1 !important;transform:translateY(0) !important}
+[data-edit-id]{transition:background 0.2s,outline 0.2s}
+body.edit-on [data-edit-id]{outline:1px dashed rgba(198,97,63,0.22);outline-offset:3px;background:rgba(198,97,63,0.04);border-radius:4px;cursor:text}
+body.edit-on [data-edit-id]:hover{outline-color:#C6613F;background:rgba(198,97,63,0.08)}
+body.edit-on [data-edit-id]:focus{outline:2px solid #C6613F;outline-offset:3px;background:rgba(255,255,255,0.85)}
+</style>
+<script src="/edit-mode.js"></script>
+</body>
+</html>

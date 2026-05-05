@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>品牌周邊模擬器 | 淨淨 CleanClean</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --teal:#61D0DF;--teal-d:#329BAF;--teal-l:#EBF9FC;
+  --dark:#1E2230;--text:#2D3142;--gray:#8C8C8C;--light:#F7F8FA;
+  --white:#FFF;--border:#EEF0F2;--radius:16px;
+}
+body{font-family:'Noto Sans TC','Inter',sans-serif;background:var(--white);color:var(--text);min-height:100vh;}
+
+/* Header */
+.header{position:sticky;top:0;z-index:100;background:white;border-bottom:1.5px solid var(--border);padding:16px 32px;}
+.header-inner{max-width:1400px;margin:0 auto;display:flex;align-items:center;gap:16px;}
+.back-link{display:inline-flex;align-items:center;gap:8px;color:var(--dark);text-decoration:none;font-size:14px;font-weight:500;transition:opacity .2s;}
+.back-link:hover{opacity:.7;}
+.back-link::before{content:'←';font-size:16px;}
+.header-text h1{font-size:20px;font-weight:700;color:var(--dark);}
+.header-text p{font-size:12px;color:var(--gray);}
+
+/* Layout */
+.app{max-width:1400px;margin:0 auto;display:flex;height:calc(100vh - 72px);}
+
+/* Sidebar */
+.sidebar{width:300px;flex-shrink:0;border-right:1.5px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;background:var(--white);}
+.panel{padding:20px;border-bottom:1px solid var(--border);}
+.panel-title{font-size:13px;font-weight:700;color:var(--teal-d);letter-spacing:1px;margin-bottom:14px;}
+
+/* Upload areas */
+.upload-zone{
+  border:2px dashed var(--border);border-radius:12px;padding:24px;
+  text-align:center;cursor:pointer;transition:all .2s;background:var(--light);
+}
+.upload-zone:hover{border-color:var(--teal);background:var(--teal-l);}
+.upload-zone.has-file{border-color:var(--teal);border-style:solid;background:var(--teal-l);}
+.upload-zone input{display:none;}
+.upload-icon{font-size:28px;margin-bottom:8px;display:block;}
+.upload-text{font-size:13px;color:var(--gray);line-height:1.6;}
+.upload-text strong{color:var(--dark);}
+.file-name{font-size:12px;color:var(--teal-d);font-weight:600;margin-top:8px;}
+
+/* Logo selector */
+.logo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;}
+.logo-option{
+  aspect-ratio:1;border:2px solid var(--border);border-radius:10px;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  padding:8px;transition:all .2s;background:white;overflow:hidden;
+}
+.logo-option:hover{border-color:var(--teal);}
+.logo-option.active{border-color:var(--teal);box-shadow:0 0 0 3px rgba(97,208,223,.2);}
+.logo-option img,.logo-option svg{max-width:100%;max-height:100%;object-fit:contain;}
+.logo-option.dark-bg{background:#333;}
+
+/* Controls */
+.control-group{margin-bottom:16px;}
+.control-label{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.control-label span{font-size:12px;font-weight:600;color:var(--text);}
+.control-label .value{font-size:12px;color:var(--teal-d);font-family:'Inter',monospace;}
+input[type="range"]{
+  width:100%;height:6px;border-radius:3px;background:var(--border);
+  -webkit-appearance:none;outline:none;
+}
+input[type="range"]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:18px;height:18px;border-radius:50%;
+  background:var(--teal);cursor:pointer;border:3px solid white;
+  box-shadow:0 1px 4px rgba(0,0,0,.15);
+}
+
+/* Blend mode select */
+select{
+  width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;
+  font-size:13px;font-family:inherit;color:var(--text);background:white;
+  cursor:pointer;outline:none;
+}
+select:focus{border-color:var(--teal);}
+
+/* Buttons */
+.btn{
+  width:100%;padding:12px;border:none;border-radius:10px;
+  font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;
+  font-family:inherit;
+}
+.btn-primary{background:var(--teal);color:white;}
+.btn-primary:hover{background:var(--teal-d);}
+.btn-secondary{background:var(--light);color:var(--text);border:1.5px solid var(--border);}
+.btn-secondary:hover{border-color:var(--teal);color:var(--teal-d);}
+.btn-row{display:flex;gap:8px;}
+.btn-row .btn{flex:1;}
+
+/* Canvas area */
+.canvas-area{flex:1;display:flex;align-items:center;justify-content:center;background:#F0F0F0;position:relative;overflow:hidden;}
+.canvas-wrapper{position:relative;box-shadow:0 8px 32px rgba(0,0,0,.12);background:white;}
+.canvas-wrapper canvas{display:block;}
+
+/* Empty state */
+.empty-state{text-align:center;padding:40px;}
+.empty-state .icon{font-size:48px;margin-bottom:16px;opacity:.4;}
+.empty-state h3{font-size:18px;font-weight:700;color:var(--dark);margin-bottom:8px;}
+.empty-state p{font-size:14px;color:var(--gray);line-height:1.6;max-width:320px;margin:0 auto;}
+
+/* Preset templates */
+.preset-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
+.preset-item{
+  border:1.5px solid var(--border);border-radius:10px;padding:12px;
+  cursor:pointer;text-align:center;transition:all .2s;background:white;
+}
+.preset-item:hover{border-color:var(--teal);background:var(--teal-l);}
+.preset-item .preset-icon{font-size:24px;margin-bottom:4px;}
+.preset-item .preset-name{font-size:11px;font-weight:600;color:var(--text);}
+
+/* Toast */
+.toast{position:fixed;bottom:20px;right:20px;background:var(--teal);color:white;padding:12px 20px;border-radius:8px;font-size:13px;z-index:1000;animation:slideIn .3s;box-shadow:0 4px 12px rgba(97,208,223,.3);}
+@keyframes slideIn{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+
+/* Cursor styles */
+.canvas-wrapper.dragging{cursor:grabbing;}
+.canvas-wrapper.can-drag{cursor:grab;}
+
+/* Zoom controls */
+.zoom-controls{position:absolute;bottom:16px;right:16px;display:flex;gap:4px;background:white;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,.1);overflow:hidden;}
+.zoom-btn{padding:8px 12px;border:none;background:white;cursor:pointer;font-size:14px;color:var(--text);transition:background .15s;}
+.zoom-btn:hover{background:var(--light);}
+.zoom-label{padding:8px;font-size:12px;color:var(--gray);font-family:'Inter',monospace;min-width:48px;text-align:center;}
+
+/* Color picker row */
+.color-row{display:flex;gap:8px;align-items:center;}
+.color-row input[type="color"]{width:36px;height:36px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;padding:2px;}
+
+@media(max-width:900px){
+  .app{flex-direction:column;height:auto;}
+  .sidebar{width:100%;max-height:40vh;border-right:none;border-bottom:1.5px solid var(--border);}
+  .canvas-area{min-height:50vh;}
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <a href="小彩工具箱.html" class="back-link">淨淨美學工作室</a>
+    <div class="header-text">
+      <h1>品牌周邊模擬器</h1>
+      <p>上傳商品照 → 疊上 Logo → 調整混合模式 → 匯出擬真效果圖</p>
+    </div>
+  </div>
+</header>
+
+<div class="app">
+  <!-- ═══ Sidebar ═══ -->
+  <aside class="sidebar">
+
+    <!-- Step 1: Product Base -->
+    <div class="panel">
+      <div class="panel-title">STEP 1 ─ 商品底圖</div>
+      <div class="upload-zone" id="productUpload" onclick="document.getElementById('productFile').click()">
+        <input type="file" id="productFile" accept="image/*">
+        <span class="upload-icon">📦</span>
+        <div class="upload-text"><strong>上傳商品照片</strong><br>購物袋、洗衣袋、T恤、馬克杯…<br>JPG / PNG 皆可</div>
+        <div class="file-name" id="productFileName"></div>
+      </div>
+      <div style="margin-top:12px;">
+        <div style="font-size:11px;font-weight:600;color:var(--gray);margin-bottom:8px;">或選擇示範底圖</div>
+        <div class="preset-grid">
+          <div class="preset-item" onclick="loadPreset('tote')"><div class="preset-icon">👜</div><div class="preset-name">環保購物袋</div></div>
+          <div class="preset-item" onclick="loadPreset('tshirt')"><div class="preset-icon">👕</div><div class="preset-name">T-Shirt</div></div>
+          <div class="preset-item" onclick="loadPreset('apron')"><div class="preset-icon">🧑‍🍳</div><div class="preset-name">圍裙</div></div>
+          <div class="preset-item" onclick="loadPreset('mug')"><div class="preset-icon">☕</div><div class="preset-name">馬克杯</div></div>
+          <div class="preset-item" onclick="loadPreset('bag')"><div class="preset-icon">🧺</div><div class="preset-name">洗衣袋</div></div>
+          <div class="preset-item" onclick="loadPreset('box')"><div class="preset-icon">📦</div><div class="preset-name">包裝盒</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2: Logo -->
+    <div class="panel">
+      <div class="panel-title">STEP 2 ─ Logo 選擇</div>
+      <div class="logo-grid">
+        <div class="logo-option active" data-logo="shield-color" onclick="selectLogo(this)" title="淨淨盾牌 彩色">
+          <svg viewBox="0 0 100 120" width="48"><path d="M20 15 Q50 5 80 15 Q87 18 87 28 L87 65 Q87 95 50 108 Q13 95 13 65 L13 28 Q13 18 20 15Z" fill="#61D0DF"/><path d="M50 32 C43 45 38 55 38 62 A12 12 0 1 0 62 62 C62 55 57 45 50 32Z" fill="white"/><text x="50" y="90" text-anchor="middle" fill="white" font-size="16" font-weight="bold" font-family="sans-serif">淨淨</text></svg>
+        </div>
+        <div class="logo-option" data-logo="shield-white" onclick="selectLogo(this)" title="淨淨盾牌 白色" style="background:#666;">
+          <svg viewBox="0 0 100 120" width="48"><path d="M20 15 Q50 5 80 15 Q87 18 87 28 L87 65 Q87 95 50 108 Q13 95 13 65 L13 28 Q13 18 20 15Z" fill="white"/><path d="M50 32 C43 45 38 55 38 62 A12 12 0 1 0 62 62 C62 55 57 45 50 32Z" fill="#666"/><text x="50" y="90" text-anchor="middle" fill="#666" font-size="16" font-weight="bold" font-family="sans-serif">淨淨</text></svg>
+        </div>
+        <div class="logo-option" data-logo="shield-dark" onclick="selectLogo(this)" title="淨淨盾牌 深色">
+          <svg viewBox="0 0 100 120" width="48"><path d="M20 15 Q50 5 80 15 Q87 18 87 28 L87 65 Q87 95 50 108 Q13 95 13 65 L13 28 Q13 18 20 15Z" fill="#1E2230"/><path d="M50 32 C43 45 38 55 38 62 A12 12 0 1 0 62 62 C62 55 57 45 50 32Z" fill="white"/><text x="50" y="90" text-anchor="middle" fill="white" font-size="16" font-weight="bold" font-family="sans-serif">淨淨</text></svg>
+        </div>
+        <div class="logo-option" data-logo="text-color" onclick="selectLogo(this)" title="淨淨文字 彩色">
+          <svg viewBox="0 0 120 40" width="48"><text x="60" y="30" text-anchor="middle" fill="#61D0DF" font-size="28" font-weight="900" font-family="sans-serif">淨淨</text></svg>
+        </div>
+        <div class="logo-option" data-logo="text-en" onclick="selectLogo(this)" title="Clean Clean 英文">
+          <svg viewBox="0 0 160 30" width="56"><text x="80" y="22" text-anchor="middle" fill="#61D0DF" font-size="16" font-weight="600" font-family="'Inter',sans-serif" letter-spacing="2">Clean Clean</text></svg>
+        </div>
+        <div class="logo-option" data-logo="custom" onclick="document.getElementById('logoFile').click()" title="上傳自訂 Logo" style="border-style:dashed;">
+          <div style="text-align:center;"><div style="font-size:20px;">+</div><div style="font-size:9px;color:var(--gray);">上傳</div></div>
+        </div>
+      </div>
+      <input type="file" id="logoFile" accept="image/*" style="display:none;">
+      <div class="file-name" id="logoFileName" style="font-size:11px;"></div>
+    </div>
+
+    <!-- Step 3: Adjustments -->
+    <div class="panel">
+      <div class="panel-title">STEP 3 ─ 調整參數</div>
+
+      <div class="control-group">
+        <div class="control-label"><span>Logo 大小</span><span class="value" id="sizeVal">30%</span></div>
+        <input type="range" id="logoSize" min="5" max="80" value="30" oninput="updateLogo()">
+      </div>
+
+      <div class="control-group">
+        <div class="control-label"><span>旋轉角度</span><span class="value" id="rotVal">0°</span></div>
+        <input type="range" id="logoRotation" min="-180" max="180" value="0" oninput="updateLogo()">
+      </div>
+
+      <div class="control-group">
+        <div class="control-label"><span>透明度</span><span class="value" id="opacVal">100%</span></div>
+        <input type="range" id="logoOpacity" min="10" max="100" value="100" oninput="updateLogo()">
+      </div>
+
+      <div class="control-group">
+        <div class="control-label"><span>混合模式</span></div>
+        <select id="blendMode" onchange="updateLogo()">
+          <option value="multiply" selected>Multiply（布料/紙張首選）</option>
+          <option value="normal">Normal（硬面/塑膠）</option>
+          <option value="overlay">Overlay（增加對比）</option>
+          <option value="soft-light">Soft Light（柔和融合）</option>
+          <option value="darken">Darken（深色保留）</option>
+          <option value="screen">Screen（淺色底用）</option>
+          <option value="color-burn">Color Burn（加深印刷感）</option>
+        </select>
+      </div>
+
+      <div class="control-group">
+        <div class="control-label"><span>Logo 色調覆蓋</span></div>
+        <div class="color-row">
+          <input type="color" id="tintColor" value="#61D0DF">
+          <div style="flex:1;">
+            <div class="control-label"><span>色調強度</span><span class="value" id="tintVal">0%</span></div>
+            <input type="range" id="tintAmount" min="0" max="100" value="0" oninput="updateLogo()">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Export -->
+    <div class="panel" style="border-bottom:none;">
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="exportImage('png')">匯出 PNG</button>
+        <button class="btn btn-secondary" onclick="exportImage('jpg')">匯出 JPG</button>
+      </div>
+      <button class="btn btn-secondary" style="margin-top:8px;" onclick="resetAll()">重設全部</button>
+    </div>
+  </aside>
+
+  <!-- ═══ Canvas Area ═══ -->
+  <div class="canvas-area" id="canvasArea">
+    <div class="empty-state" id="emptyState">
+      <div class="icon">🎨</div>
+      <h3>上傳商品底圖開始模擬</h3>
+      <p>支援 JPG、PNG 格式。上傳後可在底圖上拖曳 Logo 位置，調整大小、旋轉、混合模式。</p>
+    </div>
+    <div class="canvas-wrapper" id="canvasWrapper" style="display:none;">
+      <canvas id="mainCanvas"></canvas>
+    </div>
+    <div class="zoom-controls" style="display:none;" id="zoomControls">
+      <button class="zoom-btn" onclick="zoomCanvas(-0.1)">−</button>
+      <span class="zoom-label" id="zoomLabel">100%</span>
+      <button class="zoom-btn" onclick="zoomCanvas(0.1)">+</button>
+      <button class="zoom-btn" onclick="zoomCanvas(0)" title="適合畫面">⊡</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── State ───
+const state = {
+  productImg: null,
+  logoImg: null,
+  logoX: 0.5,    // normalized 0-1
+  logoY: 0.5,
+  zoom: 1,
+  isDragging: false,
+  dragStart: {x:0, y:0},
+  currentLogo: 'shield-color',
+};
+
+const canvas = document.getElementById('mainCanvas');
+const ctx = canvas.getContext('2d');
+
+// ─── Preset Product Templates ───
+function createPresetImage(type) {
+  const c = document.createElement('canvas');
+  const w = 800, h = 1000;
+  c.width = w; c.height = h;
+  const cx = c.getContext('2d');
+
+  // Background
+  cx.fillStyle = '#F5F5F5';
+  cx.fillRect(0, 0, w, h);
+
+  switch(type) {
+    case 'tote':
+      // Tote bag shape
+      cx.fillStyle = '#E8E0D4';
+      cx.beginPath();
+      cx.moveTo(150, 250); cx.lineTo(120, 850); cx.quadraticCurveTo(120, 900, 170, 900);
+      cx.lineTo(630, 900); cx.quadraticCurveTo(680, 900, 680, 850);
+      cx.lineTo(650, 250); cx.closePath(); cx.fill();
+      // Handles
+      cx.strokeStyle = '#C4B8A8'; cx.lineWidth = 12; cx.lineCap = 'round';
+      cx.beginPath(); cx.moveTo(250, 250); cx.quadraticCurveTo(250, 130, 350, 130); cx.stroke();
+      cx.beginPath(); cx.moveTo(550, 250); cx.quadraticCurveTo(550, 130, 450, 130); cx.stroke();
+      // Texture lines
+      cx.strokeStyle = 'rgba(0,0,0,0.03)'; cx.lineWidth = 1;
+      for(let y = 270; y < 890; y += 8) {
+        cx.beginPath(); cx.moveTo(130, y); cx.lineTo(670, y); cx.stroke();
+      }
+      break;
+
+    case 'tshirt':
+      cx.fillStyle = '#F0F0F0';
+      cx.beginPath();
+      // Body
+      cx.moveTo(200, 300); cx.lineTo(200, 880); cx.lineTo(600, 880); cx.lineTo(600, 300);
+      // Right sleeve
+      cx.lineTo(720, 400); cx.lineTo(680, 480); cx.lineTo(600, 420);
+      // Neckline
+      cx.lineTo(600, 300); cx.quadraticCurveTo(400, 240, 200, 300);
+      // Left sleeve
+      cx.lineTo(80, 400); cx.lineTo(120, 480); cx.lineTo(200, 420);
+      cx.closePath(); cx.fill();
+      // Collar
+      cx.strokeStyle = '#DDD'; cx.lineWidth = 3;
+      cx.beginPath(); cx.moveTo(280, 280); cx.quadraticCurveTo(400, 320, 520, 280); cx.stroke();
+      // Fabric texture
+      cx.strokeStyle = 'rgba(0,0,0,0.02)'; cx.lineWidth = 1;
+      for(let y = 310; y < 870; y += 6) {
+        cx.beginPath(); cx.moveTo(210, y); cx.lineTo(590, y); cx.stroke();
+      }
+      break;
+
+    case 'apron':
+      cx.fillStyle = '#B8DEE6';
+      // Bib
+      cx.beginPath(); cx.moveTo(250, 200); cx.lineTo(250, 450); cx.lineTo(550, 450);
+      cx.lineTo(550, 200); cx.quadraticCurveTo(400, 170, 250, 200); cx.closePath(); cx.fill();
+      // Skirt
+      cx.beginPath(); cx.moveTo(180, 450); cx.lineTo(160, 880); cx.lineTo(640, 880);
+      cx.lineTo(620, 450); cx.closePath(); cx.fill();
+      // Straps
+      cx.strokeStyle = '#9CCDD6'; cx.lineWidth = 10; cx.lineCap = 'round';
+      cx.beginPath(); cx.moveTo(280, 210); cx.quadraticCurveTo(200, 100, 300, 80); cx.stroke();
+      cx.beginPath(); cx.moveTo(520, 210); cx.quadraticCurveTo(600, 100, 500, 80); cx.stroke();
+      // Pocket
+      cx.strokeStyle = '#9CCDD6'; cx.lineWidth = 2;
+      cx.fillStyle = '#A8D4DC';
+      cx.beginPath(); cx.moveTo(300, 600); cx.lineTo(300, 740); cx.lineTo(500, 740);
+      cx.lineTo(500, 600); cx.closePath(); cx.fill(); cx.stroke();
+      break;
+
+    case 'mug':
+      cx.fillStyle = '#F5F5F5'; cx.fillRect(0,0,w,h);
+      // Mug body
+      cx.fillStyle = '#FAFAFA';
+      cx.beginPath(); cx.ellipse(380, 350, 200, 50, 0, 0, Math.PI*2); cx.fill();
+      cx.fillStyle = '#EFEFEF';
+      cx.fillRect(180, 350, 400, 400);
+      cx.fillStyle = '#E8E8E8';
+      cx.beginPath(); cx.ellipse(380, 750, 200, 50, 0, 0, Math.PI*2); cx.fill();
+      // Handle
+      cx.strokeStyle = '#DDD'; cx.lineWidth = 20; cx.lineCap = 'round';
+      cx.beginPath(); cx.moveTo(580, 430); cx.quadraticCurveTo(700, 550, 580, 670); cx.stroke();
+      // Surface texture
+      cx.fillStyle = 'rgba(0,0,0,0.01)';
+      for(let y = 360; y < 740; y += 4) {
+        cx.fillRect(185, y, 390, 2);
+      }
+      break;
+
+    case 'bag':
+      // Laundry bag
+      cx.fillStyle = '#E0E8EC';
+      cx.beginPath(); cx.moveTo(200, 200); cx.lineTo(180, 850); cx.quadraticCurveTo(180, 900, 230, 900);
+      cx.lineTo(570, 900); cx.quadraticCurveTo(620, 900, 620, 850);
+      cx.lineTo(600, 200); cx.closePath(); cx.fill();
+      // Drawstring
+      cx.strokeStyle = '#C8D0D4'; cx.lineWidth = 4;
+      cx.beginPath(); cx.moveTo(200, 220);
+      for(let x = 200; x <= 600; x += 20) { cx.lineTo(x, 220 + Math.sin(x/30)*10); }
+      cx.stroke();
+      // Mesh texture
+      cx.strokeStyle = 'rgba(0,0,0,0.04)'; cx.lineWidth = 1;
+      for(let y = 240; y < 890; y += 12) { cx.beginPath(); cx.moveTo(185, y); cx.lineTo(615, y); cx.stroke(); }
+      for(let x = 190; x < 620; x += 12) { cx.beginPath(); cx.moveTo(x, 240); cx.lineTo(x, 890); cx.stroke(); }
+      break;
+
+    case 'box':
+      // Box front
+      cx.fillStyle = '#F8F8F8';
+      cx.fillRect(150, 250, 420, 500);
+      cx.strokeStyle = '#E0E0E0'; cx.lineWidth = 2;
+      cx.strokeRect(150, 250, 420, 500);
+      // Box top
+      cx.fillStyle = '#EEEEEE';
+      cx.beginPath(); cx.moveTo(150, 250); cx.lineTo(250, 170); cx.lineTo(670, 170);
+      cx.lineTo(570, 250); cx.closePath(); cx.fill(); cx.stroke();
+      // Box side
+      cx.fillStyle = '#E4E4E4';
+      cx.beginPath(); cx.moveTo(570, 250); cx.lineTo(670, 170); cx.lineTo(670, 670);
+      cx.lineTo(570, 750); cx.closePath(); cx.fill(); cx.stroke();
+      break;
+  }
+
+  return c;
+}
+
+function loadPreset(type) {
+  const presetCanvas = createPresetImage(type);
+  const img = new Image();
+  img.onload = () => {
+    state.productImg = img;
+    document.getElementById('productUpload').classList.add('has-file');
+    document.getElementById('productFileName').textContent = `示範底圖：${type}`;
+    initCanvas();
+  };
+  img.src = presetCanvas.toDataURL();
+}
+
+// ─── Logo Renderer (Canvas-based, no SVG blob issues) ───
+function createLogoImage(type) {
+  const c = document.createElement('canvas');
+  let cx;
+
+  if (type === 'text-color' || type === 'text-en') {
+    c.width = 400; c.height = type === 'text-en' ? 80 : 120;
+    cx = c.getContext('2d');
+    cx.clearRect(0, 0, c.width, c.height);
+    if (type === 'text-color') {
+      cx.fillStyle = '#61D0DF';
+      cx.font = '900 72px "Noto Sans TC", Arial, sans-serif';
+      cx.textAlign = 'center'; cx.textBaseline = 'middle';
+      cx.fillText('淨淨', 200, 50);
+      cx.font = '600 18px "Inter", Arial, sans-serif';
+      cx.fillText('Clean Clean', 200, 100);
+    } else {
+      cx.fillStyle = '#61D0DF';
+      cx.font = '600 36px "Inter", Arial, sans-serif';
+      cx.textAlign = 'center'; cx.textBaseline = 'middle';
+      cx.letterSpacing = '4px';
+      cx.fillText('Clean Clean', 200, 40);
+    }
+  } else {
+    // Shield logos — accurate reproduction of real 淨淨 logo
+    c.width = 400; c.height = 480;
+    cx = c.getContext('2d');
+    cx.clearRect(0, 0, c.width, c.height);
+
+    const shieldFill = type === 'shield-white' ? '#FFFFFF' : type === 'shield-dark' ? '#1E2230' : '#61D0DF';
+    const detailFill = type === 'shield-white' ? '#888888' : '#FFFFFF';
+
+    // ── Shield body: rounded badge shape ──
+    cx.fillStyle = shieldFill;
+    cx.beginPath();
+    // Top-left corner
+    cx.moveTo(80, 40);
+    cx.quadraticCurveTo(200, 10, 320, 40);
+    // Right side
+    cx.quadraticCurveTo(350, 48, 350, 80);
+    cx.lineTo(350, 260);
+    // Bottom-right curve to point
+    cx.quadraticCurveTo(350, 360, 200, 420);
+    // Bottom-left curve from point
+    cx.quadraticCurveTo(50, 360, 50, 260);
+    cx.lineTo(50, 80);
+    // Top-left curve
+    cx.quadraticCurveTo(50, 48, 80, 40);
+    cx.closePath();
+    cx.fill();
+
+    // White shield border for visibility
+    if (type === 'shield-white') {
+      cx.strokeStyle = '#CCCCCC'; cx.lineWidth = 2; cx.stroke();
+    }
+
+    // ── Shield inner outline (creates the badge-within-badge look) ──
+    cx.strokeStyle = detailFill;
+    cx.lineWidth = 3;
+    cx.globalAlpha = 0.3;
+    cx.beginPath();
+    cx.moveTo(95, 60);
+    cx.quadraticCurveTo(200, 34, 305, 60);
+    cx.quadraticCurveTo(330, 66, 330, 92);
+    cx.lineTo(330, 252);
+    cx.quadraticCurveTo(330, 340, 200, 395);
+    cx.quadraticCurveTo(70, 340, 70, 252);
+    cx.lineTo(70, 92);
+    cx.quadraticCurveTo(70, 66, 95, 60);
+    cx.closePath();
+    cx.stroke();
+    cx.globalAlpha = 1;
+
+    // ── Water drop icon ──
+    cx.fillStyle = detailFill;
+    cx.beginPath();
+    // Drop tip (top)
+    cx.moveTo(200, 80);
+    // Left curve down
+    cx.bezierCurveTo(175, 120, 155, 155, 155, 178);
+    // Bottom arc (round base of drop)
+    cx.arc(200, 178, 45, Math.PI, 0, false);
+    // Right curve up
+    cx.bezierCurveTo(245, 155, 225, 120, 200, 80);
+    cx.closePath();
+    cx.fill();
+
+    // Small highlight circle inside drop (creates the "cutout" look)
+    cx.fillStyle = shieldFill;
+    cx.beginPath();
+    cx.arc(200, 182, 28, 0, Math.PI * 2);
+    cx.fill();
+
+    // Re-draw smaller drop inside to create the outline effect
+    cx.fillStyle = detailFill;
+    cx.beginPath();
+    cx.moveTo(200, 108);
+    cx.bezierCurveTo(186, 134, 175, 155, 175, 170);
+    cx.arc(200, 170, 25, Math.PI, 0, false);
+    cx.bezierCurveTo(225, 155, 214, 134, 200, 108);
+    cx.closePath();
+    cx.fill();
+
+    // ── Text: 淨淨 ──
+    cx.fillStyle = detailFill;
+    cx.font = '900 64px "Noto Sans TC", "Microsoft JhengHei", Arial, sans-serif';
+    cx.textAlign = 'center'; cx.textBaseline = 'middle';
+    cx.fillText('淨淨', 200, 300);
+
+    // ── Text: Clean Clean ──
+    cx.font = '500 22px "Inter", "Futura", Arial, sans-serif';
+    cx.letterSpacing = '3px';
+    cx.fillText('C l e a n   C l e a n', 200, 345);
+  }
+
+  // Convert canvas to Image
+  const img = new Image();
+  img.src = c.toDataURL('image/png');
+  return img;
+}
+
+function loadLogo(type) {
+  const img = createLogoImage(type);
+  // Canvas toDataURL is synchronous, but img.src assignment is async
+  if (img.complete && img.naturalWidth > 0) {
+    state.logoImg = img;
+    state.currentLogo = type;
+    render();
+  } else {
+    img.onload = () => {
+      state.logoImg = img;
+      state.currentLogo = type;
+      render();
+    };
+  }
+}
+
+function selectLogo(el) {
+  document.querySelectorAll('.logo-option').forEach(o => o.classList.remove('active'));
+  el.classList.add('active');
+  const type = el.dataset.logo;
+  if (type === 'custom') return;
+  loadLogo(type);
+}
+
+// ─── File Uploads ───
+document.getElementById('productFile').addEventListener('change', e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const img = new Image();
+    img.onload = () => {
+      state.productImg = img;
+      document.getElementById('productUpload').classList.add('has-file');
+      document.getElementById('productFileName').textContent = file.name;
+      initCanvas();
+    };
+    img.src = ev.target.result;
+  };
+  reader.readAsDataURL(file);
+});
+
+document.getElementById('logoFile').addEventListener('change', e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const img = new Image();
+    img.onload = () => {
+      state.logoImg = img;
+      state.currentLogo = 'custom';
+      document.querySelectorAll('.logo-option').forEach(o => o.classList.remove('active'));
+      document.querySelector('[data-logo="custom"]').classList.add('active');
+      document.getElementById('logoFileName').textContent = file.name;
+      render();
+    };
+    img.src = ev.target.result;
+  };
+  reader.readAsDataURL(file);
+});
+
+// ─── Canvas Init ───
+function initCanvas() {
+  if (!state.productImg) return;
+  const img = state.productImg;
+
+  // Size canvas to image, capped at reasonable resolution
+  const maxDim = 1200;
+  let cw = img.naturalWidth, ch = img.naturalHeight;
+  if (cw > maxDim || ch > maxDim) {
+    const scale = maxDim / Math.max(cw, ch);
+    cw = Math.round(cw * scale);
+    ch = Math.round(ch * scale);
+  }
+  canvas.width = cw;
+  canvas.height = ch;
+
+  // Fit to screen
+  zoomCanvas(0);
+
+  document.getElementById('emptyState').style.display = 'none';
+  document.getElementById('canvasWrapper').style.display = 'block';
+  document.getElementById('zoomControls').style.display = 'flex';
+
+  // Load default logo if not loaded
+  if (!state.logoImg) loadLogo('shield-color');
+
+  render();
+}
+
+// ─── Render ───
+function render() {
+  if (!state.productImg) return;
+
+  const cw = canvas.width, ch = canvas.height;
+  ctx.clearRect(0, 0, cw, ch);
+
+  // Draw product base
+  ctx.globalCompositeOperation = 'source-over';
+  ctx.globalAlpha = 1;
+  ctx.drawImage(state.productImg, 0, 0, cw, ch);
+
+  if (!state.logoImg) return;
+
+  // Get params
+  const size = parseInt(document.getElementById('logoSize').value) / 100;
+  const rotation = parseInt(document.getElementById('logoRotation').value) * Math.PI / 180;
+  const opacity = parseInt(document.getElementById('logoOpacity').value) / 100;
+  const blend = document.getElementById('blendMode').value;
+  const tintAmount = parseInt(document.getElementById('tintAmount').value) / 100;
+  const tintColor = document.getElementById('tintColor').value;
+
+  // Calculate logo dimensions (handle SVG/canvas images that may lack naturalWidth)
+  const nw = state.logoImg.naturalWidth || state.logoImg.width || 240;
+  const nh = state.logoImg.naturalHeight || state.logoImg.height || 280;
+  const logoAspect = nw / nh;
+  const logoH = ch * size;
+  const logoW = logoH * logoAspect;
+
+  // Position
+  const lx = state.logoX * cw;
+  const ly = state.logoY * ch;
+
+  // Draw logo with blend mode
+  ctx.save();
+  ctx.globalCompositeOperation = blend;
+  ctx.globalAlpha = opacity;
+  ctx.translate(lx, ly);
+  ctx.rotate(rotation);
+
+  // If tint is active, draw to offscreen canvas first
+  if (tintAmount > 0) {
+    const offC = document.createElement('canvas');
+    offC.width = Math.ceil(logoW);
+    offC.height = Math.ceil(logoH);
+    const offCtx = offC.getContext('2d');
+
+    offCtx.drawImage(state.logoImg, 0, 0, logoW, logoH);
+
+    // Apply tint
+    offCtx.globalCompositeOperation = 'source-atop';
+    offCtx.globalAlpha = tintAmount;
+    offCtx.fillStyle = tintColor;
+    offCtx.fillRect(0, 0, logoW, logoH);
+
+    ctx.drawImage(offC, -logoW/2, -logoH/2, logoW, logoH);
+  } else {
+    ctx.drawImage(state.logoImg, -logoW/2, -logoH/2, logoW, logoH);
+  }
+  ctx.restore();
+
+  // Update value displays
+  document.getElementById('sizeVal').textContent = document.getElementById('logoSize').value + '%';
+  document.getElementById('rotVal').textContent = document.getElementById('logoRotation').value + '°';
+  document.getElementById('opacVal').textContent = document.getElementById('logoOpacity').value + '%';
+  document.getElementById('tintVal').textContent = document.getElementById('tintAmount').value + '%';
+}
+
+function updateLogo() { render(); }
+
+// ─── Drag Logo ───
+const wrapper = document.getElementById('canvasWrapper');
+
+wrapper.addEventListener('mousedown', e => {
+  state.isDragging = true;
+  state.dragStart = { x: e.clientX, y: e.clientY, lx: state.logoX, ly: state.logoY };
+  wrapper.classList.add('dragging');
+});
+
+window.addEventListener('mousemove', e => {
+  if (!state.isDragging) return;
+  const rect = canvas.getBoundingClientRect();
+  const scaleX = canvas.width / rect.width;
+  const scaleY = canvas.height / rect.height;
+  const dx = (e.clientX - state.dragStart.x) * scaleX / canvas.width;
+  const dy = (e.clientY - state.dragStart.y) * scaleY / canvas.height;
+  state.logoX = Math.max(0, Math.min(1, state.dragStart.lx + dx));
+  state.logoY = Math.max(0, Math.min(1, state.dragStart.ly + dy));
+  render();
+});
+
+window.addEventListener('mouseup', () => {
+  state.isDragging = false;
+  wrapper.classList.remove('dragging');
+});
+
+// Touch support
+wrapper.addEventListener('touchstart', e => {
+  const t = e.touches[0];
+  state.isDragging = true;
+  state.dragStart = { x: t.clientX, y: t.clientY, lx: state.logoX, ly: state.logoY };
+}, {passive: true});
+
+window.addEventListener('touchmove', e => {
+  if (!state.isDragging) return;
+  const t = e.touches[0];
+  const rect = canvas.getBoundingClientRect();
+  const scaleX = canvas.width / rect.width;
+  const scaleY = canvas.height / rect.height;
+  const dx = (t.clientX - state.dragStart.x) * scaleX / canvas.width;
+  const dy = (t.clientY - state.dragStart.y) * scaleY / canvas.height;
+  state.logoX = Math.max(0, Math.min(1, state.dragStart.lx + dx));
+  state.logoY = Math.max(0, Math.min(1, state.dragStart.ly + dy));
+  render();
+}, {passive: true});
+
+window.addEventListener('touchend', () => { state.isDragging = false; });
+
+// Hover cursor
+wrapper.addEventListener('mouseenter', () => wrapper.classList.add('can-drag'));
+wrapper.addEventListener('mouseleave', () => wrapper.classList.remove('can-drag'));
+
+// ─── Zoom ───
+function zoomCanvas(delta) {
+  if (delta === 0) {
+    // Fit to container
+    const area = document.getElementById('canvasArea');
+    const margin = 40;
+    const maxW = area.clientWidth - margin * 2;
+    const maxH = area.clientHeight - margin * 2;
+    state.zoom = Math.min(maxW / canvas.width, maxH / canvas.height, 1);
+  } else {
+    state.zoom = Math.max(0.1, Math.min(3, state.zoom + delta));
+  }
+  wrapper.style.width = (canvas.width * state.zoom) + 'px';
+  wrapper.style.height = (canvas.height * state.zoom) + 'px';
+  canvas.style.width = '100%';
+  canvas.style.height = '100%';
+  document.getElementById('zoomLabel').textContent = Math.round(state.zoom * 100) + '%';
+}
+
+// ─── Export ───
+function exportImage(format) {
+  if (!state.productImg) { showToast('請先上傳商品底圖'); return; }
+
+  // Render at full resolution
+  const exportCanvas = document.createElement('canvas');
+  const img = state.productImg;
+  exportCanvas.width = img.naturalWidth;
+  exportCanvas.height = img.naturalHeight;
+  const ectx = exportCanvas.getContext('2d');
+
+  // Draw product
+  ectx.drawImage(img, 0, 0);
+
+  // Draw logo
+  if (state.logoImg) {
+    const cw = exportCanvas.width, ch = exportCanvas.height;
+    const size = parseInt(document.getElementById('logoSize').value) / 100;
+    const rotation = parseInt(document.getElementById('logoRotation').value) * Math.PI / 180;
+    const opacity = parseInt(document.getElementById('logoOpacity').value) / 100;
+    const blend = document.getElementById('blendMode').value;
+    const tintAmount = parseInt(document.getElementById('tintAmount').value) / 100;
+    const tintColor = document.getElementById('tintColor').value;
+
+    const enw = state.logoImg.naturalWidth || state.logoImg.width || 240;
+    const enh = state.logoImg.naturalHeight || state.logoImg.height || 280;
+    const logoAspect = enw / enh;
+    const logoH = ch * size;
+    const logoW = logoH * logoAspect;
+    const lx = state.logoX * cw;
+    const ly = state.logoY * ch;
+
+    ectx.save();
+    ectx.globalCompositeOperation = blend;
+    ectx.globalAlpha = opacity;
+    ectx.translate(lx, ly);
+    ectx.rotate(rotation);
+
+    if (tintAmount > 0) {
+      const offC = document.createElement('canvas');
+      offC.width = Math.ceil(logoW); offC.height = Math.ceil(logoH);
+      const offCtx = offC.getContext('2d');
+      offCtx.drawImage(state.logoImg, 0, 0, logoW, logoH);
+      offCtx.globalCompositeOperation = 'source-atop';
+      offCtx.globalAlpha = tintAmount;
+      offCtx.fillStyle = tintColor;
+      offCtx.fillRect(0, 0, logoW, logoH);
+      ectx.drawImage(offC, -logoW/2, -logoH/2, logoW, logoH);
+    } else {
+      ectx.drawImage(state.logoImg, -logoW/2, -logoH/2, logoW, logoH);
+    }
+    ectx.restore();
+  }
+
+  const mime = format === 'jpg' ? 'image/jpeg' : 'image/png';
+  const quality = format === 'jpg' ? 0.92 : undefined;
+  const dataUrl = exportCanvas.toDataURL(mime, quality);
+
+  const a = document.createElement('a');
+  a.href = dataUrl;
+  a.download = `淨淨_周邊模擬_${Date.now()}.${format}`;
+  a.click();
+  showToast(`已匯出 ${format.toUpperCase()}`);
+}
+
+// ─── Reset ───
+function resetAll() {
+  state.logoX = 0.5;
+  state.logoY = 0.5;
+  document.getElementById('logoSize').value = 30;
+  document.getElementById('logoRotation').value = 0;
+  document.getElementById('logoOpacity').value = 100;
+  document.getElementById('blendMode').value = 'multiply';
+  document.getElementById('tintAmount').value = 0;
+  render();
+}
+
+// ─── Toast ───
+function showToast(msg) {
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 2000);
+}
+
+// ─── Init ───
+loadLogo('shield-color');
+</script>
+</body>
+</html>

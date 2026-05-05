@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>淨淨知識庫 · REYWAY</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#F5F4F0;--surface:#FFF;--text:#1C1C1E;--text-2:#6E6E73;--text-3:#AEAEB2;--border:rgba(0,0,0,0.06);--shadow:0 2px 16px rgba(0,0,0,0.06),0 1px 4px rgba(0,0,0,0.04);--shadow-hover:0 8px 32px rgba(0,0,0,0.1),0 2px 8px rgba(0,0,0,0.06);--green:#0fa882;--radius:18px;--radius-sm:12px}
+body{font-family:"Inter","Noto Sans TC",sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;min-height:100vh}
+.wrap{max-width:800px;margin:0 auto;padding:0 20px}
+
+.topbar{position:sticky;top:0;z-index:10;background:rgba(245,244,240,0.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:14px 0}
+.topbar-inner{display:flex;align-items:center;gap:12px}
+.back-btn{display:flex;align-items:center;gap:6px;font-size:0.82rem;color:var(--text-2);text-decoration:none;padding:6px 14px;border-radius:100px;background:var(--surface);box-shadow:var(--shadow);white-space:nowrap;flex-shrink:0}
+.back-btn:hover{box-shadow:var(--shadow-hover)}
+.topbar h1{font-size:1rem;font-weight:700;flex:1}
+.count{font-size:0.8rem;color:var(--text-3);flex-shrink:0}
+
+.search-wrap{padding:24px 0 0}
+.search-box{display:flex;align-items:center;gap:10px;background:var(--surface);border-radius:100px;padding:11px 20px;box-shadow:var(--shadow)}
+.search-box input{flex:1;border:none;outline:none;background:none;font-size:0.9rem;font-family:inherit;color:var(--text)}
+.search-box input::placeholder{color:var(--text-3)}
+
+.filter-tabs{display:flex;gap:8px;flex-wrap:wrap;padding:16px 0 20px}
+.ftab{padding:6px 16px;border-radius:100px;border:none;cursor:pointer;font-size:0.8rem;font-weight:500;background:var(--surface);color:var(--text-2);box-shadow:var(--shadow);transition:background .15s,color .15s}
+.ftab.active,.ftab:hover{background:var(--green);color:#fff}
+
+.list{display:flex;flex-direction:column;gap:10px;padding-bottom:60px}
+.kb-card{background:var(--surface);border-radius:var(--radius-sm);padding:18px 20px;box-shadow:var(--shadow);display:flex;align-items:center;gap:14px;text-decoration:none;color:inherit;transition:box-shadow .2s,transform .2s}
+.kb-card:hover{box-shadow:var(--shadow-hover);transform:translateY(-1px)}
+.kb-card.hidden{display:none}
+.kb-icon{font-size:1.25rem;width:36px;text-align:center;flex-shrink:0}
+.kb-body{flex:1;min-width:0}
+.kb-title{font-size:0.92rem;font-weight:600;margin-bottom:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kb-meta{display:flex;gap:8px}
+.kb-tag{font-size:0.68rem;font-weight:500;padding:2px 7px;border-radius:100px;background:rgba(15,168,130,0.1);color:var(--green)}
+.kb-date{font-size:0.72rem;color:var(--text-3)}
+.kb-arrow{font-size:0.95rem;color:var(--text-3);flex-shrink:0}
+.empty{text-align:center;padding:60px 20px;font-size:.88rem;color:var(--text-3);display:none}
+
+#auth-gate{position:fixed;inset:0;z-index:999;background:var(--bg);display:flex;align-items:center;justify-content:center}
+#auth-gate.hidden{display:none}
+</style>
+</head>
+<body>
+
+<div id="auth-gate"><div style="color:#AEAEB2;font-size:.9rem">驗證中…</div></div>
+
+<div class="topbar"><div class="wrap topbar-inner">
+  <a class="back-btn" href="/">← 返回總站</a>
+  <h1>🧴 淨淨知識庫</h1>
+  <div class="count" id="count"></div>
+</div></div>
+
+<div class="wrap">
+  <div class="search-wrap"><div class="search-box">
+    <span style="color:#AEAEB2">🔍</span>
+    <input id="q" type="text" placeholder="搜尋…" oninput="filter()">
+  </div></div>
+
+  <div class="filter-tabs">
+    <button class="ftab active" data-tag="all" onclick="setTag('all')">全部</button>
+    <button class="ftab" data-tag="報告" onclick="setTag('報告')">報告</button>
+    <button class="ftab" data-tag="計畫" onclick="setTag('計畫')">計畫</button>
+    <button class="ftab" data-tag="其他" onclick="setTag('其他')">其他</button>
+  </div>
+
+  <div class="list" id="list">
+
+    <a class="kb-card" href="/cleanclean/cleanclean-2026.html" target="_blank"
+       data-tag="報告" data-title="淨淨 2026 年度報告">
+      <div class="kb-icon">📊</div>
+      <div class="kb-body">
+        <div class="kb-title">淨淨 2026 年度報告</div>
+        <div class="kb-meta"><span class="kb-tag">報告</span><span class="kb-date">2026-04-26</span></div>
+      </div>
+      <div class="kb-arrow">→</div>
+    </a>
+
+    <a class="kb-card" href="/cleanclean/報告/y26-goals.html" target="_blank"
+       data-tag="計畫" data-title="淨淨 Y26 四大年度目標">
+      <div class="kb-icon">🎯</div>
+      <div class="kb-body">
+        <div class="kb-title">淨淨 Y26 四大年度目標</div>
+        <div class="kb-meta"><span class="kb-tag">計畫</span><span class="kb-date">2026-04-08</span></div>
+      </div>
+      <div class="kb-arrow">→</div>
+    </a>
+
+    <a class="kb-card" href="/cleanclean/報告/2026-plan.html" target="_blank"
+       data-tag="計畫" data-title="淨淨 2026 年度計畫">
+      <div class="kb-icon">📋</div>
+      <div class="kb-body">
+        <div class="kb-title">淨淨 2026 年度計畫</div>
+        <div class="kb-meta"><span class="kb-tag">計畫</span><span class="kb-date">2026-04-23</span></div>
+      </div>
+      <div class="kb-arrow">→</div>
+    </a>
+
+    <a class="kb-card" href="/cleanclean/報告/q1-2026-report.html" target="_blank"
+       data-tag="報告" data-title="淨淨 2026 Q1 業績報告">
+      <div class="kb-icon">📈</div>
+      <div class="kb-body">
+        <div class="kb-title">淨淨 2026 Q1 業績報告</div>
+        <div class="kb-meta"><span class="kb-tag">報告</span><span class="kb-date">2026-04-20</span></div>
+      </div>
+      <div class="kb-arrow">→</div>
+    </a>
+
+    <a class="kb-card" href="/cleanclean/報告/march-sales.html" target="_blank"
+       data-tag="報告" data-title="淨淨 3 月經銷業績">
+      <div class="kb-icon">📉</div>
+      <div class="kb-body">
+        <div class="kb-title">淨淨 3 月經銷業績</div>
+        <div class="kb-meta"><span class="kb-tag">報告</span><span class="kb-date">2026-04-20</span></div>
+      </div>
+      <div class="kb-arrow">→</div>
+    </a>
+
+    <a class="kb-card" href="/cleanclean/報告/vip-strategy.html" target="_blank"
+       data-tag="報告" data-title="淨淨 VIP 推薦制度與粉絲經營策略">
+      <div class="kb-icon">⭐</div>
+      <div class="kb-body">
+        <div class="kb-title">淨淨 VIP 推薦制度與粉絲經營策略</div>
+        <div class="kb-meta"><span class="kb-tag">報告</span><span class="kb-date">2026-04-20</span></div>
+      </div>
+      <div class="kb-arrow">→</div>
+    </a>
+
+    <a class="kb-card" href="/cleanclean/報告/website-analysis.html" target="_blank"
+       data-tag="報告" data-title="淨淨官網全站深度分析報告">
+      <div class="kb-icon">🔍</div>
+      <div class="kb-body">
+        <div class="kb-title">淨淨官網全站深度分析報告</div>
+        <div class="kb-meta"><span class="kb-tag">報告</span><span class="kb-date">2026-04-20</span></div>
+      </div>
+      <div class="kb-arrow">→</div>
+    </a>
+
+    <a class="kb-card" href="/cleanclean/報告/sales-page-analysis.html" target="_blank"
+       data-tag="報告" data-title="淨淨洗衣精銷售頁分析報告">
+      <div class="kb-icon">🧴</div>
+      <div class="kb-body">
+        <div class="kb-title">淨淨洗衣精銷售頁分析報告</div>
+        <div class="kb-meta"><span class="kb-tag">報告</span><span class="kb-date">2026-04-20</span></div>
+      </div>
+      <div class="kb-arrow">→</div>
+    </a>
+
+    <a class="kb-card" href="/cleanclean/報告/laundry-sales-page.html" target="_blank"
+       data-tag="其他" data-title="淨淨真濃縮洗衣精 優化版銷售頁">
+      <div class="kb-icon">✨</div>
+      <div class="kb-body">
+        <div class="kb-title">淨淨真濃縮洗衣精 優化版銷售頁</div>
+        <div class="kb-meta"><span class="kb-tag">其他</span><span class="kb-date">2026-04-20</span></div>
+      </div>
+      <div class="kb-arrow">→</div>
+    </a>
+
+    <a class="kb-card" href="/cleanclean/報告/ig-reels-cold.html" target="_blank"
+       data-tag="報告" data-title="IG Reels 腳本企劃 冷流量品牌曝光">
+      <div class="kb-icon">🎬</div>
+      <div class="kb-body">
+        <div class="kb-title">IG Reels 腳本企劃 冷流量品牌曝光</div>
+        <div class="kb-meta"><span class="kb-tag">報告</span><span class="kb-date">2026-04-20</span></div>
+      </div>
+      <div class="kb-arrow">→</div>
+    </a>
+
+    <!-- 新增淨淨相關頁面加在這裡 -->
+
+  </div>
+  <div id="empty" class="empty">沒有符合的頁面</div>
+</div>
+
+<script>
+(function(){
+  try{const s=JSON.parse(localStorage.getItem("reyway_gauth")||"null");if(s&&s.expiry>Date.now()){document.getElementById("auth-gate").classList.add("hidden");upd();return;}}catch(e){}
+  window.location.href="/";
+})();
+let _tag="all";
+function setTag(t){_tag=t;document.querySelectorAll(".ftab").forEach(b=>b.classList.toggle("active",b.dataset.tag===t));filter();}
+function filter(){
+  const q=document.getElementById("q").value.toLowerCase();
+  let v=0;
+  document.querySelectorAll("#list .kb-card").forEach(c=>{
+    const show=(_tag==="all"||c.dataset.tag===_tag)&&(!q||c.dataset.title.toLowerCase().includes(q));
+    c.classList.toggle("hidden",!show);if(show)v++;
+  });
+  document.getElementById("empty").style.display=v===0?"block":"none";
+  upd();
+}
+function upd(){
+  const v=document.querySelectorAll("#list .kb-card:not(.hidden)").length;
+  const t=document.querySelectorAll("#list .kb-card").length;
+  document.getElementById("count").textContent=v===t?t+" 個頁面":v+"/"+t;
+}
+</script>
+</body>
+</html>

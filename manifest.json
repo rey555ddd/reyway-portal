@@ -1,0 +1,22 @@
+{
+  "name": "REYWAY",
+  "short_name": "REYWAY",
+  "description": "笙闆 AI Studio — 品牌工具集合站",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f1a2e",
+  "theme_color": "#0fa882",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-pwa.png",
+      "sizes": "1024x1024",
+      "type": "image/png"
+    }
+  ]
+}

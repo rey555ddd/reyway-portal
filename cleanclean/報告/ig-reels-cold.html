@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IG Reels 腳本企劃｜淨淨冷流量品牌曝光</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap');
+
+  :root {
+    --brand-blue: #1A5276;
+    --accent: #2980B9;
+    --warm: #E67E22;
+    --green: #27AE60;
+    --dark: #2C3E50;
+    --light-bg: #F0F7FC;
+    --border: #D5DBDB;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans TC', -apple-system, sans-serif;
+    color: #333;
+    background: #f5f5f5;
+    line-height: 1.7;
+  }
+
+  .page {
+    max-width: 800px;
+    margin: 40px auto;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    overflow: hidden;
+  }
+
+  /* Cover */
+  .cover {
+    background: linear-gradient(135deg, var(--brand-blue), var(--accent));
+    color: white;
+    padding: 60px 48px;
+    text-align: center;
+  }
+  .cover h1 { font-size: 32px; font-weight: 900; margin-bottom: 12px; letter-spacing: 2px; }
+  .cover .subtitle { font-size: 18px; font-weight: 300; opacity: 0.9; margin-bottom: 8px; }
+  .cover .meta { font-size: 14px; opacity: 0.6; margin-top: 20px; }
+  .cover .tags {
+    margin-top: 24px;
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .cover .tag {
+    background: rgba(255,255,255,0.2);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  /* Content area */
+  .content { padding: 40px 48px; }
+
+  /* Strategy section */
+  .strategy {
+    background: var(--light-bg);
+    border-radius: 12px;
+    padding: 28px 32px;
+    margin-bottom: 40px;
+    border-left: 4px solid var(--accent);
+  }
+  .strategy h2 {
+    font-size: 18px;
+    color: var(--brand-blue);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .strategy .item {
+    display: flex;
+    margin-bottom: 10px;
+    font-size: 15px;
+  }
+  .strategy .item .label {
+    font-weight: 700;
+    color: var(--dark);
+    min-width: 100px;
+    flex-shrink: 0;
+  }
+
+  /* Script card */
+  .script-card {
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 40px;
+    border: 1px solid #e8e8e8;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  }
+  .script-header {
+    padding: 20px 28px;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .script-header.humor { background: linear-gradient(135deg, #E74C3C, #E67E22); }
+  .script-header.warm { background: linear-gradient(135deg, #2980B9, #27AE60); }
+  .script-header.impact { background: linear-gradient(135deg, #8E44AD, #2980B9); }
+  .script-header .num { font-size: 14px; opacity: 0.8; }
+  .script-header h3 { font-size: 20px; font-weight: 700; }
+  .script-header .style-tag {
+    margin-left: auto;
+    background: rgba(255,255,255,0.25);
+    padding: 4px 14px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  .script-body { padding: 0; }
+
+  /* Hook */
+  .hook-bar {
+    background: #FFF8E1;
+    padding: 16px 28px;
+    border-left: 4px solid #F39C12;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .hook-bar .icon { font-size: 20px; }
+  .hook-bar .label { font-weight: 700; color: #E67E22; font-size: 13px; min-width: 70px; }
+  .hook-bar .text { font-size: 17px; font-weight: 700; color: #333; }
+
+  /* Timeline */
+  .timeline { padding: 8px 28px 20px; }
+  .scene {
+    display: flex;
+    gap: 20px;
+    padding: 18px 0;
+    border-bottom: 1px solid #f0f0f0;
+    position: relative;
+  }
+  .scene:last-child { border-bottom: none; }
+  .scene-time {
+    min-width: 80px;
+    flex-shrink: 0;
+  }
+  .scene-time .time {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--brand-blue);
+  }
+  .scene-time .label {
+    font-size: 12px;
+    color: #999;
+    margin-top: 2px;
+  }
+  .scene-content { flex: 1; }
+  .scene-content .action {
+    font-weight: 700;
+    font-size: 15px;
+    margin-bottom: 4px;
+    color: var(--dark);
+  }
+  .scene-content .detail {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.8;
+  }
+  .scene-content .caption {
+    margin-top: 8px;
+    background: #EBF5FB;
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  /* Closing */
+  .closing {
+    background: #f8f9fa;
+    padding: 16px 28px;
+    border-top: 1px solid #eee;
+  }
+  .closing .label { font-size: 12px; color: #999; margin-bottom: 4px; }
+  .closing .text { font-size: 15px; font-weight: 700; color: var(--dark); }
+
+  /* Tips */
+  .tips {
+    padding: 16px 28px 20px;
+    background: #FAFAFA;
+    border-top: 1px dashed #ddd;
+  }
+  .tips h4 { font-size: 13px; color: #888; margin-bottom: 10px; }
+  .tips ul { list-style: none; padding: 0; }
+  .tips li {
+    font-size: 13px;
+    color: #666;
+    padding: 3px 0;
+    padding-left: 18px;
+    position: relative;
+  }
+  .tips li::before {
+    content: '>';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .tips .hashtags {
+    margin-top: 12px;
+    font-size: 12px;
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  /* Check table */
+  .check-section { margin-top: 10px; margin-bottom: 40px; }
+  .check-section h2 {
+    font-size: 20px;
+    color: var(--brand-blue);
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 3px solid var(--accent);
+  }
+  .check-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  .check-table th {
+    background: var(--brand-blue);
+    color: white;
+    padding: 12px 16px;
+    text-align: center;
+    font-weight: 500;
+    font-size: 13px;
+  }
+  .check-table td {
+    padding: 10px 16px;
+    border-bottom: 1px solid #eee;
+    text-align: center;
+  }
+  .check-table tr:nth-child(even) { background: #f9f9f9; }
+  .check-table td:first-child {
+    font-weight: 700;
+    color: var(--brand-blue);
+    background: var(--light-bg);
+    text-align: center;
+  }
+  .check-table .pass { color: var(--green); }
+
+  /* Publish section */
+  .publish {
+    background: linear-gradient(135deg, #f8f9fa, #eef4f8);
+    border-radius: 12px;
+    padding: 28px 32px;
+    margin-bottom: 20px;
+  }
+  .publish h2 {
+    font-size: 18px;
+    color: var(--brand-blue);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .publish .item {
+    margin-bottom: 12px;
+    font-size: 15px;
+  }
+  .publish .item .label {
+    font-weight: 700;
+    color: var(--dark);
+  }
+  .publish .item .val { color: #555; }
+
+  @media print {
+    body { background: white; }
+    .page { box-shadow: none; margin: 0; border-radius: 0; }
+    .script-card { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <!-- Cover -->
+  <div class="cover">
+    <h1>IG Reels 腳本企劃</h1>
+    <div class="subtitle">淨淨 CleanClean「冷流量品牌曝光」系列</div>
+    <div class="tags">
+      <span class="tag">笙闆出鏡</span>
+      <span class="tag">15-30秒</span>
+      <span class="tag">Founder IP</span>
+      <span class="tag">刷印象</span>
+    </div>
+    <div class="meta">2026.03.28 ｜ 行銷軍師 × 笙闆</div>
+  </div>
+
+  <div class="content">
+
+    <!-- Strategy -->
+    <div class="strategy">
+      <h2>📍 策略定位</h2>
+      <div class="item"><span class="label">目標受眾</span>25-40歲媽媽／新手爸媽，尚未認識淨淨的「冷流量」受眾</div>
+      <div class="item"><span class="label">溝通目標</span>不賣貨、不推銷，只讓人記住「有一個叫淨淨的品牌，老闆似乎很真誠」</div>
+      <div class="item"><span class="label">漏斗階段</span>冷 → 溫（從「完全不認識」到「有印象、想追蹤」）</div>
+      <div class="item"><span class="label">核心原則</span>前3秒必須停留（Hook決勝負）、不講產品規格、只留「人設記憶點」</div>
+    </div>
+
+    <!-- Script 1 -->
+    <div class="script-card">
+      <div class="script-header humor">
+        <div><span class="num">腳本 1</span><h3>「我老婆說我不能賣這個」</h3></div>
+        <span class="style-tag">幽默反差型</span>
+      </div>
+      <div class="script-body">
+        <div class="hook-bar">
+          <span class="icon">🎣</span>
+          <span class="label">開場Hook</span>
+          <span class="text">「我老婆說，這個絕對不能賣…」</span>
+        </div>
+        <div class="timeline">
+          <div class="scene">
+            <div class="scene-time">
+              <div class="time">0-3秒</div>
+              <div class="label">Hook</div>
+            </div>
+            <div class="scene-content">
+              <div class="action">笙闆正經吃驚臉</div>
+              <div class="detail">直視鏡頭，語氣認真：「我老婆說，這個絕對不能賣…」（停頓一拍）</div>
+            </div>
+          </div>
+          <div class="scene">
+            <div class="scene-time">
+              <div class="time">3-8秒</div>
+              <div class="label">製造懸念</div>
+            </div>
+            <div class="scene-content">
+              <div class="action">笙闆拿起食器清潔皂</div>
+              <div class="detail">「…因為她自己要用！」（表情無奈放鬆）</div>
+            </div>
+          </div>
+          <div class="scene">
+            <div class="scene-time">
+              <div class="time">8-18秒</div>
+              <div class="label">反差展開</div>
+            </div>
+            <div class="scene-content">
+              <div class="action">快速剪輯日常畫面</div>
+              <div class="detail">笙闆OS：「老婆洗碗用、洗奶瓶用、洗水果也用、最後連婆婆的罐罐都…」（配快節奏卡點音效 ding ding ding）</div>
+              <div class="caption">字卡：← 全部被老婆吃下了</div>
+            </div>
+          </div>
+          <div class="scene">
+            <div class="scene-time">
+              <div class="time">18-25秒</div>
+              <div class="label">品牌記憶點</div>
+            </div>
+            <div class="scene-content">
+              <div class="action">笙闆雙手一攤</div>
+              <div class="detail">「所以我說…自己家的產品，自己家最難賣。」（苦笑）</div>
+              <div class="caption">字卡：淨淨・自己家人搶著用</div>
+            </div>
+          </div>
+        </div>
+        <div class="closing">
+          <div class="label">收尾金句</div>
+          <div class="text">「我是笙闆，淨淨創辦人。我太太是我最嚴格的品管。」</div>
+        </div>
+        <div class="tips">
+          <h4>拍攝提醒</h4>
+          <ul>
+            <li>拍攝地點：家中廚房（真實居家感）</li>
+            <li>表情要誇張，前3秒的「不能賣」要讓人以為是負面新聞</li>
+            <li>卡點音效用「ding ding ding」疊加壯大效果</li>
+            <li>結尾笙闆表情是「無奈但驕傲」的感覺</li>
+          </ul>
+          <div class="hashtags">#淨淨 #CleanClean #老婆說不能賣 #自己家人用 #創業日常 #媽媽好物</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Script 2 -->
+    <div class="script-card">
+      <div class="script-header warm">
+        <div><span class="num">腳本 2</span><h3>「女兒的一句話」</h3></div>
+        <span class="style-tag">溫暖感性型</span>
+      </div>
+      <div class="script-body">
+        <div class="hook-bar">
+          <span class="icon">🎣</span>
+          <span class="label">開場Hook</span>
+          <span class="text">「女兒問我：『把拔，為什麼你每天都在聞瓶瓶？』」</span>
+        </div>
+        <div class="timeline">
+          <div class="scene">
+            <div class="scene-time">
+              <div class="time">0-3秒</div>
+              <div class="label">Hook</div>
+            </div>
+            <div class="scene-content">
+              <div class="action">笙闆輕聲說</div>
+              <div class="detail">「昨天女兒問我一句話，我愣住了…」（微笑但眼神某處）</div>
+            </div>
+          </div>
+          <div class="scene">
+            <div class="scene-time">
+              <div class="time">3-10秒</div>
+              <div class="label">情境重現</div>
+            </div>
+            <div class="scene-content">
+              <div class="action">插入生活畫面（手機隨拍即可）</div>
+              <div class="detail">女兒看著笙闆在聞產品：「把拔，為什麼你每天都在聞瓶瓶？」</div>
+              <div class="caption">字卡：女兒的靈魂拷問</div>
+            </div>
+          </div>
+          <div class="scene">
+            <div class="scene-time">
+              <div class="time">10-18秒</div>
+              <div class="label">真心話</div>
+            </div>
+            <div class="scene-content">
+              <div class="action">笙闆對鏡頭說</div>
+              <div class="detail">「因為把拔就是在做這個啊，確保每一個寶寶用的東西都是安心的。包括你的。」（語氣溫柔但堅定）</div>
+            </div>
+          </div>
+          <div class="scene">
+            <div class="scene-time">
+              <div class="time">18-25秒</div>
+              <div class="label">品牌精神</div>
+            </div>
+            <div class="scene-content">
+              <div class="action">笙闆笑著低頭</div>
+              <div class="detail">「當爸爸的做的每一件事，就是在回答這個問題。」</div>
+              <div class="caption">字卡：淨淨・以家人標準</div>
+            </div>
+          </div>
+        </div>
+        <div class="closing">
+          <div class="label">收尾金句</div>
+          <div class="text">「我是笙闆，一個想讓女兒驕傲的爸爸。」</div>
+        </div>
+        <div class="tips">
+          <h4>拍攝提醒</h4>
+          <ul>
+            <li>光線要溫暖（建議下午自然光／柔光燈）</li>
+            <li>插入女兒畫面用手機隨拍即可，不用刻意擺拍，真實感更加分</li>
+            <li>背景音樂用鋼琴或吉他輕演奏（IG音樂庫搜「emotional」）</li>
+            <li>話速放慢，留白讓情緒渡染</li>
+          </ul>
+          <div class="hashtags">#淨淨 #以家人標準 #父女日常 #創業的初衷 #安心清潔</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Script 3 -->
+    <div class="script-card">
+      <div class="script-header impact">
+        <div><span class="num">腳本 3</span><h3>「洗碗精沖不乾淨？我做給你看」</h3></div>
+        <span class="style-tag">視覺衝擊型</span>
+      </div>
+      <div class="script-body">
+        <div class="hook-bar">
+          <span class="icon">🎣</span>
+          <span class="label">開場Hook</span>
+          <span class="text">「你家洗碗精，沖幾次才乾淨？」</span>
+        </div>
+        <div class="timeline">
+          <div class="scene">
+            <div class="scene-time">
+              <div class="time">0-3秒</div>
+              <div class="label">Hook</div>
+            </div>
+            <div class="scene-content">
+              <div class="action">笙闆拿起兩瓶洗碗精</div>
+              <div class="detail">「你家洗碗精，沖幾次才乾淨？」（語氣挑釁）</div>
+            </div>
+          </div>
+          <div class="scene">
+            <div class="scene-time">
+              <div class="time">3-10秒</div>
+              <div class="label">實測開始</div>
+            </div>
+            <div class="scene-content">
+              <div class="action">分屏／並排實測</div>
+              <div class="detail">左邊：市售洗碗精洗碗 → 沖水 1次、… 2次、… 3次（仍有泡沫）<br>右邊：淨淨食器清潔皂 → 沖水 1次（幾乎乾淨）</div>
+              <div class="caption">字卡：左：他牌 3次還滑滑的 vs 右：淨淨 1次就澀澀的</div>
+            </div>
+          </div>
+          <div class="scene">
+            <div class="scene-time">
+              <div class="time">10-20秒</div>
+              <div class="label">特寫放大</div>
+            </div>
+            <div class="scene-content">
+              <div class="action">特寫鏡頭拍摩擦碗面</div>
+              <div class="detail">他牌洗完：手指在碗面滑動，明顯滑滑的（配「咕咕」滑動音效）<br>淨淨洗完：手指在碗面絆住、有澀感（配「嘰嘰」的聲音）</div>
+              <div class="caption">字卡：洗完澀澀的，才是真乾淨</div>
+            </div>
+          </div>
+          <div class="scene">
+            <div class="scene-time">
+              <div class="time">20-25秒</div>
+              <div class="label">品牌記憶點</div>
+            </div>
+            <div class="scene-content">
+              <div class="action">笙闆拿起碗對鏡頭笑</div>
+              <div class="detail">「我是笙闆，我家洗碗精，沖一次就好。」（自信微笑）</div>
+              <div class="caption">字卡：淨淨食器清潔皂・一次帶走 90% 泡沫</div>
+            </div>
+          </div>
+        </div>
+        <div class="closing">
+          <div class="label">收尾字卡</div>
+          <div class="text">「有淨淨，簡單乾淨」</div>
+        </div>
+        <div class="tips">
+          <h4>拍攝提醒</h4>
+          <ul>
+            <li>重點是「澀」vs「滑」的觸感對比，特寫鏡頭要拍清楚</li>
+            <li>音效很關鍵：滑滑的 vs 澀澀的要有明顯聽感差異</li>
+            <li>全程不提價格、不提成分，只讓人「看到差異」</li>
+            <li>可考慮用奶瓶做同樣實測（更命中媽媽 TA）</li>
+          </ul>
+          <div class="hashtags">#淨淨 #洗碗精實測 #沖一次就乾淨 #食器清潔皂 #媽媽好物</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4有 Check -->
+    <div class="check-section">
+      <h2>行銷 4有 檢查</h2>
+      <table class="check-table">
+        <thead>
+          <tr>
+            <th style="width:16%"></th>
+            <th style="width:28%">腳本 1｜幽默反差</th>
+            <th style="width:28%">腳本 2｜溫暖感性</th>
+            <th style="width:28%">腳本 3｜視覺衝擊</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>有哏</td>
+            <td class="pass">「不能賣」反轉 ✓</td>
+            <td class="pass">女兒靈魂拷問 ✓</td>
+            <td class="pass">沖水挑戰懸念 ✓</td>
+          </tr>
+          <tr>
+            <td>有關</td>
+            <td class="pass">媽媽日常洗碗場景 ✓</td>
+            <td class="pass">父女親情共鳴 ✓</td>
+            <td class="pass">洗碗沖不乾淨的痛 ✓</td>
+          </tr>
+          <tr>
+            <td>有感</td>
+            <td class="pass">老婆搶著用的驕傲 ✓</td>
+            <td class="pass">父愛與品牌初衷 ✓</td>
+            <td class="pass">親眼看到差異的驚訝 ✓</td>
+          </tr>
+          <tr>
+            <td>有想要</td>
+            <td class="pass">想知道是什麼產品 ✓</td>
+            <td class="pass">想追蹤這個爸爸 ✓</td>
+            <td class="pass">想試試看差在哪 ✓</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Publish tips -->
+    <div class="publish">
+      <h2>📅 發佈建議</h2>
+      <div class="item">
+        <span class="label">發佈時間：</span>
+        <span class="val">週二、四、六 晚上 20:00-21:30（媽媽哄完小孩的滑手機時間）</span>
+      </div>
+      <div class="item">
+        <span class="label">發佈順序：</span>
+        <span class="val">腳本 1（幽默拉「誰」）→ 腳本 3（實測建立「專業」）→ 腳本 2（溫暖建立「信任」）</span>
+      </div>
+      <div class="item">
+        <span class="label">成效評估：</span>
+        <span class="val">主看「完播率」和「儲存數」，不是按讚數。冷流量的第一目標是「被記住」而不是「被喜歡」</span>
+      </div>
+      <div class="item">
+        <span class="label">CTA 策略：</span>
+        <span class="val">不放購買連結，只在留言區釘「想看更多笙闆日常 → 追蹤 @cleanclean.tw」</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>
