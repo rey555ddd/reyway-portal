@@ -20,8 +20,8 @@ export async function onRequestPost(context) {
 
   const { page, html, message } = body || {};
 
-  // 白名單：只允許這兩頁
-  if (!['manager-prologue', 'manager-training'].includes(page)) {
+  // 白名單：只允許這三頁
+  if (!['manager-prologue', 'manager-training', 'manager-starter-pack'].includes(page)) {
     return json({ ok: false, error: 'page not allowed' }, 400);
   }
   if (typeof html !== 'string' || html.length < 1000 || html.length > 5_000_000) {

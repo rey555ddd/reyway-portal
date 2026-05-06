@@ -3,200 +3,233 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>淨淨知識庫 · REYWAY</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<title>淨淨 CleanClean · 工具總覽</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--bg:#F5F4F0;--surface:#FFF;--text:#1C1C1E;--text-2:#6E6E73;--text-3:#AEAEB2;--border:rgba(0,0,0,0.06);--shadow:0 2px 16px rgba(0,0,0,0.06),0 1px 4px rgba(0,0,0,0.04);--shadow-hover:0 8px 32px rgba(0,0,0,0.1),0 2px 8px rgba(0,0,0,0.06);--green:#0fa882;--radius:18px;--radius-sm:12px}
-body{font-family:"Inter","Noto Sans TC",sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;min-height:100vh}
-.wrap{max-width:800px;margin:0 auto;padding:0 20px}
+:root{
+  --bg:#080808;
+  --surface:#111111;
+  --text:#FFFFFF;
+  --text-2:rgba(255,255,255,0.45);
+  --text-3:rgba(255,255,255,0.28);
+  --accent:#C9A96A;
+  --accent-deep:#E8C87A;
+  --accent-soft:rgba(201,169,106,0.10);
+  --accent-edge:rgba(201,169,106,0.25);
+  --border:rgba(201,169,106,0.13);
+  --border-warm:rgba(201,169,106,0.22);
+  --shadow:0 1px 2px rgba(0,0,0,0.4),0 6px 18px rgba(0,0,0,0.3);
+  --shadow-hover:0 12px 30px rgba(201,169,106,0.15),0 2px 6px rgba(0,0,0,0.4);
+  --radius:14px;
+  --font-ui:'Inter','Noto Sans TC',-apple-system,sans-serif;
+  --font-serif:'Noto Serif TC',serif;
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font-ui);
+  background:var(--bg);
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  min-height:100vh;
+}
+.wrap{max-width:700px;margin:0 auto;padding:0 20px 60px}
 
-.topbar{position:sticky;top:0;z-index:10;background:rgba(245,244,240,0.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:14px 0}
-.topbar-inner{display:flex;align-items:center;gap:12px}
-.back-btn{display:flex;align-items:center;gap:6px;font-size:0.82rem;color:var(--text-2);text-decoration:none;padding:6px 14px;border-radius:100px;background:var(--surface);box-shadow:var(--shadow);white-space:nowrap;flex-shrink:0}
-.back-btn:hover{box-shadow:var(--shadow-hover)}
-.topbar h1{font-size:1rem;font-weight:700;flex:1}
-.count{font-size:0.8rem;color:var(--text-3);flex-shrink:0}
+/* ── 頂欄 ── */
+.topbar{
+  display:flex;align-items:center;
+  padding:20px 0 0;
+  margin-bottom:32px;
+}
+.back-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:8px 16px;border-radius:100px;
+  background:var(--surface);border:1px solid var(--border-warm);
+  color:var(--text-2);font-size:0.82rem;font-weight:500;
+  text-decoration:none;
+  transition:all 0.2s ease;
+}
+.back-btn:hover{color:var(--accent);border-color:var(--accent)}
+.back-btn .ph{font-size:0.95rem}
 
-.search-wrap{padding:24px 0 0}
-.search-box{display:flex;align-items:center;gap:10px;background:var(--surface);border-radius:100px;padding:11px 20px;box-shadow:var(--shadow)}
-.search-box input{flex:1;border:none;outline:none;background:none;font-size:0.9rem;font-family:inherit;color:var(--text)}
-.search-box input::placeholder{color:var(--text-3)}
+/* ── Hero ── */
+.hero{text-align:center;padding:8px 0 36px}
+.hero-logo{
+  display:inline-block;
+  background:#fff;
+  border-radius:16px;
+  padding:10px 20px;
+  margin-bottom:20px;
+  border:1px solid var(--border-warm);
+  box-shadow:var(--shadow);
+}
+.hero-logo img{
+  height:52px;
+  width:auto;
+  display:block;
+}
+.hero p{font-size:0.9rem;color:var(--text-2);line-height:1.75;max-width:340px;margin:0 auto}
+.gold-line{width:36px;height:2px;background:var(--accent);margin:14px auto 0;border-radius:2px}
 
-.filter-tabs{display:flex;gap:8px;flex-wrap:wrap;padding:16px 0 20px}
-.ftab{padding:6px 16px;border-radius:100px;border:none;cursor:pointer;font-size:0.8rem;font-weight:500;background:var(--surface);color:var(--text-2);box-shadow:var(--shadow);transition:background .15s,color .15s}
-.ftab.active,.ftab:hover{background:var(--green);color:#fff}
+/* ── Section 標頭 ── */
+.section-head{display:flex;align-items:center;gap:10px;margin:32px 0 14px}
+.section-label{font-size:0.68rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-3);white-space:nowrap}
+.section-line{flex:1;height:1px;background:var(--border)}
 
-.list{display:flex;flex-direction:column;gap:10px;padding-bottom:60px}
-.kb-card{background:var(--surface);border-radius:var(--radius-sm);padding:18px 20px;box-shadow:var(--shadow);display:flex;align-items:center;gap:14px;text-decoration:none;color:inherit;transition:box-shadow .2s,transform .2s}
-.kb-card:hover{box-shadow:var(--shadow-hover);transform:translateY(-1px)}
-.kb-card.hidden{display:none}
-.kb-icon{font-size:1.25rem;width:36px;text-align:center;flex-shrink:0}
-.kb-body{flex:1;min-width:0}
-.kb-title{font-size:0.92rem;font-weight:600;margin-bottom:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.kb-meta{display:flex;gap:8px}
-.kb-tag{font-size:0.68rem;font-weight:500;padding:2px 7px;border-radius:100px;background:rgba(15,168,130,0.1);color:var(--green)}
-.kb-date{font-size:0.72rem;color:var(--text-3)}
-.kb-arrow{font-size:0.95rem;color:var(--text-3);flex-shrink:0}
-.empty{text-align:center;padding:60px 20px;font-size:.88rem;color:var(--text-3);display:none}
+/* ── 主要大卡（寬版）── */
+.wide-card{
+  display:flex;align-items:center;gap:16px;
+  padding:18px 20px;
+  background:var(--surface);border:1px solid var(--accent-edge);border-radius:var(--radius);
+  text-decoration:none;color:inherit;box-shadow:var(--shadow);
+  transition:all 0.28s cubic-bezier(0.16,1,0.3,1);
+  margin-bottom:12px;
+}
+.wide-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:var(--shadow-hover)}
+.wide-card:hover .wc-icon{background:var(--accent);color:#fff}
+.wc-icon{
+  width:44px;height:44px;border-radius:11px;flex-shrink:0;
+  background:var(--accent-soft);color:var(--accent);
+  display:inline-flex;align-items:center;justify-content:center;
+  transition:all 0.28s ease;
+}
+.wc-icon .ph{font-size:1.4rem}
+.wc-body{flex:1}
+.wc-body h3{font-family:var(--font-serif);font-size:1.05rem;font-weight:600;color:var(--text);margin-bottom:3px}
+.wc-body p{font-size:0.8rem;color:var(--text-2);line-height:1.55}
+.wc-arrow{font-size:1rem;color:var(--accent);flex-shrink:0}
 
-#auth-gate{position:fixed;inset:0;z-index:999;background:var(--bg);display:flex;align-items:center;justify-content:center}
-#auth-gate.hidden{display:none}
+/* ── 工具小卡 2×2 ── */
+.tool-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:11px}
+@media(max-width:460px){.tool-grid{grid-template-columns:1fr}}
+
+.tool-card{
+  display:flex;align-items:flex-start;gap:13px;
+  padding:16px 16px 14px;
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  text-decoration:none;color:inherit;box-shadow:var(--shadow);
+  transition:all 0.28s cubic-bezier(0.16,1,0.3,1);
+}
+.tool-card:hover{border-color:var(--accent-edge);transform:translateY(-3px);box-shadow:var(--shadow-hover)}
+.tool-card:hover .tc-icon{background:var(--accent);color:#fff}
+.tc-icon{
+  width:38px;height:38px;border-radius:9px;flex-shrink:0;margin-top:1px;
+  background:var(--accent-soft);color:var(--accent);
+  display:inline-flex;align-items:center;justify-content:center;
+  transition:all 0.28s ease;
+}
+.tc-icon .ph{font-size:1.2rem;line-height:1}
+.tc-body{flex:1;min-width:0}
+.tc-name{font-family:var(--font-serif);font-size:0.98rem;font-weight:600;color:var(--text);margin-bottom:4px;line-height:1.3}
+.tc-desc{font-size:0.76rem;color:var(--text-2);line-height:1.6}
+.tc-badge{
+  display:inline-block;font-size:0.63rem;font-weight:500;
+  padding:2px 7px;border-radius:100px;margin-top:6px;
+  background:rgba(34,197,94,0.1);color:#22c55e;
+  letter-spacing:0.04em;
+}
+.tc-badge::before{content:'● ';font-size:0.5em;vertical-align:1px}
 </style>
 </head>
 <body>
-
-<div id="auth-gate"><div style="color:#AEAEB2;font-size:.9rem">驗證中…</div></div>
-
-<div class="topbar"><div class="wrap topbar-inner">
-  <a class="back-btn" href="/">← 返回總站</a>
-  <h1>🧴 淨淨知識庫</h1>
-  <div class="count" id="count"></div>
-</div></div>
-
 <div class="wrap">
-  <div class="search-wrap"><div class="search-box">
-    <span style="color:#AEAEB2">🔍</span>
-    <input id="q" type="text" placeholder="搜尋…" oninput="filter()">
-  </div></div>
 
-  <div class="filter-tabs">
-    <button class="ftab active" data-tag="all" onclick="setTag('all')">全部</button>
-    <button class="ftab" data-tag="報告" onclick="setTag('報告')">報告</button>
-    <button class="ftab" data-tag="計畫" onclick="setTag('計畫')">計畫</button>
-    <button class="ftab" data-tag="其他" onclick="setTag('其他')">其他</button>
+  <div class="topbar">
+    <a class="back-btn" href="https://reyway.com">
+      <i class="ph ph-arrow-left"></i> 返回總站
+    </a>
   </div>
 
-  <div class="list" id="list">
-
-    <a class="kb-card" href="/cleanclean/cleanclean-2026.html" target="_blank"
-       data-tag="報告" data-title="淨淨 2026 年度報告">
-      <div class="kb-icon">📊</div>
-      <div class="kb-body">
-        <div class="kb-title">淨淨 2026 年度報告</div>
-        <div class="kb-meta"><span class="kb-tag">報告</span><span class="kb-date">2026-04-26</span></div>
-      </div>
-      <div class="kb-arrow">→</div>
-    </a>
-
-    <a class="kb-card" href="/cleanclean/報告/y26-goals.html" target="_blank"
-       data-tag="計畫" data-title="淨淨 Y26 四大年度目標">
-      <div class="kb-icon">🎯</div>
-      <div class="kb-body">
-        <div class="kb-title">淨淨 Y26 四大年度目標</div>
-        <div class="kb-meta"><span class="kb-tag">計畫</span><span class="kb-date">2026-04-08</span></div>
-      </div>
-      <div class="kb-arrow">→</div>
-    </a>
-
-    <a class="kb-card" href="/cleanclean/報告/2026-plan.html" target="_blank"
-       data-tag="計畫" data-title="淨淨 2026 年度計畫">
-      <div class="kb-icon">📋</div>
-      <div class="kb-body">
-        <div class="kb-title">淨淨 2026 年度計畫</div>
-        <div class="kb-meta"><span class="kb-tag">計畫</span><span class="kb-date">2026-04-23</span></div>
-      </div>
-      <div class="kb-arrow">→</div>
-    </a>
-
-    <a class="kb-card" href="/cleanclean/報告/q1-2026-report.html" target="_blank"
-       data-tag="報告" data-title="淨淨 2026 Q1 業績報告">
-      <div class="kb-icon">📈</div>
-      <div class="kb-body">
-        <div class="kb-title">淨淨 2026 Q1 業績報告</div>
-        <div class="kb-meta"><span class="kb-tag">報告</span><span class="kb-date">2026-04-20</span></div>
-      </div>
-      <div class="kb-arrow">→</div>
-    </a>
-
-    <a class="kb-card" href="/cleanclean/報告/march-sales.html" target="_blank"
-       data-tag="報告" data-title="淨淨 3 月經銷業績">
-      <div class="kb-icon">📉</div>
-      <div class="kb-body">
-        <div class="kb-title">淨淨 3 月經銷業績</div>
-        <div class="kb-meta"><span class="kb-tag">報告</span><span class="kb-date">2026-04-20</span></div>
-      </div>
-      <div class="kb-arrow">→</div>
-    </a>
-
-    <a class="kb-card" href="/cleanclean/報告/vip-strategy.html" target="_blank"
-       data-tag="報告" data-title="淨淨 VIP 推薦制度與粉絲經營策略">
-      <div class="kb-icon">⭐</div>
-      <div class="kb-body">
-        <div class="kb-title">淨淨 VIP 推薦制度與粉絲經營策略</div>
-        <div class="kb-meta"><span class="kb-tag">報告</span><span class="kb-date">2026-04-20</span></div>
-      </div>
-      <div class="kb-arrow">→</div>
-    </a>
-
-    <a class="kb-card" href="/cleanclean/報告/website-analysis.html" target="_blank"
-       data-tag="報告" data-title="淨淨官網全站深度分析報告">
-      <div class="kb-icon">🔍</div>
-      <div class="kb-body">
-        <div class="kb-title">淨淨官網全站深度分析報告</div>
-        <div class="kb-meta"><span class="kb-tag">報告</span><span class="kb-date">2026-04-20</span></div>
-      </div>
-      <div class="kb-arrow">→</div>
-    </a>
-
-    <a class="kb-card" href="/cleanclean/報告/sales-page-analysis.html" target="_blank"
-       data-tag="報告" data-title="淨淨洗衣精銷售頁分析報告">
-      <div class="kb-icon">🧴</div>
-      <div class="kb-body">
-        <div class="kb-title">淨淨洗衣精銷售頁分析報告</div>
-        <div class="kb-meta"><span class="kb-tag">報告</span><span class="kb-date">2026-04-20</span></div>
-      </div>
-      <div class="kb-arrow">→</div>
-    </a>
-
-    <a class="kb-card" href="/cleanclean/報告/laundry-sales-page.html" target="_blank"
-       data-tag="其他" data-title="淨淨真濃縮洗衣精 優化版銷售頁">
-      <div class="kb-icon">✨</div>
-      <div class="kb-body">
-        <div class="kb-title">淨淨真濃縮洗衣精 優化版銷售頁</div>
-        <div class="kb-meta"><span class="kb-tag">其他</span><span class="kb-date">2026-04-20</span></div>
-      </div>
-      <div class="kb-arrow">→</div>
-    </a>
-
-    <a class="kb-card" href="/cleanclean/報告/ig-reels-cold.html" target="_blank"
-       data-tag="報告" data-title="IG Reels 腳本企劃 冷流量品牌曝光">
-      <div class="kb-icon">🎬</div>
-      <div class="kb-body">
-        <div class="kb-title">IG Reels 腳本企劃 冷流量品牌曝光</div>
-        <div class="kb-meta"><span class="kb-tag">報告</span><span class="kb-date">2026-04-20</span></div>
-      </div>
-      <div class="kb-arrow">→</div>
-    </a>
-
-    <!-- 新增淨淨相關頁面加在這裡 -->
-
+  <div class="hero">
+    <div class="hero-logo">
+      <img src="/logo-cleanclean.png" alt="淨淨 CleanClean">
+    </div>
+    <p>品牌旗下所有 AI 工具與管理系統</p>
+    <div class="gold-line"></div>
   </div>
-  <div id="empty" class="empty">沒有符合的頁面</div>
+
+  <!-- 品牌官網 -->
+  <div class="section-head">
+    <span class="section-label">品牌官網</span>
+    <div class="section-line"></div>
+  </div>
+  <a class="wide-card" href="https://cleanclean.tw" target="_blank" rel="noopener">
+    <div class="wc-icon"><i class="ph ph-storefront"></i></div>
+    <div class="wc-body">
+      <h3>淨淨官網</h3>
+      <p>消費者入口・家用清潔・個人護理・代言人李仁哥・SGS 認證</p>
+    </div>
+    <div class="wc-arrow"><i class="ph ph-arrow-up-right"></i></div>
+  </a>
+
+  <!-- 行銷工具 -->
+  <div class="section-head">
+    <span class="section-label">行銷工具</span>
+    <div class="section-line"></div>
+  </div>
+  <div class="tool-grid">
+    <a class="tool-card" href="https://cchub.reyway.com" target="_blank" rel="noopener">
+      <div class="tc-icon"><i class="ph ph-megaphone"></i></div>
+      <div class="tc-body">
+        <div class="tc-name">行銷神隊友</div>
+        <div class="tc-desc">文案庫・KOL 雷達・社群企劃・短影音腳本</div>
+        <span class="tc-badge">上線</span>
+      </div>
+    </a>
+    <a class="tool-card" href="https://design.reyway.com" target="_blank" rel="noopener">
+      <div class="tc-icon"><i class="ph ph-paint-brush"></i></div>
+      <div class="tc-body">
+        <div class="tc-name">美學工作站</div>
+        <div class="tc-desc">廣告圖生成・素材合版・AI 圖命名・品牌規範</div>
+        <span class="tc-badge">上線</span>
+      </div>
+    </a>
+    <a class="tool-card" href="https://boardroom.reyway.com" target="_blank" rel="noopener">
+      <div class="tc-icon"><i class="ph ph-users-three"></i></div>
+      <div class="tc-body">
+        <div class="tc-name">AI 董事會室</div>
+        <div class="tc-desc">12 位 AI 顧問・策略腦力激盪・多模式分析</div>
+        <span class="tc-badge">上線</span>
+      </div>
+    </a>
+    <a class="tool-card" href="/knowledge/" rel="noopener">
+      <div class="tc-icon"><i class="ph ph-books"></i></div>
+      <div class="tc-body">
+        <div class="tc-name">淨淨知識庫</div>
+        <div class="tc-desc">品牌教學・報告分析・工具手冊・內部資料</div>
+        <span class="tc-badge">上線</span>
+      </div>
+    </a>
+  </div>
+
+  <!-- 電商與數據 -->
+  <div class="section-head">
+    <span class="section-label">電商與管理</span>
+    <div class="section-line"></div>
+  </div>
+  <div class="tool-grid">
+    <a class="tool-card" href="https://ec.reyway.com" target="_blank" rel="noopener">
+      <div class="tc-icon"><i class="ph ph-chart-line-up"></i></div>
+      <div class="tc-body">
+        <div class="tc-name">電商後台</div>
+        <div class="tc-desc">銷售數據・業績追蹤・電商活動管理</div>
+        <span class="tc-badge">上線</span>
+      </div>
+    </a>
+    <a class="tool-card" href="https://cleanclean-hub.pages.dev" target="_blank" rel="noopener">
+      <div class="tc-icon"><i class="ph ph-buildings"></i></div>
+      <div class="tc-body">
+        <div class="tc-name">營銷總站</div>
+        <div class="tc-desc">公告・會議・頻道・員工・業績整合系統</div>
+        <span class="tc-badge">上線</span>
+      </div>
+    </a>
+  </div>
+
 </div>
-
-<script>
-(function(){
-  try{const s=JSON.parse(localStorage.getItem("reyway_gauth")||"null");if(s&&s.expiry>Date.now()){document.getElementById("auth-gate").classList.add("hidden");upd();return;}}catch(e){}
-  window.location.href="/";
-})();
-let _tag="all";
-function setTag(t){_tag=t;document.querySelectorAll(".ftab").forEach(b=>b.classList.toggle("active",b.dataset.tag===t));filter();}
-function filter(){
-  const q=document.getElementById("q").value.toLowerCase();
-  let v=0;
-  document.querySelectorAll("#list .kb-card").forEach(c=>{
-    const show=(_tag==="all"||c.dataset.tag===_tag)&&(!q||c.dataset.title.toLowerCase().includes(q));
-    c.classList.toggle("hidden",!show);if(show)v++;
-  });
-  document.getElementById("empty").style.display=v===0?"block":"none";
-  upd();
-}
-function upd(){
-  const v=document.querySelectorAll("#list .kb-card:not(.hidden)").length;
-  const t=document.querySelectorAll("#list .kb-card").length;
-  document.getElementById("count").textContent=v===t?t+" 個頁面":v+"/"+t;
-}
-</script>
 </body>
 </html>

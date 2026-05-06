@@ -7,11 +7,12 @@
 <meta name="description" content="笙闆 AI Studio — 品牌工具集合站">
 <!-- PWA -->
 <link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#0fa882">
+<meta name="theme-color" content="#080808">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="REYWAY">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <!-- 4 字體工具箱（軍師五拍 2026-04-30）：Inter UI + 思源黑體/宋體 + Klee 楷書 -->
@@ -23,21 +24,21 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  /* === v8 軍師五拍 · Anthropic 鏽橘 × Notion 簡潔（2026-04-30 拍板）=== */
-  --bg:#FAF7F0;               /* 暖米白底 */
-  --bg-deep:#F2EBDD;           /* 卡 hover 底 */
-  --surface:#FFFFFF;            /* 卡片 */
-  --text:#1A1A1A;               /* 主文字黑灰 */
-  --text-2:#666666;             /* 副文字 */
-  --text-3:#999999;             /* 三級 */
-  --accent:#C6613F;             /* Anthropic 鏽橘（單色主色） */
-  --accent-deep:#A14E2F;        /* 鏽橘按下 / hover */
-  --accent-soft:rgba(198,97,63,0.10);
-  --accent-edge:rgba(198,97,63,0.22);
-  --border:rgba(26,26,26,0.08);
-  --border-warm:rgba(198,97,63,0.18);
-  --shadow:0 1px 2px rgba(26,26,26,0.04), 0 6px 18px rgba(26,26,26,0.05);
-  --shadow-hover:0 12px 30px rgba(198,97,63,0.10), 0 2px 6px rgba(26,26,26,0.05);
+  /* === v9 黑金版（2026-05-06 主公拍板）=== */
+  --bg:#080808;               /* 近黑底 */
+  --bg-deep:#111111;           /* 卡 hover 底 */
+  --surface:#111111;            /* 卡片 */
+  --text:#FFFFFF;               /* 主文字白 */
+  --text-2:rgba(255,255,255,0.45); /* 副文字 */
+  --text-3:rgba(255,255,255,0.30); /* 三級 */
+  --accent:#C9A96A;             /* 金色主色 */
+  --accent-deep:#E8C87A;        /* 金色 hover / bright */
+  --accent-soft:rgba(201,169,106,0.10);
+  --accent-edge:rgba(201,169,106,0.25);
+  --border:rgba(201,169,106,0.15);
+  --border-warm:rgba(201,169,106,0.25);
+  --shadow:0 1px 2px rgba(0,0,0,0.4), 0 6px 18px rgba(0,0,0,0.3);
+  --shadow-hover:0 12px 30px rgba(201,169,106,0.15), 0 2px 6px rgba(0,0,0,0.4);
   --radius:12px;
   --radius-sm:10px;
   /* 字型 4 套 */
@@ -132,8 +133,8 @@ body{
 /* ===== 收件夾按鈕（主公專用，固定右上角）===== */
 #notify-bar{
   position:fixed;top:16px;right:16px;z-index:990;
-  background:rgba(255,255,255,0.92);
-  border:1px solid rgba(0,0,0,0.08);
+  background:rgba(17,17,17,0.95);
+  border:1px solid rgba(201,169,106,0.25);
   border-radius:100px;
   padding:8px 16px 8px 12px;
   display:flex;
@@ -206,24 +207,48 @@ body{
 /* ===== Header v8 軍師五拍——Anthropic+Notion 混血 ===== */
 header{padding:72px 0 48px;text-align:center;position:relative}
 
-.avatar-ring{
-  width:130px;height:130px;border-radius:50%;
+/* ===== 三圓圈 avatar 列 ===== */
+.avatar-trio{
+  display:flex;align-items:center;justify-content:center;
+  gap:16px;
   margin:0 auto 28px;
+}
+.avatar-ring{
+  width:110px;height:110px;border-radius:50%;
   position:relative;
   background:var(--surface);
   display:flex;align-items:center;justify-content:center;
   border:2px solid var(--accent-edge);
-  box-shadow:0 4px 16px rgba(198,97,63,0.10);
+  box-shadow:0 4px 16px rgba(0,0,0,0.30);
+  flex-shrink:0;
+}
+.avatar-ring.main{
+  width:130px;height:130px;
+  border:2px solid var(--accent);
+  box-shadow:0 4px 20px rgba(201,169,106,0.20);
 }
 .avatar-inner{
-  width:120px;height:120px;border-radius:50%;
+  width:100%;height:100%;border-radius:50%;
   overflow:hidden;
   background:var(--bg-deep);
+}
+.avatar-ring.main .avatar-inner{
+  width:120px;height:120px;
+}
+.avatar-ring:not(.main) .avatar-inner{
+  width:100px;height:100px;
 }
 .avatar-inner img{
   width:100%;height:100%;
   object-fit:cover;
-  object-position:center 28%;
+  object-position:center 20%;
+}
+@media(max-width:600px){
+  .avatar-trio{gap:10px}
+  .avatar-ring{width:88px;height:88px}
+  .avatar-ring.main{width:108px;height:108px}
+  .avatar-ring.main .avatar-inner{width:98px;height:98px}
+  .avatar-ring:not(.main) .avatar-inner{width:78px;height:78px}
 }
 
 header .eyebrow{
@@ -285,8 +310,6 @@ header .hero-quote{
 .hero-social a .ph{font-size:1.2rem}
 @media(max-width:600px){
   header{padding:52px 0 32px}
-  .avatar-ring{width:108px;height:108px;margin-bottom:22px}
-  .avatar-inner{width:98px;height:98px}
   header h1{font-size:1.85rem}
 }
 
@@ -716,6 +739,90 @@ section{margin-bottom:72px;scroll-margin-top:24px}
 .feed-tag.tag-think{background:rgba(180,120,40,0.10);color:#8A5A1F;border:1px solid rgba(180,120,40,0.22)}
 .feed-text{color:var(--text);font-weight:400;letter-spacing:0.02em;line-height:1.5}
 
+/* ===== 笙之道 Blog CTA 按鈕 ===== */
+.agent-cta-wrap{text-align:center;margin-bottom:40px}
+.btn-agent{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:14px 28px;
+  background:var(--accent);color:#000;
+  font-family:var(--font-ui);font-size:0.9rem;font-weight:700;letter-spacing:0.06em;
+  border-radius:100px;text-decoration:none;
+  box-shadow:0 0 24px rgba(201,169,106,0.35),0 0 8px rgba(201,169,106,0.2);
+  transition:all 0.25s ease;
+  text-transform:uppercase;
+}
+.btn-agent:hover{background:var(--accent-deep);box-shadow:0 0 40px rgba(201,169,106,0.5)}
+.btn-agent .ph{font-size:1.1rem}
+.btn-agent-badge{
+  font-size:0.65rem;font-weight:600;letter-spacing:0.12em;
+  background:rgba(0,0,0,0.18);padding:3px 8px;border-radius:100px;
+}
+
+/* ===== 4 主卡片 2x2 格（矮版）===== */
+.main-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:14px;
+  margin-bottom:48px;
+}
+.main-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:22px 22px 18px;
+  text-decoration:none;color:inherit;
+  display:flex;flex-direction:column;gap:10px;
+  box-shadow:var(--shadow);
+  transition:all 0.3s cubic-bezier(0.16,1,0.3,1);
+  position:relative;overflow:hidden;
+}
+.main-card:hover{
+  border-color:var(--accent-edge);
+  transform:translateY(-3px);
+  box-shadow:var(--shadow-hover);
+}
+.main-card:hover .mc-icon{background:var(--accent);color:#fff}
+.mc-icon{
+  width:40px;height:40px;border-radius:9px;
+  background:var(--accent-soft);color:var(--accent);
+  display:inline-flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+  transition:all 0.3s ease;
+}
+.mc-icon .ph{font-size:1.35rem;line-height:1}
+.main-card h3{
+  font-family:var(--font-serif);
+  font-size:1.15rem;font-weight:600;
+  letter-spacing:0.02em;line-height:1.35;
+  color:var(--text);margin:0;
+}
+.main-card p{
+  font-size:0.82rem;color:var(--text-2);
+  line-height:1.65;margin:0;font-weight:400;
+}
+@media(max-width:520px){.main-grid{grid-template-columns:1fr}}
+
+/* ===== AI TEAM 辦公室 小按鈕 ===== */
+.aiteam-cta-wrap{text-align:center;margin-bottom:18px}
+.btn-aiteam{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:8px 20px;
+  background:var(--surface);color:var(--text-2);
+  font-family:var(--font-ui);font-size:0.78rem;font-weight:500;letter-spacing:0.06em;
+  border-radius:100px;text-decoration:none;
+  border:1px solid var(--border-warm);
+  transition:all 0.25s ease;
+}
+.btn-aiteam:hover{color:var(--accent);border-color:var(--accent);background:var(--accent-soft)}
+.btn-aiteam .ph{font-size:0.95rem}
+
+/* ===== Bottom Dashboard ===== */
+.dashboard-bottom{
+  display:grid;grid-template-columns:1fr 1fr;gap:14px;
+  margin-bottom:16px;
+}
+@media(max-width:520px){.dashboard-bottom{grid-template-columns:1fr}}
+
 /* ===== Tab 折疊（合作品牌 / 內部工具）===== */
 details.collapse-section{
   background:var(--surface);
@@ -844,8 +951,8 @@ body.edit-on [data-edit-id]:hover{
 }
 body.edit-on [data-edit-id]:focus{
   outline:2px solid var(--accent);outline-offset:3px;
-  background:rgba(255,255,255,0.85);
-  box-shadow:0 0 0 6px rgba(198,97,63,0.10);
+  background:rgba(201,169,106,0.08);
+  box-shadow:0 0 0 6px rgba(201,169,106,0.10);
 }
 #edit-toast{
   position:fixed;bottom:78px;right:18px;z-index:991;
@@ -876,7 +983,7 @@ body.edit-on [data-edit-id]:focus{
   max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
 }
 #fs-toolbar .fs-btn{
-  background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.1);
+  background:rgba(201,169,106,0.12);border:1px solid rgba(201,169,106,0.25);
   color:#fff;border-radius:5px;padding:3px 9px;cursor:pointer;
   font-size:0.8rem;font-weight:700;transition:background 0.15s;
 }
@@ -974,9 +1081,27 @@ body.edit-on [data-edit-id]:focus{
 
   <!-- Header v8 — Anthropic+Notion 鏽橘版 -->
   <header>
-    <div class="avatar-ring">
-      <div class="avatar-inner">
-        <img src="/photos/cover.jpg" alt="陳睿笙" onerror="this.outerHTML='<div style=\'width:100%;height:100%;background:#FAF7F0;display:flex;align-items:center;justify-content:center;color:#C6613F;font-size:2rem;font-family:Noto Serif TC,serif;font-weight:600\'>笙</div>'">
+    <div class="avatar-trio">
+      <!-- 左：全家福 -->
+      <div class="avatar-ring">
+        <div class="avatar-inner">
+          <img src="/photos/family.jpg" alt="全家福" style="object-position:center 15%"
+            onerror="this.outerHTML='<div style=\'width:100%;height:100%;background:var(--surface);display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:1.4rem;font-family:Noto Serif TC,serif;font-weight:600\'>家</div>'">
+        </div>
+      </div>
+      <!-- 中：主公主照 -->
+      <div class="avatar-ring main">
+        <div class="avatar-inner">
+          <img src="/photos/cover.jpg" alt="陳睿笙"
+            onerror="this.outerHTML='<div style=\'width:100%;height:100%;background:var(--surface);display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:2rem;font-family:Noto Serif TC,serif;font-weight:600\'>笙</div>'">
+        </div>
+      </div>
+      <!-- 右：吐司 -->
+      <div class="avatar-ring">
+        <div class="avatar-inner">
+          <img src="/photos/toast.jpg" alt="吐司" style="object-position:center 10%"
+            onerror="this.outerHTML='<div style=\'width:100%;height:100%;background:var(--surface);display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:1.4rem;font-family:Noto Serif TC,serif;font-weight:600\'>吐</div>'">
+        </div>
       </div>
     </div>
     <div class="eyebrow" data-edit-id="hero-eyebrow"><i class="ph ph-shield-check"></i> REYWAY · AI STUDIO</div>
@@ -998,222 +1123,55 @@ body.edit-on [data-edit-id]:focus{
     <div class="notify-badge" id="notify-count">0</div>
   </div>
 
-  <!-- ═══ Dashboard Bar v9（即時儀表板、編輯模式可改）═══ -->
-  <section class="dashboard-bar">
-    <a class="dash-card" href="https://rsway.net" target="_blank" rel="noopener" style="text-decoration:none;display:block;color:inherit">
-      <div class="dash-icon"><i class="ph ph-article"></i></div>
-      <div class="dash-label">笙之道 · 最新文章</div>
-      <div class="dash-value" id="blog-latest-title">AI 方法論 Blog</div>
-      <div class="dash-trend" id="blog-latest-trend">rsway.net →</div>
+  <!-- ═══ 笙之道 Blog 金色按鈕 ═══ -->
+  <div class="agent-cta-wrap">
+    <a class="btn-agent" href="https://rsway.net" target="_blank" rel="noopener">
+      <i class="ph ph-article"></i>
+      <span>笙之道 Blog</span>
+      <span class="btn-agent-badge">rsway.net</span>
     </a>
+  </div>
+
+  <!-- ═══ 四大主卡片（2x2）═══ -->
+  <div class="main-grid">
+    <a class="main-card" href="/cleanclean/">
+      <div class="mc-icon" style="background:#fff;padding:4px;overflow:hidden"><img src="/icon-cleanclean.jpg" style="width:100%;height:100%;object-fit:contain;border-radius:5px;display:block"></div>
+      <h3>淨淨 CleanClean</h3>
+      <p>品牌旗下全工具・行銷・美學・電商</p>
+    </a>
+    <a class="main-card" href="https://shengboss.reyway.com" target="_blank" rel="noopener">
+      <div class="mc-icon"><i class="ph ph-microphone-stage"></i></div>
+      <h3>IP 工作室</h3>
+      <p>個人品牌・文案・社群・Threads</p>
+    </a>
+    <a class="main-card" href="https://brain.reyway.com" target="_blank" rel="noopener">
+      <div class="mc-icon"><i class="ph ph-brain"></i></div>
+      <h3>第二大腦</h3>
+      <p>知識體系・DIKW 三階・取代 Obsidian</p>
+    </a>
+    <a class="main-card" href="/tools/" target="_blank" rel="noopener">
+      <div class="mc-icon"><i class="ph ph-wrench"></i></div>
+      <h3>綜合工具區</h3>
+      <p>自用小工具集合・持續新增</p>
+    </a>
+  </div>
+
+  <!-- ═══ AI TEAM 辦公室 小按鈕 ═══ -->
+  <div class="aiteam-cta-wrap">
+    <a class="btn-aiteam" href="https://aiteam.reyway.com" target="_blank" rel="noopener">
+      <i class="ph ph-robot"></i> AI TEAM 辦公室
+    </a>
+  </div>
+
+  <!-- ═══ Bottom：AI 工作日誌 ═══ -->
+  <div style="margin-bottom:16px">
     <div class="dash-card" style="cursor:pointer" onclick="window.open('https://aiteam.reyway.com','_blank')">
       <div class="dash-icon"><i class="ph ph-list-checks"></i></div>
       <div class="dash-label">AI 軍團工作日誌</div>
       <div class="dash-value" id="ai-tasks-value">—</div>
       <div class="dash-trend" id="ai-tasks-trend">載入中…</div>
     </div>
-    <div class="dash-card">
-      <div class="dash-icon"><i class="ph ph-fire"></i></div>
-      <div class="dash-label">AI 本月花費（各站）</div>
-      <div class="dash-value" id="ai-month-value">—</div>
-      <div class="dash-trend" id="ai-month-trend">載入中…</div>
-    </div>
-  </section>
-
-  <!-- ═══ 核心兩主舞台（brain.reyway 排第一）═══ -->
-  <section id="sec-categories">
-    <div class="section-intro">
-      <div class="eyebrow" data-edit-id="sec-core-eyebrow">CORE COLLECTIONS</div>
-      <h2 data-edit-id="sec-core-title">核心 <strong>兩</strong></h2>
-      <div class="gold-line"></div>
-      <div class="sub" data-edit-id="sec-core-sub">事業 · 成長</div>
-    </div>
-
-    <div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;">
-      <a class="card featured" href="https://brain.reyway.com">
-        <div class="card-icon"><i class="ph ph-brain"></i></div>
-        <h3 data-edit-id="card-brain-title">第二大腦 · brain.reyway</h3>
-        <p data-edit-id="card-brain-desc">主公個人知識體系・DIKW 三階提煉<br>Inbox → Archive → Sanctum・取代 Obsidian</p>
-        <span class="card-tag" data-edit-id="card-brain-tag">笙之道 · Phase 1</span>
-      </a>
-
-      <a class="card" href="/cleanclean-hub/">
-        <div class="card-icon"><i class="ph ph-leaf"></i></div>
-        <h3 data-edit-id="card-clean-title">淨淨體系</h3>
-        <p data-edit-id="card-clean-desc">家用清潔・個人護理品牌<br>營銷總站・門市小幫手・行銷神隊友・電商數據站</p>
-        <span class="card-tag" data-edit-id="card-clean-tag">事業 · 5 個工具</span>
-      </a>
-
-    </div>
-  </section>
-
-  <!-- ═══ 笙闆個人 IP（獨立區塊）═══ -->
-  <section id="sec-shengboss" style="margin-top:0">
-    <a class="card card-full" href="https://shengboss.reyway.com"
-       style="background:linear-gradient(135deg,#FDF4EB 0%,#F8E3CC 100%);border:1.5px solid rgba(198,97,63,0.28);box-shadow:0 4px 20px rgba(198,97,63,0.12);text-decoration:none;color:inherit;">
-      <div class="card-icon" style="background:rgba(198,97,63,0.15);color:#C6613F;flex-shrink:0;">
-        <i class="ph ph-microphone-stage"></i>
-      </div>
-      <div class="card-body">
-        <h3 style="font-family:'Noto Serif TC',serif;font-size:1.1rem;font-weight:600;color:#1A1A1A;margin-bottom:4px;">笙闆 IP 工作室</h3>
-        <p style="font-size:0.85rem;color:#666;line-height:1.65;margin-bottom:0;">個人品牌經營中央指揮塔・Threads / IG / 短影音<br>文案庫 · 行事曆 · 互動數據・從發文到覆盤一站搞定</p>
-      </div>
-      <div class="card-arrow" style="font-size:1.1rem;color:#C6613F;flex-shrink:0;">
-        <i class="ph ph-arrow-right"></i>
-      </div>
-    </a>
-  </section>
-
-  <!-- ═══ 折疊：合作品牌 + 內部工具 ═══ -->
-  <section id="sec-extras">
-    <div class="section-intro">
-      <div class="eyebrow" data-edit-id="sec-extras-eyebrow">COLLECTIONS</div>
-      <h2 data-edit-id="sec-extras-title">綜合 <strong>分類</strong></h2>
-      <div class="gold-line"></div>
-      <div class="sub" data-edit-id="sec-extras-sub">智能工具</div>
-    </div>
-
-    <details class="collapse-section">
-      <summary>
-        <i class="ph ph-grid-four"></i>
-        <span>綜合頁面</span>
-        <span class="summary-meta">1 個頁面</span>
-        <i class="ph ph-caret-right caret"></i>
-      </summary>
-      <div class="collapse-body">
-        <div class="mini-grid">
-          <a class="mini-card" href="/founder/">
-            <span class="mini-icon"><i class="ph ph-buildings" style="font-size:1rem"></i></span>
-            <div><div class="mini-name" data-edit-id="mini-founder-name">笙闆 AI 總站</div><div class="mini-desc" data-edit-id="mini-founder-desc">AI 軍團指揮所・12 人董事會</div></div>
-          </a>
-        </div>
-      </div>
-    </details>
-
-    <details class="collapse-section">
-      <summary>
-        <i class="ph ph-toolbox"></i>
-        <span>綜合工具</span>
-        <span class="summary-meta">1 個小工具</span>
-        <i class="ph ph-caret-right caret"></i>
-      </summary>
-      <div class="collapse-body">
-        <div class="mini-grid">
-          <a class="mini-card" href="/tools/">
-            <span class="mini-icon"><i class="ph ph-wrench" style="font-size:1rem"></i></span>
-            <div><div class="mini-name" data-edit-id="mini-tools-name">智能工具</div><div class="mini-desc" data-edit-id="mini-tools-desc">跨品牌通用 AI 小工具</div></div>
-          </a>
-        </div>
-      </div>
-    </details>
-  </section>
-
-  <!-- ═══ About / 笙之道 ═══ -->
-  <section id="sec-about">
-    <div class="section-intro">
-      <div class="eyebrow" data-edit-id="sec-about-eyebrow">AI JOURNEY</div>
-      <h2 data-edit-id="sec-about-title">關於笙之道的 <strong>AI 之路</strong></h2>
-      <div class="gold-line"></div>
-      <div class="sub" data-edit-id="sec-about-sub">2025.12 → 現在進行中</div>
-    </div>
-
-    <div class="about-grid">
-      <div class="about-text">
-        <p class="about-quote" data-edit-id="about-quote">上善若水・水善利萬物而不爭</p>
-        <p data-edit-id="about-p1">苗栗囝仔。2018 年創辦淨淨 CleanClean、把家用清潔做成有溫度的品牌——代言人李仁哥、SGS 認證、歐洲 ECARF 蓋章、3 萬戶台灣家庭的客廳裡。</p>
-        <p data-edit-id="about-p2">2026 年起、把 AI 推進每個工作流程——不是取代人、是讓 8 個人能做 80 個人的事。創立<strong>若水聯盟</strong>、12 個 AI 軍團人格 24/7 運作。</p>
-        <p data-edit-id="about-p3">核心三件事：<strong>淨淨</strong>（事業）／<strong>若水</strong>（系統）／<strong>笙之道</strong>（成長）。其他、是朋友的幫忙跟家人的愛護。</p>
-      </div>
-      <div class="about-timeline">
-        <div class="timeline-list">
-          <div class="timeline-item">
-            <span class="timeline-date" data-edit-id="tl1-date">2025.12.29</span>
-            <span class="timeline-text" data-edit-id="tl1-text">試水期・第一次認真把 AI 當員工用</span>
-          </div>
-          <div class="timeline-item">
-            <span class="timeline-date" data-edit-id="tl2-date">2026.04.11</span>
-            <span class="timeline-text" data-edit-id="tl2-text">系統化・從聊天升級到工作流程</span>
-          </div>
-          <div class="timeline-item">
-            <span class="timeline-date" data-edit-id="tl3-date">2026.04.20</span>
-            <span class="timeline-text" data-edit-id="tl3-text">Memory 啟動・給 AI 長期記憶</span>
-          </div>
-          <div class="timeline-item">
-            <span class="timeline-date" data-edit-id="tl4-date">2026.04.22</span>
-            <span class="timeline-text" data-edit-id="tl4-text">若水聯盟成軍・12 個 AI 人格分工</span>
-          </div>
-          <div class="timeline-item">
-            <span class="timeline-date" data-edit-id="tl5-date">2026.04.23</span>
-            <span class="timeline-text" data-edit-id="tl5-text">工作習慣總則・最大授權／不講術語／邊做邊報</span>
-          </div>
-          <div class="timeline-item">
-            <span class="timeline-date" data-edit-id="tl6-date">2026.04.26</span>
-            <span class="timeline-text" data-edit-id="tl6-text">淨淨營銷總站上線・Notion 退場、AI 自架 SaaS</span>
-          </div>
-          <div class="timeline-item">
-            <span class="timeline-date" data-edit-id="tl7-date">2026.04.28</span>
-            <span class="timeline-text" data-edit-id="tl7-text">Hook 自動化體系・AI 背後的引擎</span>
-          </div>
-          <div class="timeline-item">
-            <span class="timeline-date" data-edit-id="tl8-date">2026.04.29</span>
-            <span class="timeline-text" data-edit-id="tl8-text">brain.reyway 規劃・個人第二大腦取代 Obsidian</span>
-          </div>
-          <div class="timeline-item current">
-            <span class="timeline-date" data-edit-id="tl9-date">2026.04.30</span>
-            <span class="timeline-text" data-edit-id="tl9-text">reyway.com v8・軍師五拍視覺改造</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ═══ Status Log / 進行中 ═══ -->
-  <section id="sec-feed">
-    <div class="section-intro">
-      <div class="eyebrow" data-edit-id="sec-feed-eyebrow">STATUS LOG</div>
-      <h2 data-edit-id="sec-feed-title">進行 <strong>中</strong></h2>
-      <div class="gold-line"></div>
-      <div class="sub" data-edit-id="sec-feed-sub">最近 30 天</div>
-    </div>
-
-    <div class="feed-list">
-      <div class="feed-item">
-        <span class="feed-date" data-edit-id="feed-item-1-date">2026.04.30</span>
-        <span class="feed-tag tag-deploy">DEPLOY</span>
-        <span class="feed-text" data-edit-id="feed-item-1-text">reyway.com v8 主視覺套用軍師五拍（鏽橘 + 4 字體 + Phosphor）</span>
-      </div>
-      <div class="feed-item">
-        <span class="feed-date" data-edit-id="feed-item-2-date">2026.04.30</span>
-        <span class="feed-tag tag-build">BUILD</span>
-        <span class="feed-text" data-edit-id="feed-item-2-text">cleanclean-hub IA v4 + 業務部報價單 + 檔案資料庫完整版</span>
-      </div>
-      <div class="feed-item">
-        <span class="feed-date" data-edit-id="feed-item-3-date">2026.04.29</span>
-        <span class="feed-tag tag-ship">SHIP</span>
-        <span class="feed-text" data-edit-id="feed-item-3-text">若水聯盟六大 Hook 體系 + 8 Slash Commands + 5 Plugin 自用包</span>
-      </div>
-      <div class="feed-item">
-        <span class="feed-date" data-edit-id="feed-item-4-date">2026.04.28</span>
-        <span class="feed-tag tag-build">BUILD</span>
-        <span class="feed-text" data-edit-id="feed-item-4-text">leon.reyway.com 吐司專屬小老師 Phase 0+ 上線</span>
-      </div>
-      <div class="feed-item">
-        <span class="feed-date" data-edit-id="feed-item-5-date">2026.04.27</span>
-        <span class="feed-tag tag-deploy">DEPLOY</span>
-        <span class="feed-text" data-edit-id="feed-item-5-text">store.reyway.com 門市小幫手 4 櫃位上線</span>
-      </div>
-      <div class="feed-item">
-        <span class="feed-date" data-edit-id="feed-item-6-date">2026.04.26</span>
-        <span class="feed-tag tag-ship">SHIP</span>
-        <span class="feed-text" data-edit-id="feed-item-6-text">cleanclean-hub Phase 1 共 11 模組</span>
-      </div>
-      <div class="feed-item">
-        <span class="feed-date" data-edit-id="feed-item-7-date">2026.04.24</span>
-        <span class="feed-tag tag-think">THINK</span>
-        <span class="feed-text" data-edit-id="feed-item-7-text">工作習慣總則第七章升級：4 步法 + 11 條思維模型庫</span>
-      </div>
-    </div>
-  </section>
+  </div>
 
   <!-- ═══ Footer v8 軍師五拍 ═══ -->
   <footer>
@@ -1251,12 +1209,13 @@ async function fetchAICosts() {
     var mEl = document.getElementById('ai-month-value');
     var mTr = document.getElementById('ai-month-trend');
     if (d.month) {
-      mEl.textContent = 'NT$ ' + parseFloat(d.month.twd || 0).toFixed(2);
-      var todayTwd = d.today ? 'NT$ ' + parseFloat(d.today.twd || 0).toFixed(2) : 'NT$ 0';
-      mTr.textContent = '今日：' + todayTwd + ' · ' + (d.month.count || 0) + ' 筆 · 同步自各站';
+      var monthTwd = Math.round(parseFloat(d.month.twd || 0));
+      mEl.textContent = 'NT$ ' + monthTwd.toLocaleString();
+      var updAt = d.month.updatedAt ? new Date(d.month.updatedAt).toLocaleDateString('zh-TW',{month:'numeric',day:'numeric'}) + ' 更新' : '手動記錄';
+      mTr.textContent = '4/28～今日累計 · ' + updAt;
     } else {
       mEl.textContent = 'NT$ 0';
-      mTr.textContent = '尚無今月紀錄';
+      mTr.textContent = '尚無紀錄';
     }
 
     // ── 過濾測試訊息（避免 FORCE_ERROR / 嗨笙闆 等垃圾顯示）──
