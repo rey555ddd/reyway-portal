@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>30天的AI之路 — 從零到 22 個網站的真實紀錄 | 若水聯盟</title>
+  <link rel="stylesheet" href="/knowledge/article-template.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@400;500;600;700&family=Klee+One:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    /* ===== 頁面專屬樣式 ===== */
+
+    .post-subtitle {
+      font-size: 1.05rem;
+      color: var(--ink-2);
+      margin-top: 4px;
+      margin-bottom: 28px;
+      font-family: var(--font-kai);
+      font-style: italic;
+    }
+
+    /* ===== 時間軸 ===== */
+    .timeline {
+      position: relative;
+      margin: 40px 0;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 18px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--accent), var(--accent-deep));
+    }
+    .tl-item {
+      display: flex;
+      gap: 24px;
+      margin-bottom: 36px;
+      position: relative;
+    }
+    .tl-dot {
+      flex-shrink: 0;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      font-weight: 700;
+      z-index: 1;
+      box-shadow: 0 0 0 4px var(--paper);
+    }
+    .tl-dot.phase-1 { background: #61D0DF; }
+    .tl-dot.phase-2 { background: #4AAED4; }
+    .tl-dot.phase-3 { background: #2B8EBF; }
+    .tl-dot.phase-4 { background: #1A6FA3; }
+    .tl-body {
+      flex: 1;
+      background: var(--paper-2);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 22px 26px;
+      margin-top: 4px;
+    }
+    .tl-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: var(--accent-deep);
+      margin-bottom: 6px;
+    }
+    .tl-title {
+      font-family: var(--font-serif);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 10px;
+    }
+    .tl-desc {
+      font-size: 0.95rem;
+      color: var(--ink-2);
+      line-height: 1.75;
+      margin: 0;
+    }
+
+    /* ===== 站點格子 ===== */
+    .site-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 14px;
+      margin: 28px 0;
+    }
+    .site-card {
+      background: var(--paper-2);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 16px 18px;
+      transition: box-shadow 0.2s, border-color 0.2s;
+    }
+    .site-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 4px 16px rgba(97,208,223,0.15);
+    }
+    .site-tag {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--accent-deep);
+      background: var(--accent-light);
+      padding: 2px 9px;
+      border-radius: 100px;
+      display: inline-block;
+      margin-bottom: 8px;
+    }
+    .site-name {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+    .site-desc {
+      font-size: 0.82rem;
+      color: var(--ink-3);
+      line-height: 1.55;
+    }
+
+    /* ===== 踩坑卡片 ===== */
+    .pit-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin: 28px 0;
+    }
+    @media (max-width: 600px) { .pit-grid { grid-template-columns: 1fr; } }
+    .pit-card {
+      background: var(--paper-2);
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--accent);
+      border-radius: 0 14px 14px 0;
+      padding: 18px 20px;
+    }
+    .pit-card.warn { border-left-color: #F59E0B; }
+    .pit-card.ok { border-left-color: #10B981; }
+    .pit-icon { font-size: 1.2rem; margin-bottom: 8px; }
+    .pit-title { font-size: 0.9rem; font-weight: 700; color: var(--ink); margin-bottom: 6px; }
+    .pit-body { font-size: 0.84rem; color: var(--ink-2); line-height: 1.65; }
+
+    /* ===== 觀念金句 ===== */
+    .insight-row {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin: 28px 0;
+    }
+    .insight-card {
+      display: flex;
+      gap: 18px;
+      align-items: flex-start;
+      background: var(--accent-light);
+      border-radius: 16px;
+      padding: 22px 24px;
+    }
+    .insight-num {
+      flex-shrink: 0;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-serif);
+      font-size: 1.15rem;
+      font-weight: 700;
+    }
+    .insight-text { flex: 1; }
+    .insight-quote {
+      font-family: var(--font-serif);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+    .insight-sub {
+      font-size: 0.9rem;
+      color: var(--ink-2);
+      line-height: 1.7;
+    }
+
+    /* ===== 演化圖 ===== */
+    .evo-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      overflow-x: auto;
+      padding: 24px;
+      background: var(--paper-2);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      margin: 24px 0;
+    }
+    .evo-node {
+      flex-shrink: 0;
+      background: var(--paper);
+      border: 1.5px solid var(--line);
+      border-radius: 12px;
+      padding: 12px 18px;
+      text-align: center;
+      min-width: 110px;
+    }
+    .evo-node.current {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+    .evo-node-label { font-size: 0.72rem; color: var(--ink-3); margin-bottom: 4px; }
+    .evo-node-name { font-size: 0.9rem; font-weight: 700; color: var(--ink); }
+    .evo-node.current .evo-node-label { color: var(--ink); opacity: 0.7; }
+    .evo-node.current .evo-node-name { color: var(--ink); }
+    .evo-arrow { flex-shrink: 0; color: var(--accent-deep); font-size: 1.2rem; }
+
+    /* ===== 數據卡 ===== */
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 14px;
+      margin: 28px 0;
+    }
+    .stat-card {
+      background: var(--paper-2);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 20px 18px;
+      text-align: center;
+    }
+    .stat-num {
+      font-family: var(--font-serif);
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--accent-deep);
+      line-height: 1.2;
+      margin-bottom: 6px;
+    }
+    .stat-label { font-size: 0.82rem; color: var(--ink-2); line-height: 1.5; }
+
+    /* ===== Section 分隔 ===== */
+    .section-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      color: var(--accent-deep);
+      background: var(--accent-light);
+      padding: 5px 16px;
+      border-radius: 100px;
+      margin-bottom: 18px;
+    }
+  </style>
+</head>
+<body>
+
+<nav class="topbar">
+  <div class="topbar-inner">
+    <a href="/" class="brand">
+      <div class="brand-mark">若</div>
+      <div class="brand-name">若水聯盟 <span class="accent">· 知識庫</span></div>
+    </a>
+    <div class="nav">
+      <a href="/knowledge">所有文章</a>
+      <a href="/">回首頁</a>
+    </div>
+  </div>
+</nav>
+
+<article>
+  <div class="wrap">
+    <header class="post-head">
+      <div class="post-cat">實戰紀錄</div>
+      <h1>30天的AI之路</h1>
+      <p class="post-subtitle">從第一行 Claude 提示詞，到 22 個網站、一套企業 AI 系統的真實紀錄</p>
+      <div class="post-meta">
+        <span><i class="ph ph-user"></i> 笙闆</span>
+        <span><i class="ph ph-calendar-blank"></i> 2026 年 4–5 月</span>
+        <span><i class="ph ph-clock"></i> 約 15 分鐘閱讀</span>
+        <span><i class="ph ph-globe"></i> 若水聯盟</span>
+      </div>
+    </header>
+
+    <div class="body">
+
+      <p>2026 年 4 月，我們把 Claude 從「偶爾問問」升級成每天的工作夥伴。這篇文章是這 30 天最忠實的紀錄——什麼時候做了什麼、踩過哪些坑、學到哪些不能在書上找到的事。</p>
+      <p>如果你正在考慮讓 AI 進入你的工作流程，這篇文章會讓你少走一些彎路。</p>
+
+      <!-- 數據概覽 -->
+      <div class="stat-row">
+        <div class="stat-card">
+          <div class="stat-num">22</div>
+          <div class="stat-label">上線網站數</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">30</div>
+          <div class="stat-label">天完成時間</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">6→1</div>
+          <div class="stat-label">Agent 架構演化</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">~50</div>
+          <div class="stat-label">核心踩坑記錄</div>
+        </div>
+      </div>
+
+      <!-- 第一階段 -->
+      <h2><span class="section-badge"><i class="ph ph-rocket-launch"></i> 第一階段</span><br>成軍——從第一個提示詞開始</h2>
+
+      <p>一切都從一個問題開始：「能不能讓 AI 直接幫我做事，而不只是回答我的問題？」</p>
+
+      <p>我們在 4 月初開始認真研究 Claude Code——Anthropic 的命令列工具，可以讓 AI 直接讀取、編寫程式碼。第一週最重要的事，是搭建底層架構：讓 AI 知道「公司是誰、客戶是誰、語氣是什麼」，然後把這些規則寫進系統提示詞。</p>
+
+      <p>從最熟悉的地方起步是正確決定。我們選擇先做自己最清楚的事——公司的行銷網站。淨淨（CleanClean）是我們旗下的清潔品牌，有明確的產品、文案需求和視覺規範。把 AI 導向一個有邊界的任務，比讓它「做任何事」容易成功得多。</p>
+
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-dot phase-1">1</div>
+          <div class="tl-body">
+            <div class="tl-label">4 月 21 日</div>
+            <div class="tl-title">若水聯盟總部上線</div>
+            <p class="tl-desc">aiteam.reyway.com——這是多個 AI Agent 的任務派工中樞。整個系統的第一塊基石，從這裡所有任務都有了可追蹤的入口。</p>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot phase-1">2</div>
+          <div class="tl-body">
+            <div class="tl-label">4 月 23 日</div>
+            <div class="tl-title">第一個朋友的網站</div>
+            <p class="tl-desc">皮爾卡登寢具（pc.reyway.com）Phase 0 上線。幫朋友做站這件事，讓我們提前練習了「給不熟悉 AI 的人講清楚需求」這項真實技能。</p>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot phase-1">3</div>
+          <div class="tl-body">
+            <div class="tl-label">4 月 25–26 日</div>
+            <div class="tl-title">淨淨行銷神隊友上線</div>
+            <p class="tl-desc">cleanclean.reyway.com——第一個真正「有用」的工具站。六大模組：文案生成、社群貼文、活動策劃、客服話術、廣告腳本、公關稿。員工可以直接使用，不需要學提示詞。</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 第二階段 -->
+      <h2><span class="section-badge"><i class="ph ph-tree-structure"></i> 第二階段</span><br>擴張——若水聯盟的多 Agent 實驗</h2>
+
+      <p>初始成功給了我們信心，但也帶來了一個誘人的問題：如果一個 AI 能這樣用，多個專門的 AI 合作起來會不會更強？</p>
+
+      <p>我們建立了「若水聯盟」——六個有不同專長的 AI 角色同時運作：韓信（PM/統籌）、郭嘉（策略）、墨子（前端）、蕭何（後端）、小喬（設計）、周瑜（行銷）。這個階段非常有趣，派工單、接龍、角色之間互相驗收——一種「AI 公司」的真實感。</p>
+
+      <p>與此同時，我們開始批量建站。</p>
+
+      <!-- 站點列表 -->
+      <div class="site-grid">
+        <div class="site-card">
+          <div class="site-tag">淨淨體系</div>
+          <div class="site-name">行銷神隊友</div>
+          <div class="site-desc">文案、社群、廣告腳本、客服話術全包</div>
+        </div>
+        <div class="site-card">
+          <div class="site-tag">淨淨體系</div>
+          <div class="site-name">美學工作站</div>
+          <div class="site-desc">AI 生圖、場景照、廣告素材一站生成</div>
+        </div>
+        <div class="site-card">
+          <div class="site-tag">淨淨體系</div>
+          <div class="site-name">電商數據站</div>
+          <div class="site-desc">蝦皮、momo、廣告成效即時看板</div>
+        </div>
+        <div class="site-card">
+          <div class="site-tag">淨淨體系</div>
+          <div class="site-name">員工後台</div>
+          <div class="site-desc">11 個 AI 工具模組，員工直接上手</div>
+        </div>
+        <div class="site-card">
+          <div class="site-tag">朋友站</div>
+          <div class="site-name">大大力鍍膜</div>
+          <div class="site-desc">汽車鍍膜品牌展示站</div>
+        </div>
+        <div class="site-card">
+          <div class="site-tag">朋友站</div>
+          <div class="site-name">森築居家</div>
+          <div class="site-desc">居家空間鍍膜服務站</div>
+        </div>
+        <div class="site-card">
+          <div class="site-tag">朋友站</div>
+          <div class="site-name">戀家小舖</div>
+          <div class="site-desc">台灣寢具品牌官網</div>
+        </div>
+        <div class="site-card">
+          <div class="site-tag">朋友站</div>
+          <div class="site-name">雅倫議員工具站</div>
+          <div class="site-desc">選民服務資料庫，11,925 筆記錄</div>
+        </div>
+        <div class="site-card">
+          <div class="site-tag">朋友站</div>
+          <div class="site-name">吐司小老師</div>
+          <div class="site-desc">AI 家教，專為 10 歲小孩設計</div>
+        </div>
+        <div class="site-card">
+          <div class="site-tag">內部系統</div>
+          <div class="site-name">若水聯盟總部</div>
+          <div class="site-desc">多 Agent 任務派工與追蹤中樞</div>
+        </div>
+        <div class="site-card">
+          <div class="site-tag">內部系統</div>
+          <div class="site-name">董事會議室</div>
+          <div class="site-desc">12 位高管 AI 角色系統</div>
+        </div>
+        <div class="site-card">
+          <div class="site-tag">內部系統</div>
+          <div class="site-name">廣告自動化系統</div>
+          <div class="site-desc">Meta + GA4 真實數據，AI 每日報告</div>
+        </div>
+      </div>
+
+      <p>這個階段我們也犯了最貴的錯誤——Claude Code 被誤接成 API 串接，導致雙重計費，多付了一大筆費用。這次教訓讓我們把成本管理當成正式的工作紀律，寫入了不可改動的規則。</p>
+
+      <!-- 第三階段 -->
+      <h2><span class="section-badge"><i class="ph ph-lightbulb"></i> 第三階段</span><br>沉澱——公司系統的建立</h2>
+
+      <p>建站的高峰期過後，我們開始思考：這些工具只有我能用嗎？如果員工不知道怎麼問 AI，這個系統等於沒有。</p>
+
+      <p>我們把重心轉向「讓 AI 變得可以交班」。具體做法有三件事：</p>
+
+      <p><strong>一、Skills 化。</strong>把常用的任務包裝成 Skill——一個指令就能喚起完整的工作流程，不需要每次都重新解釋背景。</p>
+
+      <p><strong>二、教學內化。</strong>建立這個知識庫，把踩過的坑、學到的方法，都整理成可以分享的文章，讓員工和合作夥伴少走彎路。</p>
+
+      <p><strong>三、主管啟動包。</strong>設計一套「主管如何帶 AI 工作」的指南，涵蓋模型選擇、費用估算、任務拆分方法。AI 工具就算再強，如果主管不知道怎麼交辦，效益就會大打折扣。</p>
+
+      <!-- 踩坑列表 -->
+      <h2><span class="section-badge"><i class="ph ph-warning"></i> 關鍵踩坑</span><br>讓我們付出代價才學到的事</h2>
+
+      <div class="pit-grid">
+        <div class="pit-card warn">
+          <div class="pit-icon"><i class="ph ph-file-code"></i></div>
+          <div class="pit-title">vite build 會清空你的修改</div>
+          <div class="pit-body">每次 build 都會覆蓋 dist 資料夾。任何補丁一定要寫進源碼，不能只改編譯後的檔案。</div>
+        </div>
+        <div class="pit-card warn">
+          <div class="pit-icon"><i class="ph ph-currency-dollar"></i></div>
+          <div class="pit-title">模型選錯，費用差 10 倍</div>
+          <div class="pit-body">Claude Opus 比 Sonnet 貴很多。預設模型選錯、串接路徑走錯，都會造成意外的帳單。建立成本鐵律，寫死在設定檔裡。</div>
+        </div>
+        <div class="pit-card warn">
+          <div class="pit-icon"><i class="ph ph-cloud-arrow-up"></i></div>
+          <div class="pit-title">部署工具要統一</div>
+          <div class="pit-body">git push 和 wrangler 混用會造成版本衝突。每個站只能選一種部署方式，混用必出問題。</div>
+        </div>
+        <div class="pit-card ok">
+          <div class="pit-icon"><i class="ph ph-database"></i></div>
+          <div class="pit-title">每個品牌要有獨立資料空間</div>
+          <div class="pit-body">KV 儲存、資料庫都要按品牌隔開。品牌 A 的資料不能碰品牌 B——看起來麻煩，實際上省了很多麻煩。</div>
+        </div>
+        <div class="pit-card ok">
+          <div class="pit-icon"><i class="ph ph-key"></i></div>
+          <div class="pit-title">Secret 設定完要重新部署</div>
+          <div class="pit-body">CF Pages 的環境變數設定後不會自動生效，必須重新 deploy 一次，新設定才能被讀到。</div>
+        </div>
+        <div class="pit-card ok">
+          <div class="pit-icon"><i class="ph ph-package"></i></div>
+          <div class="pit-title">圖示庫的選擇影響建置速度</div>
+          <div class="pit-body">Phosphor icons 有 3024 個 ESM 小檔案，直接引用會讓 build 卡死。要用 alias 強制走 CJS 模式才能正常運作。</div>
+        </div>
+      </div>
+
+      <!-- 架構演化 -->
+      <h2><span class="section-badge"><i class="ph ph-arrows-merge"></i> 架構演化</span><br>從六人軍團到小靈</h2>
+
+      <p>若水聯盟的多 Agent 架構很有趣，但在實際使用中，我們發現了一個根本問題：每個 Agent 都需要重新理解任務背景，派工、驗收、轉交之間有真實的摩擦成本。</p>
+
+      <p>最終的認知是：<strong>多人格是溝通設計，不是技術分工。</strong>真正的能力分工應該靠 Skills（技能包），而不是靠不同的 Agent 實體。</p>
+
+      <div class="evo-row">
+        <div class="evo-node">
+          <div class="evo-node-label">4/19 成軍</div>
+          <div class="evo-node-name">6 人軍團</div>
+        </div>
+        <div class="evo-arrow"><i class="ph ph-arrow-right"></i></div>
+        <div class="evo-node">
+          <div class="evo-node-label">5/01 優化</div>
+          <div class="evo-node-name">Hook 自動化</div>
+        </div>
+        <div class="evo-arrow"><i class="ph ph-arrow-right"></i></div>
+        <div class="evo-node">
+          <div class="evo-node-label">5/07 調整</div>
+          <div class="evo-node-name">工程師合併</div>
+        </div>
+        <div class="evo-arrow"><i class="ph ph-arrow-right"></i></div>
+        <div class="evo-node current">
+          <div class="evo-node-label">5/15 現在</div>
+          <div class="evo-node-name">小靈單一 Agent</div>
+        </div>
+      </div>
+
+      <p>小靈沒有失去任何能力——行銷、後端、設計、策略都在——只是不再需要「轉接」。一個入口，按任務載入對應的技能包，更快、更省成本、更不會忘記之前說了什麼。</p>
+
+      <!-- 第四階段 / 未來 -->
+      <h2><span class="section-badge"><i class="ph ph-trend-up"></i> 下一步</span><br>把網站串成系統</h2>
+
+      <p>30 天的成果是 22 個運作中的網站。但網站各自獨立的話，依然是 22 個分散的工具。下一個目標，是把它們串成一套真正的系統。</p>
+
+      <p>我們正在規劃的方向：</p>
+
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-dot phase-3"><i class="ph ph-link"></i></div>
+          <div class="tl-body">
+            <div class="tl-title">單一登入，跨站通行</div>
+            <p class="tl-desc">員工和合作夥伴只需要一組帳號，就能進入所有被授權的工具站。不同角色看到不同功能。</p>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot phase-3"><i class="ph ph-chart-line"></i></div>
+          <div class="tl-body">
+            <div class="tl-title">數據統一匯整</div>
+            <p class="tl-desc">電商、廣告、門市、社群的數據，最終要能在同一個地方看到完整全貌，而不是分散在六個不同的頁面。</p>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot phase-4"><i class="ph ph-robot"></i></div>
+          <div class="tl-body">
+            <div class="tl-title">自動化常規任務</div>
+            <p class="tl-desc">廣告日報、KOL 監控、庫存警示——這些每天重複的事，要讓 AI 自動完成並推送到正確的人面前。人只需要看結果、做決策。</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 核心觀念 -->
+      <h2><span class="section-badge"><i class="ph ph-quotes"></i> 30 天學到的三件事</span></h2>
+
+      <div class="insight-row">
+        <div class="insight-card">
+          <div class="insight-num">1</div>
+          <div class="insight-text">
+            <div class="insight-quote">從最熟悉的地方開始</div>
+            <p class="insight-sub">AI 最強的地方不是「它什麼都會」，而是「它能把你已經知道的事做得更快」。從最清楚需求、最有標準答案的任務下手，成功機率最高，信心也最快建立。</p>
+          </div>
+        </div>
+        <div class="insight-card">
+          <div class="insight-num">2</div>
+          <div class="insight-text">
+            <div class="insight-quote">成本是必須管理的第四種資本</div>
+            <p class="insight-sub">資金、人力、技術，現在要加上算力。AI 的費用不是固定的月費，是根據你問多少問題、用哪個模型來累積的。不管理就會失控。</p>
+          </div>
+        </div>
+        <div class="insight-card">
+          <div class="insight-num">3</div>
+          <div class="insight-text">
+            <div class="insight-quote">把踩坑記錄下來，值 10 倍</div>
+            <p class="insight-sub">每一次修掉的 bug、每一個走過的彎路，如果只活在對話記錄裡，就等於沒有發生過。把它們寫成可以搜尋的文章，才是真正的組織資產。這個知識庫，就是這樣來的。</p>
+          </div>
+        </div>
+      </div>
+
+      <p style="margin-top: 48px; padding-top: 32px; border-top: 1px solid var(--line); color: var(--ink-2); font-size: 0.9rem;">
+        這篇文章會持續更新。若水聯盟的 AI 之路，還在繼續。<br>
+        如果你也正在走類似的路，歡迎與我們交流。
+      </p>
+
+    </div>
+  </div>
+</article>
+
+</body>
+</html>
